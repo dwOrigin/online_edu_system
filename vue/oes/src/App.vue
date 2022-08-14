@@ -5,16 +5,7 @@
 </template>
 
 <script>
-export default {
-  name: 'App',
-  components: {
-  },
-  mounted() {
-    this.$router.replace({
-      name: 'home'
-    });
-  }
-}
+
 </script>
 
 <style>
