@@ -55,7 +55,7 @@ export default {
   name: "UserCard",
   data() {
     return {
-      user: null
+      user: {}
     }
   }
 }
