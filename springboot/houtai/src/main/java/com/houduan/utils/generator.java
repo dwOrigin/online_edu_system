@@ -27,7 +27,7 @@ public class generator {
                     builder.entityBuilder().enableLombok();//驼峰
                     builder.controllerBuilder().enableHyphenStyle()
                             .enableRestStyle();//
-                    builder.addInclude("Article","Comment","Course","CourseFavorite","CourseHistory","MsgReceive","MsgSystem","Questions","QuestionsComment","Teacher","User","UserLoginLog") // 设置需要生成的表名
+                    builder.addInclude("Article","Comment","Course","CourseFavorite","CourseHistory","MsgReceive","CourseVideo","MsgSystem","Questions","QuestionsComment","Teacher","User","UserLoginLog") // 设置需要生成的表名
                             //,"Comment","Course","CourseFavorite","CourseHistory","MsgReceive","MsgSystem","Questions","QuestionsComment","Teacher","User","UserLoginLog"
                             .addTablePrefix("t_", "c_"); // 设置过滤表前缀
                 })

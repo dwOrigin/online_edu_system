@@ -2,7 +2,6 @@ package com.houduan.mapper;
 
 import com.houduan.entity.Article;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
@@ -10,9 +9,8 @@ import org.apache.ibatis.annotations.Mapper;
  * </p>
  *
  * @author online_system
- * @since 2022-08-12
+ * @since 2022-08-15
  */
-@Mapper
 public interface ArticleMapper extends BaseMapper<Article> {
 
 }

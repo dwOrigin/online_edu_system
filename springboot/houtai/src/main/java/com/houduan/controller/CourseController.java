@@ -15,7 +15,7 @@ import com.houduan.entity.Course;
  * </p>
  *
  * @author online_system
- * @since 2022-08-12
+ * @since 2022-08-15
  */
 @RestController
 @RequestMapping("/course")
