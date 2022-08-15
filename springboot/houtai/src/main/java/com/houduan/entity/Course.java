@@ -15,7 +15,7 @@ import lombok.Setter;
  * </p>
  *
  * @author online_system
- * @since 2022-08-12
+ * @since 2022-08-15
  */
 @Getter
 @Setter
@@ -30,10 +30,6 @@ public class Course implements Serializable {
     private String courseName;
 
     private Integer isAvailable;
-
-    private Integer subjectId;
-
-    private String subjectLink;
 
     private LocalDateTime addTime;
 
@@ -50,6 +46,8 @@ public class Course implements Serializable {
     private Integer praiseCount;
 
     private Integer commentNum;
+
+    private Integer teacherId;
 
 
 }
