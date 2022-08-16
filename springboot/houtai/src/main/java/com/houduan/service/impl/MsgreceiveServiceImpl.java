@@ -4,6 +4,7 @@ import com.houduan.entity.Msgreceive;
 import com.houduan.mapper.MsgreceiveMapper;
 import com.houduan.service.IMsgreceiveService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**

@@ -1,10 +1,18 @@
 package com.houduan.service.impl;
 
+import com.houduan.common.Result;
+import com.houduan.entity.Msgreceive;
 import com.houduan.entity.Msgsystem;
+import com.houduan.entity.User;
+import com.houduan.mapper.MsgreceiveMapper;
 import com.houduan.mapper.MsgsystemMapper;
 import com.houduan.service.IMsgsystemService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -16,5 +24,59 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class MsgsystemServiceImpl extends ServiceImpl<MsgsystemMapper, Msgsystem> implements IMsgsystemService {
+@Autowired
+private MsgsystemMapper msgsystemMapper;
+@Override
+    public Result addMsgSystem(Msgsystem msgSystem){
+    int i=0;
+    if(orNew(msgSystem)) {
+        i = msgsystemMapper.insert(msgSystem);
+    }
+    if (i>=1){
+        return Result.success();
+    }else {
+        return Result.error();
+    }
+    }
+@Override
+    public Result updateMsgSystem(Msgsystem msgsystem){
+    int i=0;
+    if(!orNew(msgsystem)) {
+     i = msgsystemMapper.updateById(msgsystem);}
+    if (i>=1){
+        return Result.success();
+    }else {
+        return Result.error();
+    }
+
+}
+
+    @Override
+    public List<Msgsystem> getAll() {
+        List<Msgsystem> msgsystems = msgsystemMapper.selectList(null);
+        return msgsystems;
+    }
+
+    @Override
+    public Result deleteMsgSystem(Integer integer) {
+        int insert = msgsystemMapper.deleteById(integer);
+        if (insert>=1){
+            return Result.success();
+        }else {
+            return Result.error();
+        }
+    }
+
+    @Override
+    public Boolean orNew(Msgsystem message) {
+/*
+* 判定依据为，如果信息的状态为新消息，就将信息传入
+* */
+    if(message.getStatus()==1) {
+        message.setStatus(2);
+        return true;
+    }else return false;
+    }
+
 
 }
