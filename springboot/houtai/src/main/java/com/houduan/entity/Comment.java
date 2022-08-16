@@ -31,6 +31,8 @@ public class Comment implements Serializable {
 
     private Integer pCommentId;
 
+    private Integer totalId;
+
     private String content;
 
     private LocalDateTime addtime;

@@ -17,4 +17,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> implements ICourseService {
 
+    @Override
+    public Boolean addnew(Course course) {
+        return null;
+    }
 }

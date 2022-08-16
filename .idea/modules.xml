@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/springboot/houtai/houtai.iml" filepath="$PROJECT_DIR$/springboot/houtai/houtai.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/online_edu_system.iml" filepath="$PROJECT_DIR$/.idea/online_edu_system.iml" />
     </modules>
   </component>
