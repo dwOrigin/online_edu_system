@@ -15,6 +15,7 @@ const router = new VueRouter({
     ]
 });
 
+
 //更新网页标题
 router.afterEach((to, from) => {
     if (to.meta.changeTitle) {

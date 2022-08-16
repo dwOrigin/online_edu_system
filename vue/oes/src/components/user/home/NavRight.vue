@@ -1,7 +1,7 @@
 <template>
 <div>
 <ul class="tag-list">
-  <li v-for="tag in tagObjList" key="tag.title">
+  <li v-for="tag in tagObjList" :key="tag.title">
     <el-link :underline="false" class="tag-item">{{tag.title}}</el-link>
   </li>
   <el-link :underline="false" class="tag-item">个人中心</el-link>
@@ -47,6 +47,7 @@ export default {
 .tag-list{
   display: flex;
   justify-content: flex-end;
+  align-items: center;
 }
 .tag-item{
   margin: 0 10px;

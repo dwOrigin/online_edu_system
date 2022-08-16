@@ -1,32 +1,35 @@
 <template>
-  <div class="main">
-    <el-row>
-      <!--  走马灯-->
-      <el-col :span="15" :offset="1">
-        <el-carousel height="320px" style="border-radius: 6px">
-          <el-carousel-item v-for="item in 4" :key="item">
-            <el-image
-                style="width: 100%; height: 100%"
-                src="https://img.alicdn.com/imgextra/i1/6000000007842/O1CN01awUHxQ27ngiY2gNm5_!!6000000007842-0-octopus.jpg"
-                fit="fill"></el-image>
-          </el-carousel-item>
-        </el-carousel>
-      </el-col>
-      <!--  个人标签-->
-      <el-col class="user-card" :span="6" :offset="1">
-        <user-card></user-card>
-      </el-col>
-    </el-row>
-    <el-row class="hot-title">
-      <div style="flex-grow: 1">热门课程推荐</div>
-      <el-link :underline="false" type="primary">换一批<i class="el-icon-refresh"></i></el-link>
-<!--      <div class="myRefresh">换一批<i class="el-icon-refresh"></i></div>-->
-    </el-row>
-    <el-row class="divider"></el-row>
-    <el-row class="myHot">
+  <div style="width: 1100px; margin: 10px auto">
+    <div class="main">
+      <el-row>
+        <!--  走马灯-->
+        <el-col :span="15" :offset="1">
+          <el-carousel height="320px" style="border-radius: 6px">
+            <el-carousel-item v-for="item in 4" :key="item">
+              <el-image
+                  style="width: 100%; height: 100%"
+                  src="https://img.alicdn.com/imgextra/i1/6000000007842/O1CN01awUHxQ27ngiY2gNm5_!!6000000007842-0-octopus.jpg"
+                  fit="fill"></el-image>
+            </el-carousel-item>
+          </el-carousel>
+        </el-col>
+        <!--  个人标签-->
+        <el-col class="user-card" :span="6" :offset="1">
+          <user-card></user-card>
+        </el-col>
+      </el-row>
+      <el-row class="hot-title">
+        <div style="flex-grow: 1">热门课程推荐</div>
+        <el-link :underline="false" type="primary">换一批<i class="el-icon-refresh"></i></el-link>
+        <!--      <div class="myRefresh">换一批<i class="el-icon-refresh"></i></div>-->
+      </el-row>
+      <el-row class="divider"></el-row>
+      <el-row class="myHot">
         <course-card v-for="obj in 10" :key="obj"></course-card>
-    </el-row>
+      </el-row>
+    </div>
   </div>
+
 </template>
 
 <script>

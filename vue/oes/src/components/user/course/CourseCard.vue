@@ -1,23 +1,26 @@
 <template>
-  <div class="main">
+  <div class="main" ref="card">
     <el-image
         style="width: 100%; height: 120px"
+        ref="img"
         src="https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356"
         fit="fill">
     </el-image>
+    <div>
     <span style="max-height: 40px;
           overflow: hidden;
           font-size: x-small;">
       [量子速学] 一秒钟一个单词 一小时考过四级! 你值得拥有</span>
-    <div style="font-size: xx-small; color: #999999">
-      共16节 | bilbil大学
-    </div>
-    <div style="font-size: xx-small; color: #999999" class="footer">
-      <div>
-        <span style="color: teal">10086</span>人在学
+      <div style="font-size: xx-small; color: #999999">
+        共16节 | bilbil大学
       </div>
-      <div>
-        好评率<span style="color: teal">100%</span>
+      <div style="font-size: xx-small; color: #999999" class="footer">
+        <div>
+          <span style="color: teal">10086</span>人在学
+        </div>
+        <div>
+          好评率<span style="color: teal">100%</span>
+        </div>
       </div>
     </div>
   </div>
@@ -25,7 +28,29 @@
 
 <script>
 export default {
-  name: "CourseCard"
+  name: "CourseCard",
+  data(){
+    return{
+    }
+  },
+  props: {//对接收到的参数进行限制
+    direction: {
+      type: String,
+      default: 'column',
+      required: false
+    }
+  },
+  mounted() {
+    //切换方向
+    if(this.direction === 'row'){
+      this.$refs.card.style.flexDirection = 'row';
+      this.$refs.card.style.justifyContent = 'space-between';
+      this.$refs.card.style.width = '400px';
+      this.$refs.card.style.height = '150px';
+      this.$refs.card.style.alignItems = 'center';
+      // this.$refs.img
+    }
+  }
 }
 </script>
 
