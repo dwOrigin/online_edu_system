@@ -2,6 +2,7 @@ package com.houduan.mapper;
 
 import com.houduan.entity.Comment;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author online_system
  * @since 2022-08-15
  */
+@Mapper
 public interface CommentMapper extends BaseMapper<Comment> {
 
 }
