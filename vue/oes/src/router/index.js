@@ -7,13 +7,13 @@ import Lesson_Manage from "@/views/Lesson_Manage";
 import Member_Manage from "@/views/Member_Manage";
 import QA_Manage from "@/views/QA_Manage";
 import Teacher_Manage from "@/views/Teacher_Manage";
-
+import Notice_Manage from"@/views/Notice_Manage";
 
 const router = new VueRouter({
     routes: [
         {
             path:'/',
-            redirect:'member_manage'
+            redirect:'notice_manage'
         },
         {
             //用户主页
@@ -51,6 +51,12 @@ const router = new VueRouter({
             path:'/teacher_manage',
             component:Teacher_Manage,
             meta:{title:'讲师管理', changeTitle: true}
+        },
+        {
+            name:'notice_manage',
+            path:'/notice_manage',
+            component:Notice_Manage,
+            meta:{title:'通知管理',changeTitle:true}
         }
     ]
 });
