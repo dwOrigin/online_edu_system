@@ -269,6 +269,9 @@ export default{
       filterTag(value, row) {
         return row.type === value;
       },
+      addLesson(){
+        this.$router.push('/add_lesson_manage')
+      }
      }
 }
 </script>

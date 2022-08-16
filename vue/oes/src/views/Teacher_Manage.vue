@@ -54,8 +54,8 @@
       <el-input v-model="newform.picPath"></el-input>
     </el-form-item>
     <el-form-item prop="status" label="状态" :label-width="formLabelWidth">
-      <el-radio v-model="newform.status" label="1">是</el-radio>
-      <el-radio v-model="newform.status" label="0">否</el-radio>
+      <el-radio v-model="newform.status" label="1">在线</el-radio>
+      <el-radio v-model="newform.status" label="0">不在线</el-radio>
     </el-form-item>
     <el-form-item prop="createTime" label="创建时间" :label-width="formLabelWidth">
       <el-input v-model="newform.createTime"></el-input>
@@ -150,8 +150,8 @@
       <el-input v-model="form.picPath"></el-input>
     </el-form-item>
     <el-form-item prop="status" label="状态" :label-width="formLabelWidth">
-      <el-radio v-model="form.status" label="1">是</el-radio>
-      <el-radio v-model="form.status" label="0">否</el-radio>
+      <el-radio v-model="form.status" label="1">在线</el-radio>
+      <el-radio v-model="form.status" label="0">不在线</el-radio>
     </el-form-item>
     <el-form-item prop="createTime" label="创建时间" :label-width="formLabelWidth">
       <el-input v-model="form.createTime" :disabled="true"></el-input>
