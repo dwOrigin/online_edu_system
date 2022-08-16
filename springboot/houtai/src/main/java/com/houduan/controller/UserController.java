@@ -24,16 +24,6 @@ import com.houduan.entity.User;
 @Resource
 private IUserService userService;
 
-@PostMapping
-public Boolean save(@RequestBody User user) {
-        return userService.saveOrUpdate(user);
-        }
-
-@DeleteMapping("/{id}")
-public Boolean delete(@PathVariable Integer id) {
-        return userService.removeById(id);
-        }
-
 @GetMapping
 public List<User> findAll() {
         return userService.list();
