@@ -1,0 +1,55 @@
+package com.houduan.controller;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+@RestController
+@RequestMapping("/file")
+public class FileConrtroller {
+
+
+    private String PictureUploadPath = "src/main/resources/picture/";
+    private String VideoUploadPath = "src/main/resources/video/";
+
+    @PostMapping("/upload")
+    public String upload(@RequestParam MultipartFile file, @RequestParam String filetype) {
+        if (file.isEmpty()) {
+            return "请选择上传文件";
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/");
+        String format = sdf.format(new Date());
+        File newfile;
+        if (filetype.equals("picture")) {
+            newfile = new File(PictureUploadPath + format);
+        } else {
+            newfile = new File(VideoUploadPath + format);
+        }
+        if (!newfile.isDirectory()) {
+            newfile.mkdirs();
+        }
+        String originalFilename = file.getOriginalFilename();
+        String type = FileUtil.extName(originalFilename);
+        String fileUUID = IdUtil.fastSimpleUUID() + StrUtil.DOT + type;
+        try {
+            String path = newfile.getAbsolutePath() + File.separator + fileUUID;
+            File newFile = new File(path);
+            file.transferTo(newFile);
+            System.out.println(1);
+            return path;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "上传失败!";
+
+    }
+}
