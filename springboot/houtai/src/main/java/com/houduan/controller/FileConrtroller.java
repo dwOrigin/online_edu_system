@@ -18,8 +18,8 @@ import java.util.Date;
 public class FileConrtroller {
 
 
-    private String PictureUploadPath = "src/main/resources/picture/";
-    private String VideoUploadPath = "src/main/resources/video/";
+    private String PictureUploadPath = "springboot/houtai/src/main/resources/picture/";
+    private String VideoUploadPath = "springboot/houtai/src/main/resources/video/";
 
     @PostMapping("/upload")
     public String upload(@RequestParam MultipartFile file, @RequestParam String filetype) {
@@ -50,6 +50,5 @@ public class FileConrtroller {
             e.printStackTrace();
         }
         return "上传失败!";
-
     }
 }

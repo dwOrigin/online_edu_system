@@ -1,5 +1,6 @@
 package com.houduan.service.impl;
 
+import com.houduan.common.Result;
 import com.houduan.entity.Course;
 import com.houduan.mapper.CourseMapper;
 import com.houduan.service.ICourseService;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Service;
 public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> implements ICourseService {
 
     @Override
-    public Boolean addnew(Course course) {
-        return null;
+    public Result addnew(Course course) {
+        return Result.success("200","注册成功");
     }
 }

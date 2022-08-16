@@ -1,6 +1,7 @@
 package com.houduan.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.houduan.common.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -26,7 +27,7 @@ public class CourseController {
     private ICourseService courseService;
 
     @PostMapping("/add")
-    public Boolean addnew(@RequestBody Course course){
+    public Result addnew(@RequestBody Course course){
         return courseService.addnew(course);
     }
 
