@@ -12,9 +12,13 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author online_system
- * @since 2022-08-12
+ * @since 2022-08-15
  */
 @Service
 public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> implements ICourseService {
 
+    @Override
+    public Boolean addnew(Course course) {
+        return null;
+    }
 }

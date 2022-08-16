@@ -1,6 +1,6 @@
 package com.houduan.service;
 
-import com.houduan.entity.Coursefavorite;
+import com.houduan.entity.Coursevideo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author online_system
  * @since 2022-08-15
  */
-public interface ICoursefavoriteService extends IService<Coursefavorite> {
+public interface ICoursevideoService extends IService<Coursevideo> {
 
 }

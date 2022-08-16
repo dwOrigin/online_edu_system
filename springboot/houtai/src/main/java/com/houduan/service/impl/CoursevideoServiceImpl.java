@@ -1,8 +1,8 @@
 package com.houduan.service.impl;
 
-import com.houduan.entity.User;
-import com.houduan.mapper.UserMapper;
-import com.houduan.service.IUserService;
+import com.houduan.entity.Coursevideo;
+import com.houduan.mapper.CoursevideoMapper;
+import com.houduan.service.ICoursevideoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2022-08-15
  */
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
+public class CoursevideoServiceImpl extends ServiceImpl<CoursevideoMapper, Coursevideo> implements ICoursevideoService {
 
 }

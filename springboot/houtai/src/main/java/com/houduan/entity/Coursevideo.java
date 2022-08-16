@@ -3,7 +3,6 @@ package com.houduan.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -19,25 +18,19 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@ApiModel(value = "Questionscomment对象", description = "")
-public class Questionscomment implements Serializable {
+@ApiModel(value = "Coursevideo对象", description = "")
+public class Coursevideo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-      @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+      @TableId(value = "video_id", type = IdType.AUTO)
+    private Integer videoId;
 
-    private Integer cusId;
+    private Integer courseId;
 
-    private Integer questionId;
+    private Integer courseRank;
 
-    private String content;
-
-    private Integer isBest;
-
-    private Integer praiseCount;
-
-    private LocalDateTime addTime;
+    private String videoLink;
 
 
 }

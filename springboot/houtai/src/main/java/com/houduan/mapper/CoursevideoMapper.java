@@ -1,6 +1,6 @@
 package com.houduan.mapper;
 
-import com.houduan.entity.User;
+import com.houduan.entity.Coursevideo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author online_system
  * @since 2022-08-15
  */
-public interface UserMapper extends BaseMapper<User> {
+public interface CoursevideoMapper extends BaseMapper<Coursevideo> {
 
 }

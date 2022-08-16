@@ -15,7 +15,7 @@ import lombok.Setter;
  * </p>
  *
  * @author online_system
- * @since 2022-08-12
+ * @since 2022-08-15
  */
 @Getter
 @Setter
@@ -30,6 +30,8 @@ public class Comment implements Serializable {
     private Integer userId;
 
     private Integer pCommentId;
+
+    private Integer totalId;
 
     private String content;
 
