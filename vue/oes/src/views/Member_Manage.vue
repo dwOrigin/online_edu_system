@@ -7,20 +7,23 @@
       class="el-menu-vertical-demo"
       @open="handleOpen"
       @close="handleClose">
-      <el-menu-item index="1">
+      <el-menu-item index="1" @click="gotoMember">
         <span slot="title">用户管理</span>
       </el-menu-item>
-      <el-menu-item index="2">
+      <el-menu-item index="2" @click="gotoTeacher">
         <span slot="title">讲师管理</span>
       </el-menu-item>
-      <el-menu-item index="3">
+      <el-menu-item index="3" @click="gotoLesson">
         <span slot="title">课程管理</span>
       </el-menu-item>
-      <el-menu-item index="4">
+      <el-menu-item index="4" @click="gotoArticle">
         <span slot="title">文章管理</span>
       </el-menu-item>
-      <el-menu-item index="5">
+      <el-menu-item index="5" @click="gotoQA">
         <span slot="title">问答管理</span>
+      </el-menu-item>
+      <el-menu-item index="6" @click="gotoNotice">
+        <span slot="title">通知管理</span>
       </el-menu-item>
     </el-menu>
   </el-aside>
@@ -139,7 +142,8 @@
     </el-table-column>
   </el-table>
     </el-main>
-    <el-footer class="block">
+    <div style='text-align:center'>
+        <el-footer class="block">
     <span class="demonstration"></span>
     <el-pagination
       @size-change="handleSizeChange"
@@ -150,6 +154,8 @@
       :total="1000">
     </el-pagination>
   </el-footer>
+    </div>
+    
   </el-container>
 </el-container>
 </div>
@@ -157,6 +163,9 @@
 
 <script>
 export default {
+    activated: function() {
+ this.getCase()
+ },
    data() {
       const item = {
         date: '2016-05-02',
@@ -281,6 +290,24 @@ export default {
       }
     },
     methods:{
+        gotoMember(){
+            this.$router.push('/member_manage')
+        },
+        gotoTeacher(){
+            this.$router.push('/teacher_manage')
+        },
+        gotoLesson(){
+            this.$router.push('/lesson_manage')
+        },
+        gotoArticle(){
+            this.$router.push('/article_manage')
+        },
+        gotoQA(){
+            this.$router.push('/qa_manage')
+        },
+         gotoNotice(){
+            this.$router.push('/notice_manage')
+        },
         handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
       },
