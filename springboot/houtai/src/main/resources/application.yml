@@ -1,19 +1,21 @@
 server:
   port: 8081
 spring:
-  datasource:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://120.46.178.233:3306/edu_system?serverTimezone=UTC
-      username: root
-      password: 123456
-
-  mybatis-plus:
-    global-config:
-      db-config:
-        id-type: auto #
-
-
-
+#  datasource:
+##      driver-class-name: com.mysql.cj.jdbc.Driver
+##      url: jdbc:mysql://120.46.178.233:3306/edu_system?serverTimezone=UTC
+##      username: root
+##      password: 123456
+#      druid:
+#        initial-size: 5
+#        minIdle: 2
+#  mybatis-plus:
+#    global-config:
+#      db-config:
+#        id-type: auto #
+#
+#
+#
 
   configuration:
       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
