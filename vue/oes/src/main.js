@@ -8,6 +8,7 @@ Vue.prototype.$axios = axios;
 //vue-router导入
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
+//引入路由器
 import router from './router/index';
 
 //element-ui
@@ -20,6 +21,11 @@ import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 Vue.use(mavonEditor)
 
+//vue-video-player导入
+import VideoPlayer from 'vue-video-player'
+require('vue-video-player/node_modules/video.js/dist/video-js.css')
+require('vue-video-player/src/custom-theme.css')
+Vue.use(VideoPlayer)
 
 //关闭生产提示
 Vue.config.productionTip = false

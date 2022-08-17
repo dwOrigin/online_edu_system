@@ -1,37 +1,33 @@
 <template>
-  <div class="main">
-    <div style="margin: 40px 0 40px 0">
-      <el-breadcrumb separator="/">
-        <el-breadcrumb-item :to="{ name: 'home' }">所有课程</el-breadcrumb-item>
-        <el-breadcrumb-item>语言</el-breadcrumb-item>
-        <el-breadcrumb-item>速过四级</el-breadcrumb-item>
-      </el-breadcrumb>
-    </div>
-    <div class="space-between">
-      <div><h5 style="color: #409EFF">搜索结果</h5></div>
-      <div style="font-weight: lighter; color: #99a9bf; font-size: small">共找到
-        <span style="font-weight: bold; color: teal">321</span>个搜索结果
+<!--  <div style="width: 1100px; margin: 0 auto;">-->
+    <div class="main">
+      <div class="space-between">
+        <div><h5 style="color: #409EFF">搜索结果</h5></div>
+        <div style="font-weight: lighter; color: #99a9bf; font-size: small">共找到
+          <span style="font-weight: bold; color: teal">321</span>个搜索结果
+        </div>
       </div>
-    </div>
-    <div>
+      <div>
         <el-link :underline="false" class="sort-tag" style="margin-left: 0" href="#">综合</el-link>
         <el-link :underline="false" class="sort-tag" href="#">好评率</el-link>
         <el-link :underline="false" class="sort-tag" href="#">人气</el-link>
-    </div>
-    <div class="result-table">
-      <course-card v-for="course in 20" :key="course">
-      </course-card>
-    </div>
-    <div >
-      <el-pagination
-          background
-          class="page-controller"
-          layout="prev, pager, next"
-          :total="1000">
-      </el-pagination>
-    </div>
+      </div>
+      <div class="result-table">
+        <course-card v-for="course in 20" :key="course">
+        </course-card>
+      </div>
+      <div >
+        <el-pagination
+            background
+            class="page-controller"
+            layout="prev, pager, next"
+            :total="1000">
+        </el-pagination>
+      </div>
 
-  </div>
+    </div>
+<!--  </div>-->
+
 </template>
 
 <script>
