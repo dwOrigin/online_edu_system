@@ -26,10 +26,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public Result login(String username, String password) {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.eq("username",username);
-        if(getOne(wrapper)==null){
+        wrapper.eq("user_name",username);
+        User user = getOne(wrapper);
+        if(user==null){
             return Result.error(Constants.CODE_400,"用户名不存在");
-        } else if (getOne(wrapper).getPassword().equals(password)) {
+        } else if (!getOne(wrapper).getPassword().equals(password)) {
             return Result.error(Constants.CODE_400,"密码错误");
         }else{
             return Result.success(Constants.CODE_200,"登录成功");
@@ -38,6 +39,53 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public Result register(User user) {
-        return null;
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        QueryWrapper<User> wrapper1 = new QueryWrapper<>();
+        QueryWrapper<User> wrapper2 = new QueryWrapper<>();
+        wrapper.eq("user_name",user.getUserName());
+        wrapper1.eq("email",user.getEmail());
+        wrapper2.eq("mobile",user.getMobile());
+        User user1 = getOne(wrapper);
+        User user2 = getOne(wrapper1);
+        if(user1!=null){
+            return Result.error(Constants.CODE_400,"用户名重复");
+        }
+        if(user1!=null){
+            return Result.error(Constants.CODE_400,"邮箱已被注册");
+        }
+        if(user2!=null){
+            return Result.error(Constants.CODE_400,"手机号已被注册");
+        }
+        userMapper.insert(user);
+        return Result.success(Constants.CODE_200,"注册成功");
+    }
+
+    @Override
+    public User searchByName(String userName) {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_name",userName);
+        return getOne(wrapper);
+    }
+
+    @Override
+    public Result deleteUser(User user){
+        int i = userMapper.deleteById(user.getUserId());
+        if(i == 0){
+            return Result.error(Constants.CODE_400,"删除失败");
+        }else{
+            return Result.success(Constants.CODE_200,"删除成功");
+
+        }
+    }
+
+    @Override
+    public Result updateUser(User user){
+        int i = userMapper.updateById(user);
+        if(i == 0){
+            return Result.error(Constants.CODE_400,"更新失败");
+        }else{
+            return Result.success(Constants.CODE_200,"更新成功");
+
+        }
     }
 }
