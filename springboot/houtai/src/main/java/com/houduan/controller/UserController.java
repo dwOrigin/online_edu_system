@@ -1,6 +1,7 @@
 package com.houduan.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.houduan.common.Result;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
@@ -39,6 +40,10 @@ public Page<User> findPage(@RequestParam Integer pageNum,
 @RequestParam Integer pageSize) {
         return userService.page(new Page<>(pageNum, pageSize));
         }
+@PostMapping("/register")
+public Result register(@RequestBody User user){return userService.register(user);}
 
+@PostMapping("/login")
+public Result login(@RequestBody String username,@RequestBody String password){return userService.login(username,password);}
         }
 
