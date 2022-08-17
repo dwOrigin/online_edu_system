@@ -2,15 +2,16 @@ package com.houduan.controller;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 @RestController
@@ -51,4 +52,20 @@ public class FileConrtroller {
         }
         return "上传失败!";
     }
+    @GetMapping("/download")
+    public void download(@RequestParam String path, HttpServletResponse response) throws IOException {
+        // 根据文件的唯一标识码获取文件
+        File uploadFile = new File(path);
+        // 设置输出流的格式
+        ServletOutputStream os = response.getOutputStream();
+        String[]uuidarray=path.split("\\\\");
+        String[]name=uuidarray[uuidarray.length-1].split(".");
+        response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(name[0], "UTF-8"));
+        response.setContentType("application/octet-stream");
+        // 读取文件的字节流
+        os.write(FileUtil.readBytes(uploadFile));
+        os.flush();
+        os.close();
+    }
+
 }

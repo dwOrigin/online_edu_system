@@ -1,6 +1,7 @@
 package com.houduan.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.houduan.common.Constants;
 import com.houduan.common.Result;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,14 +32,14 @@ public class CourseController {
         return courseService.addnew(course);
     }
 
-    @PostMapping
-    public Boolean save(@RequestBody Course course) {
-        return courseService.saveOrUpdate(course);
-    }
 
-    @DeleteMapping("/{id}")
-    public Boolean delete(@PathVariable Integer id) {
-        return courseService.removeById(id);
+    @GetMapping("/delete")
+    public Result delete(@RequestParam Integer id) {
+        if(courseService.removeById(id)){
+            return Result.success(Constants.CODE_200,"删除成功");
+        }else{
+            return Result.error(Constants.CODE_400,"删除失败");
+        }
     }
 
     @GetMapping
