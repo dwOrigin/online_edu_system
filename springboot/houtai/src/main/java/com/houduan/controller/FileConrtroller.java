@@ -2,10 +2,13 @@ package com.houduan.controller;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import com.houduan.common.Constants;
+import com.houduan.common.Result;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
@@ -65,6 +68,20 @@ public class FileConrtroller {
         os.write(FileUtil.readBytes(uploadFile));
         os.flush();
         os.close();
+    }
+    @RequestMapping("/removeFile")
+    public Result removeFile(String path, HttpServletRequest request){
+
+        File file = new File(path);
+        //判断此文件是否为空
+        if(file!=null){
+            //文件不为空，执行删除
+            file.delete();
+            return Result.success(Constants.CODE_200,"删除成功");
+        }else {
+            //为空提示错误信息
+            return Result.error(Constants.CODE_500,"文件为空");
+        }
     }
 
 }
