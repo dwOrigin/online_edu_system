@@ -32,7 +32,10 @@ public class CourseController {
         return courseService.addnew(course);
     }
 
-
+    @PostMapping("/update")
+    public Result updatecourse(@RequestBody Course course){
+        return courseService.updatecourse(course);
+    }
     @GetMapping("/delete")
     public Result delete(@RequestParam Integer id) {
         if(courseService.removeById(id)){
@@ -47,15 +50,13 @@ public class CourseController {
         return courseService.list();
     }
 
-    @GetMapping("/{id}")
-    public Course findOne(@PathVariable Integer id) {
+    @GetMapping("/getById")
+    public Course findOne(@RequestParam Integer id) {
         return courseService.getById(id);
     }
-
-    @GetMapping("/page")
-    public Page<Course> findPage(@RequestParam Integer pageNum,
-                                 @RequestParam Integer pageSize) {
-        return courseService.page(new Page<>(pageNum, pageSize));
+    @GetMapping("getByType")
+    public List<Course> findType(@RequestParam String type){
+        return courseService.findType(type);
     }
 
 }

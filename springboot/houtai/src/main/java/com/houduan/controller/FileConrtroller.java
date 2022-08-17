@@ -59,8 +59,7 @@ public class FileConrtroller {
         // 设置输出流的格式
         ServletOutputStream os = response.getOutputStream();
         String[]uuidarray=path.split("\\\\");
-        String[]name=uuidarray[uuidarray.length-1].split(".");
-        response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(name[0], "UTF-8"));
+        response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(uuidarray[uuidarray.length-1], "UTF-8"));
         response.setContentType("application/octet-stream");
         // 读取文件的字节流
         os.write(FileUtil.readBytes(uploadFile));

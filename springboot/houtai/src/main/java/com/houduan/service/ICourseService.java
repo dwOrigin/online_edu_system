@@ -5,6 +5,8 @@ import com.houduan.entity.Course;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -16,4 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 public interface ICourseService extends IService<Course> {
 
     Result addnew(Course course);
+
+    List<Course> findType(String type);
+
+    Result updatecourse(Course course);
 }
