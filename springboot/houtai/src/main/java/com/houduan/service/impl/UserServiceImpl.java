@@ -27,9 +27,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public Result login(String username, String password) {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("user_name",username);
-        if(getOne(wrapper)==null){
+        User user = getOne(wrapper);
+        if(user==null){
             return Result.error(Constants.CODE_400,"用户名不存在");
-        } else if (getOne(wrapper).getPassword().equals(password)) {
+        } else if (!getOne(wrapper).getPassword().equals(password)) {
             return Result.error(Constants.CODE_400,"密码错误");
         }else{
             return Result.success(Constants.CODE_200,"登录成功");
@@ -64,5 +65,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("user_name",userName);
         return getOne(wrapper);
+    }
+
+    @Override
+    public Result deleteUser(User user){
+        int i = userMapper.deleteById(user.getUserId());
+        if(i == 0){
+            return Result.error(Constants.CODE_400,"删除失败");
+        }else{
+            return Result.success(Constants.CODE_200,"删除成功");
+
+        }
+    }
+
+    @Override
+    public Result updateUser(User user){
+        int i = userMapper.updateById(user);
+        if(i == 0){
+            return Result.error(Constants.CODE_400,"更新失败");
+        }else{
+            return Result.success(Constants.CODE_200,"更新成功");
+
+        }
     }
 }

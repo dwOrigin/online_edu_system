@@ -18,4 +18,8 @@ public interface IUserService extends IService<User> {
     Result register(User user);
 
     User searchByName(String userName);
+
+    Result deleteUser(User user);
+
+    Result updateUser(User user);
 }

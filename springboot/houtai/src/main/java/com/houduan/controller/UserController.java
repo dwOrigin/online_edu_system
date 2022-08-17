@@ -44,6 +44,15 @@ public Page<User> findPage(@RequestParam Integer pageNum,
 public Result register(@RequestBody User user){return userService.register(user);}
 
 @PostMapping("/login")
-public Result login(@RequestBody String username,@RequestBody String password){return userService.login(username,password);}
+public Result login( String username, String password){return userService.login(username,password);}
+
+@PostMapping("/searchByName")
+public User searchByName(String username){return userService.searchByName(username);}
+
+@PostMapping("/deleteUser")
+public Result deleteUser(@RequestBody User user){return userService.deleteUser(user);}
+
+@PostMapping("/updateUser")
+public Result updateUser(@RequestBody User user){return userService.updateUser(user);}
         }
 
