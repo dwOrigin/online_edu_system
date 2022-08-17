@@ -26,16 +26,13 @@ import com.houduan.entity.Msgsystem;
 private IMsgsystemService msgsystemService;
 //更新或添加信息
 @PostMapping
-public Result addOrUpdateMessage(@RequestBody Msgsystem msgsystem) {
-        Result result = new Result();
-        if(msgsystemService.orNew(msgsystem)){
-                result=msgsystemService.addMsgSystem(msgsystem);
-        }else {
-                result = msgsystemService.updateMsgSystem(msgsystem);
-        }
-        return result;
+public Result addMessage(@RequestBody Msgsystem msgsystem) {
+            return msgsystemService.addMsgSystem(msgsystem);
 }
-
+@PutMapping
+public Result updateMessage(@RequestBody Msgsystem msgsystem){
+        return msgsystemService.updateMsgSystem(msgsystem);
+}
 @DeleteMapping("/{id}")
 public Result delete(@PathVariable Integer id) {
         return msgsystemService.deleteMsgSystem(id);
@@ -50,7 +47,9 @@ public List<Msgsystem> findAll() {
 public Msgsystem findOne(@PathVariable Integer id) {
         return msgsystemService.getById(id);
         }*/
-
+/*
+* 分页功能后面再说，没有测试
+* */
 @GetMapping("/page")
 public Page<Msgsystem> findPage(@RequestParam Integer pageNum,
 @RequestParam Integer pageSize) {

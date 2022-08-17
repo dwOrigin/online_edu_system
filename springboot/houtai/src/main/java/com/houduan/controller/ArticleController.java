@@ -2,6 +2,7 @@ package com.houduan.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.houduan.common.Result;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
@@ -24,8 +25,13 @@ import com.houduan.entity.Article;
 
 @Resource
 private IArticleService articleService;
-//修改文章信息
+//添加文章信息
 @PostMapping
+public Result addArticle(@RequestBody Article article){
+        return articleService.addArticle(article);
+}
+//修改文章信息
+@PutMapping
 public Result updateArticle(@RequestBody Article article) {
         return articleService.updateArticle(article);
         }
@@ -36,7 +42,11 @@ public Result delete(@PathVariable Integer id) {
         }
 
 //按照类型查找
-@GetMapping("/{type}")
+        /*为了区分出按照类别和按照id去查找
+         *所以在type的前面加上了一个s
+        * */
+@GetMapping("/s" +
+        "/{type}")
 public List<Article> searchByType(@PathVariable String type) {
         return articleService.searchByType(type);
         }

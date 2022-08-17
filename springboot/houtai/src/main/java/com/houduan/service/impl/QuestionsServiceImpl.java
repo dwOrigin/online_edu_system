@@ -1,10 +1,15 @@
 package com.houduan.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.houduan.common.Result;
 import com.houduan.entity.Questions;
 import com.houduan.mapper.QuestionsMapper;
 import com.houduan.service.IQuestionsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -16,5 +21,45 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class QuestionsServiceImpl extends ServiceImpl<QuestionsMapper, Questions> implements IQuestionsService {
+@Autowired
+    private QuestionsMapper mapper;
 
+
+    @Override
+    public Result addQuestion(Questions questions) {
+        int insert = mapper.insert(questions);
+        if (insert>=1){
+            return Result.success();
+        }else {
+            return Result.error();
+        }
+    }
+
+    @Override
+    public Result deleteQuestion(Integer integer) {
+        int i = mapper.deleteById(integer);
+        if (i>=1){
+            return Result.success();
+        }else {
+           return Result.error();
+        }
+    }
+
+    @Override
+    public Result updateQuestion(Questions questions) {
+        int i = mapper.updateById(questions);
+        if (i>=1){
+            return Result.success();
+        }else {
+            return Result.error();
+        }
+    }
+
+    @Override
+    public List<Questions> searchQuestionByType(String type) {
+        QueryWrapper<Questions> wrapper = new QueryWrapper<>();
+        wrapper.eq("type",type);
+        List<Questions> questionsList = mapper.selectList(wrapper);
+        return questionsList;
+    }
 }

@@ -19,8 +19,7 @@ import java.util.List;
  */
 @Service
 public interface IMsgsystemService extends IService<Msgsystem> {
-//    判断其是否为新的信息
-     Boolean orNew(Msgsystem message);
+
 //删除通知
      Result deleteMsgSystem(Integer integer);
 //添加通知

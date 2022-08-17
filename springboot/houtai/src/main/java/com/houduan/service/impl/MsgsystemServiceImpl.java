@@ -28,10 +28,7 @@ public class MsgsystemServiceImpl extends ServiceImpl<MsgsystemMapper, Msgsystem
 private MsgsystemMapper msgsystemMapper;
 @Override
     public Result addMsgSystem(Msgsystem msgSystem){
-    int i=0;
-    if(orNew(msgSystem)) {
-        i = msgsystemMapper.insert(msgSystem);
-    }
+    int i = msgsystemMapper.insert(msgSystem);
     if (i>=1){
         return Result.success();
     }else {
@@ -40,9 +37,7 @@ private MsgsystemMapper msgsystemMapper;
     }
 @Override
     public Result updateMsgSystem(Msgsystem msgsystem){
-    int i=0;
-    if(!orNew(msgsystem)) {
-     i = msgsystemMapper.updateById(msgsystem);}
+    int i= msgsystemMapper.updateById(msgsystem);
     if (i>=1){
         return Result.success();
     }else {
@@ -67,16 +62,7 @@ private MsgsystemMapper msgsystemMapper;
         }
     }
 
-    @Override
-    public Boolean orNew(Msgsystem message) {
-/*
-* 判定依据为，如果信息的状态为新消息，就将信息传入
-* */
-    if(message.getStatus()==1) {
-        message.setStatus(2);
-        return true;
-    }else return false;
-    }
+
 
 
 }
