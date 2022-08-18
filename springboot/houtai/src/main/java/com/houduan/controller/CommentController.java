@@ -24,6 +24,7 @@ import com.houduan.entity.Comment;
 @Resource
 private ICommentService commentService;
 
+/*
 @PostMapping
 public Boolean save(@RequestBody Comment comment) {
         return commentService.saveOrUpdate(comment);
@@ -43,6 +44,27 @@ public List<Comment> findAll() {
 public Comment findOne(@PathVariable Integer id) {
         return commentService.getById(id);
         }
+*/
+//新增评论或者是更新评论
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @GetMapping("/page")
 public Page<Comment> findPage(@RequestParam Integer pageNum,
