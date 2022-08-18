@@ -19,3 +19,5 @@ spring:
 
   configuration:
       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+file-save-path: springboot/houtai/src/main/resources/static/
