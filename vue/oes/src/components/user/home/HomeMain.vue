@@ -4,7 +4,8 @@
 <!--<courser-search-layout></courser-search-layout>-->
 <!--  <course-main-layout></course-main-layout>-->
 <!--<q-a-p-main></q-a-p-main>-->
-  <personal-center></personal-center>
+<!--  <personal-center></personal-center>-->
+  <teacher-center></teacher-center>
 </div>
 </template>
 
@@ -14,6 +15,7 @@ import CourseRecommend from "@/components/user/course/CourseRecommend";
 import courserSearchLayout from "@/components/user/course/CourserSearchLayout";
 import CourseMainLayout from "@/components/user/course/CourseMainLayout";
 import PersonalCenter from "@/components/user/personal/PersonalCenter";
+import TeacherCenter from "@/components/user/Teacher/TeacherCenter";
 export default {
   name: "HomeMain",
   components:{
@@ -21,7 +23,8 @@ export default {
     CourseRecommend,
     courserSearchLayout,
     QAPMain,
-    PersonalCenter
+    PersonalCenter,
+    TeacherCenter
   }
 }
 </script>

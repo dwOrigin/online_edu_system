@@ -1,29 +1,21 @@
 <template>
-<div class="history">
-  <div class="header">
-    <el-input placeholder="搜索历史记录" v-model="input3" class="input-with-select">
-      <el-button slot="append" icon="el-icon-search"></el-button>
-
-    </el-input>
-    <el-button style="margin: 0 50px">清除所有记录</el-button>
-  </div>
-  <div class="content">
-    <course-record v-for="obj in number" :key="obj"></course-record>
-  </div>
+<div class="my-question">
+  <question-record v-for="obj in number" :key="obj">
+  </question-record>
 </div>
 </template>
 
 <script>
-import CourseRecord from "@/components/user/personal/CourseRecord";
+import QuestionRecord from "@/components/user/qap/QuestionRecord";
 export default {
-  name: "History",
+  name: "MyQuestion",
+  components:{
+    QuestionRecord
+  },
   data(){
       return {
-        number: 10
+          number: 10
       };
-  },
-  components: {
-    CourseRecord
   },
   created() {
     window.addEventListener('scroll', this.scrollBottom);
@@ -45,8 +37,7 @@ export default {
 </script>
 
 <style scoped>
-.header{
-  display: flex;
-  width: 700px;
+.my-question{
+  min-height: 600px;
 }
 </style>
