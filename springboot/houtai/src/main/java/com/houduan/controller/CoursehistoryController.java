@@ -1,6 +1,8 @@
 package com.houduan.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.houduan.common.Result;
+import com.houduan.entity.Coursefavorite;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -26,13 +28,16 @@ public class CoursehistoryController {
     private ICoursehistoryService coursehistoryService;
 
     @PostMapping
-    public Boolean save(@RequestBody Coursehistory coursehistory) {
-        return coursehistoryService.saveOrUpdate(coursehistory);
+    public Result savenew(@RequestBody Coursehistory coursehistory) {
+        return coursehistoryService.savenew(coursehistory);
     }
-
-    @DeleteMapping("/{id}")
-    public Boolean delete(@PathVariable Integer id) {
-        return coursehistoryService.removeById(id);
+    @PostMapping("/delete")
+    public Result deleteone(@RequestBody Coursehistory coursehistory){
+        return coursehistoryService.delete(coursehistory);
+    }
+    @GetMapping("/getbyuserid")
+    public List<Coursehistory> getbyuserid(@RequestParam Integer userid){
+        return coursehistoryService.getbyuserid(userid);
     }
 
     @GetMapping

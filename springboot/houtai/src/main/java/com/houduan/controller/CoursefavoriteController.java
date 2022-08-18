@@ -1,9 +1,11 @@
 package com.houduan.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.houduan.common.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.houduan.service.ICoursefavoriteService;
@@ -26,15 +28,17 @@ public class CoursefavoriteController {
     private ICoursefavoriteService coursefavoriteService;
 
     @PostMapping
-    public Boolean save(@RequestBody Coursefavorite coursefavorite) {
-        return coursefavoriteService.saveOrUpdate(coursefavorite);
+    public Result savenew(@RequestBody Coursefavorite coursefavorite) {
+        return coursefavoriteService.savenew(coursefavorite);
     }
-
-    @DeleteMapping("/{id}")
-    public Boolean delete(@PathVariable Integer id) {
-        return coursefavoriteService.removeById(id);
+    @PostMapping("/delete")
+    public Result deleteone(@RequestBody Coursefavorite coursefavorite){
+        return coursefavoriteService.delete(coursefavorite);
     }
-
+    @GetMapping("/getbyuserid")
+    public List<Coursefavorite> getbyuserid(@RequestParam Integer userid){
+        return coursefavoriteService.getbyuserid(userid);
+    }
     @GetMapping
     public List<Coursefavorite> findAll() {
         return coursefavoriteService.list();
