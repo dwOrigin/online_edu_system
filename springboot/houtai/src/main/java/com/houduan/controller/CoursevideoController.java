@@ -28,14 +28,15 @@ public class CoursevideoController {
 
 
     @PostMapping("/save")
-    public Result addnew(@RequestBody Coursevideo coursevideo){
+    public Result addnew(@RequestBody Coursevideo coursevideo) {
         return coursevideoService.addnew(coursevideo);
     }
 
     @PostMapping("/findbycourseid")
-    public List<Coursevideo> findbycourseid(@RequestParam Integer courseId){
+    public List<Coursevideo> findbycourseid(@RequestParam Integer courseId) {
         return coursevideoService.findbycourseid(courseId);
     }
+
     @DeleteMapping("/{id}")
     public Boolean delete(@PathVariable Integer id) {
         return coursevideoService.removeById(id);

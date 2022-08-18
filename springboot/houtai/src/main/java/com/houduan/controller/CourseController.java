@@ -28,20 +28,21 @@ public class CourseController {
     private ICourseService courseService;
 
     @PostMapping("/add")
-    public Result addnew(@RequestBody Course course){
+    public Result addnew(@RequestBody Course course) {
         return courseService.addnew(course);
     }
 
     @PostMapping("/update")
-    public Result updatecourse(@RequestBody Course course){
+    public Result updatecourse(@RequestBody Course course) {
         return courseService.updatecourse(course);
     }
+
     @GetMapping("/delete")
     public Result delete(@RequestParam Integer id) {
-        if(courseService.removeById(id)){
-            return Result.success(Constants.CODE_200,"删除成功");
-        }else{
-            return Result.error(Constants.CODE_400,"删除失败");
+        if (courseService.removeById(id)) {
+            return Result.success(Constants.CODE_200, "删除成功");
+        } else {
+            return Result.error(Constants.CODE_400, "删除失败");
         }
     }
 
@@ -54,8 +55,9 @@ public class CourseController {
     public Course findOne(@RequestParam Integer id) {
         return courseService.getById(id);
     }
+
     @GetMapping("getByType")
-    public List<Course> findType(@RequestParam String type){
+    public List<Course> findType(@RequestParam String type) {
         return courseService.findType(type);
     }
 

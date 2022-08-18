@@ -3,6 +3,7 @@ package com.houduan.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.houduan.common.Result;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import com.houduan.entity.Teacher;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author online_system
@@ -20,41 +21,45 @@ import com.houduan.entity.Teacher;
  */
 @RestController
 @RequestMapping("/teacher")
-    public class TeacherController {
+public class TeacherController {
 
-@Resource
-private ITeacherService teacherService;
+    @Resource
+    private ITeacherService teacherService;
 
-@GetMapping
-public List<Teacher> findAll() {
+    @GetMapping
+    public List<Teacher> findAll() {
         return teacherService.list();
-        }
+    }
 
-@GetMapping("/{id}")
-public Teacher findOne(@PathVariable Integer id) {
+    @GetMapping("/{id}")
+    public Teacher findOne(@PathVariable Integer id) {
         return teacherService.getById(id);
-        }
+    }
 
-@GetMapping("/page")
-public Page<Teacher> findPage(@RequestParam Integer pageNum,
-@RequestParam Integer pageSize) {
+    @GetMapping("/page")
+    public Page<Teacher> findPage(@RequestParam Integer pageNum,
+                                  @RequestParam Integer pageSize) {
         return teacherService.page(new Page<>(pageNum, pageSize));
-        }
-@PostMapping("/addTeacher")
-public Result addTeacher(@RequestBody Teacher teacher){
+    }
+
+    @PostMapping("/addTeacher")
+    public Result addTeacher(@RequestBody Teacher teacher) {
         return teacherService.addTeacher(teacher);
-        }
-@PostMapping("/updateTeacher")
-public Result updateTeacher(@RequestBody Teacher teacher){
+    }
+
+    @PostMapping("/updateTeacher")
+    public Result updateTeacher(@RequestBody Teacher teacher) {
         return teacherService.updateTeacher(teacher);
-}
-@PostMapping("/removeTeacher")
-public Result removeTeacher(@RequestBody Teacher teacher){
+    }
+
+    @PostMapping("/removeTeacher")
+    public Result removeTeacher(@RequestBody Teacher teacher) {
         return teacherService.deleteTeacher(teacher);
-}
-@GetMapping("/searchTeacher")
-public List<Teacher> searchTeachers(@PathVariable String str){
+    }
+
+    @GetMapping("/searchTeacher")
+    public List<Teacher> searchTeachers(@PathVariable String str) {
         return teacherService.searchTeacher(str);
+    }
 }
-        }
 
