@@ -9,9 +9,11 @@
   <div style="font-size: x-small">
     <span>本项目为<el-link type="primary"
                        target="_blank"
+                       style="font-size: x-small;"
                        href="https://www.seu.edu.cn/">东南大学</el-link>软件学院2022年
       <el-link type="primary"
                target="_blank"
+               style="font-size: x-small"
                href="http://www.chinahitech.com.cn/">中国高科</el-link>实训项目</span>
   </div>
 </div>

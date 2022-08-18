@@ -9,17 +9,21 @@
         <i class="el-icon-s-custom myIcon"></i>
       </div>
       <div class="default-item">
-        <el-button type="primary" round style="width: 150px">登录</el-button>
+        <el-button type="primary"
+                   @click="handleClickLogIn"
+                   round style="width: 150px">登录
+        </el-button>
       </div>
     </div>
     <div v-if="user!=null" class="default">
       <div class="login-item">
         <a href="#" class="mini-img-container">
-<!--          <el-image-->
-<!--              style="width: 100%; height: 100%"-->
-<!--              src="https://tse4-mm.cn.bing.net/th/id/OIP-C.kRklM9DmpC8zqSI4_Bq9mAHaHa?pid=ImgDet&rs=1"-->
-<!--              fit="fill"></el-image>-->
-          <el-avatar size="medium" src="https://tse4-mm.cn.bing.net/th/id/OIP-C.kRklM9DmpC8zqSI4_Bq9mAHaHa?pid=ImgDet&rs=1"></el-avatar>
+          <!--          <el-image-->
+          <!--              style="width: 100%; height: 100%"-->
+          <!--              src="https://tse4-mm.cn.bing.net/th/id/OIP-C.kRklM9DmpC8zqSI4_Bq9mAHaHa?pid=ImgDet&rs=1"-->
+          <!--              fit="fill"></el-image>-->
+          <el-avatar size="medium"
+                     src="https://tse4-mm.cn.bing.net/th/id/OIP-C.kRklM9DmpC8zqSI4_Bq9mAHaHa?pid=ImgDet&rs=1"></el-avatar>
         </a>
         <el-link :underline="false" type="success"
                  class="line-text-ellipsis"
@@ -47,16 +51,34 @@
         </div>
       </div>
     </div>
+    <login-dialog></login-dialog>
   </div>
 </template>
 
 <script>
+import LoginDialog from "@/components/user/course/LoginDialog";
 export default {
   name: "UserCard",
+  components:{
+    LoginDialog
+  },
   data() {
     return {
-      user: {}
+      user: null,
     }
+  },
+  methods: {
+    handleClickLogIn() {
+      this.$bus.$emit('userCardMessage', null);
+    }
+  },
+  mounted() {
+    this.$bus.$on('loginDialogMessage', (data)=>{
+      console.log(data);
+    });
+  },
+  beforeDestroy() {
+    this.$bus.off('loginDialogMessage');
   }
 }
 </script>

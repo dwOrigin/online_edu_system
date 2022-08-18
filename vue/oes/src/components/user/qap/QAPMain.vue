@@ -13,25 +13,34 @@
       </el-tabs>
     </div>
     <div class="ask-part">
-      <el-button type="primary" round>
-        <i class="el-icon-edit"></i>
-        提出问题
-      </el-button>
+      <div>
+        <el-button type="primary" round plain>
+          <i class="el-icon-question"></i>
+          我的提问
+        </el-button>
+      </div>
+      <div style="margin-top: 20px">
+        <el-button type="primary" round plain>
+          <i class="el-icon-edit"></i>
+          提出问题
+        </el-button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import QuestionCard from "@/components/user/qap/QuestionCard";
+
 export default {
   name: "QAPMain",
-  components:{
+  components: {
     QuestionCard
   },
-  data(){
-      return {
-        number: 10
-      };
+  data() {
+    return {
+      number: 10
+    };
   },
   created() {
     window.addEventListener('scroll', this.scrollBottom);
@@ -40,12 +49,11 @@ export default {
     window.removeEventListener('scroll', this.scrollBottom) //页面离开后销毁监听事件
   },
   methods: {
-    scrollBottom(){
+    scrollBottom() {
       let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
       let clientHeight = document.documentElement.clientHeight;
       let scrollHeight = document.documentElement.scrollHeight;
       if (scrollTop + clientHeight >= scrollHeight) {
-        console.log('到底啦')
         this.number += 3;
       }
     }
@@ -54,20 +62,23 @@ export default {
 </script>
 
 <style scoped>
-.hot-list{
+.hot-list {
   height: max-content;
   overflow: hidden;
   /*background-color: teal;*/
 }
-.title-tag{
+
+.title-tag {
   padding: 0 145px;
 }
-.qa-part{
+
+.qa-part {
   width: 72%;
   border-radius: 5px;
   padding: 5px;
 }
-.ask-part{
+
+.ask-part {
   /*overflow: visible;*/
   width: 27%;
   height: 500px;
@@ -76,6 +87,7 @@ export default {
   top: 100px;
   margin-left: 20px;
 }
+
 .qa-recommend {
   width: 1000px;
   margin: 10px auto;
