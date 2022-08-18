@@ -27,8 +27,7 @@ export default {
         sources: [
           {
             type: "video/mp4", // 类型
-            src:
-                "./test.mp4", // url地址
+            src:  require("./test.mp4"), // url地址
           },
         ],
         notSupportedMessage: "此视频暂无法播放，请稍后再试",
