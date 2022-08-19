@@ -81,7 +81,7 @@ public class FileConrtroller {
 
     @RequestMapping("/removeFile")
     public Result removeFile(String url, HttpServletRequest request) {
-        String path = transfor(url);
+        String path = transform(url);
         File file = new File(path);
         //判断此文件是否为空
         if (file != null) {
@@ -94,7 +94,7 @@ public class FileConrtroller {
         }
     }
 
-    public String transfor(String url) {
+    public String transform(String url) {
         String[] newpath = url.split("/");
         String path = fileSavePath + newpath[3];
         for (int i = 4; i < newpath.length; i++) {

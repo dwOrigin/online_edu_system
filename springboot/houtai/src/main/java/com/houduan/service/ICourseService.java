@@ -22,4 +22,8 @@ public interface ICourseService extends IService<Course> {
     List<Course> findType(String type);
 
     Result updatecourse(Course course);
+
+    Result pageviewplus(Integer id);
+
+    Result praiseplus(Integer id);
 }

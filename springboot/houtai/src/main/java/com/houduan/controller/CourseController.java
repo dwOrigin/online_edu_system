@@ -61,5 +61,14 @@ public class CourseController {
         return courseService.findType(type);
     }
 
+    @GetMapping("/pageviewplus")
+    public Result pageviewplus(@RequestParam Integer id){
+        return courseService.pageviewplus(id);
+    }
+    @GetMapping("/praiseplus")
+    public Result praiseplus(@RequestParam Integer id){
+        return courseService.praiseplus(id);
+    }
+
 }
 
