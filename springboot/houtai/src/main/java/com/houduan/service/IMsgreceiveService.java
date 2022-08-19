@@ -4,6 +4,8 @@ import com.houduan.entity.Msgreceive;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -13,4 +15,5 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @since 2022-08-15
  */
 public interface IMsgreceiveService extends IService<Msgreceive> {
+    List<Msgreceive> findMsgById (Integer user_id);
 }

@@ -49,6 +49,7 @@ public Page<Msgreceive> findPage(@RequestParam Integer pageNum,
 @RequestParam Integer pageSize) {
         return msgreceiveService.page(new Page<>(pageNum, pageSize));
         }
-
+@GetMapping("/findMsgById")
+public List<Msgreceive> findMsgById(@PathVariable Integer id){return msgreceiveService.findMsgById(id);}
         }
 
