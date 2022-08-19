@@ -22,4 +22,6 @@ public interface IUserService extends IService<User> {
     Result deleteUser(User user);
 
     Result updateUser(User user);
+
+    String sendCode(String mobile);
 }
