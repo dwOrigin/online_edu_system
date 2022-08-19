@@ -47,6 +47,5 @@ export default {
 <style scoped>
 .header{
   display: flex;
-  /*background-color: teal;*/
 }
 </style>

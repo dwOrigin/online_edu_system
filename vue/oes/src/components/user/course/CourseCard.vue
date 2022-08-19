@@ -68,6 +68,7 @@ export default {
   flex-direction: column;
 }
 .main:hover{
+  cursor: pointer;
   box-shadow: 1px 1px 10px #bebec1;
   transform: translateY(-3px) translateZ(100px);
   transition: all 0.3s;
