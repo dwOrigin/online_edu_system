@@ -3,6 +3,17 @@ import Vue from "vue";
 
 //用户主页
 import Home from "@/components/user/Home";
+import PersonalCenter from "@/components/user/personal/PersonalCenter";
+import CourserSearchLayout from "@/components/user/course/CourserSearchLayout";
+import CourseRecommend from "@/components/user/course/CourseRecommend";
+import CourseMainLayout from "@/components/user/course/CourseMainLayout";
+import TeacherCenter from "@/components/user/Teacher/TeacherCenter";
+import QAPMain from "@/components/user/qap/QAPMain";
+import PInfo from "@/components/user/personal/PInfo";
+import History from "@/components/user/personal/History";
+import Star from "@/components/user/personal/Star";
+import MessageCenter from "@/components/user/personal/MessageCenter";
+import MyQuestion from "@/components/user/personal/MyQuestion";
 import Article_Manage from "@/views/Article_Manage";
 import Lesson_Manage from "@/views/Lesson_Manage";
 import Member_Manage from "@/views/Member_Manage";
@@ -14,18 +25,13 @@ import Add_Lesson_Manage from "@/views/Add_Lesson_Manage";
 import Modify_Lesson_Manage from "@/views/Modify_Lesson_Manage";
 import Modify_Article_Manage from "@/views/Modify_Lesson_Manage";
 import Modify_QA_Manage from "@/views/Modify_QA_Manage";
-import PersonalCenter from "@/components/user/personal/PersonalCenter";
-import CourserSearchLayout from "@/components/user/course/CourserSearchLayout";
-import CourseRecommend from "@/components/user/course/CourseRecommend";
-import CourseMainLayout from "@/components/user/course/CourseMainLayout";
-import TeacherCenter from "@/components/user/Teacher/TeacherCenter";
-import QAPMain from "@/components/user/qap/QAPMain";
+
 
 const router = new VueRouter({
     routes: [
         {
             path:'/',
-            redirect:'modify_lesson_manage'
+            redirect:'home'
         },
         {
             //用户主页
