@@ -27,14 +27,14 @@ private MsgreceiveMapper mapper;
     @Override
     public List<Msgreceive> showMsgReceive(Integer integer) {
         QueryWrapper<Msgreceive> wrapper = new QueryWrapper<>();
-        wrapper.eq("receiveCusid",integer);
+        wrapper.eq("receiving_cusid",integer);
         List<Msgreceive> msgreceiveList = mapper.selectList(wrapper);
         return msgreceiveList;
     }
     @Override
     public List<Msgreceive> showMsgSend(Integer integer) {
         QueryWrapper<Msgreceive> wrapper = new QueryWrapper<>();
-        wrapper.eq("cusId",integer);
+        wrapper.eq("cus_id",integer);
         List<Msgreceive> msgreceiveList = mapper.selectList(wrapper);
         return msgreceiveList;
     }
@@ -61,7 +61,7 @@ private MsgreceiveMapper mapper;
     @Override
     public Result deleteReceivedMsgPerson(Integer integer) {
         QueryWrapper<Msgreceive> wrapper = new QueryWrapper<>();
-        wrapper.eq("receiveCusid",integer);
+        wrapper.eq("receiving_cusid",integer);
         int i = mapper.delete(wrapper);
         if (i>=1){
             return Result.success();
@@ -73,12 +73,24 @@ private MsgreceiveMapper mapper;
     @Override
     public Result deleteSendMsgPerson(Integer integer) {
         QueryWrapper<Msgreceive> wrapper = new QueryWrapper<>();
-        wrapper.eq("cusId",integer);
+        wrapper.eq("cus_id",integer);
         int i = mapper.delete(wrapper);
         if (i>=1){
             return Result.success();
         }else {
             return Result.error();
         }
+    }
+
+    @Override
+    public Result autoAddMsgReceive(Msgreceive msgreceive) {
+        int i = mapper.insert(msgreceive);
+        if (i>=1){
+            return Result.success();
+        }else
+        {
+            return Result.error();
+        }
+
     }
 }

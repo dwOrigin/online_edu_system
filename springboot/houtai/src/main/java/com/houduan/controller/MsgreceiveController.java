@@ -25,31 +25,38 @@ import com.houduan.entity.Msgreceive;
 
 @Resource
 private IMsgreceiveService msgreceiveService;
+/*
+* 此段为系统内部调用，仅为测试用
+* */
+@PostMapping
+public Result autoAddMsgreceive(@RequestBody Msgreceive msgreceive){
+        Result result = msgreceiveService.autoAddMsgReceive(msgreceive);
+        return result;
+        }
 
-
-@GetMapping("/allReceiveMsg")
+@PostMapping("/allReceiveMsg")
 public List<Msgreceive> showReceivedMsg(@RequestBody User user){
 
         List<Msgreceive> list = msgreceiveService.showMsgReceive(user.getUserId());
         return list;
 }
 
-@GetMapping("/sendMsg")
+@PostMapping("/sendMsg")
 public List<Msgreceive> showSendMsg(@RequestBody User user){
         List<Msgreceive> msgreceiveList = msgreceiveService.showMsgSend(user.getUserId());
         return msgreceiveList;
 }
 
-@GetMapping("/details")
+/*@GetMapping("/details")
 public Msgreceive detailsMsg(@RequestBody User user) {
         Msgreceive msgreceive = msgreceiveService.showDetail(user.getUserId());
         return msgreceive;
 
-}
+}*/
 /*
 * 管理，然后所有的人在列表中，就是只有全部信息
 * */
-@DeleteMapping("/{id}")
+@DeleteMapping("/delete/{id}")
 public Result deleteMsg( @PathVariable  Integer id){
         Result result = msgreceiveService.deleteMsg(id);
 return result;
