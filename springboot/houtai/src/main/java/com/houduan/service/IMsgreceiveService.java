@@ -3,6 +3,7 @@ package com.houduan.service;
 import com.houduan.common.Result;
 import com.houduan.entity.Msgreceive;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.houduan.entity.Msgsystem;
 import com.houduan.service.impl.MsgreceiveServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -37,4 +38,10 @@ public interface IMsgreceiveService extends IService<Msgreceive> {
     Result deleteReceivedMsgPerson(Integer integer);
 //    清空某一个特定人的全部发送信息
     Result deleteSendMsgPerson(Integer integer);
+/*
+* 系统端
+* 自动将每次的评论信息记录给添加到表里
+* */
+Result autoAddMsgReceive(Msgreceive msgreceive);
+
 }
