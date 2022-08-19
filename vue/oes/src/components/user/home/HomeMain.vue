@@ -1,14 +1,6 @@
 <template>
 <div id="main">
-  <course-recommend></course-recommend>
-<!--<courser-search-layout></courser-search-layout>-->
-<!--  <course-main-layout></course-main-layout>-->
-<!--<q-a-p-main></q-a-p-main>-->
-<!--  <personal-center></personal-center>-->
-<!--  <teacher-center></teacher-center>-->
-<!--  <teacher-page></teacher-page>-->
-<!--  <question-page></question-page>-->
-<!--  <passage-page></passage-page>-->
+  <router-view></router-view>
 </div>
 </template>
 
@@ -22,19 +14,14 @@ import TeacherCenter from "@/components/user/Teacher/TeacherCenter";
 import TeacherPage from "@/components/user/Teacher/TeacherPage";
 import QuestionPage from "@/components/user/qap/QuestionPage";
 import PassagePage from "@/components/user/qap/PassagePage";
-
 export default {
   name: "HomeMain",
   components:{
-    CourseMainLayout,
-    CourseRecommend,
-    courserSearchLayout,
-    QAPMain,
-    PersonalCenter,
-    TeacherCenter,
-    TeacherPage,
-    QuestionPage,
-    PassagePage
+  },
+  mounted() {
+    // this.$router.replace({
+    //   name: 'recommend'
+    // });
   }
 }
 </script>
