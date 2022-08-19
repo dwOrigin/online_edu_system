@@ -3,6 +3,7 @@ package com.houduan.mapper;
 import com.houduan.entity.Msgreceive;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 /**
  * <p>
@@ -10,10 +11,11 @@ import org.apache.ibatis.annotations.Mapper;
  * </p>
  *
  * @author online_system
- * @since 2022-08-12
+ * @since 2022-08-15
  */
-@Mapper
 
+@Repository
+@Mapper
 public interface MsgreceiveMapper extends BaseMapper<Msgreceive> {
 
 }

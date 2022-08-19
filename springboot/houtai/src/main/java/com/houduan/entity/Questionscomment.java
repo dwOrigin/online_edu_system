@@ -15,7 +15,7 @@ import lombok.Setter;
  * </p>
  *
  * @author online_system
- * @since 2022-08-12
+ * @since 2022-08-15
  */
 @Getter
 @Setter
@@ -34,8 +34,6 @@ public class Questionscomment implements Serializable {
     private String content;
 
     private Integer isBest;
-
-    private Integer replyCount;
 
     private Integer praiseCount;
 

@@ -9,8 +9,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author online_system
- * @since 2022-08-12
+ * @since 2022-08-15
  */
 public interface ICourseService extends IService<Course> {
 
+    Boolean addnew(Course course);
 }

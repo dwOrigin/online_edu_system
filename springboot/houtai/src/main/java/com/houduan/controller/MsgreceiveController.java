@@ -15,7 +15,7 @@ import com.houduan.entity.Msgreceive;
  * </p>
  *
  * @author online_system
- * @since 2022-08-12
+ * @since 2022-08-15
  */
 @RestController
 @RequestMapping("/msgreceive")
@@ -49,6 +49,7 @@ public Page<Msgreceive> findPage(@RequestParam Integer pageNum,
 @RequestParam Integer pageSize) {
         return msgreceiveService.page(new Page<>(pageNum, pageSize));
         }
-
+@GetMapping("/findMsgById")
+public List<Msgreceive> findMsgById(@PathVariable Integer id){return msgreceiveService.findMsgById(id);}
         }
 

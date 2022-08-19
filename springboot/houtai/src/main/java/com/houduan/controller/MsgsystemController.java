@@ -1,6 +1,7 @@
 package com.houduan.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.houduan.common.Result;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
@@ -15,7 +16,7 @@ import com.houduan.entity.Msgsystem;
  * </p>
  *
  * @author online_system
- * @since 2022-08-12
+ * @since 2022-08-15
  */
 @RestController
 @RequestMapping("/msgsystem")
@@ -23,26 +24,32 @@ import com.houduan.entity.Msgsystem;
 
 @Resource
 private IMsgsystemService msgsystemService;
-
+//更新或添加信息
 @PostMapping
-public Boolean save(@RequestBody Msgsystem msgsystem) {
-        return msgsystemService.saveOrUpdate(msgsystem);
+public Result addOrUpdateMessage(@RequestBody Msgsystem msgsystem) {
+        Result result = new Result();
+        if(msgsystemService.orNew(msgsystem)){
+                result=msgsystemService.addMsgSystem(msgsystem);
+        }else {
+                result = msgsystemService.updateMsgSystem(msgsystem);
         }
+        return result;
+}
 
 @DeleteMapping("/{id}")
-public Boolean delete(@PathVariable Integer id) {
-        return msgsystemService.removeById(id);
+public Result delete(@PathVariable Integer id) {
+        return msgsystemService.deleteMsgSystem(id);
         }
 
 @GetMapping
 public List<Msgsystem> findAll() {
-        return msgsystemService.list();
+        return msgsystemService.getAll();
         }
 
-@GetMapping("/{id}")
+/*@GetMapping("/{id}")
 public Msgsystem findOne(@PathVariable Integer id) {
         return msgsystemService.getById(id);
-        }
+        }*/
 
 @GetMapping("/page")
 public Page<Msgsystem> findPage(@RequestParam Integer pageNum,
@@ -50,5 +57,5 @@ public Page<Msgsystem> findPage(@RequestParam Integer pageNum,
         return msgsystemService.page(new Page<>(pageNum, pageSize));
         }
 
-        }
+}
 

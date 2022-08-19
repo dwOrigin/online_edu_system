@@ -15,7 +15,7 @@ import com.houduan.entity.Userloginlog;
  * </p>
  *
  * @author online_system
- * @since 2022-08-12
+ * @since 2022-08-15
  */
 @RestController
 @RequestMapping("/userloginlog")
@@ -49,6 +49,8 @@ public Page<Userloginlog> findPage(@RequestParam Integer pageNum,
 @RequestParam Integer pageSize) {
         return userloginlogService.page(new Page<>(pageNum, pageSize));
         }
+@GetMapping("/getInfoById")
+public List<Userloginlog> getInfoById(@PathVariable Integer user_id){return userloginlogService.getInfoById(user_id);}
 
         }
 
