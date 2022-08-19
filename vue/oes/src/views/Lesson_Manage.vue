@@ -237,6 +237,7 @@ export default{
       },
        handleClick(row) {
         console.log(row);
+        this.$router.push('/modify_lesson_manage')
       },
        deleteMember(row){
         console.log(row);
@@ -269,6 +270,9 @@ export default{
       filterTag(value, row) {
         return row.type === value;
       },
+      addLesson(){
+        this.$router.push('/add_lesson_manage')
+      }
      }
 }
 </script>

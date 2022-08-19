@@ -177,6 +177,10 @@ export default{
       handleClose(key, keyPath) {
         console.log(key, keyPath);
       },
+      handleClick(row) {
+        console.log(row);
+        this.$router.push('modify_qa_manage')
+      },
        deleteMember(row){
         console.log(row);
         this.$confirm('是否确认删除该课程?', '提示', {

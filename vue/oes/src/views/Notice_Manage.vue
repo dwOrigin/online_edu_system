@@ -66,10 +66,10 @@ export default{
         },
         rules: {
           region: [
-            { required: true, message: '请选择活动区域', trigger: 'change' }
+            { required: true, message: '请选择用户类型', trigger: 'change' }
           ],
           desc: [
-            { required: true, message: '请填写活动形式', trigger: 'blur' }
+            { required: true, message: '请填写消息内容', trigger: 'blur' }
           ]
         }
       };
@@ -103,6 +103,7 @@ export default{
             return false;
           }
         });
+        this.resetForm(formName);
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();

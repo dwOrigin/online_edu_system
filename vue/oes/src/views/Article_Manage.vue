@@ -30,7 +30,7 @@
   <el-container>
     <el-header>
        <span style="text-align: left; font-size: 25px">管理员</span>
-       <el-button type="primary" style="float: right" round @click="addLesson">添加文章</el-button>
+       <el-button type="primary" style="float: right" round @click="addArticle">添加文章</el-button>
     </el-header>
     <el-main>
          <el-table
@@ -175,6 +175,7 @@ export default{
       },
        handleClick(row) {
         console.log(row);
+        this.$router.push('modify_article_manage')
       },
       formatter(row, column) {
         return         
@@ -207,6 +208,9 @@ export default{
           });          
         });
       },
+      addArticle(){
+        this.$router.push('/add_article_manage')
+      }
      }
 }
 </script>

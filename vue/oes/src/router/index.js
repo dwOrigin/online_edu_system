@@ -8,12 +8,17 @@ import Member_Manage from "@/views/Member_Manage";
 import QA_Manage from "@/views/QA_Manage";
 import Teacher_Manage from "@/views/Teacher_Manage";
 import Notice_Manage from"@/views/Notice_Manage";
+import Add_Article_Manage from"@/views/Add_Article_Manage";
+import Add_Lesson_Manage from "@/views/Add_Lesson_Manage";
+import Modify_Lesson_Manage from "@/views/Modify_Lesson_Manage";
+import Modify_Article_Manage from "@/views/Modify_Lesson_Manage";
+import Modify_QA_Manage from "@/views/Modify_QA_Manage";
 
 const router = new VueRouter({
     routes: [
         {
             path:'/',
-            redirect:'notice_manage'
+            redirect:'modify_lesson_manage'
         },
         {
             //用户主页
@@ -57,9 +62,40 @@ const router = new VueRouter({
             path:'/notice_manage',
             component:Notice_Manage,
             meta:{title:'通知管理',changeTitle:true}
+        },
+        {
+            name:'add_article_manage',
+            path:'/add_article_manage',
+            component:Add_Article_Manage,
+            meta:{title:'增加文章',changeTitle:true}
+        },
+        {
+            name:'add_lesson_manage',
+            path:'/add_lesson_manage',
+            component:Add_Lesson_Manage,
+            meta:{title:'增加课程',changeTitle:true}
+        },
+        {
+            name:'modify_lesson_manage',
+            path:'/modify_lesson_manage',
+            component:Modify_Lesson_Manage,
+            meta:{title:'课程详情',changeTitle:true}
+        },
+        {
+            name:'modify_article_manage',
+            path:'/modify_article_manage',
+            component:Modify_Article_Manage,
+            meta:{title:'文章详情',changeTitle:true}
+        },
+        {
+            name:'modify_qa_manage',
+            path:'/modify_qa_manage',
+            component:Modify_QA_Manage,
+            meta:{title:'问答详情',changeTitle:true}
         }
     ]
 });
+
 
 //更新网页标题
 router.afterEach((to, from) => {
