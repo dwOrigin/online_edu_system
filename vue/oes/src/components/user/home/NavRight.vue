@@ -2,19 +2,34 @@
 <div>
 <ul class="tag-list">
   <li v-for="tag in tagObjList" :key="tag.title">
-    <el-link :underline="false" class="tag-item">{{tag.title}}</el-link>
+    <el-link :underline="false"
+             @click="$router.push({
+                name: tag.routerName,
+                query: tag.query
+             })"
+             class="tag-item">{{tag.title}}</el-link>
   </li>
-  <el-link :underline="false" class="tag-item">个人中心</el-link>
-  <el-link :underline="false" class="tag-item" v-if="user == null">登录|注册</el-link>
-  <a href="#" class="mini-img-container" v-if="user != null">
-<!--    <el-image-->
-<!--        style="width: 100%; height: 100%"-->
-<!--        src=""-->
-<!--        fit="fill"></el-image>-->
-    <el-avatar size="small" src="https://tse4-mm.cn.bing.net/th/id/OIP-C.kRklM9DmpC8zqSI4_Bq9mAHaHa?pid=ImgDet&rs=1"></el-avatar>
+  <el-link :underline="false"
+           @click="$router.push({
+              name: 'personal',
+              query:{select: ''}
+           });"
+           class="tag-item">个人中心</el-link>
+  <el-link :underline="false"
+           @click="$bus.$emit('OpenLoginDialog')"
+           class="tag-item" v-if="user == null">登录|注册</el-link>
+  <a href="#"
+     @click="$router.push({
+              name: 'personal',
+              query:{select: ''}
+           });"
+     class="mini-img-container" v-if="user != null">
+    <el-avatar size="small" :src="user.avatarUrl">
+      <span v-if="user.avatarUrl.length === 0">
+        {{user.name}}
+      </span>
+    </el-avatar>
   </a>
-
-
 </ul>
 </div>
 </template>
@@ -25,12 +40,33 @@ export default {
   data(){
     return{
       tagObjList: [
-        {title: '文章', href: '#'},
-        {title: '问答', href: '#'},
-        {title: '讲师', href: '#'},
+        {title: '文章', routerName: 'qap', query:{select: 'p'}},
+        {title: '问答', routerName: 'qap', query:{select: 'q'}},
+        {title: '讲师', routerName: 'teacher', query:{}},
       ],
-      user: {}
+      user: null
     }
+  },
+  methods: {
+  //  更新的登陆信息
+    refreshAuthorization() {
+      let user = window.localStorage.getItem('user');
+      if (user != null) {
+        user = JSON.parse(user);
+        this.user = user;
+      } else {
+        this.user = null;
+      }
+    }
+  },
+  mounted() {
+    this.refreshAuthorization();
+    this.$bus.$on('AuthorizationChanged', ()=>{
+      this.refreshAuthorization();
+    });
+  },
+  beforeDestroy() {
+    this.$bus.$off('AuthorizationChanged');
   }
 }
 </script>

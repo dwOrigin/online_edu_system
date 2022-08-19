@@ -13,12 +13,16 @@ import HomeFooter from "@/components/user/home/HomeFooter";
 export default {
   name: "Home",
   methods: {
-
   },
   components:{
     Navigation,
     HomeMain,
     HomeFooter
+  },
+  mounted() {
+    this.$router.replace({
+      name: 'recommend'
+    })
   }
 }
 

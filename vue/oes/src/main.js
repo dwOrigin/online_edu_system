@@ -3,6 +3,7 @@ import App from './App.vue'
 
 //axios导入
 import axios from "axios";
+axios.defaults.baseURL = 'http://localhost:8080';//服务器地址
 Vue.prototype.$axios = axios;
 
 //vue-router导入
