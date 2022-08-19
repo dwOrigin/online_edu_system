@@ -34,18 +34,11 @@ public List<Msgreceive> showReceivedMsg(@RequestBody User user){
         return list;
 }
 
-
-@DeleteMapping("/{id}")
-public Boolean delete(@PathVariable Integer id) {
-        return msgreceiveService.removeById(id);
-        }
-
 @GetMapping("/sendMsg")
 public List<Msgreceive> showSendMsg(@RequestBody User user){
         List<Msgreceive> msgreceiveList = msgreceiveService.showMsgSend(user.getUserId());
         return msgreceiveList;
 }
-
 
 @GetMapping("/details")
 public Msgreceive detailsMsg(@RequestBody User user) {

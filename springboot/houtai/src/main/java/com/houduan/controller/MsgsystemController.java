@@ -2,6 +2,7 @@ package com.houduan.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.houduan.common.Result;
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
@@ -25,10 +26,29 @@ import com.houduan.entity.Msgsystem;
 @Resource
 private IMsgsystemService msgsystemService;
 //更新或添加信息
-@PostMapping
+@PostMapping("/add")
 public Result addMessage(@RequestBody Msgsystem msgsystem) {
             return msgsystemService.addMsgSystem(msgsystem);
 }
+@PostMapping("/update")
+public Result updateMessage(@RequestBody Msgsystem msgsystem){
+    Result result = msgsystemService.updateMsgSystem(msgsystem);
+    return result;
+}
+@DeleteMapping("/delete/{id}")
+public Result deleteMessage(@PathVariable Integer id){
+    Result result = msgsystemService.deleteMsgSystem(id);
+    return result;
+}
+@GetMapping("/findAll")
+public List<Msgsystem> getAllMsg(){
+    List<Msgsystem> all = msgsystemService.getAll();
+    return all;
+}
+
+
+
+/*
 @PutMapping
 public Result updateMessage(@RequestBody Msgsystem msgsystem){
         return msgsystemService.updateMsgSystem(msgsystem);
@@ -42,14 +62,8 @@ public Result delete(@PathVariable Integer id) {
 public List<Msgsystem> findAll() {
         return msgsystemService.getAll();
         }
+*/
 
-/*@GetMapping("/{id}")
-public Msgsystem findOne(@PathVariable Integer id) {
-        return msgsystemService.getById(id);
-        }*/
-/*
-* 分页功能后面再说，没有测试
-* */
 @GetMapping("/page")
 public Page<Msgsystem> findPage(@RequestParam Integer pageNum,
 @RequestParam Integer pageSize) {
