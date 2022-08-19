@@ -175,6 +175,7 @@ export default{
       },
        handleClick(row) {
         console.log(row);
+        this.$router.push('modify_article_manage')
       },
       formatter(row, column) {
         return         

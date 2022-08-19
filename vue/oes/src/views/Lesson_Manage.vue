@@ -237,6 +237,7 @@ export default{
       },
        handleClick(row) {
         console.log(row);
+        this.$router.push('/modify_lesson_manage')
       },
        deleteMember(row){
         console.log(row);

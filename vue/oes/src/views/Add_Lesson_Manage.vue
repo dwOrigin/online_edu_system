@@ -98,7 +98,7 @@
 </template>
 
 <script>
-import UploadVideo from"@/components/UploadVideo.vue"
+import UploadVideo from"@/views/UploadVideo.vue"
 export default{
     components:{UploadVideo},
     activated: function() {
