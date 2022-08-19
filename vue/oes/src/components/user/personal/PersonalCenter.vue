@@ -3,36 +3,40 @@
     <div class="inner">
       <div class="nav">
         <el-menu
-            default-active="2"
             class="el-menu-vertical-demo"
-            @open="handleOpen"
-            @close="handleClose">
-          <el-menu-item index="1">
+            :default-active="this.$router.path"           
+            router>
+          <el-menu-item index="1"
+          :route="{ path: '/home/personal/pinfo', query: { select:user } }">
             <i class="el-icon-user"></i>
             <span slot="title">
               个人信息
             </span>
           </el-menu-item>
-          <el-menu-item index="2">
+          <el-menu-item index="2"
+          :route="{ path: '/home/personal/history', query: { select:user } }">
             <i class="el-icon-document"></i>
             <span slot="title">历史观看</span>
           </el-menu-item>
-          <el-menu-item index="3">
+          <el-menu-item index="3"
+          :route="{ path: '/home/personal/star', query: { select:user } }">
             <i class="el-icon-star-off"></i>
             <span slot="title">收藏</span>
           </el-menu-item>
-          <el-menu-item index="4">
+          <el-menu-item index="4"
+          :route="{ path: '/home/personal/message', query: { select:user } }">
             <i class="el-icon-chat-dot-square"></i>
             <span slot="title">
-              私信
+              消息
               <el-badge class="mark" :value="122" style="margin-bottom: 10px" :max="99"/>
             </span>
           </el-menu-item>
-          <el-menu-item index="5">
+          <el-menu-item index="5"
+          :route="{ path: '/home/personal/question', query: { select:user } }">
             <i class="el-icon-question"></i>
             <span slot="title">我的提问</span>
           </el-menu-item>
-          <el-menu-item index="6">
+          <el-menu-item index="/home/recommend" @click="exit">
             <i class="el-icon-back"></i>
             <span slot="title">退出登录</span>
           </el-menu-item>
@@ -43,11 +47,7 @@
 <!--                    line-height: 1.3;-->
 <!--                     margin-bottom: 20px;">历史观看</span></div>-->
         <div style="margin-top: 20px;">
-<!--          <p-info></p-info>-->
-<!--          <history></history>-->
-<!--          <star></star>-->
-<!--          <message-center></message-center>-->
-          <my-question></my-question>
+          <router-view></router-view>
         </div>
       </div>
     </div>
@@ -55,19 +55,27 @@
 </template>
 
 <script>
-import PInfo from "@/components/user/personal/PInfo";
-import History from "@/components/user/personal/History";
-import Star from "@/components/user/personal/Star";
-import MessageCenter from "@/components/user/personal/MessageCenter";
-import MyQuestion from "@/components/user/personal/MyQuestion";
+
 export default {
   name: "PersonalCenter",
   components: {
-    PInfo,
-    History,
-    Star,
-    MessageCenter,
-    MyQuestion
+
+  },
+  data(){
+    return{
+      user:{}
+    }
+  },
+  methods:{
+    exit(){
+      window.localStorage.removeItem('user');
+      this.$message.info('已退出登录');
+      this.$bus.$emit('AuthorizationChanged');
+    },
+  },
+  mounted(){
+    this.user=this.$route.query.select;
+    console.log(this.user)
   }
 }
 </script>

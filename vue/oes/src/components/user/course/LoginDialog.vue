@@ -345,7 +345,10 @@ export default {
                     //  已收藏课程数量
                     starCourseNum: 6,
                   //  所有看过的课程数
-                    historyNum: 5
+                    historyNum: 5,
+                    phonenumber:137121212121,
+                    email:'2767332717@qq.com',
+                    password:'1111'
                   }
                 }
               });

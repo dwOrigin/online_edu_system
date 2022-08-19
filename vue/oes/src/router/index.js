@@ -9,6 +9,11 @@ import CourseRecommend from "@/components/user/course/CourseRecommend";
 import CourseMainLayout from "@/components/user/course/CourseMainLayout";
 import TeacherCenter from "@/components/user/Teacher/TeacherCenter";
 import QAPMain from "@/components/user/qap/QAPMain";
+import PInfo from "@/components/user/personal/PInfo";
+import History from "@/components/user/personal/History";
+import Star from "@/components/user/personal/Star";
+import MessageCenter from "@/components/user/personal/MessageCenter";
+import MyQuestion from "@/components/user/personal/MyQuestion";
 
 const router = new VueRouter({
     routes: [
@@ -34,7 +39,15 @@ const router = new VueRouter({
                         }else{
                             Vue.prototype.$message.info('请先登录或注册账号');
                         }
-                    }
+                    },
+                    redirect:'/home/personal/pinfo',
+                    children:[
+                        {path:'/home/personal/pinfo',component:PInfo},
+                        {path:'/home/personal/history',component:History},
+                        {path:'/home/personal/star',component:Star},
+                        {path:'/home/personal/message',component:MessageCenter},
+                        {path:'/home/personal/question',component:MyQuestion}
+                    ]
                 },
                 {
                     //搜索结果页面
