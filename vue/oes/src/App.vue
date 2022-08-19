@@ -8,11 +8,11 @@
 export default {
   name: 'App',
   components: {},
-  mounted() {
-    this.$router.replace({
-      name: 'recommend'
-    });
-  }
+  // mounted() {
+  //   this.$router.replace({
+  //     name: 'recommend'
+  //   });
+  // }
 }
 </script>
 
