@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="fixWindow">
   <navigation></navigation>
   <HomeMain></HomeMain>
   <home-footer></home-footer>
@@ -21,11 +21,17 @@ export default {
   },
   mounted() {
     this.$router.replace({
-    })
+      name: 'recommend'
+    });
   }
 }
 
 </script>
 
 <style scoped>
+.fixWindow{
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+}
 </style>

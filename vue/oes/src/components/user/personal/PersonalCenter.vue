@@ -69,7 +69,6 @@ export default {
   methods:{
     exit(){
       window.localStorage.removeItem('user');
-      this.$message.info('已退出登录');
       this.$bus.$emit('AuthorizationChanged');
     },
   },

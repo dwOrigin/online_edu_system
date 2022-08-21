@@ -1,7 +1,6 @@
 import VueRouter from 'vue-router';
 import Vue from "vue";
 
-//用户主页
 import Home from "@/components/user/Home";
 import PersonalCenter from "@/components/user/personal/PersonalCenter";
 import CourserSearchLayout from "@/components/user/course/CourserSearchLayout";
@@ -27,6 +26,9 @@ import Modify_Lesson_Manage from "@/views/Modify_Lesson_Manage";
 import Modify_Article_Manage from "@/views/Modify_Lesson_Manage";
 import Modify_QA_Manage from "@/views/Modify_QA_Manage";
 
+import QuestionPage from "@/components/user/qap/QuestionPage";
+import PassagePage from "@/components/user/qap/PassagePage";
+
 
 const router = new VueRouter({
     routes: [
@@ -48,7 +50,6 @@ const router = new VueRouter({
                     component: PersonalCenter,
                     meta: {title: '个人中心', changeTitle: true},
                     beforeEnter(to, from, next){
-                        console.log('路由到个人中心');
                         //必须先登录才能跳转
                         let user = window.localStorage.getItem('user');
                         if(user != null){
@@ -104,12 +105,33 @@ const router = new VueRouter({
                 {
                     //问答和文章页面
                     name: 'qap',
-                    path: 'home/qap',
+                    path: 'home/qap/:select?',
                     component: QAPMain,
                     meta: {title: '问答和文章', changeTitle: true}
+                },
+                {
+                    //问题详情页面
+                    name: 'questionPage',
+                    path: 'home/questionPage',
+                    component: QuestionPage,
+                    meta: {changeTitle: false}
+                },
+                {
+                    //文章详情页面
+                    name: 'passagePage',
+                    path: 'home/passagePage',
+                    component: PassagePage,
+                    meta: {changeTitle: false}
                 }
             ]
         },
+
+
+
+
+
+
+
         {
             name:'article_manage',
             path:'/article_manage',

@@ -56,7 +56,7 @@ export default {
       //  获取登录信息
       let user = window.localStorage.getItem('user');
       if (user === null) {
-        this.$bus.$emit('OpenLoginDialog');
+        this.$message.info('请先登录或注册');
       } else {
         if (this.infoToDisplay === '收藏成功') {
           this.$message.error({

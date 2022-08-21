@@ -3,6 +3,7 @@
       class="dialog"
       :visible.sync="isVisible"
       append-to-body
+      modal-append-to-body
       :close-on-click-modal="false"
       :show-close="false"
       :center="true"
