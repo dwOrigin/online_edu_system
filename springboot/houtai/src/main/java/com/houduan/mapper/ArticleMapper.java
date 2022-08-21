@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
  * </p>
  *
  * @author online_system
- * @since 2022-08-12
+ * @since 2022-08-15
  */
 @Mapper
 public interface ArticleMapper extends BaseMapper<Article> {

@@ -17,6 +17,11 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
 
+//mavon-editor
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+Vue.use(mavonEditor)
+
 //vue-video-player导入
 import VideoPlayer from 'vue-video-player'
 require('vue-video-player/node_modules/video.js/dist/video-js.css')

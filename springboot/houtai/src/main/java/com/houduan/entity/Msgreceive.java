@@ -15,7 +15,7 @@ import lombok.Setter;
  * </p>
  *
  * @author online_system
- * @since 2022-08-12
+ * @since 2022-08-15
  */
 @Getter
 @Setter
@@ -37,7 +37,7 @@ public class Msgreceive implements Serializable {
     @ApiModelProperty("更新时间")
     private LocalDateTime updateTime;
 
-    @ApiModelProperty("内容 ")
+    @ApiModelProperty("内容")
     private String content;
 
     @ApiModelProperty("类型")

@@ -12,7 +12,7 @@
   <el-link :underline="false"
            @click="$router.push({
               name: 'personal',
-              query:{select: ''}
+              query:{select:user}
            });"
            class="tag-item">个人中心</el-link>
   <el-link :underline="false"
@@ -51,6 +51,7 @@ export default {
   //  更新的登陆信息
     refreshAuthorization() {
       let user = window.localStorage.getItem('user');
+      console.log(user);
       if (user != null) {
         user = JSON.parse(user);
         this.user = user;

@@ -2,6 +2,7 @@ package com.houduan.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -11,44 +12,44 @@ import com.houduan.entity.Comment;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author online_system
- * @since 2022-08-12
+ * @since 2022-08-15
  */
 @RestController
 @RequestMapping("/comment")
-    public class CommentController {
+public class CommentController {
 
-@Resource
-private ICommentService commentService;
+    @Resource
+    private ICommentService commentService;
 
-@PostMapping
-public Boolean save(@RequestBody Comment comment) {
+    @PostMapping
+    public Boolean save(@RequestBody Comment comment) {
         return commentService.saveOrUpdate(comment);
-        }
+    }
 
-@DeleteMapping("/{id}")
-public Boolean delete(@PathVariable Integer id) {
+    @DeleteMapping("/{id}")
+    public Boolean delete(@PathVariable Integer id) {
         return commentService.removeById(id);
-        }
+    }
 
-@GetMapping
-public List<Comment> findAll() {
+    @GetMapping
+    public List<Comment> findAll() {
         return commentService.list();
-        }
+    }
 
-@GetMapping("/{id}")
-public Comment findOne(@PathVariable Integer id) {
+    @GetMapping("/{id}")
+    public Comment findOne(@PathVariable Integer id) {
         return commentService.getById(id);
-        }
+    }
 
-@GetMapping("/page")
-public Page<Comment> findPage(@RequestParam Integer pageNum,
-@RequestParam Integer pageSize) {
+    @GetMapping("/page")
+    public Page<Comment> findPage(@RequestParam Integer pageNum,
+                                  @RequestParam Integer pageSize) {
         return commentService.page(new Page<>(pageNum, pageSize));
-        }
+    }
 
-        }
+}
 
