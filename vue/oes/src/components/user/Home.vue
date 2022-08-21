@@ -21,7 +21,6 @@ export default {
   },
   mounted() {
     this.$router.replace({
-      name: 'recommend'
     })
   }
 }

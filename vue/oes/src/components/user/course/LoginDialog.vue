@@ -105,6 +105,7 @@
                 <el-form-item prop="phone">
                     <el-input
                         class="inputBox"
+                        :disabled="codeIsRight"
                         prefix-icon="el-icon-phone-outline"
                         v-model="registerForm.phone" placeholder="手机号">
                       <template slot="append">
@@ -284,6 +285,7 @@ export default {
     validateCode(){
       if(this.registerForm.code === this.registerForm.codeReceived && this.registerForm.codeReceived !== null){
         this.codeIsRight = true;
+        //防止用户验证成功后修改电话号码
       }else{
         this.$message.error('验证码错误');
       }

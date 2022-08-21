@@ -8,6 +8,7 @@ import CourserSearchLayout from "@/components/user/course/CourserSearchLayout";
 import CourseRecommend from "@/components/user/course/CourseRecommend";
 import CourseMainLayout from "@/components/user/course/CourseMainLayout";
 import TeacherCenter from "@/components/user/Teacher/TeacherCenter";
+import TeacherPage from "@/components/user/Teacher/TeacherPage";
 import QAPMain from "@/components/user/qap/QAPMain";
 
 const router = new VueRouter({
@@ -39,7 +40,7 @@ const router = new VueRouter({
                 {
                     //搜索结果页面
                     name: 'search',
-                    path: '/home/search',
+                    path: '/home/search/:select?/:searchKey?',
                     component: CourserSearchLayout,
                     meta: {title: '搜索课程', changeTitle: true}
                 },
@@ -53,16 +54,23 @@ const router = new VueRouter({
                 {
                     //课程播放页面
                     name: 'course',
-                    path: 'home/course',
+                    path: 'home/course/:courseId?',
                     component: CourseMainLayout,
                     meta: {title: '课程播放', changeTitle: true}
                 },
                 {
-                    //讲师页面
+                    //讲师中心页面
                     name: 'teacher',
                     path: 'home/teacher',
                     component: TeacherCenter,
                     meta: {title: '讲师中心', changeTitle: true}
+                },
+                {
+                    //单独讲师页面
+                    name: 'teacherPage',
+                    path: 'home/teacherPage/:teacherId?',
+                    component: TeacherPage,
+                    meta: {changeTitle: false}
                 },
                 {
                     //问答和文章页面

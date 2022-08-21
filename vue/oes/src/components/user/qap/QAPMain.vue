@@ -1,12 +1,12 @@
 <template>
   <div class="qa-recommend">
     <div class="qa-part">
-      <el-tabs type="border-card" class="hot-list">
-        <el-tab-pane>
+      <el-tabs type="border-card" class="hot-list" v-model="select">
+        <el-tab-pane name="q">
           <div slot="label" class="title-tag">问题</div>
           <QuestionCard v-for="obj in number" :key="obj"></QuestionCard>
         </el-tab-pane>
-        <el-tab-pane>
+        <el-tab-pane name="p">
           <div slot="label" class="title-tag">文章</div>
           <QuestionCard v-for="obj in number" :key="obj" type="passage"></QuestionCard>
         </el-tab-pane>
@@ -39,11 +39,15 @@ export default {
   },
   data() {
     return {
-      number: 10
+      number: 10,
+      select: 'q'
     };
   },
   created() {
     window.addEventListener('scroll', this.scrollBottom);
+  },
+  mounted() {
+    this.select = this.$route.query.select;
   },
   destroyed() {
     window.removeEventListener('scroll', this.scrollBottom) //页面离开后销毁监听事件

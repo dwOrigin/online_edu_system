@@ -1,35 +1,62 @@
 <template>
-<div class="teacher-card">
-  <div>
-    <el-avatar
-        :size="60"
-        style="margin: auto 20px"
-        src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-  </div>
-  <div>
-    <div>李灵灵&nbsp;
-      <el-tag type="warning" size="mini">金牌讲师</el-tag>
+  <div
+      @click="toTeacherPage(t.teacherId)"
+      class="teacher-card">
+    <div>
+      <el-avatar
+          :size="60"
+          style="margin: auto 20px"
+          :src="t.avatarUrl">
+        <span v-if="t.avatarUrl === ''">{{ t.name }}</span>
+      </el-avatar>
     </div>
-    <div style="font-size: xx-small; margin-top: 10px; "
-    >我叫李灵灵,是一个好僵尸</div>
+    <div>
+      <div>{{ t.name }}&nbsp;
+        <el-tag type="warning" size="mini">{{ t.nikeName }}</el-tag>
+      </div>
+      <div style="font-size: xx-small; margin-top: 10px; display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;"
+      >{{ t.intro }}
+      </div>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
 export default {
-  name: "TeacherCard"
+  name: "TeacherCard",
+  props: {
+    teacher: {}
+  },
+  data() {
+    return {
+      t: this.teacher
+    };
+  },
+  methods: {
+    toTeacherPage(id) {
+      this.$router.push({
+        name: 'teacherPage',
+        params: {
+          teacherId: id
+        }
+      });
+    }
+  }
 }
 </script>
 
 <style scoped>
-.teacher-card:hover{
+.teacher-card:hover {
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   transform: perspective(800px) translateZ(10px);
   transition: 0.3s;
   cursor: pointer;
 }
-.teacher-card{
+
+.teacher-card {
   width: 300px;
   /*background-color: #409EFF;*/
   height: 100px;
