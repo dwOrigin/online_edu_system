@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <router-view v-if="isRouterAlive"></router-view>
   </div>
 </template>
 
@@ -8,6 +8,25 @@
 export default {
   name: 'App',
   components: {},
+  provide(){
+    return{
+      reload:this.reload
+    }
+  },
+  data(){
+    return{
+      isRouterAlive:true
+    }
+  },
+  methods:{
+    reload(){
+      this.isRouterAlive=false;
+      this.$nextTick(function(){
+        this.isRouterAlive=true
+      })
+    }
+  }
+  // 据说这样刷新页面效果最好
   // mounted() {
   //   this.$router.replace({
   //     name: 'recommend'

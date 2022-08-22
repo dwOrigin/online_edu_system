@@ -25,7 +25,7 @@ const router = new VueRouter({
     routes: [
         {
             path:'/',
-            redirect:'lesson_manage'
+            redirect:'member_manage'
         },
         {
             //用户主页
