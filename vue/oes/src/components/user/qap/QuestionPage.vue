@@ -138,7 +138,8 @@ export default {
         promise.then((res) => {
           let ret = res.data.result;
           if (ret) {
-            this.$message.success('回答成功')
+            this.$message.success('回答成功');
+            this.refreshComment(this.$route.query.qId);
           } else {
             this.$message.error('你已经回答过');
           }
