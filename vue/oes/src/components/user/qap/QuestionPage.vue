@@ -2,41 +2,47 @@
   <div class="questionPage">
     <div style="box-shadow: 0 10px 10px rgba(0, 0, 0, .12)">
       <div class="header">
-      <div class="title">江苏一博士“虎爸”拳脚相加逼六七岁儿女学高数。如何评价这位父亲的做法？</div>
-      <div class="author">
-        <el-avatar shape="square"
-                   style="margin: 0 10px"
-                   :size="30" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-        夜空中最亮的路灯&nbsp;&nbsp;
-      </div>
-      <div class="content">
-        12月14日，据南京市中级人民法院消息，南京一位“虎爸”的教育方式有点激进，让一年级的儿子和幼儿园的女儿学中学、大学知识，学到深夜还辱骂加殴打，无奈之下，孩子母亲只能向法院“求援”。近日，南京市建邺区人民法院处理了这起因家庭教育方式失当引发的纠纷。
-
-        如何评价这位父亲的做法？
-      </div>
-      <div class="header-footer">
-        <el-button size="medium" type="primary" :plain="true" style="width: 100px">写回答</el-button>
-        <div style="color: #8590A6; font-size: x-small">
+        <div class="title">{{question.title}}</div>
+        <div class="author">
+          <el-avatar shape="square"
+                     style="margin: 0 10px"
+                     :size="30" :src="question.askerAvatar">
+            <span v-if="question.askerAvatar === ''">
+              {{question.askerName}}
+            </span>
+          </el-avatar>
+          {{question.askerName}}&nbsp;&nbsp;
+        </div>
+        <div class="content">
+          {{question.questionContent}}
+        </div>
+        <div class="header-footer">
+          <el-button
+              @click="handleClick"
+              size="medium" type="primary" :plain="true" style="width: 100px">
+            写回答
+          </el-button>
+          <div style="color: #8590A6; font-size: x-small">
           <span>
             <i class="el-icon-s-data"></i>
-            被浏览 1,375,569
+            被浏览 {{question.viewCnt}}
           </span>
-          &nbsp;&nbsp;&nbsp;&nbsp;
-          <span>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <span>
             <i class="el-icon-chat-square"></i>
-            23条回答
+            {{question.answerCnt}}条回答
           </span>
+          </div>
+
         </div>
 
       </div>
-
-    </div>
     </div>
     <div class="answer-list">
       <div class="answers">
         <div style="width: 95%; margin: 0 auto">
           <div class="space-between">
-            <div style="color: #121212; font-size: small; font-weight: bold">2,591 个回答</div>
+            <div style="color: #121212; font-size: small; font-weight: bold">{{question.answerCnt}} 个回答</div>
             <el-dropdown>
               <div class="sort">
                 默认排序
@@ -44,57 +50,209 @@
               </div>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>默认排序</el-dropdown-item>
-                <el-dropdown-item>时间排序</el-dropdown-item>
+<!--                i am lazy, fuck your sort!-->
+<!--                <el-dropdown-item>时间排序</el-dropdown-item>-->
               </el-dropdown-menu>
             </el-dropdown>
           </div>
-          <answer v-for="obj in number" :key="number"></answer>
+          <answer v-for="obj in answers" :obj="obj" typeM="Answer"></answer>
         </div>
       </div>
     </div>
+    <el-dialog
+        :visible.sync="dialogVisible"
+        center
+        :show-close="false"
+        append-to-body
+        modal-append-to-body
+        width="30%">
+      <el-input
+          type="textarea"
+          :rows="5"
+          maxlength="100"
+          show-word-limit
+          placeholder="请输入你的回答"
+          v-model="answer">
+      </el-input>
+      <span slot="footer" class="dialog-footer">
+      <el-button
+          plain
+          style='padding-left: 30px; padding-right: 30px; margin-right: 50px'
+          type="primary" @click="handleClickFooter('answer')">回答
+      </el-button>
+        <el-button
+            plain
+            style='padding-left: 30px; padding-right: 30px'
+            type="info" @click="handleClickFooter('cancel')">
+          取消
+        </el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import Answer from "@/components/user/qap/Answer";
+
 export default {
   name: "QuestionPage",
   components: {
     Answer
   },
-  data(){
-      return {
-        number: 10
-      };
-  },
-  created() {
-    window.addEventListener('scroll', this.scrollBottom);
-  },
-  destroyed() {
-    window.removeEventListener('scroll', this.scrollBottom) //页面离开后销毁监听事件
+  data() {
+    return {
+      number: 10,
+      question: {},
+      answers: [],
+      dialogVisible: false,
+      answer: ''
+    };
   },
   methods: {
-    scrollBottom(){
-      let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-      let clientHeight = document.documentElement.clientHeight;
-      let scrollHeight = document.documentElement.scrollHeight;
-      if (scrollTop + clientHeight >= scrollHeight) {
-        this.number += 3;
+    handleClickFooter(btnName) {
+      if (btnName === 'cancel') {
+
+      } else if (btnName === 'answer') {
+        if (this.answer.length < 10) {
+          this.$message.error('回答不能少于10个字');
+          return;
+        }
+        let user = JSON.parse(window.localStorage.getItem('user'));
+        //回答问题
+        // let promise = this.$axios({
+        //   url: '',
+        //   method: '',
+        //   data: {
+        //     answer: this.answer,
+        //     userId: user.id,
+        //     qId: this.question.pId
+        //   }
+        // });
+        let promise = new Promise((a) => {
+          a({
+            data: {
+              result: false
+            }
+          });
+        });
+        promise.then((res) => {
+          let ret = res.data.result;
+          if (ret) {
+            this.$message.success('回答成功')
+          } else {
+            this.$message.error('你已经回答过');
+          }
+        }).catch((err) => {
+          this.$message.error('你的网络迷路了');
+        });
       }
+      this.answer = '';
+      this.dialogVisible = false;
+    },
+    handleClick() {
+      let usr = window.localStorage.getItem('user');
+      if (usr === null) {
+        this.$bus.$emit('OpenLoginDialog');
+        return;
+      }else{
+        this.dialogVisible = true;
+        console.log('this.dialogVisible = true;');
+      }
+    },
+    refreshQuestion(qId) {
+      //获取问题详细信息
+      // let promise = this.$axios({
+      //   url: '',
+      //   method: '',
+      //   data: {
+      //     qId: qId
+      //   }
+      // });
+      let promise = new Promise((a) => {
+        a({
+          data: {
+            question: {
+              qId: 888,
+              title: '这个问题你问可莉吧?',
+              askerName: 'Jean',
+              askerAvatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+              questionContent: '这是问题的内容',
+              viewCnt: 12345,//问题被浏览次数
+              answerCnt: 859, //回答数量
+            }
+          }
+        });
+      });
+      promise.then((res) => {
+        this.question = res.data.question;
+
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });
+    },
+    refreshComment(qId) {
+      //获取问题答案
+      // let promise = this.$axios({
+      //   url: '',
+      //   method: '',
+      //   data: {
+      //     qId: qId
+      //   }
+      // });
+      let promise = new Promise((a) => {
+        a({
+          data: {
+            answersList:[
+              {
+                //这里属性名为了和Answer.vue里面保持一致
+                //属性名含义与实际不同
+                cId: 10086,//回答id
+                commenterName: '回答者名字',
+                commenterAvatarUrl: 'https://pic4.zhimg.com/v2-d41c2ceaed8f51999522f903672a521f_xs.jpg?source=1940ef5c',
+                content: '可莉不知道哦',
+                time: '2022/8/71',
+                like: 998
+              },
+              {
+                //这里属性名为了和Answer.vue里面保持一致
+                //属性名含义与实际不同
+                cId: 10086,//回答id
+                commenterName: '回答者名字',
+                commenterAvatarUrl: 'https://pic4.zhimg.com/v2-d41c2ceaed8f51999522f903672a521f_xs.jpg?source=1940ef5c',
+                content: '可莉不知道哦',
+                time: '2022/8/71',
+                like: 998
+              }
+            ]
+          }
+        });
+      });
+      promise.then((res) => {
+        this.answers = res.data.answersList;
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });
     }
+  },
+  mounted() {
+    this.refreshQuestion(this.$route.query.qId);
+    this.refreshComment(this.$route.query.qId);
   }
 }
 </script>
 
 <style scoped>
-.sort:hover{
+.sort:hover {
   cursor: pointer;
 }
-.sort{
-  font-size: x-small; color: #9498BA;
+
+.sort {
+  font-size: x-small;
+  color: #9498BA;
 
 }
-.space-between{
+
+.space-between {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -102,13 +260,15 @@ export default {
   padding-bottom: 10px;
   border-bottom: 2px solid #F9F9F9;
 }
-.answers{
+
+.answers {
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   width: 900px;
-  margin:20px auto 0 auto;
+  margin: 20px auto 0 auto;
   background-color: #FFFFFF;
 }
-.answer-list{
+
+.answer-list {
   overflow: hidden;
   margin-bottom: -50px;
   padding-bottom: 20px;

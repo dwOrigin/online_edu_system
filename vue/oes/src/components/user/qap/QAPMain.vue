@@ -54,43 +54,23 @@ export default {
       passageList: [],
     };
   },
-  created() {
-    window.addEventListener('scroll', this.scrollBottom);
-  },
-  destroyed() {
-    window.removeEventListener('scroll', this.scrollBottom) //页面离开后销毁监听事件
-  },
   methods: {
-    handleClickAsk(){
+    handleClickAsk() {
       let usr = window.localStorage.getItem('user');
-      if(usr === null){
+      if (usr === null) {
         this.$message.info('请先登录或注册');
         return;
       }
       this.$bus.$emit('openAskDialog');
     },
-    handleClickMQ(){
+    handleClickMQ() {
       this.$router.push({
         name: 'personal',
-        query:{
+        query: {
           select: 'question'
         }
       });
       return true;
-    },
-    scrollBottom() {
-      let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-      let clientHeight = document.documentElement.clientHeight;
-      let scrollHeight = document.documentElement.scrollHeight;
-      if (scrollTop + clientHeight >= scrollHeight) {
-        //  添加
-        if (this.$route.params.select === 'q') {
-          this.refreshQuestion(true);
-        }
-        else if(this.$route.params.select === 'p'){
-          this.refreshPassage(true);
-        }
-      }
     },
     refreshQuestion(append) {
       //获取推荐问题
@@ -166,6 +146,17 @@ export default {
   mounted() {
     this.refreshQuestion(false);
     this.refreshPassage(false);
+    this.$bus.$on('scrollToBottom', (data) => {
+      //  添加
+      if (this.$route.params.select === 'q') {
+        this.refreshQuestion(true);
+      } else if (this.$route.params.select === 'p') {
+        this.refreshPassage(true);
+      }
+    });
+  },
+  beforeDestroy() {
+    this.$bus.$off('scrollToBottom');
   }
 }
 </script>
