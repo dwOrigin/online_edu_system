@@ -34,7 +34,7 @@ const router = new VueRouter({
     routes: [
         {
             path:'/',
-            redirect:'home'
+            redirect:'notice_manage'
         },
         {
             //用户主页
@@ -124,11 +124,6 @@ const router = new VueRouter({
                 }
             ]
         },
-
-
-
-
-
 
 
         {
