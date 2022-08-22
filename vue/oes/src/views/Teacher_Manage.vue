@@ -306,6 +306,24 @@ export default{
             message: '已取消删除'
           });          
         });
+         this.request.post('http://localhost:8081/teacher/removeTeacher', row)
+        .then((res) => {
+          if (res.code == "200") {
+            this.$message.success(res.message);
+          } else {
+            this.$message.error(res.message);
+          }
+        })
+      //    this.$axios.post('http://localhost:8081/teacher/removeTeacher', {
+      //   id: row.id
+      // })
+      //   .then(function (response) {
+      //     console.log(response);
+      //   })
+      //   .catch(function (error) {
+      //     console.log(error);
+      //   });
+      this.reload();
       },
       changeUsermsg(){
         this.$notify({

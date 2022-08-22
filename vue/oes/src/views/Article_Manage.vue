@@ -97,7 +97,6 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page.sync="currentPage3"
       :page-size="100"
       layout="prev, pager, next, jumper"
       :total="1000">
@@ -188,12 +187,13 @@ export default{
             message: '已取消删除'
           });          
         });
+
       },
       addArticle(){
         this.$router.push('/add_article_manage')
       },
        fetchData(){
-        this.$axios.get('http://localhost:8081/article').then(
+        this.$axios.get('http://localhost:8081/article/findAll').then(
           response=>{
             this.tableData=response.data;
           },

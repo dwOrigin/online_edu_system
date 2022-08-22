@@ -101,7 +101,7 @@
                     </el-form-item>
                   </el-form>
                   <div slot="footer" class="dialog-footer">
-                    <el-button @click="dialogFormVisible = false">取 消</el-button>
+                    <el-button @click="notChange">取 消</el-button>
                     <el-button type="primary" @click="changeUsermsg(); dialogFormVisible = false;">确 定</el-button>
                   </div>
                 </el-dialog>
@@ -194,6 +194,7 @@ export default {
       console.log(row);
       this.form = row;
       this.dialogFormVisible = true;
+      //点取消后直接刷新，从数据库里取值，解决了，我天，我也太聪明了吧哈哈哈
       //现在改了内容点取消也会被改
       //   this.templateList = extendCopy(row);
       //   // 对象进行深拷贝，否则“编辑”框内修改内容(e)会影响到页面
@@ -260,6 +261,10 @@ export default {
         }
       );
     },
+    notChange(){
+      this.dialogFormVisible = false;
+      this.reload();
+    }
   }
 }
 
