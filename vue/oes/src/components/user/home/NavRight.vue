@@ -13,7 +13,7 @@
   <el-link :underline="false"
            @click="$router.push({
               name: 'personal',
-              query:{select:user}
+              query:{select:'pinfo'}
            });"
            class="tag-item">个人中心</el-link>
   <el-link :underline="false"
@@ -22,7 +22,7 @@
   <a href="#"
      @click="$router.push({
               name: 'personal',
-              query:{select: ''}
+              query:{select: 'pinfo'}
            });"
      class="mini-img-container" v-if="user != null">
     <el-avatar size="small" :src="user.avatarUrl">

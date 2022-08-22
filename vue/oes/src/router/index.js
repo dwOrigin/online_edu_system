@@ -58,13 +58,12 @@ const router = new VueRouter({
                             Vue.prototype.$message.info('请先登录或注册账号');
                         }
                     },
-                    redirect:'/home/personal/pinfo',
                     children:[
-                        {path:'/home/personal/pinfo',component:PInfo},
-                        {path:'/home/personal/history',component:History},
-                        {path:'/home/personal/star',component:Star},
-                        {path:'/home/personal/message',component:MessageCenter},
-                        {path:'/home/personal/question',component:MyQuestion}
+                        {path:'/home/personal/pinfo',component:PInfo,meta: {title: '个人中心', changeTitle: true}},
+                        {path:'/home/personal/history',component:History,meta: {title: '个人中心', changeTitle: true}},
+                        {path:'/home/personal/star',component:Star,meta: {title: '个人中心', changeTitle: true}},
+                        {path:'/home/personal/message',component:MessageCenter,meta: {title: '个人中心', changeTitle: true}},
+                        {path:'/home/personal/question',component:MyQuestion,meta: {title: '个人中心', changeTitle: true}}
                     ]
                 },
                 {
@@ -79,7 +78,7 @@ const router = new VueRouter({
                     name: 'recommend',
                     path: '/home/recommend',
                     component: CourseRecommend,
-                    meta: {changeTitle: false}
+                    meta: {title: '欢迎访问在线教育系统!', changeTitle: true},
                 },
                 {
                     //课程播放页面
