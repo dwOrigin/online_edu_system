@@ -67,7 +67,7 @@
     <el-table-column
       prop="lastSystemTime"
       label="上次登录时间"
-      width="120">
+      width="150">
     </el-table-column>
     <el-table-column
       prop="isAvailable"
@@ -86,7 +86,7 @@
       <template slot-scope="scope">
         <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
         <el-dialog title="详细信息" :visible.sync="dialogFormVisible" append-to-body>
-  <el-form :model="form">
+  <el-form :model="form" id="form">
     <el-form-item prop="userId" label="用户ID" :label-width="formLabelWidth">
       <el-input v-model="form.userId" :disabled="true"></el-input>
     </el-form-item>
@@ -106,8 +106,8 @@
       <el-input v-model="form.password"></el-input>
     </el-form-item>
     <el-form-item prop="sex" label="性别" :label-width="formLabelWidth">
-      <el-radio v-model="form.sex" label="1">男</el-radio>
-      <el-radio v-model="form.sex" label="2">女</el-radio>
+      <el-radio v-model="form.sex" :label="1">男</el-radio>
+      <el-radio v-model="form.sex" :label="2">女</el-radio>
     </el-form-item>
     <el-form-item prop="age" label="年龄" :label-width="formLabelWidth">
       <el-input v-model="form.age"></el-input>
@@ -116,11 +116,11 @@
       <el-input v-model="form.createTime" :disabled="true"></el-input>
     </el-form-item>
     <el-form-item prop="isAvailable" label="是否可用" :label-width="formLabelWidth">
-      <el-radio v-model="form.isAvailable" label="1">是</el-radio>
-      <el-radio v-model="form.isAvailable" label="0">否</el-radio>
+      <el-radio v-model="form.isAvailable" :label="1">是</el-radio>
+      <el-radio v-model="form.isAvailable" :label="0">否</el-radio>
     </el-form-item>
-    <el-form-item prop="piclmg" label="图片链接" :label-width="formLabelWidth">
-      <el-input v-model="form.piclmg"></el-input>
+    <el-form-item prop="picImg" label="图片链接" :label-width="formLabelWidth">
+      <el-input v-model="form.picImg"></el-input>
     </el-form-item>
     <el-form-item prop="msgNum" label="消息数量" :label-width="formLabelWidth">
       <el-input v-model="form.msgNum"></el-input>
@@ -148,8 +148,8 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page.sync="currentPage3"
-      :page-size="100"
+      :current-page.sync="currentPage"
+      :page-size="pageSize"
       layout="prev, pager, next, jumper"
       :total="1000">
     </el-pagination>
@@ -163,108 +163,19 @@
 
 <script>
 export default {
-    activated: function() {
+  inject:['reload'],
+  name:'Member_Manage',
+  activated: function() {
  this.getCase()
  },
+ mounted(){
+  this.fetchData()
+ },
    data() {
-      const item = {
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      };
       return {
-        tableData: [{
-          userId:'71120207',
-          userName:'张柯宁',
-          showName:'Bo',
-          mobile:'13722789359',
-          email:'1303322505@qq.com',
-          lastSystemTime:'2022-8-14 15:13',
-          isAvailable:'1',
-          password:'71120207',
-          sex:'2',
-          age:'20',
-          createTime:'2002-10-9 11:22',
-          piclmg:'vdihfoidjcfd',
-          msgNum:'2',
-          sysMsgNum:'1',
-        }, {
-          userId:'20050923',
-          userName:'刘耀文',
-          showName:'脑壳要爆炸',
-          mobile:'13722789359',
-          email:'1303322505@qq.com',
-          lastSystemTime:'2022-8-12 15:13',
-          isAvailable:'1',
-          password:'20050923',
-          sex:'1',
-          age:'17',
-          createTime:'2005-9-23 11:22',
-          piclmg:'vdihfoidjcfd',
-          msgNum:'4',
-          sysMsgNum:'99',
-        }, {
-          userId:'20061124',
-          userName:'余宇涵',
-          showName:'。。。。。',
-          mobile:'13722789359',
-          email:'1303322505@qq.com',
-          lastSystemTime:'2022-8-13 15:13',
-          isAvailable:'1',
-          password:'20061124',
-          sex:'1',
-          age:'16',
-          createTime:'2006-11-23 11:22',
-          piclmg:'vdihfoidjcfd',
-          msgNum:'4',
-          sysMsgNum:'99',
-        }, {
-          userId:'19970805',
-          userName:'王一博',
-          showName:'uniqyibo',
-          mobile:'13722789359',
-          email:'1303322505@qq.com',
-          lastSystemTime:'2022-8-14 15:13',
-          isAvailable:'0',
-          password:'19970805',
-          sex:'1',
-          age:'25',
-          createTime:'1997-8-5 11:22',
-          piclmg:'vdihfoidjcfd',
-          msgNum:'43',
-          sysMsgNum:'99',
-        },{
-          userId:'19961029',
-          userName:'陈哲远',
-          showName:'男团门面',
-          mobile:'13722789359',
-          email:'1303322505@qq.com',
-          lastSystemTime:'2022-8-14 15:13',
-          isAvailable:'1',
-          password:'19961029',
-          sex:'1',
-          age:'26',
-          createTime:'1996-10-29 11:22',
-          piclmg:'vdihfoidjcfd',
-          msgNum:'5',
-          sysMsgNum:'99',
-        },{
-          userId:'19950808',
-          userName:'崔胜澈',
-          showName:'S.Coups',
-          mobile:'13722789359',
-          email:'1303322505@qq.com',
-          lastSystemTime:'2022-8-14 08:08',
-          isAvailable:'1',
-          password:'19950808',
-          sex:'1',
-          age:'27',
-          createTime:'1995-8-8 11:22',
-          piclmg:'vdihfoidjcfd',
-          msgNum:'40',
-          sysMsgNum:'9',
-        }
-        ],        
+        currentPage:1,
+        pageSize:10,
+        tableData: [],        
         dialogFormVisible: false,
         form: {
           userId: '',
@@ -277,16 +188,12 @@ export default {
           age:'',
           createTime:'',
           isAvailable:'',
-          piclmg:'',
+          picImg:'',
           msgNum:'',
           sysMsgNum:'',
           lastSystemTime:''
         },
         formLabelWidth: '120px',
-        currentPage1: 5,
-        currentPage2: 5,
-        currentPage3: 5,
-        currentPage4: 4
       }
     },
     methods:{
@@ -338,6 +245,7 @@ export default {
         //     return c;
         //   }
       },
+
       deleteMember(row){
         console.log(row);
         this.$confirm('是否确认删除该用户?', '提示', {
@@ -355,14 +263,41 @@ export default {
             message: '已取消删除'
           });          
         });
+         this.$axios.post('http://localhost:8081/user/deleteUser', {
+         userId:row.userId
+  })
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+        this.reload();
       },
+
       changeUsermsg(){
-        this.$notify({
-          title: '成功',
-          message: '信息修改成功',
-          type: 'success'
-        });
-      }
+        this.$axios.post('http://localhost:8081/user/updateUser', {
+    data:this.form
+  })
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+      },
+
+      fetchData(){
+        this.$axios.get("http://localhost:8081/user").then(
+          response=>{
+            this.tableData=response.data;
+          },
+          response=>{
+            console.log("error");
+            alert("请求失败");
+          }
+        );
+      },
     }
 }
 
