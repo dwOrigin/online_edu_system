@@ -22,6 +22,7 @@
             placeholder="请输入内容"
             v-model="text"
             maxlength="50"
+            @keyup.enter.native="sendMsg"
             show-word-limit
         >
           <template slot="append">
