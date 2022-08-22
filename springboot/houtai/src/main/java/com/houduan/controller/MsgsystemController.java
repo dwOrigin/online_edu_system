@@ -69,6 +69,10 @@ public Page<Msgsystem> findPage(@RequestParam Integer pageNum,
 @RequestParam Integer pageSize) {
         return msgsystemService.page(new Page<>(pageNum, pageSize));
         }
-
+@GetMapping("/sendAllMsg")
+    public Result sendAllMsg(String message){
+    Result result = msgsystemService.sendAllMsg(message);
+    return result;
+}
 }
 

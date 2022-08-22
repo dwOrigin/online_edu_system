@@ -35,4 +35,9 @@ public interface IMsgsystemService extends IService<Msgsystem> {
 * */
      //添加通知
      Result addMsgSystem(Msgsystem msgSystem);
+
+//     发送系统消息，让所有的用户都接收到信息的内容
+     Result sendAllMsg(String message);
+
+
 }

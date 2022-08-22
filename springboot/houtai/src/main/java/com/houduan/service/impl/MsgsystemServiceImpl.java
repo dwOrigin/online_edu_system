@@ -6,6 +6,7 @@ import com.houduan.entity.Msgsystem;
 import com.houduan.entity.User;
 import com.houduan.mapper.MsgreceiveMapper;
 import com.houduan.mapper.MsgsystemMapper;
+import com.houduan.mapper.UserMapper;
 import com.houduan.service.IMsgsystemService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ import java.util.List;
 public class MsgsystemServiceImpl extends ServiceImpl<MsgsystemMapper, Msgsystem> implements IMsgsystemService {
 @Autowired
 private MsgsystemMapper msgsystemMapper;
+@Autowired
+private UserMapper userMapper;
 @Override
     public Result addMsgSystem(Msgsystem msgSystem){
     int i = msgsystemMapper.insert(msgSystem);
@@ -35,7 +38,25 @@ private MsgsystemMapper msgsystemMapper;
         return Result.error();
     }
     }
-@Override
+
+    @Override
+    public Result sendAllMsg(String message) {
+        List<User> userList = userMapper.selectList(null);
+        int i=0;
+        Msgsystem msgsystem = new Msgsystem();
+        for (;i<userList.size();i++)
+        {
+            msgsystem.setAcceptId(userList.get(i).getUserId());
+            msgsystem.setContent(message);
+        }
+        if (i>=1){
+            return Result.success();
+        }else {
+            return Result.error();
+        }
+    }
+
+    @Override
     public Result updateMsgSystem(Msgsystem msgsystem){
     int i= msgsystemMapper.updateById(msgsystem);
     if (i>=1){
