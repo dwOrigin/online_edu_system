@@ -19,14 +19,25 @@ import java.util.List;
  */
 @Service
 public interface IMsgsystemService extends IService<Msgsystem> {
-//    判断其是否为新的信息
-     Boolean orNew(Msgsystem message);
+
 //删除通知
      Result deleteMsgSystem(Integer integer);
-//添加通知
-     Result addMsgSystem(Msgsystem msgSystem);
+
+
 //修改通知
      Result updateMsgSystem(Msgsystem msgsystem);
 //    初始化界面，返回所有数据
      List<Msgsystem> getAll();
+
+
+/*
+* 后台端，自动完成相关调用
+* */
+     //添加通知
+     Result addMsgSystem(Msgsystem msgSystem);
+
+//     发送系统消息，让所有的用户都接收到信息的内容
+     Result sendAllMsg(String message);
+
+
 }

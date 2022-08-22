@@ -1,9 +1,13 @@
 package com.houduan.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -29,13 +33,15 @@ public class Msgreceive implements Serializable {
     private Integer id;
 
     @ApiModelProperty("添加时间")
-    private LocalDateTime addTime;
+    @TableField(fill = FieldFill.INSERT)
+    private Date addTime;
 
     @ApiModelProperty("发送人")
     private Integer cusId;
 
     @ApiModelProperty("更新时间")
-    private LocalDateTime updateTime;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Date updateTime;
 
     @ApiModelProperty("内容")
     private String content;

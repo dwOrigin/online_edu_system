@@ -1,9 +1,13 @@
 package com.houduan.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -34,8 +38,8 @@ public class Comment implements Serializable {
     private Integer totalId;
 
     private String content;
-
-    private LocalDateTime addtime;
+    @TableField(fill = FieldFill.INSERT)
+    private Date addtime;
 
     private Integer otherId;
 
