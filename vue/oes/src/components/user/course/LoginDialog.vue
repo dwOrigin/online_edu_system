@@ -267,7 +267,9 @@ export default {
         //     'phone': phone
         //   }
         // });
-        let promise = new Promise((a)=>{a({data:{code: 8888}})});
+        let promise = new Promise((a)=>{a({data:
+              {code: 8888}
+        })});
         promise.then((res)=>{
           this.registerForm.codeReceived = res.data.code.toString();
           this.sendCodeInterval = 60;
@@ -349,8 +351,7 @@ export default {
                     starCourseNum: 6,
                   //  所有看过的课程数
                     historyNum: 5,
-                    phonenumber:137121212121,
-                    email:'2767332717@qq.com',
+                    phoneNumber: '137121212121',
                     password:'1111'
                   }
                 }

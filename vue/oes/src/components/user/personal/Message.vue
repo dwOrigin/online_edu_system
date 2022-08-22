@@ -1,15 +1,21 @@
 <template>
 <div class="message">
   <div class="time">
-    2022年7月27日&nbsp;&nbsp;16:27
+    {{message.time}}
   </div>
-  <div class="message-box">
+  <div ref="mb">
     <el-avatar
         :size="40"
-        style="margin: 0 10px"
-        src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-    <div class="message-content">
-      今天天气真不错! 今天天气真不错!今天天气真不错!今天天气真不错!
+        style="margin: 0 10px; order: 1"
+        :src="message.senderAvatarUrl">
+      <span v-if="message.senderAvatarUrl === ''">
+        {{message.senderName}}
+      </span>
+    </el-avatar>
+    <div
+        style="order: 2"
+        class="message-content" ref="mc">
+      {{message.content}}
     </div>
   </div>
 </div>
@@ -17,11 +23,38 @@
 
 <script>
 export default {
-  name: "Message"
+  name: "Message",
+  props:{
+    msg:{},
+  },
+  data(){
+      return {
+          message: this.msg,
+          user: {}
+      };
+  },
+  mounted() {
+    this.user = JSON.parse(window.localStorage.getItem('user'));
+    if(this.user.id === this.msg.senderId){
+      this.$refs.mc.className = 'message-content-self';
+      this.$refs.mb.className = 'message-box-right';
+    }else{
+      this.$refs.mc.className = 'message-content';
+      this.$refs.mb.className = 'message-box-left';
+    }
+  }
 }
 </script>
 
 <style scoped>
+.message-content-self{
+  width: 70%;
+  background-color:#409eff;
+  padding: 10px 20px;
+  border-bottom-right-radius: 15px;
+  border-bottom-left-radius: 15px;
+  border-top-left-radius: 15px;
+}
 .message-content{
   width: 70%;
   background-color: #F4F5F7;
@@ -30,8 +63,13 @@ export default {
   border-bottom-left-radius: 15px;
   border-top-right-radius: 15px;
 }
-.message-box{
+.message-box-left{
   display: flex;
+  justify-content: left;
+}
+.message-box-right{
+  display: flex;
+  flex-direction: row-reverse;
 }
 .time{
   text-align: center;
