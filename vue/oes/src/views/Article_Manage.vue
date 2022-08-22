@@ -112,8 +112,13 @@
 
 <script>
 export default{
-    activated: function() {
+    inject:['reload'],
+  name:'Article_Manage',
+  activated: function() {
  this.getCase()
+ },
+ mounted(){
+  this.fetchData()
  },
   data() {
       return {
@@ -210,7 +215,18 @@ export default{
       },
       addArticle(){
         this.$router.push('/add_article_manage')
-      }
+      },
+       fetchData(){
+        this.$axios.get("http://localhost:8081/article").then(
+          response=>{
+            this.tableData=response.data;
+          },
+          response=>{
+            console.log("error");
+            alert("请求失败");
+          }
+        );
+      },
      }
 }
 </script>

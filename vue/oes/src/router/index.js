@@ -1,8 +1,19 @@
 import VueRouter from 'vue-router';
 import Vue from "vue";
 
-//用户主页
 import Home from "@/components/user/Home";
+import PersonalCenter from "@/components/user/personal/PersonalCenter";
+import CourserSearchLayout from "@/components/user/course/CourserSearchLayout";
+import CourseRecommend from "@/components/user/course/CourseRecommend";
+import CourseMainLayout from "@/components/user/course/CourseMainLayout";
+import TeacherCenter from "@/components/user/Teacher/TeacherCenter";
+import TeacherPage from "@/components/user/Teacher/TeacherPage";
+import QAPMain from "@/components/user/qap/QAPMain";
+import PInfo from "@/components/user/personal/PInfo";
+import History from "@/components/user/personal/History";
+import Star from "@/components/user/personal/Star";
+import MessageCenter from "@/components/user/personal/MessageCenter";
+import MyQuestion from "@/components/user/personal/MyQuestion";
 import Article_Manage from "@/views/Article_Manage";
 import Lesson_Manage from "@/views/Lesson_Manage";
 import Member_Manage from "@/views/Member_Manage";
@@ -12,14 +23,12 @@ import Notice_Manage from"@/views/Notice_Manage";
 import Add_Article_Manage from"@/views/Add_Article_Manage";
 import Add_Lesson_Manage from "@/views/Add_Lesson_Manage";
 import Modify_Lesson_Manage from "@/views/Modify_Lesson_Manage";
-import Modify_Article_Manage from "@/views/Modify_Article_Manage";
+import Modify_Article_Manage from "@/views/Modify_Lesson_Manage";
 import Modify_QA_Manage from "@/views/Modify_QA_Manage";
-import PersonalCenter from "@/components/user/personal/PersonalCenter";
-import CourserSearchLayout from "@/components/user/course/CourserSearchLayout";
-import CourseRecommend from "@/components/user/course/CourseRecommend";
-import CourseMainLayout from "@/components/user/course/CourseMainLayout";
-import TeacherCenter from "@/components/user/Teacher/TeacherCenter";
-import QAPMain from "@/components/user/qap/QAPMain";
+
+import QuestionPage from "@/components/user/qap/QuestionPage";
+import PassagePage from "@/components/user/qap/PassagePage";
+
 
 const router = new VueRouter({
     routes: [
@@ -41,7 +50,6 @@ const router = new VueRouter({
                     component: PersonalCenter,
                     meta: {title: '个人中心', changeTitle: true},
                     beforeEnter(to, from, next){
-                        console.log('路由到个人中心');
                         //必须先登录才能跳转
                         let user = window.localStorage.getItem('user');
                         if(user != null){
@@ -49,12 +57,19 @@ const router = new VueRouter({
                         }else{
                             Vue.prototype.$message.info('请先登录或注册账号');
                         }
-                    }
+                    },
+                    children:[
+                        {path:'/home/personal/pinfo',component:PInfo,meta: {title: '个人中心', changeTitle: true}},
+                        {path:'/home/personal/history',component:History,meta: {title: '个人中心', changeTitle: true}},
+                        {path:'/home/personal/star',component:Star,meta: {title: '个人中心', changeTitle: true}},
+                        {path:'/home/personal/message',component:MessageCenter,meta: {title: '个人中心', changeTitle: true}},
+                        {path:'/home/personal/question',component:MyQuestion,meta: {title: '个人中心', changeTitle: true}}
+                    ]
                 },
                 {
                     //搜索结果页面
                     name: 'search',
-                    path: '/home/search',
+                    path: '/home/search/:select?/:searchKey?',
                     component: CourserSearchLayout,
                     meta: {title: '搜索课程', changeTitle: true}
                 },
@@ -63,31 +78,54 @@ const router = new VueRouter({
                     name: 'recommend',
                     path: '/home/recommend',
                     component: CourseRecommend,
-                    meta: {changeTitle: false}
+                    meta: {title: '欢迎访问在线教育系统!', changeTitle: true},
                 },
                 {
                     //课程播放页面
                     name: 'course',
-                    path: 'home/course',
+                    path: 'home/course/:courseId?',
                     component: CourseMainLayout,
                     meta: {title: '课程播放', changeTitle: true}
                 },
                 {
-                    //讲师页面
+                    //讲师中心页面
                     name: 'teacher',
                     path: 'home/teacher',
                     component: TeacherCenter,
                     meta: {title: '讲师中心', changeTitle: true}
                 },
                 {
+                    //单独讲师页面
+                    name: 'teacherPage',
+                    path: 'home/teacherPage/:teacherId?',
+                    component: TeacherPage,
+                    meta: {changeTitle: false}
+                },
+                {
                     //问答和文章页面
                     name: 'qap',
-                    path: 'home/qap',
+                    path: 'home/qap/:select?',
                     component: QAPMain,
                     meta: {title: '问答和文章', changeTitle: true}
+                },
+                {
+                    //问题详情页面
+                    name: 'questionPage',
+                    path: 'home/questionPage',
+                    component: QuestionPage,
+                    meta: {changeTitle: false}
+                },
+                {
+                    //文章详情页面
+                    name: 'passagePage',
+                    path: 'home/passagePage',
+                    component: PassagePage,
+                    meta: {changeTitle: false}
                 }
             ]
         },
+
+
         {
             name:'article_manage',
             path:'/article_manage',
@@ -153,6 +191,7 @@ const router = new VueRouter({
             path:'/modify_qa_manage',
             component:Modify_QA_Manage,
             meta:{title:'问答详情',changeTitle:true}
+
         }
     ]
 });

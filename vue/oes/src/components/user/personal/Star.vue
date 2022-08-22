@@ -1,9 +1,8 @@
 <template>
 <div class="star">
   <div class="header">
-    <el-input placeholder="搜索已收藏课程" v-model="input3" class="input-with-select">
-      <el-button slot="append" icon="el-icon-search"></el-button>
-
+    <el-input placeholder="搜索已收藏课程" v-model="searchKey" @keyup.enter.native="handleSearch" class="input-with-select">
+      <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
     </el-input>
 <!--    <el-button style="margin: 0 50px">清除所有记录</el-button>-->
   </div>
@@ -22,6 +21,7 @@ export default {
   },
   data(){
       return {
+        searchKey:'',
         number: 10
       };
   },
@@ -39,6 +39,11 @@ export default {
       if (scrollTop + clientHeight >= scrollHeight) {
         this.number += 3;
       }
+    },
+    handleSearch() {
+      //后端返回List
+      this.$bus.$emit('searchInputChanged',this.searchKey);
+      this.searchKey='';
     }
   }
 }

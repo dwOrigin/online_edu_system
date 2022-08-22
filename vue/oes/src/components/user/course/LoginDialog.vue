@@ -3,6 +3,7 @@
       class="dialog"
       :visible.sync="isVisible"
       append-to-body
+      modal-append-to-body
       :close-on-click-modal="false"
       :show-close="false"
       :center="true"
@@ -105,6 +106,7 @@
                 <el-form-item prop="phone">
                     <el-input
                         class="inputBox"
+                        :disabled="codeIsRight"
                         prefix-icon="el-icon-phone-outline"
                         v-model="registerForm.phone" placeholder="手机号">
                       <template slot="append">
@@ -284,6 +286,7 @@ export default {
     validateCode(){
       if(this.registerForm.code === this.registerForm.codeReceived && this.registerForm.codeReceived !== null){
         this.codeIsRight = true;
+        //防止用户验证成功后修改电话号码
       }else{
         this.$message.error('验证码错误');
       }
@@ -345,7 +348,10 @@ export default {
                     //  已收藏课程数量
                     starCourseNum: 6,
                   //  所有看过的课程数
-                    historyNum: 5
+                    historyNum: 5,
+                    phonenumber:137121212121,
+                    email:'2767332717@qq.com',
+                    password:'1111'
                   }
                 }
               });

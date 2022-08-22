@@ -5,14 +5,15 @@
     <el-link :underline="false"
              @click="$router.push({
                 name: tag.routerName,
-                query: tag.query
+                params: tag.paramsM,
+                query:tag.query
              })"
              class="tag-item">{{tag.title}}</el-link>
   </li>
   <el-link :underline="false"
            @click="$router.push({
               name: 'personal',
-              query:{select: ''}
+              query:{select:'pinfo'}
            });"
            class="tag-item">个人中心</el-link>
   <el-link :underline="false"
@@ -21,7 +22,7 @@
   <a href="#"
      @click="$router.push({
               name: 'personal',
-              query:{select: ''}
+              query:{select: 'pinfo'}
            });"
      class="mini-img-container" v-if="user != null">
     <el-avatar size="small" :src="user.avatarUrl">
@@ -40,8 +41,9 @@ export default {
   data(){
     return{
       tagObjList: [
-        {title: '文章', routerName: 'qap', query:{select: 'p'}},
-        {title: '问答', routerName: 'qap', query:{select: 'q'}},
+        //  使用params避免重复路由问题(尝试避免, 但失败了)
+        {title: '文章', routerName: 'qap', paramsM:{select: 'p'}},
+        {title: '问答', routerName: 'qap', paramsM:{select: 'q'}},
         {title: '讲师', routerName: 'teacher', query:{}},
       ],
       user: null

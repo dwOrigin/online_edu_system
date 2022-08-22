@@ -1,45 +1,131 @@
 <template>
-<div class="answer">
-  <div style="display: flex; align-items: center">
-    <el-avatar
-        src="https://pic4.zhimg.com/v2-d41c2ceaed8f51999522f903672a521f_xs.jpg?source=1940ef5c"
-        shape="square"></el-avatar>
-    &nbsp;&nbsp;&nbsp;
-    <span style="font-size: x-small; font-weight: bold; color:#4C4444;">匿名用户</span>
-  </div>
-  <div class="content">
-    因为那是他们向往的生活，不是我们的，一群玩乐一天就收入百十万的人表演给一群可能一生也存不到百十万的普通人看的所谓向往的生活，在镜头前的做作和表演痕迹明显，早几期的老戏骨们表演出来的戏外家常人生的有趣片断没有了，没什么水花的新人来了反而很做作，明显是秀给大家看，没看点，老成员的千篇一律没新意，没有真正接地气的环节，生活难度毫无挑战，一群人去现成营地野营的感觉，看他们还不如我们自己去。
-  </div>
-  <div class="footer">
-    <div>发布于 2022-08-18 11:06</div>
-    <div>
-      <el-button type="primary" size="small" :plain="true">赞同</el-button>
+  <div class="answer">
+    <div style="display: flex; align-items: center">
+      <el-avatar
+          :src="dataObj.commenterAvatarUrl"
+          shape="square">
+        <span v-if="dataObj.commenterAvatarUrl === ''">{{ dataObj.commenterName }}</span>
+      </el-avatar>
+      &nbsp;&nbsp;&nbsp;
+      <span style="font-size: x-small; font-weight: bold; color:#4C4444;">{{ dataObj.commenterName }}</span>
     </div>
-  </div>
+    <div class="content">
+      {{ dataObj.content }}
+    </div>
+    <div class="footer">
+      <div>发布于 {{ dataObj.time }}</div>
+      <div>
+        <el-button
+            @click="accept"
+            type="primary" size="small" :plain="true">{{ likeC }}({{ dataObj.like }})
+        </el-button>
+      </div>
+    </div>
 
-</div>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "Answer"
+  name: "Answer",
+  props: {
+    obj: {},
+    typeM: {}
+  },
+  data() {
+    return {
+      dataObj: this.obj,
+      likeC: '赞同',
+      type: this.typeM
+    };
+  },
+  methods: {
+    accept() {
+      let usr = window.localStorage.getItem('user');
+      if (usr === null) {
+        this.$bus.$emit('OpenLoginDialog');
+      } else {
+        usr = JSON.parse(usr);
+
+        if (this.type === 'PassageComment') {
+          //点赞文章评论
+          // let promise = this.$axios({
+          //   url: '',
+          //   method: '',
+          //   data:{
+          //     uId: usr.id,
+          //     cId: this.dataObj.cId
+          //   }
+          // });
+          let promise = new Promise((a) => {
+            a({
+              data: {
+                result: true
+              }
+            });
+          });
+          promise.then((res) => {
+            let ret = res.data.result;
+            if (ret) {
+              this.likeC = '已赞同';
+              this.dataObj.like++;
+            } else {
+              this.$message.error('请勿重复操作');
+            }
+          }).catch((err) => {
+            this.$message.error('你的网络迷路了');
+          });
+        } else if (this.type === 'Answer') {
+          //赞同回答
+          // let promise = this.$axios({
+          //   url: '',
+          //   method: '',
+          //   data: {
+          //         uId: usr.id,
+          //         aId: this.dataObj.cId
+          //   }
+          // });
+          let promise = new Promise((a) => {
+            a({
+              data: {
+                result: false
+              }
+            });
+          });
+          promise.then((res) => {
+            let ret = res.data.result;
+            if (ret) {
+              this.likeC = '已赞同';
+              this.dataObj.like++;
+            } else {
+              this.$message.error('请勿重复操作');
+            }
+          }).catch((err) => {
+            this.$message.error('你的网络迷路了');
+          });
+        }
+      }
+    }
+  }
 }
 </script>
 
 <style scoped>
-.footer{
+.footer {
   color: #B8BFBC;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.content{
+
+.content {
   font-size: x-small;
   font-weight: lighter;
   margin-top: 20px;
   margin-bottom: 20px;
 }
-.answer{
+
+.answer {
   padding-top: 20px;
   font-size: x-small;
   padding-bottom: 20px;

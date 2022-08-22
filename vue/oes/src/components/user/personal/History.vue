@@ -1,11 +1,10 @@
 <template>
 <div class="history">
   <div class="header">
-    <el-input placeholder="搜索历史记录" v-model="input3" class="input-with-select">
-      <el-button slot="append" icon="el-icon-search"></el-button>
-
+    <el-input placeholder="搜索历史记录" v-model="searchKey" @keyup.enter.native="handleSearch" class="input-with-select">
+      <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
     </el-input>
-    <el-button style="margin: 0 50px">清除所有记录</el-button>
+    <el-button style="margin: 0 50px" @click="deleteall">清除所有记录</el-button>
   </div>
   <div class="content">
     <course-record v-for="obj in number" :key="obj"></course-record>
@@ -19,7 +18,8 @@ export default {
   name: "History",
   data(){
       return {
-        number: 10
+        number: 10,
+        searchKey:""
       };
   },
   components: {
@@ -39,6 +39,14 @@ export default {
       if (scrollTop + clientHeight >= scrollHeight) {
         this.number += 3;
       }
+    },
+    handleSearch() {
+      //后端返回List
+      this.$bus.$emit('searchInputChanged',this.searchKey);
+      this.searchKey='';
+    },
+    deleteall(){
+      console.log(0);
     }
   }
 }

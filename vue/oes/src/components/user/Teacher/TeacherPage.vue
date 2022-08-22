@@ -4,29 +4,35 @@
       <el-avatar
           style="margin: 20px"
           :size="70"
-          src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-      <div>
-        <div>
-          李灵灵&nbsp;&nbsp;&nbsp;
-          <el-tag type="warning" size="mini">金牌讲师</el-tag>
+          :src="teacher.avatarUrl">
+        <span v-if="teacher.avatarUrl === ''">{{ teacher.name }}</span>
+      </el-avatar>
+      <div style="max-width: 85%">
+        <div style="margin-top: 20px">
+          {{ teacher.name }}&nbsp;&nbsp;&nbsp;
+          <el-tag type="warning" size="mini">{{ teacher.nikeName }}</el-tag>
         </div>
-        <div style="font-size: x-small; color: #999999; margin-top: 20px">
-          我叫李玲玲, 不仅是一个好僵尸, 还是一个好僵尸. 如果你喜欢的话, 亦可以叫我好僵尸
+        <div style="font-size: x-small; color: #999999; margin-top: 20px; margin-bottom: 20px">
+          {{ teacher.intro }}
         </div>
       </div>
     </div>
     <div class="body">
       <div style="margin: 50px; font-size: large; color: teal; font-style: oblique">Ta的课程</div>
       <div class="result-table">
-        <course-card v-for="course in 20" :key="course">
+        <course-card v-for="c in
+        teacher.courses.slice((curPage-1)*pageSize, curPage*pageSize)" :course="c">
         </course-card>
       </div>
     </div>
     <div class="footer">
       <el-pagination
           background
+          hide-on-single-page
+          :page-size="pageSize"
+          :current-page="curPage"
           layout="prev, pager, next"
-          :total="1000">
+          :total="teacher.courses.length">
       </el-pagination>
     </div>
   </div>
@@ -34,25 +40,92 @@
 
 <script>
 import CourseCard from "@/components/user/course/CourseCard";
+import axios from "axios";
+
 export default {
   name: "TeacherPage",
-  components:{
+  components: {
     CourseCard
+  },
+  data() {
+    return {
+      teacher: {
+        avatarUrl: '',
+        name: '',
+        nikeName: "",
+        intro: '',
+        courses: []
+      },
+      pageSize: 12,
+      curPage: 1
+    };
+  },
+  methods: {
+    refreshTeacher(id) {
+      //通过讲师id获取讲师详细信息
+      // let promise = this.$axios({
+      //     url: '',
+      //     method: '',
+      //     data:{
+      //       teacherId: id
+      //     }
+      // });
+      let promise = new Promise((a) => {
+        a({
+          data: {
+            teacher: {
+              avatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+              name: 'JEAN',
+              nikeName: "银牌讲师",
+              intro: '我我我我问黄ahfdjdhsajkfhkfa我我我我问黄ahfdjdhsajkfhkfa我我我我问黄ahfdjdhsajkfhkfa我我我我问黄ahfdjd' +
+                  '我我我我问黄ahfdjdhsajkfhkfa我我我我问黄ahfdjdhsajkfhkfa我我我我问黄ahfdjdhsajkfhkfa我我我我问黄ahfdjdhsajkfhkfa',
+              courses: [
+                {
+                  id: 345,
+                  imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
+                  title: '[量学] 一秒钟一个单词 一小时考过四级! 你值得拥有',
+                  teacher: 'bilbil大学',
+                  chapterNum: 16,
+                  studentNum: 1000,
+                  likeRate: 87
+                }
+              ]
+            }
+          }
+        });
+      });
+      promise.then((res) => {
+        //@test
+        this.teacher = res.data.teacher;
+        this.teacher.courses = [...this.teacher.courses, ...this.teacher.courses];
+        this.teacher.courses = [...this.teacher.courses, ...this.teacher.courses];
+        this.teacher.courses = [...this.teacher.courses, ...this.teacher.courses];
+        this.teacher.courses = [...this.teacher.courses, ...this.teacher.courses];
+        this.teacher.courses = [...this.teacher.courses, ...this.teacher.courses];
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });
+    }
+  },
+  mounted() {
+    this.refreshTeacher(this.$route.params.teacherId);
   }
 }
 </script>
 
 <style scoped>
-.footer{
+.footer {
   text-align: center;
   margin-top: 50px;
 }
-.result-table{
+
+.result-table {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
 }
+
 .header {
   display: flex;
   align-items: center;

@@ -117,8 +117,13 @@
 
 <script>
 export default{
-    activated: function() {
+    inject:['reload'],
+  name:'Lesson_Manage',
+  activated: function() {
  this.getCase()
+ },
+ mounted(){
+  this.fetchData()
  },
   data() {
       return {
@@ -272,7 +277,18 @@ export default{
       },
       addLesson(){
         this.$router.push('/add_lesson_manage')
-      }
+      },
+       fetchData(){
+        this.$axios.get("http://localhost:8081/course").then(
+          response=>{
+            this.tableData=response.data;
+          },
+          response=>{
+            console.log("error");
+            alert("请求失败");
+          }
+        );
+      },
      }
 }
 </script>

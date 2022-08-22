@@ -57,7 +57,7 @@
         </div>
       </div>
     </div>
-    <login-dialog></login-dialog>
+
   </div>
 </template>
 

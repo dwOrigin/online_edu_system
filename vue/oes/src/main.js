@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
+// axios、request请求
+import request from "@/utils/request"
 
 //axios导入
 import axios from "axios";
@@ -30,7 +32,7 @@ Vue.use(VideoPlayer)
 
 //关闭生产提示
 Vue.config.productionTip = false
-
+Vue.prototype.request=request
 new Vue({
   render: h => h(App),
   router: router,

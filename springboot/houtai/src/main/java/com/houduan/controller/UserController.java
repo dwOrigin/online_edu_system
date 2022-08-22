@@ -54,5 +54,8 @@ public Result deleteUser(@RequestBody User user){return userService.deleteUser(u
 
 @PostMapping("/updateUser")
 public Result updateUser(@RequestBody User user){return userService.updateUser(user);}
+
+@GetMapping("/sendCode")
+public String sendCode(String mobile){return userService.sendCode(mobile);}
         }
 

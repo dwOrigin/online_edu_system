@@ -20,12 +20,17 @@
       </el-row>
       <el-row class="hot-title">
         <div style="flex-grow: 1">热门课程推荐</div>
-        <el-link :underline="false" type="primary">换一批<i class="el-icon-refresh"></i></el-link>
-        <!--      <div class="myRefresh">换一批<i class="el-icon-refresh"></i></div>-->
+        <el-link :underline="false"
+                 @click="refreshCourse"
+                 type="primary">换一批<i class="el-icon-refresh"></i></el-link>
       </el-row>
       <el-row class="divider"></el-row>
       <el-row class="myHot">
-        <course-card v-for="obj in 10" :key="obj"></course-card>
+        <course-card
+            v-for="course in hotCourseList"
+            :course="course"
+        >
+        </course-card>
       </el-row>
     </div>
   </div>
@@ -40,17 +45,136 @@ export default {
   name: "CourseRecommend",
   components: {
     UserCard,
-    CourseCard
+    CourseCard,
+  },
+  data() {
+    return {
+      hotCourseList: []
+    };
+  },
+  methods: {
+    //点击换一批调用
+    refreshCourse() {
+      //获取10门推荐课程
+      // let promise = this.$axios({
+      //   url: '',
+      //   method: 'post',
+      // });
+      let promise = new Promise((a)=>{
+        a({data:{courseList: [
+              {
+                id: 9999,
+                imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
+                title: '课成标题1',
+                teacher: '僵尸1',
+                chapterNum: 1,
+                studentNum: 1086,
+                likeRate: 10
+              },
+              {
+                id: 9999,
+                imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
+                title: '课成标题2',
+                teacher: '僵尸2',
+                chapterNum: 121,
+                studentNum: 108126,
+                likeRate: 10
+              },
+              {
+                id: 9999,
+                imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
+                title: '课成标题3',
+                teacher: '僵尸3',
+                chapterNum: 1,
+                studentNum: 1086,
+                likeRate: 10
+              },
+              {
+                id: 9999,
+                imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
+                title: '课成标题4',
+                teacher: '僵尸4',
+                chapterNum: 1,
+                studentNum: 1086,
+                likeRate: 10
+              },
+              {
+                id: 9999,
+                imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
+                title: '课成标题5',
+                teacher: '僵尸5',
+                chapterNum: 1,
+                studentNum: 1086,
+                likeRate: 10
+              },
+              {
+                id: 9999,
+                imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
+                title: '课成标题6',
+                teacher: '僵尸6',
+                chapterNum: 1,
+                studentNum: 1086,
+                likeRate: 10
+              },
+              {
+                id: 9999,
+                imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
+                title: '课成标题7',
+                teacher: '僵尸7',
+                chapterNum: 1,
+                studentNum: 1086,
+                likeRate: 10
+              },
+              {
+                id: 9999,
+                imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
+                title: '课成标题8',
+                teacher: '僵尸8',
+                chapterNum: 1,
+                studentNum: 1086,
+                likeRate: 10
+              },
+              {
+                id: 9999,
+                imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
+                title: '课成标题9',
+                teacher: '僵尸9',
+                chapterNum: 1,
+                studentNum: 1086,
+                likeRate: 10
+              },
+              {
+                id: 112,
+                imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
+                title: '课成标题10',
+                teacher: '僵尸10',
+                chapterNum: 1,
+                studentNum: 1086,
+                likeRate: 10
+              },
+            ]}});
+      });
+      promise.then((res) => {
+        let cl = res.data.courseList;
+        this.hotCourseList = cl;
+      }).catch((err) => {
+        this.$message.error("你的网络迷路了");
+      });
+    }
+  },
+  mounted() {
+    this.refreshCourse();
   }
 }
 </script>
 
 <style scoped>
-.myHot{
+.myHot {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
 }
+
 /*.myRefresh:hover {*/
 /*  color: red;*/
 /*}*/

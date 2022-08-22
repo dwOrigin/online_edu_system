@@ -35,8 +35,9 @@
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
   <el-form-item label="用户类型" prop="region">
     <el-select v-model="ruleForm.region" placeholder="请选择用户类型">
-      <el-option label="用户一" value="shanghai"></el-option>
-      <el-option label="用户二" value="beijing"></el-option>
+      <el-option label="全体用户" value="全体用户"></el-option>
+      <el-option v-for="user in users"  :key='user.userId'
+                 :label="user.userName" :value="user.userId"></el-option>
     </el-select>
   </el-form-item>
   <el-form-item label="消息内容" prop="desc">
@@ -55,7 +56,7 @@
 
 <script>
 export default{
-    activated: function() {
+  activated: function() {
  this.getCase()
  },
   data() {
@@ -63,6 +64,22 @@ export default{
        ruleForm: {
           region: '',
           desc: ''
+        },
+        users:{
+          userId:'',
+          userName:'',
+          showName:'',
+          mobile:'',
+          email:'',
+          lastSystemTime:'',
+          isAvailable:'',
+          password:'',
+          sex:'',
+          age:'',
+          createTime:'',
+          piclmg:'',
+          msgNum:'',
+          sysMsgNum:'',
         },
         rules: {
           region: [
@@ -75,7 +92,7 @@ export default{
       };
       
   },
-     methods:{
+  methods:{
         gotoMember(){
             this.$router.push('/member_manage')
         },
@@ -108,7 +125,15 @@ export default{
       resetForm(formName) {
         this.$refs[formName].resetFields();
       }
-     }
+  },
+  mounted(){
+    this.request
+    .get("http://localhost:8081/user/")
+    .then((res)=>{
+      this.users=res;
+      console.log(this.users);
+    })
+  }
 }
 </script>
 

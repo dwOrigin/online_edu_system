@@ -1,24 +1,25 @@
 <template>
-<div class="main">
-  <bread-crumb></bread-crumb>
-  <course-search-result></course-search-result>
-</div>
+  <div class="main">
+    <course-search-result></course-search-result>
+  </div>
 </template>
 
 <script>
 import courseSearchResult from "@/components/user/course/CourseSearchResult";
-import BreadCrumb from "@/components/user/home/BreadCrumb";
+
 export default {
   name: "CourserSearchLayout",
-  components:{
+  components: {
     courseSearchResult,
-    BreadCrumb
+  },
+  mounted() {
+    this.$bus.$emit('searchInputChanged',this.$route.params.select, this.$route.params.searchKey);
   }
 }
 </script>
 
 <style scoped>
-.main{
+.main {
   margin: 20px auto;
   width: 1100px;
 }

@@ -11,25 +11,25 @@
         <span class="first-category">IT技术</span>
         <div class="category-list">
           <div class="item" v-for="tag in tagList.it">
-            <el-button round size="small" @click="handleClickTag(tag)">{{tag.title}}</el-button>
+            <el-button round size="small" @click="handleClickTag(tag)">{{ tag.title }}</el-button>
           </div>
         </div>
         <span class="first-category">考试</span>
         <div class="category-list">
           <div class="item" v-for="tag in tagList.exam">
-            <el-button round size="small" @click="handleClickTag(tag)">{{tag.title}}</el-button>
+            <el-button round size="small" @click="handleClickTag(tag)">{{ tag.title }}</el-button>
           </div>
         </div>
         <span class="first-category">职业技能</span>
         <div class="category-list">
           <div class="item" v-for="tag in tagList.skill">
-            <el-button round size="small" @click="handleClickTag(tag)">{{tag.title}}</el-button>
+            <el-button round size="small" @click="handleClickTag(tag)">{{ tag.title }}</el-button>
           </div>
         </div>
         <span class="first-category">兴趣生活</span>
         <div class="category-list">
           <div class="item" v-for="tag in tagList.hobby">
-            <el-button round size="small" @click="handleClickTag(tag)">{{tag.title}}</el-button>
+            <el-button round size="small" @click="handleClickTag(tag)">{{ tag.title }}</el-button>
           </div>
         </div>
 
@@ -41,21 +41,24 @@
         v-model="searchKey" class="input-with-select">
       <el-button type="primary" slot="suffix"
                  @click="handleSearch"
-                 class="search-button">搜索</el-button>
+                 class="search-button">搜索
+      </el-button>
     </el-input>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "NavLeft",
-  data(){
-    return{
+  data() {
+    return {
       select: '',
       searchKey: '',
       //分类标签集合
-      tagList:{
-        it:[
+      tagList: {
+        it: [
           {title: '分类标签'},
           {title: '分类标签'},
           {title: '分类标签'},
@@ -64,20 +67,20 @@ export default {
           {title: '分类标签'},
           {title: '分类标签'},
         ],
-        exam:[
+        exam: [
           {title: '分类标签'},
           {title: '分类标签'},
           {title: '分类标签'},
           {title: '分类标签'},
           {title: '分类标签'},
         ],
-        skill:[
+        skill: [
           {title: '分类标签'},
           {title: '分类标签'},
           {title: '分类标签'},
           {title: '分类标签'},
         ],
-        hobby:[
+        hobby: [
           {title: '分类标签'},
           {title: '分类标签'},
           {title: '分类标签'},
@@ -85,40 +88,43 @@ export default {
       }
     }
   },
-  methods:{
+  methods: {
     //点击分类栏分类标签触发!
-    handleClickTag(tag){
+    handleClickTag(tag) {
       this.select = tag.title;
       this.searchKey = '';
       this.handleSearch();
     },
     //点击搜索或enter触发
-    handleSearch(){
-      if(this.select === '' && this.searchKey === ''){
+    handleSearch() {
+      if (this.select === '' && this.searchKey === '') {
         return;
       }
-      //跳到搜索结果界面
       this.$router.push({
         name: 'search',
-        query:{
-          searchSelect: this.select,
-          searchKey: this.searchKey
+        params:{
+          select: this.select || undefined,
+          searchKey: this.searchKey || undefined
         }
-      })
+      });
+      this.$bus.$emit('searchInputChanged', this.select, this.searchKey);
+      this.searchKey = '';
+      this.select = '';
     }
-  }
+  },
 }
 </script>
 
 <style scoped>
-.hoverC:hover{
+.hoverC:hover {
   cursor: pointer;
 }
-.search-button{
+
+.search-button {
   transform: translateX(5px);
 }
 
-.input-with-select{
+.input-with-select {
   width: 250px;
 }
 

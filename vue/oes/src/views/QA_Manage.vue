@@ -116,8 +116,13 @@
 
 <script>
 export default{
-    activated: function() {
+    inject:['reload'],
+  name:'QA_Manage',
+  activated: function() {
  this.getCase()
+ },
+ mounted(){
+  this.fetchData()
  },
   data() {
       return {
@@ -211,6 +216,17 @@ export default{
       },
       filterTag(value, row) {
         return row.type === value;
+      },
+       fetchData(){
+        this.$axios.get("http://localhost:8081/questions").then(
+          response=>{
+            this.tableData=response.data;
+          },
+          response=>{
+            console.log("error");
+            alert("请求失败");
+          }
+        );
       },
      }
 }
