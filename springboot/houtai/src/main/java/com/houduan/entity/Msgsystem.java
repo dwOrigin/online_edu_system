@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -29,7 +31,8 @@ public class Msgsystem implements Serializable {
       @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    private LocalDateTime addTime;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Date addTime;
 
     private String content;
 

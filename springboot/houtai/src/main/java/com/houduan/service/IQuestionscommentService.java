@@ -1,7 +1,12 @@
 package com.houduan.service;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.houduan.common.Result;
+import com.houduan.entity.Questions;
 import com.houduan.entity.Questionscomment;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +17,15 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2022-08-15
  */
 public interface IQuestionscommentService extends IService<Questionscomment> {
+//    增加问题评论
+    Result addComment(Questionscomment questionscomment);
+/*
+  * 删除某个问题的评论
+*
+*/
+    Result deleteComment(Questionscomment questionscomment);
+//问答的评论是单条的，显示出该问题的所有回答
+//    显示出某个问题的全部回答
+     List<Questionscomment> getIntactComments(Questions questions);
 
 }

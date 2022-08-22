@@ -1,7 +1,9 @@
 package com.houduan.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.houduan.common.Result;
 import com.houduan.entity.Msgreceive;
+import com.houduan.entity.Msgsystem;
 import com.houduan.mapper.MsgreceiveMapper;
 import com.houduan.service.IMsgreceiveService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -20,13 +22,75 @@ import java.util.List;
  */
 @Service
 public class MsgreceiveServiceImpl extends ServiceImpl<MsgreceiveMapper, Msgreceive> implements IMsgreceiveService {
-    @Autowired
-    MsgreceiveMapper mapper;
+@Autowired
+private MsgreceiveMapper mapper;
+    @Override
+    public List<Msgreceive> showMsgReceive(Integer integer) {
+        QueryWrapper<Msgreceive> wrapper = new QueryWrapper<>();
+        wrapper.eq("receiving_cusid",integer);
+        List<Msgreceive> msgreceiveList = mapper.selectList(wrapper);
+        return msgreceiveList;
+    }
+    @Override
+    public List<Msgreceive> showMsgSend(Integer integer) {
+        QueryWrapper<Msgreceive> wrapper = new QueryWrapper<>();
+        wrapper.eq("cus_id",integer);
+        List<Msgreceive> msgreceiveList = mapper.selectList(wrapper);
+        return msgreceiveList;
+    }
 
     @Override
-    public List<Msgreceive> findMsgById(Integer user_id) {
+    public Msgreceive showDetail(Integer integer) {
         QueryWrapper<Msgreceive> wrapper = new QueryWrapper<>();
-        wrapper.eq("cus_id",user_id);
-        return mapper.selectList(wrapper);
+        wrapper.eq("id",integer);
+        Msgreceive msgreceive = mapper.selectOne(wrapper);
+        return msgreceive;
+    }
+    @Override
+    public Result deleteMsg(Integer integer) {
+        QueryWrapper<Msgreceive> wrapper = new QueryWrapper<>();
+        wrapper.eq("id",integer);
+        int i = mapper.delete(wrapper);
+        if (i>=1){
+            return Result.success();
+        }else {
+            return Result.error();
+        }
+
+    }
+    @Override
+    public Result deleteReceivedMsgPerson(Integer integer) {
+        QueryWrapper<Msgreceive> wrapper = new QueryWrapper<>();
+        wrapper.eq("receiving_cusid",integer);
+        int i = mapper.delete(wrapper);
+        if (i>=1){
+            return Result.success();
+        }else {
+            return Result.error();
+        }
+    }
+
+    @Override
+    public Result deleteSendMsgPerson(Integer integer) {
+        QueryWrapper<Msgreceive> wrapper = new QueryWrapper<>();
+        wrapper.eq("cus_id",integer);
+        int i = mapper.delete(wrapper);
+        if (i>=1){
+            return Result.success();
+        }else {
+            return Result.error();
+        }
+    }
+
+    @Override
+    public Result autoAddMsgReceive(Msgreceive msgreceive) {
+        int i = mapper.insert(msgreceive);
+        if (i>=1){
+            return Result.success();
+        }else
+        {
+            return Result.error();
+        }
+
     }
 }

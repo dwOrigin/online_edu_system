@@ -26,7 +26,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 private ArticleMapper articleMapper;
     @Override
     public Result addArticle(Article article) {
-        article.setCreateTime(LocalDateTime.now());
         int insert = articleMapper.insert(article);
         if (insert>=1){
             return Result.success();
@@ -67,5 +66,12 @@ private ArticleMapper articleMapper;
         wrapper.eq("article_type",type);
         List<Article> list = articleMapper.selectList(wrapper);
         return list;
+    }
+
+    @Override
+    public List<Article> findAll() {
+        List<Article> articleList = articleMapper.selectList(null);
+
+        return articleList;
     }
 }
