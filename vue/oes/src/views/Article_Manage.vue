@@ -122,31 +122,7 @@ export default{
  },
   data() {
       return {
-        tableData: [{
-          articleId:'1',
-          title:'张柯宁',
-          summary:'sdfvdgeds',
-          keyWord:'美女',
-          articleType:'美女',
-          createTime:'2022-8-15 19:06',
-          clickNum:'111'
-        }, {
-          articleId:'2',
-          title:'刘耀文',
-          summary:'sdfvdgeds',
-          keyWord:'高中生',
-          articleType:'高中生',
-          createTime:'2022-8-15 19:06',
-          clickNum:'444'
-        },{
-          articleId:'3',
-          title:'陈哲远',
-          summary:'sdfvdgeds',
-          keyWord:'帅哥',
-          articleType:'帅哥',
-          createTime:'2022-8-15 19:06',
-          clickNum:'1029'
-        }
+        tableData: [
         ]
       }
   },
@@ -217,7 +193,7 @@ export default{
         this.$router.push('/add_article_manage')
       },
        fetchData(){
-        this.$axios.get("http://localhost:8081/article").then(
+        this.$axios.get('http://localhost:8081/article').then(
           response=>{
             this.tableData=response.data;
           },

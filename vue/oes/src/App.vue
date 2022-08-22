@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view v-if="isRouterAlive"></router-view>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -32,6 +32,7 @@ export default {
   //     name: 'recommend'
   //   });
   // }
+
 }
 </script>
 

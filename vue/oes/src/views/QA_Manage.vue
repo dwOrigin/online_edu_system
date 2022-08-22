@@ -126,31 +126,7 @@ export default{
  },
   data() {
       return {
-        tableData: [{
-          id:'1',
-          cusId:'1',
-          title:'张柯宁',
-          status:'1',
-          type:'美女',
-          replyCount:'3',
-          browseCount:'5'
-        }, {
-          id:'2',
-          cusId:'2',
-          title:'刘耀文',
-          status:'1',
-          type:'高中生',
-          replyCount:'3',
-          browseCount:'5'
-        },{
-         id:'3',
-          cusId:'3',
-          title:'陈哲远',
-          status:'1',
-          type:'帅哥',
-          replyCount:'3',
-          browseCount:'5'
-        }
+        tableData: [
         ]
       }
   },
@@ -218,7 +194,7 @@ export default{
         return row.type === value;
       },
        fetchData(){
-        this.$axios.get("http://localhost:8081/questions").then(
+        this.$axios.get('http://localhost:8081/questions').then(
           response=>{
             this.tableData=response.data;
           },

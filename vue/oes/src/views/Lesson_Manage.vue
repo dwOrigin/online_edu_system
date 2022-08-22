@@ -127,85 +127,7 @@ export default{
  },
   data() {
       return {
-        tableData: [{
-          courseId:'1',
-          teacherId:'71120207',
-          courseName:'张柯宁',
-          isAvailable:'1',
-          addTime:'2022-8-15 18:41',
-          timeLong:'99',
-          title:'如何编码',
-          logo:'sdfdg',
-          type:'rap',
-          pageViewcount:'100',
-          praiseCount:'11',
-          commentNum:'5'
-        }, {
-          courseId:'2',
-          teacherId:'20050923',
-          courseName:'刘耀文',
-          isAvailable:'1',
-          addTime:'2022-8-15 18:41',
-          timeLong:'99',
-          title:'如何征服英俊少男',
-          logo:'sdfdg',
-          type:'rap',
-          pageViewcount:'100',
-          praiseCount:'11',
-          commentNum:'5'
-        }, {
-          courseId:'3',
-          teacherId:'20061124',
-          courseName:'余宇涵',
-          isAvailable:'1',
-          addTime:'2022-8-15 18:41',
-          timeLong:'99',
-          title:'',
-          logo:'sdfdg',
-          type:'dance',
-          pageViewcount:'100',
-          praiseCount:'11',
-          commentNum:'5'
-        }, {
-          courseId:'4',
-          teacherId:'19970805',
-          courseName:'王一博',
-          isAvailable:'0',
-          addTime:'2022-8-15 18:41',
-          timeLong:'99',
-          title:'',
-          logo:'sdfdg',
-          type:'dance',
-          pageViewcount:'100',
-          praiseCount:'11',
-          commentNum:'5'
-        }, {
-          courseId:'5',
-          teacherId:'19961029',
-          courseName:'陈哲远',
-          isAvailable:'1',
-          addTime:'2022-8-15 18:41',
-          timeLong:'99',
-          title:'',
-          logo:'sdfdg',
-          type:'vocal',
-          pageViewcount:'100',
-          praiseCount:'11',
-          commentNum:'5'
-        }, {
-          courseId:'6',
-          teacherId:'19950808',
-          courseName:'崔胜澈',
-          isAvailable:'1',
-          addTime:'2022-8-15 18:41',
-          timeLong:'99',
-          title:'',
-          logo:'sdfdg',
-          type:'rap',
-          pageViewcount:'100',
-          praiseCount:'11',
-          commentNum:'5'
-        }
+        tableData: [
         ]
       }
   },
@@ -279,7 +201,7 @@ export default{
         this.$router.push('/add_lesson_manage')
       },
        fetchData(){
-        this.$axios.get("http://localhost:8081/course").then(
+        this.$axios.get('http://localhost:8081/course').then(
           response=>{
             this.tableData=response.data;
           },

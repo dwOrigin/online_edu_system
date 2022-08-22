@@ -47,15 +47,15 @@
       <!-- 前面限制宽度了，所以别写太长好了，很难改 -->
     </el-form-item>
     <el-form-item prop="isStar" label="是否推荐" :label-width="formLabelWidth">
-      <el-radio v-model="newform.isStar" label="1">是</el-radio>
-      <el-radio v-model="newform.isStar" label="0">否</el-radio>
+      <el-radio v-model="newform.isStar" :label="1">是</el-radio>
+      <el-radio v-model="newform.isStar" :label="0">否</el-radio>
     </el-form-item>
      <el-form-item prop="picPath" label="头像" :label-width="formLabelWidth">
       <el-input v-model="newform.picPath"></el-input>
     </el-form-item>
     <el-form-item prop="status" label="状态" :label-width="formLabelWidth">
-      <el-radio v-model="newform.status" label="1">在线</el-radio>
-      <el-radio v-model="newform.status" label="0">不在线</el-radio>
+      <el-radio v-model="newform.status" :label="1">在线</el-radio>
+      <el-radio v-model="newform.status" :label="0">不在线</el-radio>
     </el-form-item>
     <el-form-item prop="createTime" label="创建时间" :label-width="formLabelWidth">
       <el-input v-model="newform.createTime"></el-input>
@@ -143,15 +143,15 @@
       <!-- 前面限制宽度了，所以别写太长好了，很难改 -->
     </el-form-item>
     <el-form-item prop="isStar" label="是否推荐" :label-width="formLabelWidth">
-      <el-radio v-model="form.isStar" label="1">是</el-radio>
-      <el-radio v-model="form.isStar" label="0">否</el-radio>
+      <el-radio v-model="form.isStar" :label="1">是</el-radio>
+      <el-radio v-model="form.isStar" :label="0">否</el-radio>
     </el-form-item>
      <el-form-item prop="picPath" label="头像" :label-width="formLabelWidth">
       <el-input v-model="form.picPath"></el-input>
     </el-form-item>
     <el-form-item prop="status" label="状态" :label-width="formLabelWidth">
-      <el-radio v-model="form.status" label="1">在线</el-radio>
-      <el-radio v-model="form.status" label="0">不在线</el-radio>
+      <el-radio v-model="form.status" :label="1">在线</el-radio>
+      <el-radio v-model="form.status" :label="0">不在线</el-radio>
     </el-form-item>
     <el-form-item prop="createTime" label="创建时间" :label-width="formLabelWidth">
       <el-input v-model="form.createTime" :disabled="true"></el-input>
@@ -179,7 +179,7 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page.sync="currentPage3"
+     
       :page-size="100"
       layout="prev, pager, next, jumper"
       :total="1000">
@@ -232,10 +232,6 @@ export default{
           sort:''
         },
         formLabelWidth: '120px',
-        currentPage1: 5,
-        currentPage2: 5,
-        currentPage3: 5,
-        currentPage4: 4
         }
      },
      methods:{
@@ -326,7 +322,7 @@ export default{
         });
       },
        fetchData(){
-        this.$axios.get(" http://localhost:8081/teacher").then(
+        this.$axios.get('http://localhost:8081/teacher').then(
           response=>{
             this.tableData=response.data;
           },
