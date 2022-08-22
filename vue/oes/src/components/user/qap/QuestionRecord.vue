@@ -1,6 +1,6 @@
 <template>
 <div class="question-record">
-  <div class="q-info">
+  <div class="q-info" @click="handleclick">
     <el-link :underline="false" class="question-title">
       胖哥俩肉蟹煲大量使用过期食材，把「隔夜死蟹」当现杀活蟹卖，这对人体有何危害？还有哪些信息值得关注？
     </el-link>
@@ -9,7 +9,7 @@
       <div>共263条回复</div>
     </div>
   </div>
-  <div class="delete">
+  <div class="delete" @click="handledelete">
     <el-button>删除提问</el-button>
   </div>
 </div>
@@ -17,7 +17,48 @@
 
 <script>
 export default {
-  name: "QuestionRecord"
+  name: "QuestionRecord",
+   props: {
+    type: {
+      type: String,
+    },
+    // obj:{
+    //   title: '这是一个问题?',
+    //   hottestAnswer: '我是这个问题最好的回答',
+    //   hottestAnswererName: '最好的回答者',
+    //   like: '999万',//赞同数
+    //   answerCnt: 10,
+    //   qId: 888
+    // }
+  },
+  data(){
+    return {
+        dataObj: {
+          title: '这是一个问题?',
+          hottestAnswer: '我是这个问题最好的回答',
+          hottestAnswererName: '最好的回答者',
+          like: '999万',//赞同数
+          answerCnt: 10,
+          qId: 888
+        }
+    };
+  },
+  methods:{
+    handleclick(){
+      this.$router.push({
+          name: 'questionPage',
+          query:{
+            qId: this.dataObj.qId
+          }
+        });
+    },
+    handledelete(){
+      console.log(2);
+    }
+  },
+  mounted(){
+    //后端获取question
+  }
 }
 </script>
 

@@ -4,35 +4,30 @@
       <div class="nav">
         <el-menu
             class="el-menu-vertical-demo"
-            :default-active="this.$router.path"           
+            :default-active=this.url
             router>
-          <el-menu-item index="1"
-          :route="{ path: '/home/personal/pinfo', query: { select:user } }">
+          <el-menu-item index='/home/personal/pinfo'>
             <i class="el-icon-user"></i>
             <span slot="title">
               个人信息
             </span>
           </el-menu-item>
-          <el-menu-item index="2"
-          :route="{ path: '/home/personal/history', query: { select:user } }">
+          <el-menu-item index='/home/personal/history'>
             <i class="el-icon-document"></i>
             <span slot="title">历史观看</span>
           </el-menu-item>
-          <el-menu-item index="3"
-          :route="{ path: '/home/personal/star', query: { select:user } }">
+          <el-menu-item index='/home/personal/star'>
             <i class="el-icon-star-off"></i>
             <span slot="title">收藏</span>
           </el-menu-item>
-          <el-menu-item index="4"
-          :route="{ path: '/home/personal/message', query: { select:user } }">
+          <el-menu-item index='/home/personal/message'>
             <i class="el-icon-chat-dot-square"></i>
             <span slot="title">
               消息
               <el-badge class="mark" :value="122" style="margin-bottom: 10px" :max="99"/>
             </span>
           </el-menu-item>
-          <el-menu-item index="5"
-          :route="{ path: '/home/personal/question', query: { select:user } }">
+          <el-menu-item index='/home/personal/question'>
             <i class="el-icon-question"></i>
             <span slot="title">我的提问</span>
           </el-menu-item>
@@ -63,6 +58,7 @@ export default {
   },
   data(){
     return{
+      url:"/home/personal/",
       user:{}
     }
   },
@@ -73,8 +69,14 @@ export default {
     },
   },
   mounted(){
-    this.user=this.$route.query.select;
-    console.log(this.user)
+    let url=this.$route.query.select;
+    if(url!=null){
+      this.url=this.url+url;
+      this.$router.push(this.url);
+    }else{
+      this.url=this.url+"pinfo";
+      this.$router.push(this.url);
+    }
   }
 }
 </script>

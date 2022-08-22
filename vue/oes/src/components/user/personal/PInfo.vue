@@ -31,7 +31,8 @@ export default {
     }
   },
   mounted(){
-    this.user=this.$route.query.select;
+    let user = window.localStorage.getItem('user');
+    this.user=JSON.parse(user);
   }
 }
 

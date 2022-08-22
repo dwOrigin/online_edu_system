@@ -7,9 +7,14 @@
       src="https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356"
       fit="fill">
   </el-image>
-  <div class="right">
-    <div class="center-part">
-      <div :underline="false" class="title">
+  <div class="right" >
+    <div class="center-part" @click="$router.push({
+          name: 'course',
+          params: {
+            courseId: course.id
+          }
+       });">
+      <div :underline="false" class="title" >
         这是标题这是标题这是标题这是标题这是标题这是标题这是标题这是标题这是标题
       </div>
       <div class="center-footer">
@@ -24,7 +29,7 @@
       </div>
     </div>
     <div class="delete">
-      <el-button type="info" icon="el-icon-delete" circle></el-button>
+      <el-button type="info" icon="el-icon-delete" @click="handledelete" circle></el-button>
     </div>
   </div>
 </div>
@@ -37,6 +42,28 @@ export default {
     type:{
       default: 'history',
       type: String
+    }
+  },
+  data(){
+    return {
+      course: {
+      default() {
+        return {
+          id: 9999,
+          imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
+          title: '[量子速学] 一秒钟一个单词 一小时考过四级! 你值得拥有',
+          teacher: 'bilbil大学',
+          chapterNum: 16,
+          studentNum: 10086,
+          likeRate: 100
+      };
+      }
+    }
+    }
+  },
+  methods:{
+    handledelete(){
+      console.log(1);
     }
   }
 }
