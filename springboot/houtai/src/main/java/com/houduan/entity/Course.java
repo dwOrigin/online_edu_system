@@ -3,6 +3,7 @@ package com.houduan.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+import java.sql.Time;
 import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -33,7 +34,7 @@ public class Course implements Serializable {
 
     private LocalDateTime addTime;
 
-    private LocalDateTime timeLong;
+    private Time timeLong;
 
     private String title;
 
