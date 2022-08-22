@@ -2,6 +2,7 @@ package com.houduan.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.houduan.common.Result;
+import jdk.nashorn.internal.runtime.ListAdapter;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
@@ -56,6 +57,12 @@ public List<Article> searchByType(@PathVariable String type) {
 public Article findArticleById(@PathVariable Integer id){
         return articleService.findArticleByID(id);
 }
+@GetMapping("/findAll")
+public List<Article>findAllArticle(){
+        List<Article> all = articleService.findAll();
+        return all;
+}
+
 }
 
 /*@GetMapping("/page")

@@ -67,4 +67,11 @@ private ArticleMapper articleMapper;
         List<Article> list = articleMapper.selectList(wrapper);
         return list;
     }
+
+    @Override
+    public List<Article> findAll() {
+        List<Article> articleList = articleMapper.selectList(null);
+
+        return articleList;
+    }
 }
