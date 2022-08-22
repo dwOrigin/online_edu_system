@@ -43,11 +43,14 @@ private UserMapper userMapper;
     public Result sendAllMsg(String message) {
         List<User> userList = userMapper.selectList(null);
         int i=0;
-        Msgsystem msgsystem = new Msgsystem();
+
         for (;i<userList.size();i++)
         {
+            Msgsystem msgsystem = new Msgsystem();
             msgsystem.setAcceptId(userList.get(i).getUserId());
             msgsystem.setContent(message);
+            System.out.println(msgsystem);
+            msgsystemMapper.insert(msgsystem);
         }
         if (i>=1){
             return Result.success();
