@@ -23,7 +23,7 @@ public interface IQuestionscommentService extends IService<Questionscomment> {
   * 删除某个问题的评论
 *
 */
-    Result deleteComment(Questionscomment questionscomment);
+    Result deleteComment(Integer id);
 //问答的评论是单条的，显示出该问题的所有回答
 //    显示出某个问题的全部回答
      List<Questionscomment> getIntactComments(Questions questions);

@@ -49,11 +49,13 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
     }
 
     @Override
-    public Result deleteTeacher(Teacher teacher) {
-        if(removeById(teacher)){
-            return Result.success(Constants.CODE_200,"删除成功");
-        }else {
+
+    public Result deleteTeacher(Integer id) {
+        int i = mapper.deleteById(id);
+        if(i==0){
             return Result.error(Constants.CODE_400,"删除失败");
+        }else {
+            return Result.success(Constants.CODE_200, "删除成功");
         }
     }
 

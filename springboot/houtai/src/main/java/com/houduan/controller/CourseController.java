@@ -36,10 +36,10 @@ public class CourseController {
     public Result updatecourse(@RequestBody Course course) {
         return courseService.updatecourse(course);
     }
-
+//此处在删除的时候返回的变量不要添上路径直接都不要就可以了
     @GetMapping("/delete")
-    public Result delete(@RequestParam Integer id) {
-        if (courseService.removeById(id)) {
+    public Result delete( Integer courseId) {
+        if (courseService.removeById(courseId)) {
             return Result.success(Constants.CODE_200, "删除成功");
         } else {
             return Result.error(Constants.CODE_400, "删除失败");

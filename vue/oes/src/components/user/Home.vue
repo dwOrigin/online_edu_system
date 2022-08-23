@@ -9,6 +9,8 @@
 </div>
 </template>
 
+
+
 <script>
 import Navigation from './home/Navigation';
 import HomeMain from "@/components/user/home/HomeMain";

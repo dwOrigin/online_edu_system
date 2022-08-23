@@ -30,7 +30,7 @@
   <el-container>
     <el-header >
       <span style="text-align: left; font-size: 25px">管理员</span>
-       <el-button type="primary" style="float: right" round @click="addLesson">添加课程</el-button>
+       <el-button type="primary" style="float: right; margin:10px 10px" round @click="addLesson">添加课程</el-button>
     </el-header>
     <el-main>
          <el-table
@@ -107,7 +107,7 @@
   </el-container>
 </el-container>
 </div>
-   
+
 </template>
 
 <script>
@@ -170,29 +170,42 @@ export default{
       },
        deleteMember(row){
         console.log(row);
-        this.$axios.get('http://localhost:8081/course/delete',{
-        params:{
-        courseId: row.courseId
-        }
-        }
-        )
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
+        this.$confirm('是否确认删除该课程?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+              this.$axios.get('http://localhost:8081/course/delete',{
+                params:{
+                  courseId: row.courseId
+                }
+              })
+
+                .then(() =>{
+          this.$message({
+            type: 'success',
+            message: '删除成功'
+          })
+                  this.reload();
+
+                })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
         });
       this.reload();
       },
       formatter(row, column) {
-        return         
+        return
             row.courseId,
             row.teacherId,
             row.courseName,
             row.isAvailable,
             row.timeLong,
             row.pageViewcount
-          
+
       },
       filterTag(value, row) {
         return row.type === value;
@@ -222,7 +235,7 @@ export default{
     color: #333;
     line-height: 60px;
   }
-  
+
   .el-aside {
     color: #333;
   }

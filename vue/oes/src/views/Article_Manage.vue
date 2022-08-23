@@ -30,7 +30,7 @@
   <el-container>
     <el-header>
        <span style="text-align: left; font-size: 25px">管理员</span>
-       <el-button type="primary" style="float: right" round @click="addArticle">添加文章</el-button>
+       <el-button type="primary" style="float: right; margin:10px 10px" round @click="addArticle">添加文章</el-button>
     </el-header>
     <el-main>
          <el-table
@@ -101,7 +101,7 @@
   </el-container>
 </el-container>
 </div>
-   
+
 </template>
 
 <script>
@@ -163,14 +163,14 @@ export default{
         this.$router.push('modify_article_manage')
       },
       formatter(row, column) {
-        return         
+        return
             row.articleId,
             row.title,
             row.summary,
             row.keyWord,
             row.createTime,
             row.clickNum
-          
+
       },
       filterTag(value, row) {
         return row.articleType === value;
@@ -182,21 +182,29 @@ export default{
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
+              this.$axios.get('http://localhost:8081/article/delete',{
+                params: {
+                  articleId: row.articleId
+                }
+              }).then(response=>{
           this.$message({
             type: 'success',
             message: '删除成功'
-          });
+          })
+                this.reload();
+              })
         }).catch(() => {
           this.$message({
             type: 'info',
             message: '已取消删除'
-          });          
+          });
         });
-        this.$axios.get('http://localhost:8081/article/delete',{
+        //会出现些许问题
+        /*this.$axios.get('http://localhost:8081/article/delete',{
         params: {
         articleId: row.articleId
       }
-        } 
+        }
        )
         .then(function (response) {
           console.log(response);
@@ -204,7 +212,7 @@ export default{
         .catch(function (error) {
           console.log(error);
         });
-      this.reload();
+      this.reload();*/
       },
       addArticle(){
         this.$router.push('/add_article_manage')
@@ -231,7 +239,7 @@ export default{
     color: #333;
     line-height: 60px;
   }
-  
+
   .el-aside {
     color: #333;
   }

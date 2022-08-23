@@ -217,15 +217,26 @@ export default {
 
     deleteMember(row) {
       console.log(row);
-      this.$axios.post('http://localhost:8081/user/deleteUser', {
-        userId: row.userId
-      })
-        .then(function (response) {
-          console.log(response);
+      this.$confirm('是否确认删除该用户?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$axios.post('http://localhost:8081/user/deleteUser', {
+          userId: row.userId
+        }).then(response=>{
+        this.$message({
+          type: 'success',
+          message: '删除成功'
         })
-        .catch(function (error) {
-          console.log(error);
+          this.reload();
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
         });
+      });
       this.reload();
     },
 

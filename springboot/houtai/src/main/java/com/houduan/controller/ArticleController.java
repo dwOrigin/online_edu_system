@@ -39,8 +39,8 @@ public Result updateArticle(@RequestBody Article article) {
         }
 //删除文章
 @GetMapping("/delete")
-public Result delete(@RequestParam Integer id) {
-        return articleService.deleteArticle(id);
+public Result delete(@RequestParam Integer articleId) {
+        return articleService.deleteArticle(articleId);
         }
 
 //按照类型查找
@@ -62,13 +62,11 @@ public List<Article>findAllArticle(){
         return all;
 }
 
-}
-
-/*@GetMapping("/page")
+@GetMapping("/page")
 public Page<Article> findPage(@RequestParam Integer pageNum,
 @RequestParam Integer pageSize) {
         return articleService.page(new Page<>(pageNum, pageSize));
         }
 
-        }*/
+        }
 

@@ -30,8 +30,8 @@ public class QuestionsController {
         return questionsService.saveOrUpdate(questions);
     }
 
-    @DeleteMapping("/{id}")
-    public Boolean delete(@PathVariable Integer id) {
+        @GetMapping("/delete")
+    public Boolean delete(@RequestParam Integer id) {
         return questionsService.removeById(id);
     }
 

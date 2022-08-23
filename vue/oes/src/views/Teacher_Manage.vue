@@ -30,7 +30,7 @@
   <el-container>
     <el-header >
       <span style="text-align: left; font-size: 25px">管理员</span>
-       <el-button type="primary" style="float: right" round @click="addTeacher">添加讲师</el-button>
+       <el-button type="primary" style="float: right; margin:10px 10px "  round @click="addTeacher" >添加讲师</el-button>
         <el-dialog title="详细信息" :visible.sync="addNewVisible" append-to-body>
   <el-form :model="newform">
     <el-form-item prop="id" label="教师ID" :label-width="formLabelWidth">
@@ -183,7 +183,7 @@
   </el-container>
 </el-container>
 </div>
-   
+
 </template>
 
 <script>
@@ -266,9 +266,10 @@ export default{
       handleClose(key, keyPath) {
         console.log(key, keyPath);
       },
-      handleClick(row) {
+     /* handleClick(row) {
+     *和下面的重复了
         console.log(row);
-      },
+      },*/
       handleClick(row) {
         console.log(row);
         this.form=row;
@@ -292,24 +293,31 @@ export default{
       },
       deleteMember(row){
         console.log(row);
-         this.request.post('http://localhost:8081/teacher/removeTeacher', row)
-        .then((res) => {
-          if (res.code == "200") {
-            this.$message.success(res.message);
-          } else {
-            this.$message.error(res.message);
-          }
-        })
-      //    this.$axios.post('http://localhost:8081/teacher/removeTeacher', {
-      //   id: row.id
-      // })
-      //   .then(function (response) {
-      //     console.log(response);
-      //   })
-      //   .catch(function (error) {
-      //     console.log(error);
-      //   });
-      this.reload();
+        this.$confirm('是否确认删除该讲师?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          console.log(row.id);
+          this.$axios.get('http://localhost:8081/teacher/removeTeacher', {
+                params: {
+                  teacherId: row.id
+                }
+              })
+              .then(()=>{
+          this.$message({
+            type: 'success',
+            message: '删除成功'
+          })
+                this.reload();
+              })
+
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
       },
       changeUsermsg(){
          this.request.post('http://localhost:8081/teacher/updateTeacher', this.form)
@@ -345,7 +353,7 @@ export default{
           }
         );
       },
-    
+
      }
 }
 </script>
@@ -356,7 +364,7 @@ export default{
     color: #333;
     line-height: 60px;
   }
-  
+
   .el-aside {
     color: #333;
   }
