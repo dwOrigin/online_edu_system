@@ -195,28 +195,26 @@ export default {
         this.$message.error('手机号格式错误');
       } else {
         //获取验证码
-        // let promise = this.$axios({
-        //   url: '',
-        //   method: '',
-        //   data:{
-        //     'phone': phone
-        //   }
-        // });
-        let promise = new Promise((a) => {
-          a({
-            data:
-              { code: 8888 }
-          })
+        let promise = this.$axios({
+          url: 'http://localhost:8081/user/sendCode',
+          method: 'get',
+          params: {
+            mobile: phone
+          }
         });
         promise.then((res) => {
-          this.registerForm.codeReceived = res.data.code.toString();
-          this.sendCodeInterval = 60;
-          let id = setInterval(() => {
-            this.sendCodeInterval--;
-            if (this.sendCodeInterval === 0) {
-              clearInterval(id);
-            }
-          }, 1000);
+          if (res.data == "") {
+            this.$message.error('验证码发送失败');
+          } else {
+            this.registerForm.codeReceived = res.data;
+            this.sendCodeInterval = 60;
+            let id = setInterval(() => {
+              this.sendCodeInterval--;
+              if (this.sendCodeInterval === 0) {
+                clearInterval(id);
+              }
+            }, 1000);
+          }
         }).catch((err) => {
           this.$message.error('你的网络迷路了');
         });
@@ -262,28 +260,35 @@ export default {
         //  验证表单
         this.$refs['loginForm'].validate((valid) => {
           if (valid) {
+            //管理员登录
             if (this.loginForm.username == "admin" && this.loginForm.password == "admin") {
+              this.$message.success("管理员登录成功");
               this.$router.push("/member_manage");
             } else {
+              //用户登录
               let promise = this.$axios({
-                method: 'post',
+                method: 'get',
                 url: 'http://localhost:8081/user/login',
-                data: this.loginForm
+                params: {
+                  username: this.loginForm.username,
+                  password: this.loginForm.password,
+                }
               });
               promise.then((res) => {
                 let ret = res.data;
                 //用户名和密码正确
-                if (ret.pass) {
-                  let user = ret.user;
+                if (ret.code == "200") {
+                  let user = ret.data;
+                  console.log(ret.data);
                   window.localStorage.setItem('user', JSON.stringify(user));
                   this.isVisible = false;
                   this.resetAllStatus();
-                  this.$message.success('登录成功');
+                  this.$message.success(ret.message);
                   this.$bus.$emit('AuthorizationChanged');
                 } else {//用户名或密码错误
                   this.antiRobotPassed = false;
                   this.sliderValue = 0;
-                  this.$message.error('用户名或密码错误');
+                  this.$message.error(ret.message);
                 }
               }).catch((err) => {
                 this.$message.error('网络连接失败');
@@ -297,14 +302,19 @@ export default {
         this.$refs.registerForm.validate((valid) => {
           if (valid) {
             //用户注册
-            // let promise = this.$axios({
-            //     url: '',
-            //     method: 'post',
-            //     data: this.registerForm
-            // });
-            let promise = new Promise((a) => { a({ data: { success: true, info: '手机号注册过' } }); });
+            let promise = this.$axios({
+              url: 'http://localhost:8081/user/register',
+              method: 'post',
+              data: {
+                user: {
+                  userName: this.registerForm.username,
+                  password: this.registerForm.password,
+                  mobile: this.registerForm.phone
+                }
+              }
+            });
             promise.then((res) => {
-              if (res.data.success) {
+              if (res.data.code == "200") {
                 this.$message.success('注册成功');
                 this.resetAllStatus();
               } else {

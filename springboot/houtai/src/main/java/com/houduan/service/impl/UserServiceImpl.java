@@ -36,10 +36,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         User user = getOne(wrapper);
         if(user==null){
             return Result.error(Constants.CODE_400,"用户名不存在");
-        } else if (!getOne(wrapper).getPassword().equals(password)) {
-            return Result.error(Constants.CODE_400,"密码错误");
-        }else{
-            return Result.success(Constants.CODE_200,"登录成功");
+        } else {
+            wrapper.eq("password",password);
+            User user1=getOne(wrapper);
+            if (user1==null) {
+                return Result.error(Constants.CODE_400,"密码错误");
+            }else{
+                return Result.success(Constants.CODE_200,"登录成功",user1);
+            }
+
         }
     }
 

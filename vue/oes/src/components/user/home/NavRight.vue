@@ -25,9 +25,9 @@
               query:{select: 'pinfo'}
            });"
      class="mini-img-container" v-if="user != null">
-    <el-avatar size="small" :src="user.avatarUrl">
-      <span v-if="user.avatarUrl.length === 0">
-        {{user.name}}
+    <el-avatar size="small" :src="user.picImg">
+      <span v-if="user.picImg===null" >
+        {{user.userName}}
       </span>
     </el-avatar>
   </a>

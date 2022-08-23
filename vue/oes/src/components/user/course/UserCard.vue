@@ -27,15 +27,15 @@
            });"
            class="mini-img-container">
           <el-avatar size="medium"
-                     :src="user.avatarUrl">
-            <span v-if="user.avatarUrl.length === 0">{{ user.name }}</span>
+                     :src="user.picImg">
+            <span v-if="user.picImg === null">{{ user.userName }}</span>
           </el-avatar>
         </a>
         <el-link :underline="false" type="success"
                  class="line-text-ellipsis"
                  @click="$router.push({name: 'personal', query:{select: ''}});"
                  style="font-size: medium; max-width: 100px; min-width: 100px; margin: 0 10px">
-          {{ user.name }}
+          {{ user.userName }}
         </el-link>
         <el-link :underline="false" type="info" @click="exit">退出</el-link>
       </div>
