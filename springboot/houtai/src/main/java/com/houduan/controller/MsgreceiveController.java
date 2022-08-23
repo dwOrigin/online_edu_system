@@ -2,6 +2,7 @@ package com.houduan.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.houduan.common.Result;
+import com.houduan.entity.Msgsystem;
 import com.houduan.entity.User;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
@@ -72,6 +73,11 @@ return result;
         public Result adminDeleteSendMsg(@PathVariable Integer id){
         Result result = msgreceiveService.deleteSendMsgPerson(id);
         return result;
-}
         }
+@GetMapping("/page")
+public Page<Msgreceive> findPage(@RequestParam Integer pageNum,
+                                 @RequestParam Integer pageSize) {
+        return msgreceiveService.page(new Page<>(pageNum, pageSize));
+        }
+}
 

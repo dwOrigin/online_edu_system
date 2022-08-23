@@ -101,7 +101,7 @@
                     </el-form-item>
                   </el-form>
                   <div slot="footer" class="dialog-footer">
-                    <el-button @click="dialogFormVisible = false">取 消</el-button>
+                    <el-button @click="notChange">取 消</el-button>
                     <el-button type="primary" @click="changeUsermsg(); dialogFormVisible = false;">确 定</el-button>
                   </div>
                 </el-dialog>
@@ -194,6 +194,7 @@ export default {
       console.log(row);
       this.form = row;
       this.dialogFormVisible = true;
+      //点取消后直接刷新，从数据库里取值，解决了，我天，我也太聪明了吧哈哈哈
       //现在改了内容点取消也会被改
       //   this.templateList = extendCopy(row);
       //   // 对象进行深拷贝，否则“编辑”框内修改内容(e)会影响到页面
@@ -216,17 +217,24 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        this.$axios.post('http://localhost:8081/user/deleteUser', {
+          userId: row.userId
+        }).then(response=>{
         this.$message({
           type: 'success',
           message: '删除成功'
-        });
+        })
+          this.reload();
+        })
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消删除'
         });
       });
-      this.$axios.post('http://localhost:8081/user/deleteUser', {
+
+      //会导致提前删除的情况出现
+      /*this.$axios.post('http://localhost:8081/user/deleteUser', {
         userId: row.userId
       })
         .then(function (response) {
@@ -234,8 +242,8 @@ export default {
         })
         .catch(function (error) {
           console.log(error);
-        });
-      this.reload();
+        });*/
+
     },
 
     changeUsermsg() {
@@ -260,6 +268,10 @@ export default {
         }
       );
     },
+    notChange(){
+      this.dialogFormVisible = false;
+      this.reload();
+    }
   }
 }
 

@@ -37,8 +37,8 @@ private QuestionscommentMapper mapper;
     }
 
     @Override
-    public Result deleteComment(Questionscomment questionscomment) {
-        int i = mapper.deleteById(questionscomment);
+    public Result deleteComment(Integer id) {
+        int i = mapper.deleteById(id);
         if (i>=1){
             return Result.success();
         }else {

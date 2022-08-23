@@ -98,54 +98,35 @@
    <div style='text-align:center'>
         <el-footer class="block">
     <span class="demonstration"></span>
-    <el-pagination
+    <!-- <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page.sync="currentPage3"
       :page-size="100"
       layout="prev, pager, next, jumper"
       :total="1000">
-    </el-pagination>
+    </el-pagination> -->
   </el-footer>
     </div>
   </el-container>
 </el-container>
 </div>
-   
+
 </template>
 
 <script>
 export default{
-    activated: function() {
+    inject:['reload'],
+  name:'QA_Manage',
+  activated: function() {
  this.getCase()
+ },
+ mounted(){
+  this.fetchData()
  },
   data() {
       return {
-        tableData: [{
-          id:'1',
-          cusId:'1',
-          title:'张柯宁',
-          status:'1',
-          type:'美女',
-          replyCount:'3',
-          browseCount:'5'
-        }, {
-          id:'2',
-          cusId:'2',
-          title:'刘耀文',
-          status:'1',
-          type:'高中生',
-          replyCount:'3',
-          browseCount:'5'
-        },{
-         id:'3',
-          cusId:'3',
-          title:'陈哲远',
-          status:'1',
-          type:'帅哥',
-          replyCount:'3',
-          browseCount:'5'
-        }
+        tableData: [
         ]
       }
   },
@@ -183,34 +164,67 @@ export default{
       },
        deleteMember(row){
         console.log(row);
-        this.$confirm('是否确认删除该课程?', '提示', {
+        this.$confirm('是否确认删除该问答?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$message({
+          this.$axios.get('http://localhost:8081/questions/delete',{
+            params: {
+              id: row.id
+            }
+          })
+              .then(()=>{
+              this.$message({
             type: 'success',
             message: '删除成功'
-          });
+          })
+                this.reload();
+              })
         }).catch(() => {
           this.$message({
             type: 'info',
             message: '已取消删除'
-          });          
+          });
         });
+        /*this.$axios.delete('http://localhost:8081/questions/${row.id}',
+      //   {
+      //   data:{
+      //   id: row.id
+      //   }
+      // }
+      )
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });*/
+      // this.reload();
       },
        formatter(row, column) {
-        return         
+        return
             row.id,
             row.cusId,
             row.title,
             row.status,
             row.replyCount,
             row.browseCount
-          
+
       },
       filterTag(value, row) {
         return row.type === value;
+      },
+       fetchData(){
+        this.$axios.get('http://localhost:8081/questions').then(
+          response=>{
+            this.tableData=response.data;
+          },
+          response=>{
+            console.log("error");
+            alert("请求失败");
+          }
+        );
       },
      }
 }
@@ -222,7 +236,7 @@ export default{
     color: #333;
     line-height: 60px;
   }
-  
+
   .el-aside {
     color: #333;
   }
