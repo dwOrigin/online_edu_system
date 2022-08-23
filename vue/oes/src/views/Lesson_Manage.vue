@@ -30,7 +30,7 @@
   <el-container>
     <el-header >
       <span style="text-align: left; font-size: 25px">管理员</span>
-       <el-button type="primary" style="float: right" round @click="addLesson">添加课程</el-button>
+       <el-button type="primary" style="float: right; margin:10px 10px" round @click="addLesson">添加课程</el-button>
     </el-header>
     <el-main>
          <el-table

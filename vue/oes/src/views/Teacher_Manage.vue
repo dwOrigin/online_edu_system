@@ -30,7 +30,7 @@
   <el-container>
     <el-header >
       <span style="text-align: left; font-size: 25px">管理员</span>
-       <el-button type="primary" style="float: right" round @click="addTeacher">添加讲师</el-button>
+       <el-button type="primary" style="float: right; margin:10px 10px "  round @click="addTeacher" >添加讲师</el-button>
         <el-dialog title="详细信息" :visible.sync="addNewVisible" append-to-body>
   <el-form :model="newform">
     <el-form-item prop="id" label="教师ID" :label-width="formLabelWidth">
