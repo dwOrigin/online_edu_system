@@ -62,13 +62,11 @@ public List<Article>findAllArticle(){
         return all;
 }
 
-}
-
-/*@GetMapping("/page")
+@GetMapping("/page")
 public Page<Article> findPage(@RequestParam Integer pageNum,
 @RequestParam Integer pageSize) {
         return articleService.page(new Page<>(pageNum, pageSize));
         }
 
-        }*/
+        }
 

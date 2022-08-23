@@ -43,25 +43,6 @@ public List<Msgsystem> getAllMsg(){
     List<Msgsystem> all = msgsystemService.getAll();
     return all;
 }
-
-
-
-/*
-@PutMapping
-public Result updateMessage(@RequestBody Msgsystem msgsystem){
-        return msgsystemService.updateMsgSystem(msgsystem);
-}
-@DeleteMapping("/{id}")
-public Result delete(@PathVariable Integer id) {
-        return msgsystemService.deleteMsgSystem(id);
-        }
-
-@GetMapping
-public List<Msgsystem> findAll() {
-        return msgsystemService.getAll();
-        }
-*/
-
 @GetMapping("/page")
 public Page<Msgsystem> findPage(@RequestParam Integer pageNum,
 @RequestParam Integer pageSize) {

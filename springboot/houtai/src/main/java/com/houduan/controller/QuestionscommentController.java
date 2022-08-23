@@ -3,6 +3,7 @@ package com.houduan.controller;
 import com.alibaba.druid.sql.parser.Token;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.houduan.common.Result;
+import com.houduan.entity.Msgsystem;
 import com.houduan.entity.Questions;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
@@ -56,6 +57,10 @@ public Page<Questionscomment> findPage(@RequestParam Integer pageNum,
         List<Questionscomment> comments = questionscommentService.getIntactComments(questions);
         return comments;
 }
-
+ @GetMapping("/page")
+        public Page<Questionscomment> findPage(@RequestParam Integer pageNum,
+                                        @RequestParam Integer pageSize) {
+                return questionscommentService.page(new Page<>(pageNum, pageSize));
+        }
 }
 
