@@ -34,7 +34,7 @@ const router = new VueRouter({
     routes: [
         {
             path:'/',
-            redirect:'member_manage'
+            redirect:'add_article_manage'
         },
         {
             //用户主页

@@ -72,8 +72,7 @@
     </el-header>
     <el-main>
         <el-table
-    :data="tableData"
-    border
+    :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
     style="width: 100%">
     <el-table-column
       fixed
@@ -176,14 +175,9 @@
    <div style='text-align:center'>
         <el-footer class="block">
     <span class="demonstration"></span>
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-     
-      :page-size="100"
-      layout="prev, pager, next, jumper"
-      :total="1000">
-    </el-pagination>
+    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="pageSizes"
+              :current-page.sync="currentPage" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="totalCount">
+            </el-pagination>
   </el-footer>
     </div>
   </el-container>
@@ -205,6 +199,10 @@ export default{
      data(){
         return{
             tableData: [],
+             currentPage: 1,
+      pageSize: 5,
+      totalCount:1,
+      pageSizes:[5,10],
          dialogFormVisible: false,
          addNewVisible:false,
         form: {
@@ -254,11 +252,14 @@ export default{
             this.$router.push('/notice_manage')
         },
         handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-      },
+      this.pageSize=val;
+      this.currentPage=1;
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      this.currentPage=val;
+      console.log(`当前页: ${val}`);
+    },
       handleOpen(key, keyPath) {
         console.log(key, keyPath);
       },
@@ -291,21 +292,6 @@ export default{
       },
       deleteMember(row){
         console.log(row);
-        this.$confirm('是否确认删除该讲师?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '删除成功'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });          
-        });
          this.request.post('http://localhost:8081/teacher/removeTeacher', row)
         .then((res) => {
           if (res.code == "200") {
@@ -337,7 +323,7 @@ export default{
        this.reload();
       },
       addTeachermsg(){
-        this.request.post('http://localhost:8081/teacher/updateTeacher', this.newform)
+        this.request.post('http://localhost:8081/teacher/addTeacher', this.newform)
         .then((res) => {
           if (res.code == "200") {
             this.$message.success(res.message);
@@ -351,6 +337,7 @@ export default{
         this.$axios.get('http://localhost:8081/teacher').then(
           response=>{
             this.tableData=response.data;
+            this.totalCount=response.data.length;
           },
           response=>{
             console.log("error");

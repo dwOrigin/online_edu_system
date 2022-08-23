@@ -30,7 +30,7 @@
         </el-header>
 
         <el-main>
-          <el-table :data="tableData" border style="width: 100%">
+          <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"  style="width: 100%">
             <el-table-column fixed prop="userId" label="用户ID" width="120">
             </el-table-column>
             <el-table-column prop="userName" label="账号" width="120">
@@ -113,8 +113,8 @@
         <div style='text-align:center'>
           <el-footer class="block">
             <span class="demonstration"></span>
-            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-              :current-page.sync="currentPage" :page-size="pageSize" layout="prev, pager, next, jumper" :total="1000">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="pageSizes"
+              :current-page.sync="currentPage" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="totalCount">
             </el-pagination>
           </el-footer>
         </div>
@@ -137,7 +137,9 @@ export default {
   data() {
     return {
       currentPage: 1,
-      pageSize: 10,
+      pageSize: 5,
+      totalCount:1,
+      pageSizes:[5,10],
       tableData: [],
       dialogFormVisible: false,
       form: {
@@ -179,9 +181,12 @@ export default {
       this.$router.push('/notice_manage')
     },
     handleSizeChange(val) {
+      this.pageSize=val;
+      this.currentPage=1;
       console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
+      this.currentPage=val;
       console.log(`当前页: ${val}`);
     },
     handleOpen(key, keyPath) {
@@ -212,21 +217,6 @@ export default {
 
     deleteMember(row) {
       console.log(row);
-      this.$confirm('是否确认删除该用户?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$message({
-          type: 'success',
-          message: '删除成功'
-        });
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        });
-      });
       this.$axios.post('http://localhost:8081/user/deleteUser', {
         userId: row.userId
       })
@@ -248,12 +238,14 @@ export default {
           } else {
             this.$message.error(res.message);
           }
-        })
+        });
+        this.reload();
     },
     fetchData() {
       this.$axios.get("http://localhost:8081/user").then(
         response => {
           this.tableData = response.data;
+          this.totalCount=response.data.length;
         },
         response => {
           console.log("error");
