@@ -326,18 +326,26 @@ export default{
       this.reload();
       },
       changeUsermsg(){
-        this.$notify({
-          title: '成功',
-          message: '信息修改成功',
-          type: 'success'
-        });
+         this.request.post('http://localhost:8081/teacher/updateTeacher', this.form)
+        .then((res) => {
+          if (res.code == "200") {
+            this.$message.success(res.message);
+          } else {
+            this.$message.error(res.message);
+          }
+        })
+       this.reload();
       },
       addTeachermsg(){
-        this.$notify({
-          title: '成功',
-          message: '添加讲师成功',
-          type: 'success'
-        });
+        this.request.post('http://localhost:8081/teacher/updateTeacher', this.newform)
+        .then((res) => {
+          if (res.code == "200") {
+            this.$message.success(res.message);
+          } else {
+            this.$message.error(res.message);
+          }
+        })
+       this.reload();
       },
        fetchData(){
         this.$axios.get('http://localhost:8081/teacher').then(

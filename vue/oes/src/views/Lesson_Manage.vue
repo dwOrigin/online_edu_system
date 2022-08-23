@@ -102,7 +102,6 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page.sync="currentPage3"
       :page-size="100"
       layout="prev, pager, next, jumper"
       :total="1000">
@@ -183,6 +182,19 @@ export default{
             message: '已取消删除'
           });          
         });
+        this.$axios.get('http://localhost:8081/course/delete',{
+        params:{
+        courseId: row.courseId
+        }
+        }
+        )
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      this.reload();
       },
       formatter(row, column) {
         return         

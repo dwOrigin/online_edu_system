@@ -94,13 +94,13 @@
    <div style='text-align:center'>
         <el-footer class="block">
     <span class="demonstration"></span>
-    <el-pagination
+    <!-- <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :page-size="100"
       layout="prev, pager, next, jumper"
       :total="1000">
-    </el-pagination>
+    </el-pagination> -->
   </el-footer>
     </div>
   </el-container>
@@ -187,7 +187,19 @@ export default{
             message: '已取消删除'
           });          
         });
-
+        this.$axios.get('http://localhost:8081/article/delete',{
+        params: {
+        articleId: row.articleId
+      }
+        } 
+       )
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      this.reload();
       },
       addArticle(){
         this.$router.push('/add_article_manage')
