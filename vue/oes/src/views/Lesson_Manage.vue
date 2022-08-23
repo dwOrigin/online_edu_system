@@ -111,7 +111,7 @@
   </el-container>
 </el-container>
 </div>
-   
+
 </template>
 
 <script>
@@ -172,17 +172,27 @@ export default{
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
+              this.$axios.get('http://localhost:8081/course/delete',{
+                params:{
+                  courseId: row.courseId
+                }
+              })
+
+                .then(() =>{
           this.$message({
             type: 'success',
             message: '删除成功'
-          });
+          })
+                  this.reload();
+
+                })
         }).catch(() => {
           this.$message({
             type: 'info',
             message: '已取消删除'
-          });          
+          });
         });
-        this.$axios.get('http://localhost:8081/course/delete',{
+        /*this.$axios.get('http://localhost:8081/course/delete',{
         params:{
         courseId: row.courseId
         }
@@ -194,17 +204,17 @@ export default{
         .catch(function (error) {
           console.log(error);
         });
-      this.reload();
+      this.reload();*/
       },
       formatter(row, column) {
-        return         
+        return
             row.courseId,
             row.teacherId,
             row.courseName,
             row.isAvailable,
             row.timeLong,
             row.pageViewcount
-          
+
       },
       filterTag(value, row) {
         return row.type === value;
@@ -233,7 +243,7 @@ export default{
     color: #333;
     line-height: 60px;
   }
-  
+
   .el-aside {
     color: #333;
   }

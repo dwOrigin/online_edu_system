@@ -19,7 +19,7 @@ public interface ITeacherService extends IService<Teacher> {
 
     Result updateTeacher(Teacher teacher);
 
-    Result deleteTeacher(Teacher teacher);
+    Result deleteTeacher(Integer id);
 
     List<Teacher> searchTeacher(String str);
 }

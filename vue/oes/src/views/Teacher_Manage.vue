@@ -179,7 +179,7 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-     
+
       :page-size="100"
       layout="prev, pager, next, jumper"
       :total="1000">
@@ -189,7 +189,7 @@
   </el-container>
 </el-container>
 </div>
-   
+
 </template>
 
 <script>
@@ -265,9 +265,10 @@ export default{
       handleClose(key, keyPath) {
         console.log(key, keyPath);
       },
-      handleClick(row) {
+     /* handleClick(row) {
+     *和下面的重复了
         console.log(row);
-      },
+      },*/
       handleClick(row) {
         console.log(row);
         this.form=row;
@@ -296,24 +297,34 @@ export default{
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
+          console.log(row.id);
+          this.$axios.get('http://localhost:8081/teacher/removeTeacher', {
+                params: {
+                  teacherId: row.id
+                }
+              })
+              .then(()=>{
           this.$message({
             type: 'success',
             message: '删除成功'
-          });
+          })
+                this.reload();
+              })
+
         }).catch(() => {
           this.$message({
             type: 'info',
             message: '已取消删除'
-          });          
+          });
         });
-         this.request.post('http://localhost:8081/teacher/removeTeacher', row)
+        /* this.request.post('http://localhost:8081/teacher/removeTeacher', row)
         .then((res) => {
           if (res.code == "200") {
             this.$message.success(res.message);
           } else {
             this.$message.error(res.message);
           }
-        })
+        })*/
       //    this.$axios.post('http://localhost:8081/teacher/removeTeacher', {
       //   id: row.id
       // })
@@ -323,7 +334,7 @@ export default{
       //   .catch(function (error) {
       //     console.log(error);
       //   });
-      this.reload();
+      // this.reload();
       },
       changeUsermsg(){
          this.request.post('http://localhost:8081/teacher/updateTeacher', this.form)
@@ -358,7 +369,7 @@ export default{
           }
         );
       },
-    
+
      }
 }
 </script>
@@ -369,7 +380,7 @@ export default{
     color: #333;
     line-height: 60px;
   }
-  
+
   .el-aside {
     color: #333;
   }

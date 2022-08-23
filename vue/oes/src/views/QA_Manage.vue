@@ -111,7 +111,7 @@
   </el-container>
 </el-container>
 </div>
-   
+
 </template>
 
 <script>
@@ -164,26 +164,34 @@ export default{
       },
        deleteMember(row){
         console.log(row);
-        this.$confirm('是否确认删除该课程?', '提示', {
+        this.$confirm('是否确认删除该问答?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$message({
+          this.$axios.get('http://localhost:8081/questions/delete',{
+            params: {
+              id: row.id
+            }
+          })
+              .then(()=>{
+              this.$message({
             type: 'success',
             message: '删除成功'
-          });
+          })
+                this.reload();
+              })
         }).catch(() => {
           this.$message({
             type: 'info',
             message: '已取消删除'
-          });          
+          });
         });
-        this.$axios.delete('http://localhost:8081/questions/${row.id}', 
+        /*this.$axios.delete('http://localhost:8081/questions/${row.id}',
       //   {
       //   data:{
       //   id: row.id
-      //   }       
+      //   }
       // }
       )
         .then(function (response) {
@@ -191,18 +199,18 @@ export default{
         })
         .catch(function (error) {
           console.log(error);
-        });
-      this.reload();
+        });*/
+      // this.reload();
       },
        formatter(row, column) {
-        return         
+        return
             row.id,
             row.cusId,
             row.title,
             row.status,
             row.replyCount,
             row.browseCount
-          
+
       },
       filterTag(value, row) {
         return row.type === value;
@@ -228,7 +236,7 @@ export default{
     color: #333;
     line-height: 60px;
   }
-  
+
   .el-aside {
     color: #333;
   }

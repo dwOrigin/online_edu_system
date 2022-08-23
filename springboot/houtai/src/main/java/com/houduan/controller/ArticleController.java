@@ -39,8 +39,8 @@ public Result updateArticle(@RequestBody Article article) {
         }
 //删除文章
 @GetMapping("/delete")
-public Result delete(@RequestParam Integer id) {
-        return articleService.deleteArticle(id);
+public Result delete(@RequestParam Integer articleId) {
+        return articleService.deleteArticle(articleId);
         }
 
 //按照类型查找

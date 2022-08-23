@@ -217,17 +217,24 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        this.$axios.post('http://localhost:8081/user/deleteUser', {
+          userId: row.userId
+        }).then(response=>{
         this.$message({
           type: 'success',
           message: '删除成功'
-        });
+        })
+          this.reload();
+        })
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消删除'
         });
       });
-      this.$axios.post('http://localhost:8081/user/deleteUser', {
+
+      //会导致提前删除的情况出现
+      /*this.$axios.post('http://localhost:8081/user/deleteUser', {
         userId: row.userId
       })
         .then(function (response) {
@@ -235,8 +242,8 @@ export default {
         })
         .catch(function (error) {
           console.log(error);
-        });
-      this.reload();
+        });*/
+
     },
 
     changeUsermsg() {

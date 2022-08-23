@@ -39,9 +39,9 @@ public Result addComment(@RequestBody Questionscomment questionscomment) {
         return result;
         }
 // 删除评论
-@DeleteMapping()
-public Result delete(@RequestBody Questionscomment questionscomment) {
-        Result deleteComment = questionscommentService.deleteComment(questionscomment);
+@GetMapping("/delete")
+public Result delete(@RequestParam  Integer id) {
+        Result deleteComment = questionscommentService.deleteComment(id);
         return deleteComment;
 }
 

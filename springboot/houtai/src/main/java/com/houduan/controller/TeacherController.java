@@ -2,6 +2,7 @@ package com.houduan.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.houduan.common.Result;
+import io.swagger.models.auth.In;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -52,9 +53,10 @@ public class TeacherController {
         return teacherService.updateTeacher(teacher);
     }
 
-    @PostMapping("/removeTeacher")
-    public Result removeTeacher(@RequestBody Teacher teacher) {
-        return teacherService.deleteTeacher(teacher);
+    @GetMapping("/removeTeacher")
+    public Result removeTeacher(@RequestParam Integer teacherId) {
+
+        return teacherService.deleteTeacher(teacherId);
     }
 
     @GetMapping("/searchTeacher")
