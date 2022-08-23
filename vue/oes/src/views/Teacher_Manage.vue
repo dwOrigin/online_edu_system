@@ -57,9 +57,6 @@
       <el-radio v-model="newform.status" :label="1">在线</el-radio>
       <el-radio v-model="newform.status" :label="0">不在线</el-radio>
     </el-form-item>
-    <el-form-item prop="createTime" label="创建时间" :label-width="formLabelWidth">
-      <el-input v-model="newform.createTime"></el-input>
-    </el-form-item>
     <el-form-item prop="subjectId" label="分类ID" :label-width="formLabelWidth">
       <el-input v-model="newform.subjectId"></el-input>
     </el-form-item>
@@ -225,7 +222,6 @@ export default{
           isStar:'',
           picPath:'',
           status:'',
-          createTime:'',
           subjectId:'',
           sort:''
         },
@@ -341,6 +337,7 @@ export default{
         })
        this.reload();
       },
+      //不用手写时间
        fetchData(){
         this.$axios.get('http://localhost:8081/teacher').then(
           response=>{

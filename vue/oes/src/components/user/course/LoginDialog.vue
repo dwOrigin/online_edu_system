@@ -202,8 +202,10 @@ export default {
         //     'phone': phone
         //   }
         // });
-        let promise = new Promise((a) => { a({ data: { code: 8888 } }) });
-        promise.then((res) => {
+        let promise = new Promise((a)=>{a({data:
+              {code: 8888}
+        })});
+        promise.then((res)=>{
           this.registerForm.codeReceived = res.data.code.toString();
           this.sendCodeInterval = 60;
           let id = setInterval(() => {
@@ -263,33 +265,56 @@ export default {
             //   url: '/',
             //   data: this.loginForm
             // });
-            if (this.loginForm.username == "admin" && this.loginForm.password == "admin") {
-              this.$router.push("/article_manage");
-            } else {
               //测试
-              let promise = new Promise((a, r) => {
-                a({
-                  data: {
-                    pass: true,
-                    user: {
-                      id: 1314520,
-                      name: '燕子',
-                      //头像地址
-                      avatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-                      //  历史记录前三条
-                      history3: [
-                        { courseName: '英语3级', lastTime: new Date(2022, 8, 18).toLocaleTimeString() },
-                        { courseName: '英语4级', lastTime: new Date(2022, 7, 30).toLocaleTimeString() },
-                        { courseName: '英语5级', lastTime: new Date(2021, 8, 18).toLocaleTimeString() },
-                      ],
-                      //  已收藏课程数量
-                      starCourseNum: 6,
-                      //  所有看过的课程数
-                      historyNum: 5,
-                      phonenumber: 137121212121,
-                      email: '2767332717@qq.com',
-                      password: '1111'
-                    }
+//               let promise = new Promise((a, r) => {
+//                 a({
+//                   data: {
+//                     pass: true,
+//                     user: {
+//                       id: 1314520,
+//                       name: '燕子',
+//                       //头像地址
+//                       avatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+//                       //  历史记录前三条
+//                       history3: [
+//                         { courseName: '英语3级', lastTime: new Date(2022, 8, 18).toLocaleTimeString() },
+//                         { courseName: '英语4级', lastTime: new Date(2022, 7, 30).toLocaleTimeString() },
+//                         { courseName: '英语5级', lastTime: new Date(2021, 8, 18).toLocaleTimeString() },
+//                       ],
+//                       //  已收藏课程数量
+//                       starCourseNum: 6,
+//                       //  所有看过的课程数
+//                       historyNum: 5,
+//                       phonenumber: 137121212121,
+//                       email: '2767332717@qq.com',
+//                       password: '1111'
+//                     }
+// =======
+
+            //测试
+            let promise = new Promise((a, r) => {
+              a({
+                data: {
+                  pass: true,
+                  user: {
+                    id: 1314520,
+                    name: '燕子',
+                    //头像地址
+                    avatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+                    //  历史记录前三条
+                    history3: [
+                      {courseName: '英语3级', lastTime: new Date(2022, 8, 18).toLocaleTimeString()},
+                      {courseName: '英语4级', lastTime:  new Date(2022, 7, 30).toLocaleTimeString()},
+                      {courseName: '英语5级', lastTime:  new Date(2021, 8, 18).toLocaleTimeString()},
+                    ],
+                    //  已收藏课程数量
+                    starCourseNum: 6,
+                  //  所有看过的课程数
+                    historyNum: 5,
+                    phoneNumber: '137121212121',
+                    password:'1111'
+                  }
+// >>>>>>> 9ab48426fc2db1d03bdcf82607d822d2392d502c
                   }
                 });
               });
@@ -312,7 +337,7 @@ export default {
                 this.$message.error('网络连接失败');
               });
             }
-          } else {
+           else {
             return false;
           }
         });

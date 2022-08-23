@@ -1,25 +1,64 @@
 <template>
-  <div class="friend-card">
+  <div class="friend-card" @click="changeChatWindow">
     <el-avatar
         style="margin: 0 10px 0 20px"
-        src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png">
-
+        :src="friend.friendAvatar">
+      <span v-if="friend.friendAvatar === ''">{{ friend.friendName }}</span>
     </el-avatar>
     <span style="font-weight: lighter; font-size: x-small">
-      系统消息
+      {{ friend.friendName }}
   </span>
-    <el-badge is-dot style="margin-left: 5px"></el-badge>
+    <el-badge v-if="friend.unCheckedCnt !== 0" is-dot style="margin-left: 5px"></el-badge>
 
-    <el-button type="info"
-               size="mini"
-               class="appear-on-hover"
-               icon="el-icon-close" circle></el-button>
+    <!--    <el-button type="info"-->
+    <!--               size="mini"-->
+    <!--               @click-->
+    <!--               class="appear-on-hover"-->
+    <!--               icon="el-icon-close" circle></el-button>-->
   </div>
 </template>
 
 <script>
 export default {
-  name: "FriendCard"
+  name: "FriendCard",
+  props: {
+    obj: {}
+  },
+  data() {
+    return {
+      friend: this.obj
+    };
+  },
+  methods: {
+    changeChatWindow() {
+      //将用户和特定好友的聊天记录全部标为已读
+      // let usr = JSON.parse(window.localStorage.getItem('user'));
+      // let promise = this.$axios({
+      //     url: '',
+      //     method: '',
+      //     data:{
+      //       userId: usr.id,
+      //       friendId: this.friend.friendId
+      //     }
+      // });
+      let promise = new Promise((a) => {
+        a({
+          data: {
+            result: true
+          }
+        });
+      });
+      promise.then((res) => {
+        if (this.friend.unCheckedCnt !== 0) {
+          this.$bus.$emit('clearUnCheckedCnt', this.friend.friendId);
+        }
+        this.friend.unCheckedCnt = 0;
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });
+      this.$bus.$emit('changeChatWindow', this.friend.friendId);
+    }
+  }
 }
 </script>
 

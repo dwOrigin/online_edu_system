@@ -1,32 +1,74 @@
 <template>
-<div class="question-record">
-  <div class="q-info">
-    <el-link :underline="false" class="question-title">
-      胖哥俩肉蟹煲大量使用过期食材，把「隔夜死蟹」当现杀活蟹卖，这对人体有何危害？还有哪些信息值得关注？
-    </el-link>
-    <div class="time-reply" style="font-size: small; color: #999999">
-      <div>2022/08/16提出</div>
-      <div>共263条回复</div>
+  <div class="question-record">
+    <div class="q-info" @click="handleClick">
+      <el-link :underline="false" class="question-title">
+        {{ question.title }}
+      </el-link>
+      <div class="time-reply" style="font-size: small; color: #999999">
+        <div>{{ question.time }}&nbsp;&nbsp;&nbsp;提出</div>
+        <div>共{{ question.answerCnt }}条回复</div>
+      </div>
+    </div>
+    <div class="delete" @click="handleDelete">
+      <el-button>删除提问</el-button>
     </div>
   </div>
-  <div class="delete">
-    <el-button>删除提问</el-button>
-  </div>
-</div>
 </template>
 
 <script>
 export default {
-  name: "QuestionRecord"
+  name: "QuestionRecord",
+  props: {
+    obj: {}
+  },
+  data() {
+    return {
+      question: this.obj
+    };
+  },
+  methods: {
+    handleClick() {
+      this.$router.push({
+        name: 'questionPage',
+        query: {
+          qId: this.question.qId
+        }
+      });
+    },
+    handleDelete() {
+      //删除问题
+      // let promise = this.$axios({
+      //   url: '',
+      //   method: '',
+      //   data: {
+      //     questionId: this.question.qId
+      //   }
+      // });
+      let promise = new Promise((a) => {
+        a({
+          data: {
+            result: true
+          }
+        });
+      });
+      promise.then((res) => {
+        this.$message.success('删除成功');
+        this.$bus.$emit('refreshQ');
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });
+    }
+  }
 }
 </script>
 
 <style scoped>
-.time-reply{
+.time-reply {
   display: flex;
   justify-content: space-between;
 }
-.question-title{
+
+.question-title {
   font-size: medium;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -34,7 +76,8 @@ export default {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
-.q-info{
+
+.q-info {
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
   background-color: white;
   padding: 10px;
@@ -44,12 +87,14 @@ export default {
   flex-direction: column;
   justify-content: space-between;
 }
-.delete{
+
+.delete {
   width: 50px;
   margin: auto 0;
   /*background-color: #409EFF;*/
 }
-.question-record{
+
+.question-record {
   /*position: relative;*/
   /*left: 100px;*/
   width: 700px;

@@ -1,99 +1,159 @@
 <template>
-<div class="course-record">
-  <el-image
-      class="radius-img"
-      style="width: 200px; height: 120px"
-      ref="img"
-      src="https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356"
-      fit="fill">
-  </el-image>
-  <div class="right" >
-    <div class="center-part" @click="$router.push({
+  <div
+      @click="$router.push({
           name: 'course',
           params: {
             courseId: course.id
           }
-       });">
-      <div :underline="false" class="title" >
-        这是标题这是标题这是标题这是标题这是标题这是标题这是标题这是标题这是标题
-      </div>
-      <div class="center-footer">
-        <div v-if="type=='history'">21小时前&nbsp;&nbsp;看到&nbsp;&nbsp;06:15</div>
-        <div v-if="type=='star'">收藏于&nbsp;&nbsp; 2022/08/17</div>
-        <div class="teacher">
-          <el-avatar
-              :size="30"
-              src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-          &nbsp;&nbsp;&nbsp;甘雨
+       });"
+      class="course-record" >
+    <el-image
+        class="radius-img"
+        style="width: 200px; height: 120px"
+        ref="img"
+        src="https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356"
+        fit="fill">
+    </el-image>
+    <div class="right">
+      <div class="center-part">
+        <div :underline="false" class="title">
+          {{course.title}}
+        </div>
+        <div class="center-footer">
+          <div v-if="type==='history'">{{course.time}}前&nbsp;&nbsp;看过&nbsp;&nbsp;</div>
+          <div v-if="type==='star'">收藏于&nbsp;&nbsp; {{course.time}}</div>
+          <div class="teacher">
+            <el-avatar
+                :size="30"
+                :src="course.teacherAvatar">
+              <span v-if="course.teacherAvatar === ''">{{course.teacherName}}</span>
+            </el-avatar>
+            &nbsp;&nbsp;&nbsp;{{course.teacherName}}
+          </div>
         </div>
       </div>
-    </div>
-    <div class="delete">
-      <el-button type="info" icon="el-icon-delete" @click="handledelete" circle></el-button>
+      <div class="delete">
+        <el-button type="info" icon="el-icon-delete" @click.stop="handleDelete" circle></el-button>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
 export default {
   name: "CourseRecord",
-  props:{
-    type:{
+  props: {
+    type: {
       default: 'history',
       type: String
-    }
+    },
+    courseP: {}
   },
-  data(){
+  data() {
     return {
-      course: {
-      default() {
-        return {
-          id: 9999,
-          imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
-          title: '[量子速学] 一秒钟一个单词 一小时考过四级! 你值得拥有',
-          teacher: 'bilbil大学',
-          chapterNum: 16,
-          studentNum: 10086,
-          likeRate: 100
-      };
-      }
-    }
+      course: this.courseP
     }
   },
-  methods:{
-    handledelete(){
-      console.log(1);
+  methods: {
+    handleDelete() {
+      if(this.type === 'history'){
+        //删除历史记录
+        // let promise = this.$axios({
+        //     url: '',
+        //     method: '',
+        //     data:{
+        //       id: this.course.id,//历史记录id
+        //       userId: this.course.userId//用户的id
+        //     }
+        // });
+        let promise = new Promise((a)=>{
+          a({
+            data:{
+              result: true
+            }
+          });
+        });
+        promise.then((res)=>{
+          if(res.data.result){
+            this.$message.success('删除成功');
+            this.$bus.$emit('refreshHistory');
+          }else{
+            //  删除历史记录不可能失败吧?
+          }
+        }).catch((err)=>{
+          this.$message.error('你的网络迷路了');
+        });
+      }
+      else
+        if(this.type === 'star'){
+          //删除收藏记录
+          // let promise = this.$axios({
+          //     url: '',
+          //     method: '',
+          //     data:{
+          //       id: this.course.id,//收藏记录id
+          //       userId: this.course.userId//用户的id
+          //     }
+          // });
+          let promise = new Promise((a)=>{
+            a({
+              data:{
+                result: true
+              }
+            });
+          });
+          promise.then((res)=>{
+            if(res.data.result){
+              this.$message.success('删除成功');
+              this.$bus.$emit('refreshStar');
+            }else{
+              //  impossible
+            }
+          }).catch((err)=>{
+            this.$message.error('你的网络迷路了');
+          });
+        }
     }
   }
 }
 </script>
 
 <style scoped>
-.right{
+.course-record:hover{
+  cursor: pointer;
+  transform: perspective(800px) translate3d(0,0,10px) ;
+  transition: all 0.2s;
+  /*border: 1px solid #409eff;*/
+}
+.right {
   display: flex;
   /*border-bottom: 1px solid #B3B5C0;*/
   margin: 0 20px;
 }
-.delete{
+
+.delete {
   margin: auto 100px;
 }
-.teacher{
+
+.teacher {
   display: flex;
   align-items: center;
 }
-.center-footer{
+
+.center-footer {
   display: flex;
   justify-content: space-between;
   color: #A0ACBA;
   align-items: center;
   font-size: x-small;
 }
-.title:hover{
+
+.title:hover {
   color: #409EFF;
   cursor: pointer;
 }
-.title{
+
+.title {
   color: #222;
   font-size: 18px;
   overflow: hidden;
@@ -102,7 +162,8 @@ export default {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
-.center-part{
+
+.center-part {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -112,12 +173,14 @@ export default {
   margin: 0;
   padding-bottom: 5px;
 }
-.radius-img{
+
+.radius-img {
   border-radius: 10px;
   flex-grow: 0;
   flex-shrink: 0;
 }
-.course-record{
+
+.course-record {
   display: flex;
   width: 700px;
   margin: 25px 0;

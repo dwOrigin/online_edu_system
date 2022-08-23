@@ -13,7 +13,7 @@
   <el-link :underline="false"
            @click="$router.push({
               name: 'personal',
-              query:{select:'pinfo'}
+              query:{select:''}
            });"
            class="tag-item">个人中心</el-link>
   <el-link :underline="false"

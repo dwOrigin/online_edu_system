@@ -24,7 +24,8 @@
             <i class="el-icon-chat-dot-square"></i>
             <span slot="title">
               消息
-              <el-badge class="mark" :value="122" style="margin-bottom: 10px" :max="99"/>
+              <el-badge v-show="msgUnCheckCnt > 0" class="mark" :value="msgUnCheckCnt" style="margin-bottom: 10px"
+                        :max="99"/>
             </span>
           </el-menu-item>
           <el-menu-item index='/home/personal/question'>
@@ -38,10 +39,7 @@
         </el-menu>
       </div>
       <div class="rv">
-<!--        <div><span style="font-size: 22px;-->
-<!--                    line-height: 1.3;-->
-<!--                     margin-bottom: 20px;">历史观看</span></div>-->
-        <div style="margin-top: 20px;">
+        <div style="margin-top: 20px; min-height: 550px">
           <router-view></router-view>
         </div>
       </div>
@@ -53,40 +51,69 @@
 
 export default {
   name: "PersonalCenter",
-  components: {
-
-  },
-  data(){
-    return{
-      url:"/home/personal/",
-      user:{}
+  components: {},
+  data() {
+    return {
+      url: "/home/personal/",
+      user: {},
+      msgUnCheckCnt: 0
     }
   },
-  methods:{
-    exit(){
+  methods: {
+    exit() {
       window.localStorage.removeItem('user');
       this.$bus.$emit('AuthorizationChanged');
     },
+    getMsgUnCheckCnt() {
+      //获取用户未读消息数
+      // let promise = this.$axios({
+      //   url: '',
+      //   method: '',
+      //   data: {
+      //     userId: this.user.id
+      //   }
+      // });
+      let promise = new Promise((a) => {
+        a({
+          data: {
+            cnt: 10
+          }
+        });
+      });
+      promise.then((res) => {
+        this.msgUnCheckCnt = res.data.cnt;
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });
+    }
   },
-  mounted(){
-    let url=this.$route.query.select;
-    if(url!=null){
-      this.url=this.url+url;
+  mounted() {
+    this.$bus.$on('clearUnCheckedCnt', (data)=>{
+      this.msgUnCheckCnt -= 1;
+    });
+    this.getMsgUnCheckCnt();
+    let url = this.$route.query.select;
+    if (url !== '' && url !== undefined) {
+      this.url = this.url + url;
       this.$router.push(this.url);
-    }else{
-      this.url=this.url+"pinfo";
+    } else {
+      this.url = this.url + "pinfo";
       this.$router.push(this.url);
     }
+  },
+  beforeDestroy() {
+    this.$bus.$off('');
   }
 }
 </script>
 
 <style scoped>
-.inner{
+.inner {
   width: 1000px;
   margin: 0 auto;
   display: flex;
 }
+
 .nav {
   border: 1px solid #E0E0E0;
   width: 200px;
