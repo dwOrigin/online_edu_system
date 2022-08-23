@@ -11,6 +11,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 /**
  * <p>
  *  服务实现类
@@ -37,6 +39,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             if (user1==null) {
                 return Result.error(Constants.CODE_400,"密码错误");
             }else{
+                user.setLastSystemTime(LocalDateTime.now());
+                userMapper.updateById(user);
                 return Result.success(Constants.CODE_200,"登录成功",user1);
             }
 
