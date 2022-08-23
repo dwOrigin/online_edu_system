@@ -30,7 +30,7 @@
   <el-container>
     <el-header>
        <span style="text-align: left; font-size: 25px">管理员</span>
-       <el-button type="primary" style="float: right" round @click="addLesson">添加文章</el-button>
+       <el-button type="primary" style="float: right" round @click="addArticle">添加文章</el-button>
     </el-header>
     <el-main>
          <el-table
@@ -97,7 +97,6 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page.sync="currentPage3"
       :page-size="100"
       layout="prev, pager, next, jumper"
       :total="1000">
@@ -112,36 +111,17 @@
 
 <script>
 export default{
-    activated: function() {
+    inject:['reload'],
+  name:'Article_Manage',
+  activated: function() {
  this.getCase()
+ },
+ mounted(){
+  this.fetchData()
  },
   data() {
       return {
-        tableData: [{
-          articleId:'1',
-          title:'张柯宁',
-          summary:'sdfvdgeds',
-          keyWord:'美女',
-          articleType:'美女',
-          createTime:'2022-8-15 19:06',
-          clickNum:'111'
-        }, {
-          articleId:'2',
-          title:'刘耀文',
-          summary:'sdfvdgeds',
-          keyWord:'高中生',
-          articleType:'高中生',
-          createTime:'2022-8-15 19:06',
-          clickNum:'444'
-        },{
-          articleId:'3',
-          title:'陈哲远',
-          summary:'sdfvdgeds',
-          keyWord:'帅哥',
-          articleType:'帅哥',
-          createTime:'2022-8-15 19:06',
-          clickNum:'1029'
-        }
+        tableData: [
         ]
       }
   },
@@ -175,6 +155,7 @@ export default{
       },
        handleClick(row) {
         console.log(row);
+        this.$router.push('modify_article_manage')
       },
       formatter(row, column) {
         return         
@@ -206,6 +187,21 @@ export default{
             message: '已取消删除'
           });          
         });
+
+      },
+      addArticle(){
+        this.$router.push('/add_article_manage')
+      },
+       fetchData(){
+        this.$axios.get('http://localhost:8081/article/findAll').then(
+          response=>{
+            this.tableData=response.data;
+          },
+          response=>{
+            console.log("error");
+            alert("请求失败");
+          }
+        );
       },
      }
 }

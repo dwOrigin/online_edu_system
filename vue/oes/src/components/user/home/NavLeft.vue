@@ -1,111 +1,130 @@
 <template>
   <div class="left-nav-box">
-    <h2 style="color: teal">在线教育系统</h2>
+    <h2
+        @click="$router.push({
+          name: 'recommend'
+        })"
+        style="color: teal" class="hoverC">在线教育系统</h2>
     <div class="category-dropdown">
       <div>分类<i class="el-icon-tickets el-icon--right"></i></div>
       <div class="dropdown-content">
         <span class="first-category">IT技术</span>
         <div class="category-list">
-          <div class="item">
-            <el-button round size="small">圆角按钮</el-button>
-          </div>
-          <div class="item">
-            <el-button round size="small">圆角按钮</el-button>
-          </div>
-          <div class="item">
-            <el-button round size="small">圆角按钮</el-button>
-          </div>
-          <div class="item">
-            <el-button round size="small">圆角按钮</el-button>
-          </div>
-          <div class="item">
-            <el-button round size="small">圆角按钮</el-button>
-          </div>
-          <div class="item">
-            <el-button round size="small">圆角按钮</el-button>
+          <div class="item" v-for="tag in tagList.it">
+            <el-button round size="small" @click="handleClickTag(tag)">{{ tag.title }}</el-button>
           </div>
         </div>
         <span class="first-category">考试</span>
         <div class="category-list">
-          <div class="item">
-            <el-button round size="small">圆角按钮</el-button>
-          </div>
-          <div class="item">
-            <el-button round size="small">圆角按钮</el-button>
-          </div>
-          <div class="item">
-            <el-button round size="small">圆角按钮</el-button>
-          </div>
-          <div class="item">
-            <el-button round size="small">圆角按钮</el-button>
-          </div>
-          <div class="item">
-            <el-button round size="small">圆角按钮</el-button>
+          <div class="item" v-for="tag in tagList.exam">
+            <el-button round size="small" @click="handleClickTag(tag)">{{ tag.title }}</el-button>
           </div>
         </div>
         <span class="first-category">职业技能</span>
         <div class="category-list">
-          <div class="item">
-            <el-button round size="small">圆角按钮</el-button>
-          </div>
-          <div class="item">
-            <el-button round size="small">圆角按钮</el-button>
-          </div>
-          <div class="item">
-            <el-button round size="small">圆角按钮</el-button>
-          </div>
-          <div class="item">
-            <el-button round size="small">圆角按钮</el-button>
-          </div>
-          <div class="item">
-            <el-button round size="small">圆角按钮</el-button>
+          <div class="item" v-for="tag in tagList.skill">
+            <el-button round size="small" @click="handleClickTag(tag)">{{ tag.title }}</el-button>
           </div>
         </div>
         <span class="first-category">兴趣生活</span>
         <div class="category-list">
-          <div class="item">
-            <el-button round size="small">圆角按钮</el-button>
-          </div>
-          <div class="item">
-            <el-button round size="small">圆角按钮</el-button>
-          </div>
-          <div class="item">
-            <el-button round size="small">圆角按钮</el-button>
-          </div>
-          <div class="item">
-            <el-button round size="small">圆角按钮</el-button>
-          </div>
-          <div class="item">
-            <el-button round size="small">圆角按钮</el-button>
+          <div class="item" v-for="tag in tagList.hobby">
+            <el-button round size="small" @click="handleClickTag(tag)">{{ tag.title }}</el-button>
           </div>
         </div>
 
       </div>
     </div>
-    <el-input placeholder="请输入搜索内容" v-model="searchKey" class="input-with-select">
-      <el-button type="primary" slot="suffix" class="search-button">搜索</el-button>
+    <el-input
+        placeholder="请输入搜索内容"
+        @keyup.enter.native="handleSearch"
+        v-model="searchKey" class="input-with-select">
+      <el-button type="primary" slot="suffix"
+                 @click="handleSearch"
+                 class="search-button">搜索
+      </el-button>
     </el-input>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "NavLeft",
-  data(){
-    return{
+  data() {
+    return {
       select: '',
-      searchKey: ''
+      searchKey: '',
+      //分类标签集合
+      tagList: {
+        it: [
+          {title: '分类标签'},
+          {title: '分类标签'},
+          {title: '分类标签'},
+          {title: '分类标签'},
+          {title: '分类标签'},
+          {title: '分类标签'},
+          {title: '分类标签'},
+        ],
+        exam: [
+          {title: '分类标签'},
+          {title: '分类标签'},
+          {title: '分类标签'},
+          {title: '分类标签'},
+          {title: '分类标签'},
+        ],
+        skill: [
+          {title: '分类标签'},
+          {title: '分类标签'},
+          {title: '分类标签'},
+          {title: '分类标签'},
+        ],
+        hobby: [
+          {title: '分类标签'},
+          {title: '分类标签'},
+          {title: '分类标签'},
+        ]
+      }
     }
-  }
+  },
+  methods: {
+    //点击分类栏分类标签触发!
+    handleClickTag(tag) {
+      this.select = tag.title;
+      this.searchKey = '';
+      this.handleSearch();
+    },
+    //点击搜索或enter触发
+    handleSearch() {
+      if (this.select === '' && this.searchKey === '') {
+        return;
+      }
+      this.$router.push({
+        name: 'search',
+        params:{
+          select: this.select || undefined,
+          searchKey: this.searchKey || undefined
+        }
+      });
+      this.$bus.$emit('searchInputChanged', this.select, this.searchKey);
+      this.searchKey = '';
+      this.select = '';
+    }
+  },
 }
 </script>
 
 <style scoped>
-.search-button{
+.hoverC:hover {
+  cursor: pointer;
+}
+
+.search-button {
   transform: translateX(5px);
 }
 
-.input-with-select{
+.input-with-select {
   width: 250px;
 }
 

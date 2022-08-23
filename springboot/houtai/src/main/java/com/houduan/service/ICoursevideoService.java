@@ -1,7 +1,10 @@
 package com.houduan.service;
 
+import com.houduan.common.Result;
 import com.houduan.entity.Coursevideo;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ICoursevideoService extends IService<Coursevideo> {
 
+    List<Coursevideo> findbycourseid(Integer courseId);
+
+    Result addnew(Coursevideo coursevideo);
 }

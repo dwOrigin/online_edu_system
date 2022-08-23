@@ -1,7 +1,10 @@
 package com.houduan.service;
 
+import com.houduan.common.Result;
 import com.houduan.entity.Coursefavorite;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ICoursefavoriteService extends IService<Coursefavorite> {
 
+    Result savenew(Coursefavorite coursefavorite);
+
+    Result delete(Coursefavorite coursefavorite);
+
+    List<Coursefavorite> getbyuserid(Integer userid);
 }

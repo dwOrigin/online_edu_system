@@ -1,6 +1,8 @@
 package com.houduan.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.houduan.common.Constants;
+import com.houduan.common.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -26,18 +28,22 @@ public class CourseController {
     private ICourseService courseService;
 
     @PostMapping("/add")
-    public Boolean addnew(@RequestBody Course course){
+    public Result addnew(@RequestBody Course course) {
         return courseService.addnew(course);
     }
 
-    @PostMapping
-    public Boolean save(@RequestBody Course course) {
-        return courseService.saveOrUpdate(course);
+    @PostMapping("/update")
+    public Result updatecourse(@RequestBody Course course) {
+        return courseService.updatecourse(course);
     }
 
-    @DeleteMapping("/{id}")
-    public Boolean delete(@PathVariable Integer id) {
-        return courseService.removeById(id);
+    @GetMapping("/delete")
+    public Result delete(@RequestParam Integer id) {
+        if (courseService.removeById(id)) {
+            return Result.success(Constants.CODE_200, "删除成功");
+        } else {
+            return Result.error(Constants.CODE_400, "删除失败");
+        }
     }
 
     @GetMapping
@@ -45,15 +51,23 @@ public class CourseController {
         return courseService.list();
     }
 
-    @GetMapping("/{id}")
-    public Course findOne(@PathVariable Integer id) {
+    @GetMapping("/getById")
+    public Course findOne(@RequestParam Integer id) {
         return courseService.getById(id);
     }
 
-    @GetMapping("/page")
-    public Page<Course> findPage(@RequestParam Integer pageNum,
-                                 @RequestParam Integer pageSize) {
-        return courseService.page(new Page<>(pageNum, pageSize));
+    @GetMapping("getByType")
+    public List<Course> findType(@RequestParam String type) {
+        return courseService.findType(type);
+    }
+
+    @GetMapping("/pageviewplus")
+    public Result pageviewplus(@RequestParam Integer id){
+        return courseService.pageviewplus(id);
+    }
+    @GetMapping("/praiseplus")
+    public Result praiseplus(@RequestParam Integer id){
+        return courseService.praiseplus(id);
     }
 
 }

@@ -33,13 +33,13 @@ public Result addArticle(@RequestBody Article article){
         return articleService.addArticle(article);
 }
 //修改文章信息
-@PutMapping
+@PostMapping("/update")
 public Result updateArticle(@RequestBody Article article) {
         return articleService.updateArticle(article);
         }
 //删除文章
-@DeleteMapping("/{id}")
-public Result delete(@PathVariable Integer id) {
+@GetMapping("/delete")
+public Result delete(@RequestParam Integer id) {
         return articleService.deleteArticle(id);
         }
 
@@ -47,14 +47,13 @@ public Result delete(@PathVariable Integer id) {
         /*为了区分出按照类别和按照id去查找
          *所以在type的前面加上了一个s
         * */
-@GetMapping("/s" +
-        "/{type}")
-public List<Article> searchByType(@PathVariable String type) {
+@GetMapping("/getbytype")
+public List<Article> searchByType(@RequestParam String type) {
         return articleService.searchByType(type);
         }
 //        按照id去查找对应的文章
-@GetMapping("/{id}")
-public Article findArticleById(@PathVariable Integer id){
+@GetMapping("/getbyid")
+public Article findArticleById(@RequestParam Integer id){
         return articleService.findArticleByID(id);
 }
 @GetMapping("/findAll")

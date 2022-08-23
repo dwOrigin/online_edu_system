@@ -47,15 +47,15 @@
       <!-- 前面限制宽度了，所以别写太长好了，很难改 -->
     </el-form-item>
     <el-form-item prop="isStar" label="是否推荐" :label-width="formLabelWidth">
-      <el-radio v-model="newform.isStar" label="1">是</el-radio>
-      <el-radio v-model="newform.isStar" label="0">否</el-radio>
+      <el-radio v-model="newform.isStar" :label="1">是</el-radio>
+      <el-radio v-model="newform.isStar" :label="0">否</el-radio>
     </el-form-item>
      <el-form-item prop="picPath" label="头像" :label-width="formLabelWidth">
       <el-input v-model="newform.picPath"></el-input>
     </el-form-item>
     <el-form-item prop="status" label="状态" :label-width="formLabelWidth">
-      <el-radio v-model="newform.status" label="1">是</el-radio>
-      <el-radio v-model="newform.status" label="0">否</el-radio>
+      <el-radio v-model="newform.status" :label="1">在线</el-radio>
+      <el-radio v-model="newform.status" :label="0">不在线</el-radio>
     </el-form-item>
     <el-form-item prop="createTime" label="创建时间" :label-width="formLabelWidth">
       <el-input v-model="newform.createTime"></el-input>
@@ -143,15 +143,15 @@
       <!-- 前面限制宽度了，所以别写太长好了，很难改 -->
     </el-form-item>
     <el-form-item prop="isStar" label="是否推荐" :label-width="formLabelWidth">
-      <el-radio v-model="form.isStar" label="1">是</el-radio>
-      <el-radio v-model="form.isStar" label="0">否</el-radio>
+      <el-radio v-model="form.isStar" :label="1">是</el-radio>
+      <el-radio v-model="form.isStar" :label="0">否</el-radio>
     </el-form-item>
      <el-form-item prop="picPath" label="头像" :label-width="formLabelWidth">
       <el-input v-model="form.picPath"></el-input>
     </el-form-item>
     <el-form-item prop="status" label="状态" :label-width="formLabelWidth">
-      <el-radio v-model="form.status" label="1">是</el-radio>
-      <el-radio v-model="form.status" label="0">否</el-radio>
+      <el-radio v-model="form.status" :label="1">在线</el-radio>
+      <el-radio v-model="form.status" :label="0">不在线</el-radio>
     </el-form-item>
     <el-form-item prop="createTime" label="创建时间" :label-width="formLabelWidth">
       <el-input v-model="form.createTime" :disabled="true"></el-input>
@@ -179,7 +179,7 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page.sync="currentPage3"
+     
       :page-size="100"
       layout="prev, pager, next, jumper"
       :total="1000">
@@ -194,79 +194,17 @@
 
 <script>
 export default{
-    activated: function() {
-        this.getCase()
-    },
+    inject:['reload'],
+  name:'Teacher_Manage',
+  activated: function() {
+ this.getCase()
+ },
+ mounted(){
+  this.fetchData()
+ },
      data(){
         return{
-            tableData: [{
-          id:'71120207',
-          name:'张柯宁',
-          education:'东南大学',
-          career:'东南大学2020级计软智学院本科生',
-          isStar:'1',
-          picPath:'dgsfds',
-          status:'1',
-          createTime:'2022-8-15 11:23',
-          subjectId:'软件工程',
-          sort:'1'
-        }, {
-         id:'20050923',
-          name:'刘耀文',
-          education:'时代峰峻',
-          career:'时代少年团成员',
-          isStar:'1',
-          picPath:'ghbjnmk,l',
-          status:'1',
-          createTime:'2022-8-15 11:23',
-          subjectId:'rap 舞蹈',
-          sort:'2'
-        }, {
-          id:'20061124',
-          name:'余宇涵',
-          education:'时代峰峻',
-          career:'TF家族三代练习生',
-          isStar:'1',
-          picPath:'ghjkl',
-          status:'1',
-          createTime:'2022-8-15 11:24',
-          subjectId:'舞蹈 贝斯',
-          sort:'3'
-        }, {
-          id:'19970805',
-          name:'王一博',
-          education:'乐华娱乐',
-          career:'uniq成员',
-          isStar:'0',
-          picPath:'ghjkl',
-          status:'0',
-          createTime:'2022-8-15 11:24',
-          subjectId:'舞蹈 门面',
-          sort:'4'
-        },{
-          id:'19961029',
-          name:'陈哲远',
-          education:'果然娱乐',
-          career:'演员',
-          isStar:'1',
-          picPath:'ghjkl',
-          status:'1',
-          createTime:'2022-8-15 11:24',
-          subjectId:'唱歌',
-          sort:'5'
-        },{
-          id:'19950808',
-          name:'崔胜澈',
-          education:'pledis',
-          career:'seventeen队长',
-          isStar:'1',
-          picPath:'ghjkl',
-          status:'1',
-          createTime:'2022-8-15 11:24',
-          subjectId:'rap',
-          sort:'6'
-        }
-        ],
+            tableData: [],
          dialogFormVisible: false,
          addNewVisible:false,
         form: {
@@ -294,10 +232,6 @@ export default{
           sort:''
         },
         formLabelWidth: '120px',
-        currentPage1: 5,
-        currentPage2: 5,
-        currentPage3: 5,
-        currentPage4: 4
         }
      },
      methods:{
@@ -372,6 +306,24 @@ export default{
             message: '已取消删除'
           });          
         });
+         this.request.post('http://localhost:8081/teacher/removeTeacher', row)
+        .then((res) => {
+          if (res.code == "200") {
+            this.$message.success(res.message);
+          } else {
+            this.$message.error(res.message);
+          }
+        })
+      //    this.$axios.post('http://localhost:8081/teacher/removeTeacher', {
+      //   id: row.id
+      // })
+      //   .then(function (response) {
+      //     console.log(response);
+      //   })
+      //   .catch(function (error) {
+      //     console.log(error);
+      //   });
+      this.reload();
       },
       changeUsermsg(){
         this.$notify({
@@ -386,7 +338,18 @@ export default{
           message: '添加讲师成功',
           type: 'success'
         });
-      }
+      },
+       fetchData(){
+        this.$axios.get('http://localhost:8081/teacher').then(
+          response=>{
+            this.tableData=response.data;
+          },
+          response=>{
+            console.log("error");
+            alert("请求失败");
+          }
+        );
+      },
     
      }
 }
