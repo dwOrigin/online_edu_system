@@ -34,7 +34,7 @@ const router = new VueRouter({
     routes: [
         {
             path:'/',
-            redirect:'qa_manage'
+            redirect:'home'
         },
         {
             //用户主页

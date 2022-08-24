@@ -4,17 +4,17 @@
       <div class="header">
         <div class="title">{{question.title}}</div>
         <div class="author">
-          <el-avatar shape="square"
+          <!-- <el-avatar shape="square"
                      style="margin: 0 10px"
                      :size="30" :src="question.askerAvatar">
             <span v-if="question.askerAvatar === ''">
               {{question.askerName}}
             </span>
-          </el-avatar>
-          {{question.askerName}}&nbsp;&nbsp;
+          </el-avatar> -->
+          {{question.cusId}}&nbsp;&nbsp;
         </div>
         <div class="content">
-          {{question.questionContent}}
+          {{question.content}}
         </div>
         <div class="header-footer">
           <el-button
@@ -25,12 +25,12 @@
           <div style="color: #8590A6; font-size: x-small">
           <span>
             <i class="el-icon-s-data"></i>
-            被浏览 {{question.viewCnt}}
+            被浏览 {{question.browseCount}}
           </span>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <span>
             <i class="el-icon-chat-square"></i>
-            {{question.answerCnt}}条回答
+            {{question.replyCount}}条回答
           </span>
           </div>
 
@@ -42,7 +42,7 @@
       <div class="answers">
         <div style="width: 95%; margin: 0 auto">
           <div class="space-between">
-            <div style="color: #121212; font-size: small; font-weight: bold">{{question.answerCnt}} 个回答</div>
+            <div style="color: #121212; font-size: small; font-weight: bold">{{question.replyCount}} 个回答</div>
             <el-dropdown>
               <div class="sort">
                 默认排序
@@ -95,6 +95,7 @@
 import Answer from "@/components/user/qap/Answer";
 
 export default {
+  inject: ['reload'],
   name: "QuestionPage",
   components: {
     Answer
@@ -119,22 +120,22 @@ export default {
         }
         let user = JSON.parse(window.localStorage.getItem('user'));
         //回答问题
-        // let promise = this.$axios({
-        //   url: '',
-        //   method: '',
-        //   data: {
-        //     answer: this.answer,
-        //     userId: user.id,
-        //     qId: this.question.pId
-        //   }
-        // });
-        let promise = new Promise((a) => {
-          a({
-            data: {
-              result: false
-            }
-          });
+        let promise = this.$axios({
+          url: 'http://localhost:8081/questionscomment',
+          method: 'post',
+          data: {
+            answer: this.answer,
+            userId: user.id,
+            qId: this.question.pId
+          }
         });
+        // let promise = new Promise((a) => {
+        //   a({
+        //     data: {
+        //       result: false
+        //     }
+        //   });
+        // });
         promise.then((res) => {
           let ret = res.data.result;
           if (ret) {
@@ -149,6 +150,7 @@ export default {
       }
       this.answer = '';
       this.dialogVisible = false;
+      this.reload();
     },
     handleClick() {
       let usr = window.localStorage.getItem('user');
@@ -161,79 +163,29 @@ export default {
       }
     },
     refreshQuestion(qId) {
-      //获取问题详细信息
-      // let promise = this.$axios({
-      //   url: '',
-      //   method: '',
-      //   data: {
-      //     qId: qId
-      //   }
-      // });
-      let promise = new Promise((a) => {
-        a({
-          data: {
-            question: {
-              qId: 888,
-              title: '这个问题你问可莉吧?',
-              askerName: 'Jean',
-              askerAvatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-              questionContent: '这是问题的内容',
-              viewCnt: 12345,//问题被浏览次数
-              answerCnt: 859, //回答数量
-            }
-          }
-        });
-      });
+      // 获取问题详细信息
+      let promise = this.$axios.get(`http://localhost:8081/questions/id?id=${qId}`);
       promise.then((res) => {
-        this.question = res.data.question;
-
+        this.question = res.data;
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
     },
     refreshComment(qId) {
-      //获取问题答案
-      // let promise = this.$axios({
-      //   url: '',
-      //   method: '',
-      //   data: {
-      //     qId: qId
-      //   }
-      // });
-      let promise = new Promise((a) => {
-        a({
-          data: {
-            answersList:[
-              {
-                //这里属性名为了和Answer.vue里面保持一致
-                //属性名含义与实际不同
-                cId: 10086,//回答id
-                commenterName: '回答者名字',
-                commenterAvatarUrl: 'https://pic4.zhimg.com/v2-d41c2ceaed8f51999522f903672a521f_xs.jpg?source=1940ef5c',
-                content: '可莉不知道哦',
-                time: '2022/8/71',
-                like: 998
-              },
-              {
-                //这里属性名为了和Answer.vue里面保持一致
-                //属性名含义与实际不同
-                cId: 10086,//回答id
-                commenterName: '回答者名字',
-                commenterAvatarUrl: 'https://pic4.zhimg.com/v2-d41c2ceaed8f51999522f903672a521f_xs.jpg?source=1940ef5c',
-                content: '可莉不知道哦',
-                time: '2022/8/71',
-                like: 998
-              }
-            ]
-          }
-        });
+      // 获取问题答案
+      let promise = this.$axios({
+        url: 'http://localhost:8081/questionscomment/detail',
+        method: 'get',
+        params: {
+          id: qId
+        }
       });
       promise.then((res) => {
-        this.answers = res.data.answersList;
+        this.answers = res.data;
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
-    }
+    },
   },
   mounted() {
     this.refreshQuestion(this.$route.query.qId);
