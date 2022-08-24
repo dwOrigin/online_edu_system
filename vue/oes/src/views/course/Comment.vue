@@ -1,27 +1,24 @@
 <template>
-  <div class="comment">
+<div class="comment">
     <div class="comment-header">
       <div class="comment-avatar">
         <el-avatar
             :size="40"
-            src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png">
+            :src="commenter.avatarUrl">
+          <span v-if="commenter.avatarUrl === ''">{{ commenter.name }}</span>
         </el-avatar>
-      </div>
-      <div class="comment-info">
-        <div >
-        <div style="font-size: 16px;display:inline-block" >
-         如天落云锦
-        </div>
-        <div style="float:right;display: inline-block;">
+         <div style="float:right;display: inline-block;">
           <i class="el-icon-delete" @click="deleteComment"></i>
           <!-- 需要参数，但现在没有，以后会有的 -->
         </div>
         <!-- 没办法让删除靠右，就这样吧 -->
-        </div>
+      </div>
+      <div class="comment-info">
+        <div style="font-size: 16px;">{{ commenter.name }}</div>
         <div class="time-and-score">
-          <div style="margin-right: 10px">5年前</div>
+          <div style="margin-right: 10px">{{ comment.time }}</div>
           <el-rate
-              v-model="value"
+              v-model="comment.score"
               disabled
               text-color="#ff9900"
               score-template="{value}">
@@ -31,7 +28,7 @@
     </div>
     <div class="comment-content">
       <p style="width: 100%">
-        Lucy老师是我见过的唯一一位美丽大方善良且善解人意，钢琴弹的好，声音很好听，段子随手就来一句的小仙女，Lucy大大讲课很容易理解，更喜欢教给同学们学习方法和人生哲理，在教我英语时，也学到了一些生活知识，很感谢Lucy老师。
+        {{ comment.content }}
       </p>
     </div>
   </div>
@@ -43,10 +40,48 @@ export default {
   name: "Comment",
   data() {
     return {
-      value: 3.7
+     commenter: {},
+      myComment : this.comment
+    }
+  },
+  props: {
+    comment: {
+    }
+  },
+  watch: {
+    myComment: {
+      deep: true,
+      immediate: true,
+      handler: function (newV) {
+        this.refreshCommenter(newV.commenterId);
+      }
     }
   },
   methods:{
+     //更新评论者信息
+    refreshCommenter(id) {
+      //根据评论者id获取评论者信息
+      // let promise = this.$axios({
+      //   url: '',
+      //   method: '',
+      //   data: {
+      //     id: id
+      //   }
+      // });
+      let promise = new Promise((a) => {
+        a({
+          data: {user: {
+              name: '评论者555',
+              avatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
+            }}
+        });
+      });
+      promise.then((res) => {
+          this.commenter = res.data.user;
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });
+    },
     deleteComment(){
        this.$alert('你将删除这条评论', '提示', {
           confirmButtonText: '确定',
@@ -63,13 +98,14 @@ export default {
 </script>
 
 <style scoped>
-.comment-content{
+.comment-content {
   margin-left: 60px;
   font-size: 16px;
   line-height: 26px;
   color: #0f1419;
   word-break: break-word;
-  height: 100px;
+  margin-bottom: 20px;
+  margin-top: 20px;
   /*background-color: teal;*/
 }
 .time-and-score {
@@ -79,20 +115,16 @@ export default {
   display: flex;
   align-items: center;
 }
-
 .comment-info {
   font-weight: lighter;
 }
-
 .comment-avatar {
   margin-right: 20px;
 }
-
 .comment-header {
   display: flex;
   margin-top: 10px;
 }
-
 .comment {
   border-bottom: 1px solid #edeff2;
   margin-top: 15px;

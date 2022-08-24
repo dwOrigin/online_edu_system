@@ -62,4 +62,10 @@ public class QuestionsServiceImpl extends ServiceImpl<QuestionsMapper, Questions
         List<Questions> questionsList = mapper.selectList(wrapper);
         return questionsList;
     }
+
+    @Override
+    public Questions getById(Integer id) {
+        Questions questions = mapper.selectById(id);
+        return  questions;
+    }
 }

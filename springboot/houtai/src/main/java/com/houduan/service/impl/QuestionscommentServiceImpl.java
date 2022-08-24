@@ -9,6 +9,7 @@ import com.houduan.service.IQuestionscommentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -47,12 +48,12 @@ private QuestionscommentMapper mapper;
     }
 
     @Override
-    public List<Questionscomment> getIntactComments(Questions questions) {
+    public List<Questionscomment> getIntactComments(Integer id) {
 
         QueryWrapper<Questionscomment> wrapper = new QueryWrapper<>();
-        int questionId=questions.getId();
+//        int questionId=questions.getId();
 //        找到所有关于该问题的评论
-        wrapper.eq("question_id",questionId);
+        wrapper.eq("question_id",id);
         List<Questionscomment> questionscommentList = mapper.selectList(wrapper);
         return questionscommentList;
     }

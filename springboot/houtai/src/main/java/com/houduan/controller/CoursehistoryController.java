@@ -7,7 +7,9 @@ import io.swagger.models.auth.In;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 
 import com.houduan.service.ICoursehistoryService;
 import com.houduan.entity.Coursehistory;
@@ -64,6 +66,16 @@ public class CoursehistoryController {
     public Page<Coursehistory> findPage(@RequestParam Integer pageNum,
                                         @RequestParam Integer pageSize) {
         return coursehistoryService.page(new Page<>(pageNum, pageSize));
+    }
+@GetMapping("/getByUserId/{id}")
+    public List<String>getThreeHistory(@PathVariable  Integer id){
+    List<String> stringList = coursehistoryService.getbyuserid3(id);
+    return stringList;
+}
+    @GetMapping("/getByUserIdT/{id}")
+    public List<LocalDateTime>getThreeHistoryTime(@PathVariable  Integer id){
+        List<LocalDateTime> timeList = coursehistoryService.getbyuseridTime(id);
+        return timeList;
     }
 
 }

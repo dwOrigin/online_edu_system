@@ -1,8 +1,8 @@
 <template>
   <div class="play-title">
     <div>
-      <span style="font-size: large;">【原神】胡桃新皮肤！超美夏日礼服——「朝露晴空」</span>
-      <el-button type="primary" round style="float:right" @click="changeName">修改标题</el-button>
+      <span style="font-size: large;">{{ course.title }}</span>
+       <el-button type="primary" round style="float:right" @click="changeName">修改标题</el-button>
       <el-dialog title="修改课程名称" :visible.sync="dialogFormVisible" append-to-body>
     <el-form ref="form" :model="form" label-width="100px">
        <el-form-item label="课程名称" prop="courseName">
@@ -19,19 +19,20 @@
     <div class="course-info" style="margin-top: 10px;">
       <div style="margin-left: 20px; margin-right: 20px;">
         <i class="el-icon-video-play"></i>
-        171.9万
+        {{ course.viewCnt }}
       </div>
       <div style="margin-right: 20px">
         <i class="el-icon-chat-dot-square"></i>
-        1163
+        {{ course.commentCnt }}
       </div>
       <div style="margin-right: 20px">
         <i class="el-icon-time"></i>
-        2022-06-18 11:30:00
+        {{ course.updateTime}}
       </div>
     </div>
   </div>
 </template>
+
 
 <script>
 export default {
@@ -40,9 +41,18 @@ export default {
     return{
       dialogFormVisible:false,
       form:{
-        courseName:'【原神】胡桃新皮肤！超美夏日礼服——「朝露晴空」'
-      }
+        courseName:''
+      },
+      course:{}
     }
+  },
+  mounted() {
+    this.$bus.$on('courseChanged', (data) => {
+      this.course = data;
+    });
+  },
+  beforeDestroy() {
+    this.$bus.$off('courseChanged');
   },
   methods:{
     changeName(){

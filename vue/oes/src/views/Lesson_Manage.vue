@@ -34,8 +34,7 @@
     </el-header>
     <el-main>
          <el-table
-    :data="tableData"
-    border
+    :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
     style="width: 100%">
     <el-table-column
       fixed
@@ -99,13 +98,10 @@
    <div style='text-align:center'>
         <el-footer class="block">
     <span class="demonstration"></span>
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :page-size="100"
-      layout="prev, pager, next, jumper"
-      :total="1000">
-    </el-pagination>
+   <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="pageSizes"
+              :current-page.sync="currentPage" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="totalCount">
+            </el-pagination>
+            <!-- 但是现在筛选功能只能在每一页里筛，让我想想有什么好办法，建议是取消筛选功能 -->
   </el-footer>
     </div>
   </el-container>
@@ -126,6 +122,10 @@ export default{
  },
   data() {
       return {
+         currentPage: 1,
+      pageSize: 5,
+      totalCount:1,
+      pageSizes:[5,10],
         tableData: [
         ]
       }
@@ -149,12 +149,15 @@ export default{
         gotoNotice(){
             this.$router.push('/notice_manage')
         },
-        handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-      },
+         handleSizeChange(val) {
+      this.pageSize=val;
+      this.currentPage=1;
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      this.currentPage=val;
+      console.log(`当前页: ${val}`);
+    },
       handleOpen(key, keyPath) {
         console.log(key, keyPath);
       },
@@ -192,19 +195,7 @@ export default{
             message: '已取消删除'
           });
         });
-        /*this.$axios.get('http://localhost:8081/course/delete',{
-        params:{
-        courseId: row.courseId
-        }
-        }
-        )
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-      this.reload();*/
+      this.reload();
       },
       formatter(row, column) {
         return
@@ -226,6 +217,7 @@ export default{
         this.$axios.get('http://localhost:8081/course').then(
           response=>{
             this.tableData=response.data;
+            this.totalCount=response.data.length;
           },
           response=>{
             console.log("error");

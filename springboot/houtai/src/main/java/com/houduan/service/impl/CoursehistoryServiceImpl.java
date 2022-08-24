@@ -6,17 +6,13 @@ import com.houduan.entity.Course;
 import com.houduan.entity.Coursehistory;
 import com.houduan.mapper.CourseMapper;
 import com.houduan.mapper.CoursehistoryMapper;
-import com.houduan.service.ICourseService;
 import com.houduan.service.ICoursehistoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p>
@@ -30,6 +26,7 @@ import java.util.List;
 public class CoursehistoryServiceImpl extends ServiceImpl<CoursehistoryMapper, Coursehistory> implements ICoursehistoryService {
 @Autowired
 private CoursehistoryMapper mapper;
+@Autowired
 private CourseMapper courseMapper;
     @Override
     public Result savenew(Coursehistory coursehistory) {
@@ -64,11 +61,11 @@ private CourseMapper courseMapper;
         //按照id的大小选出最大的三个数值来
         Collections.sort(List);
         System.out.println(List);
-        List<Integer>numberList=new LinkedList<>();
+        List<Integer>numberList=new ArrayList<>();
 //        得到courseId的集合
-        int number=numberList.size()-1;
+        int number=List.size()-1;
         for (int i=0;i<3;i++){
-            numberList.add(List.get(number).getCourseId());
+            numberList.add(List.get(number-i).getCourseId());
         }
 //        寻找对应的course内容
         java.util.List<Course> courseList = courseMapper.selectBatchIds(numberList);
@@ -77,7 +74,6 @@ private CourseMapper courseMapper;
         for (int i=0;i<courseList.size();i++){
             stringArrayList.add(courseList.get(i).getCourseName());
         }
-
         /*List<Coursehistory>listh=list(queryWrapper);
         List<String>lists=new LinkedList<>();
         int num=0;
@@ -91,8 +87,49 @@ private CourseMapper courseMapper;
             lists.add(num,name);
             num++;
         }*/
+        System.out.println(stringArrayList);
         return stringArrayList;
     }
+//
+@Override
+public List<LocalDateTime> getbyuseridTime(Integer userid) {
+    QueryWrapper<Coursehistory>queryWrapper=new QueryWrapper<>();
+    queryWrapper.eq("user_id",userid);
+    List<Coursehistory> List = mapper.selectList(queryWrapper);
+
+    //按照id的大小选出最大的三个数值来
+    Collections.sort(List);
+    System.out.println(List);
+    List<LocalDateTime>timeList=new ArrayList<>();
+//        得到courseId的集合
+    int number=List.size()-1;
+    for (int i=0;i<3;i++){
+        timeList.add(List.get(number-i).getTime());
+    }
+    return timeList;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @Override
     public List<Coursehistory> getid3(Integer userid) {
