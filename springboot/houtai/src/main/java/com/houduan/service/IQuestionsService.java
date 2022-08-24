@@ -22,6 +22,8 @@ public interface IQuestionsService extends IService<Questions> {
     Result deleteQuestion(Integer integer);
 // 修改问题
     Result updateQuestion(Questions questions);
-// 查找问题
+// 按类型查找问题
     List<Questions> searchQuestionByType(String type);
+    Questions getById(Integer id);
+
 }
