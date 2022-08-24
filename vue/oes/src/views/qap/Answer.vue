@@ -7,7 +7,7 @@
         <span v-if="dataObj.commenterAvatarUrl === ''">{{ dataObj.commenterName }}</span>
       </el-avatar> -->
       &nbsp;&nbsp;&nbsp;
-      <span style="font-size: x-small; font-weight: bold; color:#4C4444;">{{ dataObj.cusId }}</span>
+      <span style="font-size: x-small; font-weight: bold; color:#4C4444;">{{ user.userName }}</span>
       &nbsp;&nbsp;&nbsp;  
     <div style=" display: inline-block;text-align:right; ">
      <i class="el-icon-delete" @click="deleteComment(dataObj)"></i>
@@ -40,10 +40,29 @@ export default {
   data(){
     return {
       dataObj: this.obj,
-      type: this.typeM
+      type: this.typeM,
+      user:{}
     };
   },
+  mounted:{
+    // getUserName(dataObj.cusId)
+  },
   methods:{
+   getUserName(userId){
+      //获取提问者姓名
+      let promise = this.$axios({
+        url: 'http://localhost:8081/user/userId',
+        method: 'get',
+        params: {
+          id:userId
+        }
+      });
+       promise.then((res) => {
+        this.user = res.data;
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });
+    },
     deleteComment(dataObj){
       this.$axios.get('http://localhost:8081/questionscomment/delete',{
         params:{id:dataObj.id}
