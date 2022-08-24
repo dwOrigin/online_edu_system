@@ -62,5 +62,23 @@ public Page<Questionscomment> findPage(@RequestParam Integer pageNum,
                                         @RequestParam Integer pageSize) {
                 return questionscommentService.page(new Page<>(pageNum, pageSize));
         }
+    @GetMapping("/getMaxPrise")
+    public Integer getMaxPraise() {
+        Integer integer = questionscommentService.getMaxPraise();
+        return integer;
+    }
+    @GetMapping("/addPraise")
+    public Result addPraise(@RequestParam  Integer id) {
+        Questionscomment questionscomment = questionscommentService.getById(id);
+        Result addPraise = questionscommentService.addPraise(questionscomment);
+        return addPraise;
+    }
+    @GetMapping("/reducePraise")
+    public Result reducePraise(@RequestParam  Integer id) {
+        Questionscomment questionscomment = questionscommentService.getById(id);
+        Result addPraise = questionscommentService.cancelPraise(questionscomment);
+        return addPraise;
+    }
+
 }
 

@@ -2,6 +2,7 @@ package com.houduan.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.houduan.common.Result;
+import com.houduan.entity.Comment;
 import com.houduan.entity.Questions;
 import com.houduan.entity.Questionscomment;
 import com.houduan.mapper.QuestionscommentMapper;
@@ -58,5 +59,46 @@ private QuestionscommentMapper mapper;
         return questionscommentList;
     }
 
+    @Override
+    public Result addPraise(Questionscomment questionscomment) {
+        questionscomment.setPraiseCount(questionscomment.getPraiseCount()+1);
+        int i = mapper.updateById(questionscomment);
+        if (i>=1)
+        {
+            return Result.success();
+        }else {
+            return Result.error();
+        }
+
+
+    }
+
+    @Override
+    public Result cancelPraise(Questionscomment questionscomment) {
+
+        questionscomment.setPraiseCount(questionscomment.getPraiseCount()-1);
+        int i = mapper.updateById(questionscomment);
+        if (i>=1)
+        {
+            return Result.success();
+        }else {
+            return Result.error();
+        }
+    }
+
+    @Override
+    public Integer getMaxPraise() {
+        List<Questionscomment> list = mapper.selectList(null);
+        Integer integer = new Integer(0);
+        integer=list.get(0).getPraiseCount();
+for (int i=0;i<list.size();i++){
+    if (integer<=list.get(i).getPraiseCount()){
+        integer=list.get(i).getPraiseCount();
+    }
+}
+       return integer;
+    }
+
 
 }
+
