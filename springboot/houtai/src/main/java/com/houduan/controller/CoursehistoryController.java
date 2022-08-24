@@ -42,6 +42,10 @@ public class CoursehistoryController {
     public List<Coursehistory> getbyuserid(@RequestParam Integer userid){
         return coursehistoryService.getbyuserid(userid);
     }
+    @GetMapping("/deletebyuserid")
+    public Result deletebyuserid(@RequestParam Integer userid){
+        return coursehistoryService.deletebyuserid(userid);
+    }
 
     @GetMapping
     public List<Coursehistory> findAll() {

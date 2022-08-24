@@ -30,7 +30,7 @@ public class QuestionsController {
         return questionsService.saveOrUpdate(questions);
     }
 
-        @GetMapping("/delete")
+    @GetMapping("/delete")
     public Boolean delete(@RequestParam Integer id) {
         return questionsService.removeById(id);
     }
@@ -41,7 +41,7 @@ public class QuestionsController {
     }
 
     @GetMapping("/id")
-    public Questions findOne(Integer id) {
+    public Questions findOne(@RequestParam Integer id) {
         return questionsService.getById(id);
     }
 
@@ -49,6 +49,10 @@ public class QuestionsController {
     public Page<Questions> findPage(@RequestParam Integer pageNum,
                                     @RequestParam Integer pageSize) {
         return questionsService.page(new Page<>(pageNum, pageSize));
+    }
+    @GetMapping("/getbyuserid")
+    public List<Questions> getbyuserid(@RequestParam Integer userid){
+        return questionsService.getbyuserid(userid);
     }
 
 }

@@ -5,8 +5,8 @@
         {{ question.title }}
       </el-link>
       <div class="time-reply" style="font-size: small; color: #999999">
-        <div>{{ question.time }}&nbsp;&nbsp;&nbsp;提出</div>
-        <div>共{{ question.answerCnt }}条回复</div>
+        <div>{{ question.addTime }}&nbsp;&nbsp;&nbsp;提出</div>
+        <div>共{{ question.replyCount }}条回复</div>
       </div>
     </div>
     <div class="delete" @click="handleDelete">
@@ -31,26 +31,26 @@ export default {
       this.$router.push({
         name: 'questionPage',
         query: {
-          qId: this.question.qId
+          qId: this.question.id
         }
       });
     },
     handleDelete() {
       //删除问题
-      // let promise = this.$axios({
-      //   url: '',
-      //   method: '',
-      //   data: {
-      //     questionId: this.question.qId
-      //   }
-      // });
-      let promise = new Promise((a) => {
-        a({
-          data: {
-            result: true
-          }
-        });
+      let promise = this.$axios({
+        url: '/questions/delete',
+        method: 'get',
+        params: {
+          id:this.question.id
+        }
       });
+      // let promise = new Promise((a) => {
+      //   a({
+      //     data: {
+      //       result: true
+      //     }
+      //   });
+      // });
       promise.then((res) => {
         this.$message.success('删除成功');
         this.$bus.$emit('refreshQ');

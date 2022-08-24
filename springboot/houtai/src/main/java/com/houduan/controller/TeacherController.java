@@ -32,8 +32,8 @@ public class TeacherController {
         return teacherService.list();
     }
 
-    @GetMapping("/{id}")
-    public Teacher findOne(@PathVariable Integer id) {
+    @GetMapping("/id")
+    public Teacher findOne(@RequestParam Integer id) {
         return teacherService.getById(id);
     }
 

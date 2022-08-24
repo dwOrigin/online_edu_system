@@ -68,4 +68,11 @@ public class QuestionsServiceImpl extends ServiceImpl<QuestionsMapper, Questions
         Questions questions = mapper.selectById(id);
         return  questions;
     }
+
+    @Override
+    public List<Questions> getbyuserid(Integer userid) {
+        QueryWrapper<Questions>queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("cus_id",userid);
+        return list(queryWrapper);
+    }
 }
