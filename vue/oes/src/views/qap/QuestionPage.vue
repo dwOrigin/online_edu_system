@@ -77,7 +77,13 @@ export default {
   methods: {
     refreshQuestion(qId) {
       // 获取问题详细信息
-      let promise = this.$axios.get('http://localhost:8081/questions?id=qId');
+/*
+*
+*
+*
+* */
+      // let promise = this.$axios.get('http://localhost:8081/questions/id?id= ${qId}');
+      let promise = this.$axios.get(`http://localhost:8081/questions/id?id= ${qId}`);
       // this.$axios({
       //   url: 'http://localhost:8081/questionscomment/detail',
       //   method: 'get',
