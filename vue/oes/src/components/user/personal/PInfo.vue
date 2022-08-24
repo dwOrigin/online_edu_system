@@ -11,8 +11,8 @@
         <el-link @click="changePhone" :underline="false" type="primary" style="margin: 0 10px">修改
         </el-link>
       </el-descriptions-item>
-      <el-descriptions-item label="密码">
-        **************
+      <el-descriptions-item label="密码" type="password">
+        {{user.password}}
         <el-link @click="changePwd" :underline="false" type="primary" style="margin: 0 10px">修改
         </el-link>
       </el-descriptions-item>

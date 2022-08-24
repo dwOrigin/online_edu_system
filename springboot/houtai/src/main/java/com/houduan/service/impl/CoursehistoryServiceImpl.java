@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -92,7 +93,7 @@ private CourseMapper courseMapper;
     }
 //
 @Override
-public List<LocalDateTime> getbyuseridTime(Integer userid) {
+public List<String> getbyuseridTime(Integer userid) {
     QueryWrapper<Coursehistory>queryWrapper=new QueryWrapper<>();
     queryWrapper.eq("user_id",userid);
     List<Coursehistory> List = mapper.selectList(queryWrapper);
@@ -100,11 +101,16 @@ public List<LocalDateTime> getbyuseridTime(Integer userid) {
     //按照id的大小选出最大的三个数值来
     Collections.sort(List);
     System.out.println(List);
-    List<LocalDateTime>timeList=new ArrayList<>();
+    List<String>timeList=new ArrayList<>();
 //        得到courseId的集合
     int number=List.size()-1;
     for (int i=0;i<3;i++){
-        timeList.add(List.get(number-i).getTime());
+        Duration duration= Duration.between(List.get(number-i).getTime(),LocalDateTime.now());
+        long days = duration.toDays(); //相差的天数
+        long hours = duration.toHours()%24;//相差的小时数
+        long minutes = duration.toMinutes()%60;//相差的分钟数
+        String remem=days+"天"+hours+"小时"+minutes+"分钟前看过";
+        timeList.add(remem);
     }
     return timeList;
 }
@@ -121,20 +127,6 @@ public List<LocalDateTime> getbyuseridTime(Integer userid) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-    @Override
-    public List<Coursehistory> getid3(Integer userid) {
-        return null;
-    }
 
 
 }

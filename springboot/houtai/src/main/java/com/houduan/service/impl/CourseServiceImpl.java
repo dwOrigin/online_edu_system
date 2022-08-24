@@ -70,4 +70,9 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         course.setPraiseCount(course.getPraiseCount());
         return Result.success();
     }
+
+    @Override
+    public List<Course> getrecommend() {
+        return null;
+    }
 }

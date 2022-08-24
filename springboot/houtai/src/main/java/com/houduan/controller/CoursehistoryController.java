@@ -42,15 +42,6 @@ public class CoursehistoryController {
     public List<Coursehistory> getbyuserid(@RequestParam Integer userid){
         return coursehistoryService.getbyuserid(userid);
     }
-    @GetMapping("/getname3")
-    public List<String> getname3(@RequestParam String userId){
-        Integer userid=Integer.parseInt(userId);
-        return coursehistoryService.getbyuserid3(userid);
-    }
-    @GetMapping("/getid3")
-    public List<Coursehistory> getid3(@RequestParam Integer userid){
-        return coursehistoryService.getid3(userid);
-    }
 
     @GetMapping
     public List<Coursehistory> findAll() {
@@ -67,15 +58,14 @@ public class CoursehistoryController {
                                         @RequestParam Integer pageSize) {
         return coursehistoryService.page(new Page<>(pageNum, pageSize));
     }
-@GetMapping("/getByUserId/{id}")
-    public List<String>getThreeHistory(@PathVariable  Integer id){
+    @GetMapping("/getByUserId")
+    public List<String>getThreeHistory(@RequestParam Integer id){
     List<String> stringList = coursehistoryService.getbyuserid3(id);
     return stringList;
 }
-    @GetMapping("/getByUserIdT/{id}")
-    public List<LocalDateTime>getThreeHistoryTime(@PathVariable  Integer id){
-        List<LocalDateTime> timeList = coursehistoryService.getbyuseridTime(id);
-        return timeList;
+    @GetMapping("/getByUserIdT")
+    public List<String>getThreeHistoryTime(@RequestParam  Integer id){
+        return coursehistoryService.getbyuseridTime(id);
     }
 
 }
