@@ -56,9 +56,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public Result register(User user) {
-        System.out.println(user.getUserName());
-        System.out.println(user.getPassword());
-        System.out.println(user.getMobile());
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         QueryWrapper<User> wrapper2 = new QueryWrapper<>();
         wrapper.eq("user_name",user.getUserName());

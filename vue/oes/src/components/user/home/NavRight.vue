@@ -20,10 +20,6 @@
            @click="$bus.$emit('OpenLoginDialog')"
            class="tag-item" v-if="user == null">登录|注册</el-link>
   <a href="#"
-     @click="$router.push({
-              name: 'personal',
-              query:{select: 'pinfo'}
-           });"
      class="mini-img-container" v-if="user != null">
     <el-avatar size="small" :src="user.picImg">
       <span v-if="user.picImg===null" >
