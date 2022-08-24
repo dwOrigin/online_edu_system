@@ -202,7 +202,7 @@ export default {
       } else {
         //获取验证码
         let promise = this.$axios({
-          url: 'http://localhost:8081/user/sendCode',
+          url: '/user/sendCode',
           method: 'get',
           params: {
             mobile: phone
@@ -277,7 +277,7 @@ export default {
               //用户登录
               let promise = this.$axios({
                 method: 'get',
-                url: 'http://localhost:8081/user/login',
+                url: '/user/login',
                 params: {
                   username: this.loginForm.username,
                   password: this.loginForm.password,
@@ -315,7 +315,7 @@ export default {
             this.user.password=this.registerForm.password;
             this.user.mobile=this.registerForm.phone;
             let promise = this.$axios({
-              url: 'http://localhost:8081/user/register',
+              url: '/user/register',
               method: 'post',
               data: this.user,
             });

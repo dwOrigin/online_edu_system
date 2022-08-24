@@ -137,7 +137,7 @@ export default {
         //修改用户名
         this.user.userName = this.newUser.name;
         let promise = this.$axios({
-          url: 'http://localhost:8081/user/updateUser',
+          url: '/user/updateUser',
           method: 'post',
           data: this.user
         });
@@ -158,7 +158,7 @@ export default {
     sendCode() {
       //发送手机号验证码
       let promise = this.$axios({
-        url: 'http://localhost:8081/user/sendCode',
+        url: '/user/sendCode',
         method: 'get',
         params: {
           mobile: this.newUser.phone
@@ -191,7 +191,7 @@ export default {
       //修改手机号
       this.user.mobile = this.newUser.phone;
       let promise = this.$axios({
-        url: 'http://localhost:8081/user/updateUser',
+        url: '/user/updateUser',
         method: 'post',
         data: this.user
       });
@@ -232,7 +232,7 @@ export default {
         //修改密码
         this.user.password = this.newUser.pwd;
         let promise = this.$axios({
-          url: 'http://localhost:8081/user/updateUser',
+          url: '/user/updateUser',
           method: 'post',
           data: this.user
         });
@@ -256,7 +256,7 @@ export default {
     handleAvatarSuccess(res, file) {
       this.imageUrl = res;
       let lasturl = this.user.picImg;
-      this.request.get("http://localhost:8081/file/removeFile", {
+      this.request.get("/file/removeFile", {
         params: {
           url: lasturl
         }
@@ -264,7 +264,7 @@ export default {
         console.log(res);
       })
       this.user.picImg = this.imageUrl;
-      this.request.post("http://localhost:8081/user/updateUser", this.user)
+      this.request.post("/user/updateUser", this.user)
         .then((res) => {
           if (res.code == "200") {
             this.$message.success(res.message);
@@ -277,7 +277,7 @@ export default {
     reloadUser() {
       //获取用户信息(同登录)
       let promise = this.$axios({
-        url: 'http://localhost:8081/user/id',
+        url: '/user/id',
         method: 'get',
         params: {
           id: this.user.userId

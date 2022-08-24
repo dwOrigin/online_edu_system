@@ -103,7 +103,7 @@ export default {
         user = JSON.parse(user);
         this.user = user;
         this.request
-          .get('http://localhost:8081/coursefavorite/getbyuserid', {
+          .get('/coursefavorite/getbyuserid', {
             params: {
               userid: this.user.userId
             }
@@ -112,7 +112,7 @@ export default {
             this.starCourseNum = res.length;
           })
           this.request
-          .get('http://localhost:8081/coursehistory/getbyuserid', {
+          .get('/coursehistory/getbyuserid', {
             params: {
               userid: this.user.userId
             }
@@ -121,7 +121,7 @@ export default {
             this.historyNum = res.length;
           })
           this.request
-          .get('http://localhost:8081/coursehistory/getByUserId',{
+          .get('/coursehistory/getByUserId',{
             params:{
               id:this.user.userId
             }
@@ -130,7 +130,7 @@ export default {
             this.history.name=res;
           })
            this.request
-          .get('http://localhost:8081/coursehistory/getByUserIdT',{
+          .get('/coursehistory/getByUserIdT',{
             params:{
               id:this.user.userId
             }
