@@ -29,6 +29,7 @@ public class UserloginlogServiceImpl extends ServiceImpl<UserloginlogMapper, Use
     public List<Userloginlog> getInfoById(Integer user_id) {
         QueryWrapper<Userloginlog> wrapper = new QueryWrapper<>();
         wrapper.eq("user_id",user_id);
+
         return mapper.selectList(wrapper);
     }
 }

@@ -348,7 +348,7 @@ export default{
        this.reload();
       },
       addTeachermsg(){
-        this.request.post('http://localhost:8081/teacher/updateTeacher', this.newform)
+        this.request.post('http://localhost:8081/teacher/addTeacher', this.newform)
         .then((res) => {
           if (res.code == "200") {
             this.$message.success(res.message);

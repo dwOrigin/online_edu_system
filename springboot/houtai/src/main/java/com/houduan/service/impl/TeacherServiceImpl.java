@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
         QueryWrapper<Teacher> wrapper = new QueryWrapper<>();
         wrapper.eq("name",teacher.getName());
         if(getOne(wrapper)==null){
+            teacher.setCreateTime(LocalDateTime.now());
             mapper.insert(teacher);
             return Result.success(Constants.CODE_200,"添加成功");
         }else{
