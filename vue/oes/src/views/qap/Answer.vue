@@ -1,27 +1,26 @@
 <template>
   <div class="answer">
     <div style="display: flex; align-items: center">
-      <el-avatar
+      <!-- <el-avatar
           :src="dataObj.commenterAvatarUrl"
           shape="square">
         <span v-if="dataObj.commenterAvatarUrl === ''">{{ dataObj.commenterName }}</span>
-      </el-avatar>
+      </el-avatar> -->
       &nbsp;&nbsp;&nbsp;
-      <span style="font-size: x-small; font-weight: bold; color:#4C4444;">{{ dataObj.commenterName }}</span>
+      <span style="font-size: x-small; font-weight: bold; color:#4C4444;">{{ dataObj.cusId }}</span>
       &nbsp;&nbsp;&nbsp;  
     <div style=" display: inline-block;text-align:right; ">
-     <i class="el-icon-delete" @click="deleteComment"></i>
+     <i class="el-icon-delete" @click="deleteComment(dataObj)"></i>
     </div>
     </div>
     <div class="content">
       {{ dataObj.content }}
     </div>
     <div class="footer">
-      <div>发布于 {{ dataObj.time }}</div>
+      <div>发布于 {{ dataObj.addTime }}</div>
       <div>
         <el-button
-            @click="accept"
-            type="primary" size="small" :plain="true">{{ likeC }}({{ dataObj.like }})
+            type="primary" size="small" :plain="true">赞同({{ dataObj.praiseCount }})
         </el-button>
       </div>
     </div>
@@ -32,6 +31,7 @@
 
 <script>
 export default {
+  inject: ['reload'],
   name: "Answer",
   props:{
     obj:{},
@@ -44,16 +44,18 @@ export default {
     };
   },
   methods:{
-    deleteComment(){
-      this.$alert('你将删除这条评论', '提示', {
-          confirmButtonText: '确定',
-          callback: action => {
-            this.$message({
-              type: 'info',
-              message: `删除成功`
-            });
-          }
-        });
+    deleteComment(dataObj){
+      this.$axios.get('http://localhost:8081/questionscomment/delete',{
+        params:{id:dataObj.id}
+    })
+    //  .then((res) => {
+    //       if (res.code == "200") {
+    //         this.$message.success(res.message);
+    //       } else {
+    //         this.$message.error(res.message);
+    //       }
+    //     });
+    this.reload();
     }
   }
 }

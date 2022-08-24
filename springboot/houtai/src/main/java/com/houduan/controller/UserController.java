@@ -30,8 +30,8 @@ public List<User> findAll() {
         return userService.list();
         }
 
-@GetMapping("/{id}")
-public User findOne(@PathVariable Integer id) {
+@GetMapping("/userId")
+public User findOne(Integer id) {
         return userService.getById(id);
         }
 
