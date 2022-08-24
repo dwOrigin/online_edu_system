@@ -30,8 +30,8 @@ public List<User> findAll() {
         return userService.list();
         }
 
-@GetMapping("/userId")
-public User findOne(Integer id) {
+@GetMapping("/id")
+public User findOne(@RequestParam Integer id) {
         return userService.getById(id);
         }
 

@@ -3,6 +3,7 @@ package com.houduan.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.houduan.common.Result;
 import com.houduan.entity.Coursefavorite;
+import io.swagger.models.auth.In;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -57,15 +58,14 @@ public class CoursehistoryController {
                                         @RequestParam Integer pageSize) {
         return coursehistoryService.page(new Page<>(pageNum, pageSize));
     }
-@GetMapping("/getByUserId/{id}")
-    public List<String>getThreeHistory(@PathVariable  Integer id){
+    @GetMapping("/getByUserId")
+    public List<String>getThreeHistory(@RequestParam Integer id){
     List<String> stringList = coursehistoryService.getbyuserid3(id);
     return stringList;
 }
-    @GetMapping("/getByUserIdT/{id}")
-    public List<LocalDateTime>getThreeHistoryTime(@PathVariable  Integer id){
-        List<LocalDateTime> timeList = coursehistoryService.getbyuseridTime(id);
-        return timeList;
+    @GetMapping("/getByUserIdT")
+    public List<String>getThreeHistoryTime(@RequestParam  Integer id){
+        return coursehistoryService.getbyuseridTime(id);
     }
 
 }

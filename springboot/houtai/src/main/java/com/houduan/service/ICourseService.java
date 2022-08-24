@@ -26,4 +26,6 @@ public interface ICourseService extends IService<Course> {
     Result pageviewplus(Integer id);
 
     Result praiseplus(Integer id);
+
+    List<Course> getrecommend();
 }

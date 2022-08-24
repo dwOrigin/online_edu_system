@@ -45,7 +45,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     @Override
     public Result updatecourse(Course course) {
         QueryWrapper<Course>queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("courseId",course.getCourseId());
+        queryWrapper.eq("course_id",course.getCourseId());
         if(update(course,queryWrapper)){
             return Result.success(Constants.CODE_200,"更新成功");
         }else{
@@ -56,7 +56,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     @Override
     public Result pageviewplus(Integer id) {
         QueryWrapper<Course>queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("courseId",id);
+        queryWrapper.eq("course_id",id);
         Course course=getOne(queryWrapper);
         course.setPageViewcount(course.getPageViewcount()+1);
         return Result.success();
@@ -65,9 +65,14 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     @Override
     public Result praiseplus(Integer id) {
         QueryWrapper<Course>queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("courseId",id);
+        queryWrapper.eq("course_id",id);
         Course course=getOne(queryWrapper);
         course.setPraiseCount(course.getPraiseCount());
         return Result.success();
+    }
+
+    @Override
+    public List<Course> getrecommend() {
+        return null;
     }
 }

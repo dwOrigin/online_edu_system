@@ -1,59 +1,58 @@
 <template>
   <div class="main">
     <!--    根据用户是否登录切换展示内容-->
-    <div v-if="user==null" class="default">
-      <div class="default-item"
-           style='font-weight: lighter; font-size: small; margin: 10px 0'>
+    <div v-if="user == null" class="default">
+      <div class="default-item" style='font-weight: lighter; font-size: small; margin: 10px 0'>
         跟进你的学习进度
       </div>
       <div class="default-item">
         <i class="el-icon-s-custom myIcon"></i>
       </div>
       <div class="default-item">
-        <el-button type="primary"
-                   @click="handleClickLogIn"
-                   round style="width: 150px">登录
+        <el-button type="primary" @click="handleClickLogIn" round style="width: 150px">登录
         </el-button>
       </div>
     </div>
-    <div v-if="user!=null" class="default">
+    <div v-if="user != null" class="default">
       <div class="login-item">
-        <a href="#"
-           @click="$router.push({
-            name: 'personal',
-            query:{
-              select: ''
-            }
-           });"
-           class="mini-img-container">
-          <el-avatar size="medium"
-                     :src="user.picImg">
-            <span v-if="user.picImg === null">{{ user.userName }}</span>
+        <a href="#" @click="$router.push({
+          name: 'personal',
+          query: {
+            select: ''
+          }
+        });" class="mini-img-container">
+          <el-avatar size="medium" :src="user.picImg">
+            <span v-if="user.picImg == null||user.picImg==''">{{ user.userName }}</span>
           </el-avatar>
         </a>
-        <el-link :underline="false" type="success"
-                 class="line-text-ellipsis"
-                 @click="$router.push({name: 'personal', query:{select: ''}});"
-                 style="font-size: medium; max-width: 100px; min-width: 100px; margin: 0 10px">
+        <el-link :underline="false" type="success" class="line-text-ellipsis"
+          @click="$router.push({ name: 'personal', query: { select: '' } });"
+          style="font-size: medium; max-width: 100px; min-width: 100px; margin: 0 10px">
           {{ user.userName }}
         </el-link>
         <el-link :underline="false" type="info" @click="exit">退出</el-link>
       </div>
-      <div class="course" v-for="course in user.history3" :key="course.courseName">
-        <el-link :underline="false">{{ course.courseName }}&nbsp;&nbsp;[{{ getTimeInterval(course.lastTime) }}前看过]
+      <div class="course">
+        <el-link :underline="false">{{ history.name[0] }}&nbsp;&nbsp;{{history.time[0]}}
+        </el-link>
+      </div>
+      <div class="course">
+        <el-link :underline="false">{{ history.name[1] }}&nbsp;&nbsp;{{history.time[1]}}
+        </el-link>
+      </div>
+      <div class="course">
+        <el-link :underline="false">{{ history.name[2] }}&nbsp;&nbsp;{{history.time[2]}}
         </el-link>
       </div>
       <div class="divider"></div>
       <div class="login-card-footer" style="width: 100%">
         <div style="margin: 0 10px">
-          <el-link :underline="false"
-                   @click="$router.push({name: 'personal', query:{select: 'history'}});"
-                   style="font-size: medium">{{ user.historyNum }}门课程</el-link>
+          <el-link :underline="false" @click="$router.push({ name: 'personal', query: { select: 'history' } });"
+            style="font-size: medium">{{ historyNum }}门课程</el-link>
         </div>
         <div style="margin: 0 10px">
-          <el-link :underline="false"
-                   @click="$router.push({name: 'personal', query:{select: 'star'}});"
-                   style="font-size: medium">{{ user.starCourseNum }}门收藏</el-link>
+          <el-link :underline="false" @click="$router.push({ name: 'personal', query: { select: 'star' } });"
+            style="font-size: medium">{{ starCourseNum }}门收藏</el-link>
         </div>
       </div>
     </div>
@@ -72,25 +71,16 @@ export default {
   data() {
     return {
       //登录信息
-      user: null
+      user: null,
+      historyNum: 0,
+      starCourseNum: 0,
+      history:{
+        name:'',
+        time:''
+      }
     }
   },
   methods: {
-    //获取时间间隔字符串
-    getTimeInterval(oldTime) {
-      //@不知道哪里有bug, 时间总是快1个月
-      return '不久';
-      let diff = (new Date().getTime() - oldDate.getTime()) / 1000;
-      if (diff / 86400 >= 30) {
-        return '一个月';
-      } else if (diff / 86400 < 30 && diff / 86400 >= 1) {
-        return (diff / 86400).toString() + '天';
-      } else if ((diff % 86400) / 3600 >= 1) {
-        return ((diff % 86400) / 3600).toString() + '小时';
-      } else {
-        return '不久';
-      }
-    },
     //点击退出登录
     exit() {
       window.localStorage.removeItem('user');
@@ -112,6 +102,42 @@ export default {
       if (user != null) {
         user = JSON.parse(user);
         this.user = user;
+        this.request
+          .get('/coursefavorite/getbyuserid', {
+            params: {
+              userid: this.user.userId
+            }
+          })
+          .then((res) => {
+            this.starCourseNum = res.length;
+          })
+          this.request
+          .get('/coursehistory/getbyuserid', {
+            params: {
+              userid: this.user.userId
+            }
+          })
+          .then((res) => {
+            this.historyNum = res.length;
+          })
+          this.request
+          .get('/coursehistory/getByUserId',{
+            params:{
+              id:this.user.userId
+            }
+          })
+          .then((res)=>{
+            this.history.name=res;
+          })
+           this.request
+          .get('/coursehistory/getByUserIdT',{
+            params:{
+              id:this.user.userId
+            }
+          })
+          .then((res)=>{
+            this.history.time=res;
+          })
       } else {
         this.user = null;
       }

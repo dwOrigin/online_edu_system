@@ -57,7 +57,7 @@ export default {
     refreshCourse() {
       //获取10门推荐课程
       // let promise = this.$axios({
-      //   url: '',
+      //   url: 'http://localhost:8081/course',
       //   method: 'post',
       // });
       let promise = new Promise((a)=>{

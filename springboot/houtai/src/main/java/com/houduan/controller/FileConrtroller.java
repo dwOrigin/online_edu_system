@@ -26,7 +26,7 @@ public class FileConrtroller {
     @Value("${file-save-path}")
     private String fileSavePath;
 
-    @GetMapping("/upload")
+    @PostMapping("/upload")
     public String upload(@RequestParam MultipartFile file, @RequestParam String filetype, HttpServletRequest request) {
         if (file.isEmpty()) {
             return "请选择上传文件";
@@ -82,17 +82,14 @@ public class FileConrtroller {
         os.close();
     }
 
-    @RequestMapping("/removeFile")
-    public Result removeFile(String url, HttpServletRequest request) {
+    @GetMapping("/removeFile")
+    public Result removeFile(@RequestParam String url) {
         String path = transform(url);
         File file = new File(path);
         //判断此文件是否为空
-        if (file != null) {
-            //文件不为空，执行删除
-            file.delete();
+        if (file.delete()) {
             return Result.success(Constants.CODE_200, "删除成功");
         } else {
-            //为空提示错误信息
             return Result.error(Constants.CODE_500, "文件为空");
         }
     }
