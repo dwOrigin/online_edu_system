@@ -22,7 +22,7 @@
   <a href="#"
      class="mini-img-container" v-if="user != null">
     <el-avatar size="small" :src="user.picImg">
-      <span v-if="user.picImg===null" >
+      <span v-if="user.picImg==null||user.picImg==''" >
         {{user.userName}}
       </span>
     </el-avatar>

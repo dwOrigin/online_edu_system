@@ -22,7 +22,7 @@
           }
         });" class="mini-img-container">
           <el-avatar size="medium" :src="user.picImg">
-            <span v-if="user.picImg === null">{{ user.userName }}</span>
+            <span v-if="user.picImg == null||user.picImg==''">{{ user.userName }}</span>
           </el-avatar>
         </a>
         <el-link :underline="false" type="success" class="line-text-ellipsis"

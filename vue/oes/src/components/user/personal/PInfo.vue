@@ -62,8 +62,8 @@
     </el-dialog>
     <el-dialog :visible.sync="visible.avatar" append-to-body :close-on-click-modal="false" lock-scroll top="25vh" center
       width="max-content" modal-append-to-body>
-      <el-upload class="avatar-uploader" action="" :drag="true" :show-file-list="false" :data="{ userId: user.userId }"
-        :http-request="httpRequest">
+      <el-upload class="avatar-uploader" action="http://localhost:8081/file/upload" :drag="true" :show-file-list="false"
+        :data="{ filetype: 'picture' }" :on-success="handleAvatarSuccess">
         <img v-if="imageUrl" :src="imageUrl" class="avatar">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </el-upload>
@@ -253,42 +253,26 @@ export default {
     changeAvatar() {
       this.visible.avatar = true;
     },
-    httpRequest(item) {
-      //验证图片格式大小信息
-      const isJPG = item.file.type == 'image/jpeg' || item.file.type == 'image/png';
-      const isLt2M = item.file.size / 1024 / 1024 < 2;
-      if (!isJPG) {
-        this.$message.error('上传图片只能是 JPG 或 PNG 格式!');
-      }
-      if (!isLt2M) {
-        this.$message.error('上传图片大小不能超过 2MB!');
-      }
-      //图片格式大小信息没问题 执行上传图片的方法
-      if (isJPG && isLt2M == true) {
-        // post上传图片
-        let App = this;
-        //定义FormData对象 存储文件
-        let mf = new FormData();
-        //将图片文件放入mf
-        mf.append('file', item.file);
-        App.$Api.fileUpload(mf, function (result) {
-          if (result.result == "true") {
-            App.$notify.success({
-              title: '温馨提示：',
-              message: result.message,
-            });
-            //将临时文件路径赋值给显示图片路径（前端显示的图片）
-            App.imageUrl = App.tempUrl;
-            //将后台传来的数据库图片路径赋值给car对象的图片路径
-            App.car.carImg = result.imgUrl;
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = res;
+      let lasturl = this.user.picImg;
+      this.request.get("http://localhost:8081/file/removeFile", {
+        params: {
+          url: lasturl
+        }
+      }).then((res) => {
+        console.log(res);
+      })
+      this.user.picImg = this.imageUrl;
+      this.request.post("http://localhost:8081/user/updateUser", this.user)
+        .then((res) => {
+          if (res.code == "200") {
+            this.$message.success(res.message);
+            this.reloadUser();
           } else {
-            App.$notify.error({
-              title: '温馨提示：',
-              message: result.message,
-            });
+            this.$message.error(res.message);
           }
         })
-      }
     },
     reloadUser() {
       //获取用户信息(同登录)
