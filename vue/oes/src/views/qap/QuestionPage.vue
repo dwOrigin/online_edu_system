@@ -76,73 +76,74 @@ export default {
   },
   methods: {
     refreshQuestion(qId) {
-      //获取问题详细信息
-      // let promise = this.$axios({
-      //   url: '',
-      //   method: '',
+      // 获取问题详细信息
+      let promise = this.$axios.get('http://localhost:8081/questions?id=qId');
+      // this.$axios({
+      //   url: 'http://localhost:8081/questionscomment/detail',
+      //   method: 'get',
       //   data: {
       //     qId: qId
       //   }
       // });
-      let promise = new Promise((a) => {
-        a({
-          data: {
-            question: {
-              qId: 888,
-              title: '这个问题你问可莉吧?',
-              askerName: 'Jean',
-              askerAvatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-              questionContent: '这是问题的内容',
-              viewCnt: 12345,//问题被浏览次数
-              answerCnt: 859, //回答数量
-            }
-          }
-        });
-      });
+      // let promise = new Promise((a) => {
+      //   a({
+      //     data: {
+      //       question: {
+      //         qId: 888,
+      //         title: '这个问题你问可莉吧?',
+      //         askerName: 'Jean',
+      //         askerAvatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+      //         questionContent: '这是问题的内容',
+      //         viewCnt: 12345,//问题被浏览次数
+      //         answerCnt: 859, //回答数量
+      //       }
+      //     }
+      //   });
+      // });
       promise.then((res) => {
-        this.question = res.data.question;
+        this.question = res.data;
 
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
     },
     refreshComment(qId) {
-      //获取问题答案
-      // let promise = this.$axios({
-      //   url: '',
-      //   method: '',
-      //   data: {
-      //     qId: qId
-      //   }
-      // });
-      let promise = new Promise((a) => {
-        a({
-          data: {
-            answersList:[
-              {
-                //这里属性名为了和Answer.vue里面保持一致
-                //属性名含义与实际不同
-                cId: 10086,//回答id
-                commenterName: '回答者名字',
-                commenterAvatarUrl: 'https://pic4.zhimg.com/v2-d41c2ceaed8f51999522f903672a521f_xs.jpg?source=1940ef5c',
-                content: '可莉不知道哦',
-                time: '2022/8/71',
-                like: 998
-              },
-              {
-                //这里属性名为了和Answer.vue里面保持一致
-                //属性名含义与实际不同
-                cId: 10086,//回答id
-                commenterName: '回答者名字',
-                commenterAvatarUrl: 'https://pic4.zhimg.com/v2-d41c2ceaed8f51999522f903672a521f_xs.jpg?source=1940ef5c',
-                content: '可莉不知道哦',
-                time: '2022/8/71',
-                like: 998
-              }
-            ]
-          }
-        });
+      // 获取问题答案
+      let promise = this.$axios({
+        url: 'http://localhost:8081/questionscomment/detail',
+        method: 'get',
+        data: {
+          qId: qId
+        }
       });
+      // let promise = new Promise((a) => {
+      //   a({
+      //     data: {
+      //       answersList:[
+      //         {
+      //           //这里属性名为了和Answer.vue里面保持一致
+      //           //属性名含义与实际不同
+      //           cId: 10086,//回答id
+      //           commenterName: '回答者名字',
+      //           commenterAvatarUrl: 'https://pic4.zhimg.com/v2-d41c2ceaed8f51999522f903672a521f_xs.jpg?source=1940ef5c',
+      //           content: '可莉不知道哦',
+      //           time: '2022/8/71',
+      //           like: 998
+      //         },
+      //         {
+      //           //这里属性名为了和Answer.vue里面保持一致
+      //           //属性名含义与实际不同
+      //           cId: 10086,//回答id
+      //           commenterName: '回答者名字',
+      //           commenterAvatarUrl: 'https://pic4.zhimg.com/v2-d41c2ceaed8f51999522f903672a521f_xs.jpg?source=1940ef5c',
+      //           content: '可莉不知道哦',
+      //           time: '2022/8/71',
+      //           like: 998
+      //         }
+      //       ]
+      //     }
+      //   });
+      // });
       promise.then((res) => {
         this.answers = res.data.answersList;
       }).catch((err) => {

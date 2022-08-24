@@ -40,76 +40,10 @@ export default {
   data(){
     return {
       dataObj: this.obj,
-      likeC: '赞同',
       type: this.typeM
     };
   },
   methods:{
-     accept() {
-      let usr = window.localStorage.getItem('user');
-      if (usr === null) {
-        this.$bus.$emit('OpenLoginDialog');
-      } else {
-        usr = JSON.parse(usr);
-        if (this.type === 'PassageComment') {
-          //点赞文章评论
-          // let promise = this.$axios({
-          //   url: '',
-          //   method: '',
-          //   data:{
-          //     uId: usr.id,
-          //     cId: this.dataObj.cId
-          //   }
-          // });
-          let promise = new Promise((a) => {
-            a({
-              data: {
-                result: true
-              }
-            });
-          });
-          promise.then((res) => {
-            let ret = res.data.result;
-            if (ret) {
-              this.likeC = '已赞同';
-              this.dataObj.like++;
-            } else {
-              this.$message.error('请勿重复操作');
-            }
-          }).catch((err) => {
-            this.$message.error('你的网络迷路了');
-          });
-        } else if (this.type === 'Answer') {
-          //赞同回答
-          // let promise = this.$axios({
-          //   url: '',
-          //   method: '',
-          //   data: {
-          //         uId: usr.id,
-          //         aId: this.dataObj.cId
-          //   }
-          // });
-          let promise = new Promise((a) => {
-            a({
-              data: {
-                result: false
-              }
-            });
-          });
-          promise.then((res) => {
-            let ret = res.data.result;
-            if (ret) {
-              this.likeC = '已赞同';
-              this.dataObj.like++;
-            } else {
-              this.$message.error('请勿重复操作');
-            }
-          }).catch((err) => {
-            this.$message.error('你的网络迷路了');
-          });
-        }
-      }
-    },
     deleteComment(){
       this.$alert('你将删除这条评论', '提示', {
           confirmButtonText: '确定',

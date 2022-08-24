@@ -43,8 +43,8 @@ public Page<User> findPage(@RequestParam Integer pageNum,
 @PostMapping("/register")
 public Result register(@RequestBody User user){return userService.register(user);}
 
-@PostMapping("/login")
-public Result login( String username, String password){return userService.login(username,password);}
+@GetMapping("/login")
+public Result login( @RequestParam  String username, @RequestParam String password){return userService.login(username,password);}
 
 @PostMapping("/searchByName")
 public User searchByName(String username){return userService.searchByName(username);}
@@ -56,6 +56,6 @@ public Result deleteUser(@RequestBody User user){return userService.deleteUser(u
 public Result updateUser(@RequestBody User user){return userService.updateUser(user);}
 
 @GetMapping("/sendCode")
-public String sendCode(String mobile){return userService.sendCode(mobile);}
+public String sendCode(@RequestParam String mobile){return userService.sendCode(mobile);}
         }
 

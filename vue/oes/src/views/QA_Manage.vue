@@ -164,7 +164,10 @@ export default{
       },
       handleClick(row) {
         console.log(row);
-        this.$router.push('modify_qa_manage')
+        this.$router.push({
+          name:'modify_qa_manage',
+          query:{qId:row.id}
+        })
       },
        deleteMember(row){
         console.log(row);

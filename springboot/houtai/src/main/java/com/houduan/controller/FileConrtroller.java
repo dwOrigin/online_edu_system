@@ -38,9 +38,12 @@ public class FileConrtroller {
         if (filetype.equals("picture")) {
             newfile = new File(fileSavePath + "picture/" + format);
             urlpath = "picture/" + format;
-        } else {
+        } else if(filetype.equals("video")){
             newfile = new File(fileSavePath + "video/" + format);
             urlpath = "video/" + format;
+        }else {
+            newfile=new File(fileSavePath + "other/" + format);
+            urlpath = "other/" + format;
         }
         if (!newfile.isDirectory()) {
             newfile.mkdirs();
