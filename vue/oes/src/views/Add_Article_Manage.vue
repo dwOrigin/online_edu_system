@@ -34,12 +34,12 @@
     <el-main>
         <el-form ref="form" :model="form" label-width="80px">
         <el-row>
-            <el-col span="10">
+            <el-col :span="10">
                  <el-form-item label="文章ID" prop="articleId">
     <el-input v-model="form.articleId"></el-input>
   </el-form-item>
             </el-col>
-            <el-col span="10">
+            <el-col :span="10">
                <el-form-item label="文章标题" prop="title">
      <el-input v-model="form.title"></el-input>
   </el-form-item>
@@ -51,12 +51,12 @@
   </el-form-item>
         </el-row>
         <el-row>
-            <el-col span="10">
+            <el-col :span="10">
               <el-form-item label="关键词" prop="keyWord">
     <el-input v-model="form.keyWord"></el-input>
   </el-form-item>
             </el-col>
-            <el-col span="10">
+            <el-col :span="10">
                  <el-form-item label="文章作者" prop="author">
     <el-input v-model="form.author"></el-input>
   </el-form-item>
@@ -77,7 +77,7 @@
    <!-- imgAdd监听图片上传 save监听图片保存 value保存整个markdown文件内容 -->
    <el-form-item>  </el-form-item>
   <el-form-item>
-       <el-button type="primary" @click="onSubmit('form')">发布文章</el-button>
+       <el-button type="primary" @click="onSubmit(formName)">发布文章</el-button>
     <el-button @click="resetForm('form')">重置</el-button> 
    <!-- 居中不了，去死吧 -->
   </el-form-item>
@@ -128,23 +128,40 @@ export default{
         gotoNotice(){
             this.$router.push('/notice_manage')
         },
+         handleOpen(key, keyPath) {
+        console.log(key, keyPath);
+      },
+      handleClose(key, keyPath) {
+        console.log(key, keyPath);
+      },
          onSubmit(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('发布成功!');
+           this.request.post('http://localhost:8081/article', this.form)
+        .then((res) => {
+          if (res.code == "200") {
+            this.$message.success(res.message);
           } else {
-            console.log('error submit!!');
-            return false;
+            this.$message.error(res.message);
           }
         });
+        this.reload();
+
+        // this.$refs[formName].validate((valid) => {
+        //   if (valid) {
+        //     alert('发布成功!');
+        //   } else {
+        //     console.log('error submit!!');
+        //     return false;
+        //   }
+        // });
         this.resetForm(formName);
       },
        resetForm(formName) {
         this.$refs[formName].resetFields();
       },
+      //传递md文件到后台
       save(){ 
          //传递name(文件名),typeId(文件所属类别),value(md文件内容）
-         var result=postMd("555","java",this.value);
+         var result=postMd(this.value);
          console.log(result);
          this.dialogFormVisible=false
          
@@ -171,26 +188,40 @@ export default{
     
 }
 //上传md文件
-export function postMd(name,typeId,content){
-   return  axios.post('/saveMd', {
-                        name: name,
-                        typeId: typeId,
-                        content: content
-                     })
-                     .then(function (response) {
+export function postMd(content){
+  this.$axios.get('http://localhost:8081/file/upload',{
+    params:{
+       file:content,
+       filetype:markdown,
+    }
+  })
+   .then(function (response) {
                         console.log(response);
                      })
                      .catch(function (error) {
                         console.log(error);
                      });
+  ;
+  //  return  this.$axios.post('http://localhost:8081/article', {
+  //                       name: name,
+  //                       typeId: typeId,
+  //                       content: content
+  //                    })
+  //                    .then(function (response) {
+  //                       console.log(response);
+  //                    })
+  //                    .catch(function (error) {
+  //                       console.log(error);
+  //                    });
 }
 
 //上传图片
 export const uploadFile = (params) => {
-   return axios({
-     method: 'post',
-     url: `/uploadFile`,
-     data: params,
+   return this.$axios({
+     method: 'get',
+     url: 'http://localhost:8081/file/upload',
+     data: {
+      file:params,filetype:picture},
      headers: {
        'Content-Type': 'multipart/form-data'
      }

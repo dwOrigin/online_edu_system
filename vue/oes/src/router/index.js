@@ -23,7 +23,7 @@ import Notice_Manage from"@/views/Notice_Manage";
 import Add_Article_Manage from"@/views/Add_Article_Manage";
 import Add_Lesson_Manage from "@/views/Add_Lesson_Manage";
 import Modify_Lesson_Manage from "@/views/Modify_Lesson_Manage";
-import Modify_Article_Manage from "@/views/Modify_Lesson_Manage";
+import Modify_Article_Manage from "@/views/Modify_Article_Manage";
 import Modify_QA_Manage from "@/views/Modify_QA_Manage";
 
 import QuestionPage from "@/components/user/qap/QuestionPage";
@@ -34,7 +34,7 @@ const router = new VueRouter({
     routes: [
         {
             path:'/',
-            redirect:'home'
+            redirect:'qa_manage'
         },
         {
             //用户主页

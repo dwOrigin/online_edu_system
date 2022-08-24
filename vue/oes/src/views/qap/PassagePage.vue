@@ -1,79 +1,249 @@
 <template>
-  <div style="overflow: hidden; margin-bottom: -50px">
+  <div
+      style="overflow: hidden; margin-bottom: -50px">
     <div class="passage-page">
-      <div class="title">遭老牌 Node.js、新贵 Bun “围攻”，Deno 之父紧急求变！</div>
-      <div class="time"> 2022-08-18 09:52:19 修改</div>
+      <div class="title">{{ passage.title }}</div>
+      <div class="time"> {{ passage.time }} 修改</div>
       <div class="content">
-        <p class="paragraph">
-          【CSDN 编者按】截至目前，Node.js 仍然是使用最为广泛的 JavaScript 运行时环境，但是同样出自 Node.js 之父 Ryan Dahl 之手的 Deno
-          却更加安全。不过近日，一款集构建、转译、依赖管理于一身的高性能 JavaScript 运行时 Bun 横空出世，在 Server、Sqlite、ffi 等方面都超过了 Node 和 Deno，似乎是迫于压力之下，Deno
-          于近日宣布迎来重大改革。
-        </p>
-        <p class="paragraph">
-          整理 | 苏宓 出品 | CSDN
-        </p>
-        <p class="paragraph">
-          对于使用 JavaScript 的开发者而言，想必对 Node.js 并不陌生。基于 JavaScript 的 Node.js 平台是由美国知名软件工程师 Ryan Dahl 于 2009 年推出，其最初是作为
-          Apache HTTP Server for Linux 和 MacOS 的更具可扩展性的替代品而开发。时至今日，Node.js 已被很多人用于生产环境。
-        </p>
-        <p class="paragraph">
-          不过，在 2018 年，Ryan Dahl 发表了一次以「我为 Node.js 感到后悔的十件事」的主题分享，他表示在设计 Node.js 时犯一些包括安全性、package.json、node_modules
-          等系列的错误，并称这些 Bug 问题严重且不可回避，于是他用了两年的时间进行了重新开发，并在 2020 年 5 月正式推出了基于 V8 引擎和 Rust 语言所创建的 JavaScript、TypeScript
-          执行环境——Deno。
-        </p>
-        <p class="paragraph">
-          然而被赋予厚望的 Deno 语言，经历了 2 年的发展，虽然在安全性等维度更胜 Node.js 一筹，但其发展似乎没有达到预期。而就在近日，一款集构建、转译、依赖管理于一身的高性能 JavaScript 运行时 Bun
-          （https://bun.sh/）横空出世，甚至在其官网上，该团队分享三种技术在 Server、Sqlite、ffi 三个方面的性能对比，结果显示，初出茅庐的 Bun 远超
-          node、deno，这不禁让“前辈们”感到了巨大压力。
-        </p>
+        {{ passage.content }}
       </div>
       <div class="footer">
         <div>
-          <el-button type="primary" plain>点赞(163,155)</el-button>
+          <el-button
+              @click="handleClick('like')"
+              type="primary" plain>{{ likeBtnContent }}({{ passage.like }})
+          </el-button>
+        </div>
+        <div>
+          <el-button
+              @click="handleClick('comment')"
+              ype="primary" plain>评论文章
+          </el-button>
         </div>
       </div>
       <div>
         <div style="margin-top: 10px">
-          <answer v-for="obj in number"></answer>
+          <answer
+              typeM="PassageComment"
+              v-for="obj in passage.comments.slice(0, length)" :obj="obj"></answer>
         </div>
       </div>
     </div>
+    <el-dialog
+        :visible.sync="CommentDialogVisible"
+        center
+        :show-close="false"
+        append-to-body
+        modal-append-to-body
+        width="30%">
+      <el-input
+          type="textarea"
+          ref="cc"
+          :rows="5"
+          maxlength="100"
+          show-word-limit
+          placeholder="请输入你的评论"
+          v-model="cc">
+      </el-input>
+      <span slot="footer" class="dialog-footer">
+      <el-button
+          plain
+          style='padding-left: 30px; padding-right: 30px; margin-right: 50px'
+          type="primary" @click="handleClickFooter('ask')">评论
+      </el-button>
+        <el-button
+            plain
+            style='padding-left: 30px; padding-right: 30px'
+            type="info" @click="handleClickFooter('cancel')">
+          取消
+        </el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import Answer from "@/views/qap/Answer";
+
 export default {
   name: "PassagePage",
-  components:{
+  components: {
     Answer
   },
-  data(){
-      return {
-          number: 10
-      };
-  },
-  created() {
-    window.addEventListener('scroll', this.scrollBottom);
-  },
-  destroyed() {
-    window.removeEventListener('scroll', this.scrollBottom) //页面离开后销毁监听事件
+  data() {
+    return {
+      number: 10,
+      passage: {
+        comments: []
+      },
+      likeBtnContent: '点赞',
+      CommentDialogVisible: false,
+      cc: '',
+      length: 5,
+    };
   },
   methods: {
-    scrollBottom(){
-      let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-      let clientHeight = document.documentElement.clientHeight;
-      let scrollHeight = document.documentElement.scrollHeight;
-      if (scrollTop + clientHeight >= scrollHeight) {
-        this.number += 3;
+    loadPassage() {
+      let id = this.$route.query.pId;
+      //获取文章详细信息
+      // let promise = this.$axios({
+      //     url: '',
+      //     method: '',
+      //     data:{
+      //       pId: id
+      //     }
+      // });
+      let promise = new Promise((a) => {
+        a({
+          data: {
+            passage: {
+              pId: 8889,
+              title: '文章标题',
+              time: '2022/12/26',
+              like: 1888,
+              content: '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容这是' +
+                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
+                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
+                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
+                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
+                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
+                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
+                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
+                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
+                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
+                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
+                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
+                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
+                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
+                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
+                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
+                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容',
+              comments: [
+                {
+                  cId: 10086,//评论id
+                  commenterName: '评论者名字',
+                  commenterAvatarUrl: 'https://pic4.zhimg.com/v2-d41c2ceaed8f51999522f903672a521f_xs.jpg?source=1940ef5c',
+                  content: '这是评论内容',
+                  time: '2022/8/71',
+                  like: 998
+                }
+              ]
+            }
+          }
+        });
+      });
+      promise.then((res) => {
+        //@test
+        let c = res.data.passage.comments;
+        c = [...c, ...c];
+        c = [...c, ...c];
+        c = [...c, ...c];
+        c = [...c, ...c];
+        c = [...c, ...c];
+        res.data.passage.comments = c;
+        this.passage = res.data.passage;
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });
+    },
+    handleClick(btnName) {
+      let usr = window.localStorage.getItem('user');
+      if (usr === null) {
+        this.$bus.$emit('OpenLoginDialog');
+        return;
       }
+      if (btnName === 'like') {
+        //点赞文章
+        // let promise = this.$axios({
+        //   url: '',
+        //   method: '',
+        //   data: {
+        //     pId: this.passage.pId,
+        //     uId: JSON.parse(usr).id
+        //   }
+        // });
+        let promise = new Promise((a) => {
+          a({
+            data: {
+              result: false
+            }
+          });
+        });
+        promise.then((res) => {
+          if (res.data.result) {
+            this.passage.like++;
+            this.likeBtnContent = '已点赞';
+          } else {
+            this.$message.error('请勿重复点赞');
+          }
+        }).catch((err) => {
+          this.$message.error('你的网络迷路了');
+        });
+      } else if (btnName === 'comment') {
+        this.CommentDialogVisible = true;
+      }
+    },
+    handleClickFooter(btnName) {
+      if (btnName === 'cancel') {
+
+      } else if (btnName === 'ask') {
+        if (this.cc.length < 10) {
+          this.$message.error('评论不能少于10个字');
+          return;
+        }
+        let user = JSON.parse(window.localStorage.getItem('user'));
+        //评论文章
+        // let promise = this.$axios({
+        //   url: '',
+        //   method: '',
+        //   data: {
+        //     comment: this.cc,
+        //     userId: user.id,
+        //     pId: this.passage.pId
+        //   }
+        // });
+        let promise = new Promise((a) => {
+          a({
+            data: {
+              result: true
+            }
+          });
+        });
+        promise.then((res) => {
+          let ret = res.data.result;
+          if (ret) {
+            this.$message.success('评论成功')
+            this.loadPassage();
+          } else {
+            this.$message.error('请勿重复评论');
+          }
+        }).catch((err) => {
+          this.$message.error('你的网络迷路了');
+        });
+      }
+      this.cc = '';
+      this.CommentDialogVisible = false;
     }
+  },
+  mounted() {
+    this.loadPassage();
+    this.$bus.$on('scrollToBottom', (data) => {
+      this.length += 2;
+    });
+  },
+  beforeDestroy() {
+    this.$bus.$off('scrollToBottom');
   }
 }
 </script>
 
 <style scoped>
-.footer{
+.content {
+  word-wrap: break-word;
+  margin: 10px 20px;
+}
+
+.footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -84,9 +254,10 @@ export default {
   border-top: 2px solid #F9F9F9;
   border-bottom: 2px solid #F9F9F9;
 }
+
 .paragraph {
   text-indent: 2em;
-  margin: 0  0 30px 0;
+  margin: 0 0 30px 0;
 }
 
 .content {
