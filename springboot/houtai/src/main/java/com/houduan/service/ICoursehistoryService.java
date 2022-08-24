@@ -3,6 +3,8 @@ package com.houduan.service;
 import com.houduan.entity.Coursehistory;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -12,5 +14,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2022-08-15
  */
 public interface ICoursehistoryService extends IService<Coursehistory> {
+    List<String> getByUserId3(Integer userid);
 
 }

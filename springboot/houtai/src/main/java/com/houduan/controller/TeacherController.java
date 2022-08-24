@@ -27,7 +27,7 @@ private ITeacherService teacherService;
 
 @GetMapping
 public List<Teacher> findAll() {
-        return teacherService.list();
+        return teacherService.findAllBySort();
         }
 
 @GetMapping("/{id}")
@@ -56,5 +56,8 @@ public Result removeTeacher(@RequestBody Teacher teacher){
 public List<Teacher> searchTeachers(@PathVariable String str){
         return teacherService.searchTeacher(str);
 }
+
+@PostMapping("/sortTeacher")
+public void sortTeacher(){teacherService.sortTeacher();}
         }
 

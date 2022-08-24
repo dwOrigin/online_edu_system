@@ -49,6 +49,11 @@ public Page<Coursehistory> findPage(@RequestParam Integer pageNum,
 @RequestParam Integer pageSize) {
         return coursehistoryService.page(new Page<>(pageNum, pageSize));
         }
+@GetMapping("/getByUserId/{id}")
+public List<String>getThreeHistory(@PathVariable  Integer id){
+        List<String> stringList = coursehistoryService.getByUserId3(id);
+        return stringList;
+}
 
         }
 
