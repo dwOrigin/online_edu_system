@@ -47,12 +47,12 @@ private QuestionscommentMapper mapper;
     }
 
     @Override
-    public List<Questionscomment> getIntactComments(Questions questions) {
+    public List<Questionscomment> getIntactComments(Integer id) {
 
         QueryWrapper<Questionscomment> wrapper = new QueryWrapper<>();
-        int questionId=questions.getId();
+//        int questionId=questions.getId();
 //        找到所有关于该问题的评论
-        wrapper.eq("question_id",questionId);
+        wrapper.eq("question_id",id);
         List<Questionscomment> questionscommentList = mapper.selectList(wrapper);
         return questionscommentList;
     }
