@@ -1,6 +1,6 @@
 <template>
   <div
-      @click="toTeacherPage(t.teacherId)"
+      @click="toTeacherPage(t.id)"
       class="teacher-card">
     <div>
       <el-avatar

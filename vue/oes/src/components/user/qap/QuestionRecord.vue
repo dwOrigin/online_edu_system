@@ -5,8 +5,8 @@
         {{ question.title }}
       </el-link>
       <div class="time-reply" style="font-size: small; color: #999999">
-        <div>{{ question.time }}&nbsp;&nbsp;&nbsp;提出</div>
-        <div>共{{ question.answerCnt }}条回复</div>
+        <div>{{ question.addTime }}&nbsp;&nbsp;&nbsp;提出</div>
+        <div>共{{ question.replyCount }}条回复</div>
       </div>
     </div>
     <div class="delete" @click="handleDelete">
@@ -17,6 +17,7 @@
 
 <script>
 export default {
+  inject: ['reload'],
   name: "QuestionRecord",
   props: {
     obj: {}
@@ -37,19 +38,12 @@ export default {
     },
     handleDelete() {
       //删除问题
-      // let promise = this.$axios({
-      //   url: '',
-      //   method: '',
-      //   data: {
-      //     questionId: this.question.qId
-      //   }
-      // });
-      let promise = new Promise((a) => {
-        a({
-          data: {
-            result: true
-          }
-        });
+      let promise = this.$axios({
+        url: 'http://localhost:8081/questions/delete',
+        method: 'get',
+        params: {
+          questionId: this.question.qId
+        }
       });
       promise.then((res) => {
         this.$message.success('删除成功');
@@ -57,6 +51,7 @@ export default {
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
+      this.reload();
     }
   }
 }

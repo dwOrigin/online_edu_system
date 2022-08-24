@@ -81,7 +81,6 @@ export default {
       let promise = this.$axios.get(`http://localhost:8081/questions/id?id=${qId}`);
       promise.then((res) => {
         this.question = res.data;
-
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
@@ -102,7 +101,9 @@ export default {
       });
     },
     getUserName(userId){
+      alert(this.question.cusId)
       //获取提问者姓名
+      console.log(this.question.cusId)
       let promise = this.$axios({
         url: 'http://localhost:8081/user/userId',
         method: 'get',
