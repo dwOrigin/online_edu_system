@@ -34,7 +34,7 @@ const router = new VueRouter({
     routes: [
         {
             path:'/',
-            redirect:'qa_manage'
+            redirect:'home'
         },
         {
             //用户主页
@@ -141,7 +141,7 @@ const router = new VueRouter({
         {
             name:'member_manage',
             path:'/member_manage',
-            component:Member_Manage,  
+            component:Member_Manage,
             meta:{title:'用户管理', changeTitle: true}
         },
         {

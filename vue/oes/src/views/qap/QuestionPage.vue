@@ -111,6 +111,7 @@ export default {
         }
       });
        promise.then((res) => {
+         console.log(id)
         this.user = res.data;
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
