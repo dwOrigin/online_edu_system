@@ -68,11 +68,11 @@ export default {
           data: {
             teachers: [
               {
-               /* name: 'Jean',
+                name: 'Jean',
                 avatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
                 intro: 'Hello, I am Jean from America.Hello, Hello, I am Jean from America.HelloHello, I am Jean from America.HelloI am Jean from America.',
                 nikeName: '金牌讲师',
-                teacherId: 8848*/
+                teacherId: 8848
               }
             ]
           }

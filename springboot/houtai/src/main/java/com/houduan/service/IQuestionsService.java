@@ -26,4 +26,5 @@ public interface IQuestionsService extends IService<Questions> {
     List<Questions> searchQuestionByType(String type);
     Questions getById(Integer id);
 
+    List<Questions> getbyuserid(Integer userid);
 }

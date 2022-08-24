@@ -28,4 +28,6 @@ public interface ICoursehistoryService extends IService<Coursehistory> {
     List<String> getbyuserid3(Integer userid);
 
     List<String> getbyuseridTime(Integer userid);
+
+    Result deletebyuserid(Integer userid);
 }

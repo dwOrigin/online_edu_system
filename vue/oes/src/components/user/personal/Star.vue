@@ -34,53 +34,53 @@ export default {
   methods: {
     refreshStar() {
       //获取收藏记录
-      // let usr = window.localStorage.getItem('user');
-      // usr = JSON.parse(usr);
-      // let promise = this.$axios({
-      //     url: '',
-      //     method: '',
-      //     data:{
-      //       userId: usr.id
-      //     }
-      // });
-      let promise = new Promise((a) => {
-        a({
-          data: {
-            starList: [
-              {
-                id: 9,
-                userId: 888,
-                title: '胡桃',
-                time: '2022/06/15',//收藏时间
-                courseImgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
-                teacherName: '韩愈',
-                teacherAvatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-              },
-              {
-                id: 8,
-                userId: 888,
-                title: '甘雨',
-                time: '2022/06/15',
-                courseImgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
-                teacherName: '韩愈',
-                teacherAvatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-              },
-              {
-                id: 7,
-                userId: 888,
-                title: '尤拉',
-                courseImgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
-                time: '2022/06/15',
-                teacherName: '韩愈',
-                teacherAvatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-              }
-            ]
+      let usr = window.localStorage.getItem('user');
+      usr = JSON.parse(usr);
+      let promise = this.$axios({
+          url: '/coursefavorite/getbyuserid',
+          method: 'get',
+          params:{
+            userid: usr.userId
           }
-        });
       });
+      // let promise = new Promise((a) => {
+      //   a({
+      //     data: {
+      //       starList: [
+      //         {
+      //           id: 9,
+      //           userId: 888,
+      //           title: '胡桃',
+      //           time: '2022/06/15',//收藏时间
+      //           courseImgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
+      //           teacherName: '韩愈',
+      //           teacherAvatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+      //         },
+      //         {
+      //           id: 8,
+      //           userId: 888,
+      //           title: '甘雨',
+      //           time: '2022/06/15',
+      //           courseImgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
+      //           teacherName: '韩愈',
+      //           teacherAvatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+      //         },
+      //         {
+      //           id: 7,
+      //           userId: 888,
+      //           title: '尤拉',
+      //           courseImgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
+      //           time: '2022/06/15',
+      //           teacherName: '韩愈',
+      //           teacherAvatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+      //         }
+      //       ]
+      //     }
+      //   });
+      // });
       promise.then((res) => {
-        this.starList = res.data.starList;
-        this.listToDisplay = [...this.starList];
+        this.starList = res.data;
+        this.listToDisplay = this.starList;
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });

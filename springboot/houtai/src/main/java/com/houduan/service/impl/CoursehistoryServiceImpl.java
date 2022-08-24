@@ -1,6 +1,7 @@
 package com.houduan.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.houduan.common.Constants;
 import com.houduan.common.Result;
 import com.houduan.entity.Course;
 import com.houduan.entity.Coursehistory;
@@ -115,18 +116,14 @@ public List<String> getbyuseridTime(Integer userid) {
     return timeList;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
+    @Override
+    public Result deletebyuserid(Integer userid) {
+        QueryWrapper<Coursehistory>queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("user_id",userid);
+        if(remove(queryWrapper)){
+            return Result.success(Constants.CODE_200,"删除成功");
+        }else return Result.error(Constants.CODE_500,"删除失败");
+    }
 
 
 }
