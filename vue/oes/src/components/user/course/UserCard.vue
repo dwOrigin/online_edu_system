@@ -1,40 +1,33 @@
 <template>
   <div class="main">
     <!--    根据用户是否登录切换展示内容-->
-    <div v-if="user==null" class="default">
-      <div class="default-item"
-           style='font-weight: lighter; font-size: small; margin: 10px 0'>
+    <div v-if="user == null" class="default">
+      <div class="default-item" style='font-weight: lighter; font-size: small; margin: 10px 0'>
         跟进你的学习进度
       </div>
       <div class="default-item">
         <i class="el-icon-s-custom myIcon"></i>
       </div>
       <div class="default-item">
-        <el-button type="primary"
-                   @click="handleClickLogIn"
-                   round style="width: 150px">登录
+        <el-button type="primary" @click="handleClickLogIn" round style="width: 150px">登录
         </el-button>
       </div>
     </div>
-    <div v-if="user!=null" class="default">
+    <div v-if="user != null" class="default">
       <div class="login-item">
-        <a href="#"
-           @click="$router.push({
-            name: 'personal',
-            query:{
-              select: ''
-            }
-           });"
-           class="mini-img-container">
-          <el-avatar size="medium"
-                     :src="user.picImg">
+        <a href="#" @click="$router.push({
+          name: 'personal',
+          query: {
+            select: ''
+          }
+        });" class="mini-img-container">
+          <el-avatar size="medium" :src="user.picImg">
             <span v-if="user.picImg === null">{{ user.userName }}</span>
           </el-avatar>
         </a>
-        <el-link :underline="false" type="success"
-                 class="line-text-ellipsis"
-                 @click="$router.push({name: 'personal', query:{select: ''}});"
-                 style="font-size: medium; max-width: 100px; min-width: 100px; margin: 0 10px">
+        <el-link :underline="false" type="success" class="line-text-ellipsis"
+          @click="$router.push({ name: 'personal', query: { select: '' } });"
+          style="font-size: medium; max-width: 100px; min-width: 100px; margin: 0 10px">
           {{ user.userName }}
         </el-link>
         <el-link :underline="false" type="info" @click="exit">退出</el-link>
@@ -46,14 +39,12 @@
       <div class="divider"></div>
       <div class="login-card-footer" style="width: 100%">
         <div style="margin: 0 10px">
-          <el-link :underline="false"
-                   @click="$router.push({name: 'personal', query:{select: 'history'}});"
-                   style="font-size: medium">{{ user.historyNum }}门课程</el-link>
+          <el-link :underline="false" @click="$router.push({ name: 'personal', query: { select: 'history' } });"
+            style="font-size: medium">{{ historyNum }}门课程</el-link>
         </div>
         <div style="margin: 0 10px">
-          <el-link :underline="false"
-                   @click="$router.push({name: 'personal', query:{select: 'star'}});"
-                   style="font-size: medium">{{ user.starCourseNum }}门收藏</el-link>
+          <el-link :underline="false" @click="$router.push({ name: 'personal', query: { select: 'star' } });"
+            style="font-size: medium">{{ starCourseNum }}门收藏</el-link>
         </div>
       </div>
     </div>
@@ -72,7 +63,9 @@ export default {
   data() {
     return {
       //登录信息
-      user: null
+      user: null,
+      historyNum: 0,
+      starCourseNum: 0,
     }
   },
   methods: {
@@ -112,6 +105,24 @@ export default {
       if (user != null) {
         user = JSON.parse(user);
         this.user = user;
+        this.request
+          .get('http://localhost:8081/coursefavorite/getbyuserid', {
+            params: {
+              userid: this.user.userId
+            }
+          })
+          .then((res) => {
+            this.starCourseNum = res.length;
+          })
+          this.request
+          .get('http://localhost:8081/coursehistory/getbyuserid', {
+            params: {
+              userid: this.user.userId
+            }
+          })
+          .then((res) => {
+            this.historyNum = res.length;
+          })
       } else {
         this.user = null;
       }

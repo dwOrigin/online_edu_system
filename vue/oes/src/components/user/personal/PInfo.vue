@@ -2,14 +2,14 @@
   <div class="p-info">
     <el-descriptions border direction="vertical" :column="1" style="font-size: medium">
       <el-descriptions-item label="用户名">
-        {{ user.name }}
+        {{ user.userName }}
         <el-link
             @click="changeName"
             :underline="false" type="primary" style="margin: 0 10px">修改
         </el-link>
       </el-descriptions-item>
       <el-descriptions-item label="手机号">
-        {{ user.phoneNumber }}
+        {{ user.mobile }}
         <el-link
             @click="changePhone"
             :underline="false" type="primary" style="margin: 0 10px">修改
@@ -23,7 +23,7 @@
         </el-link>
       </el-descriptions-item>
       <el-descriptions-item label="头像">
-        <el-avatar shape="square" :size="60" :src="user.avatarUrl"></el-avatar>
+        <el-avatar shape="square" :size="60" :src="user.picImg"></el-avatar>
         <el-link
             @click="changeAvatar"
             :underline="false" type="primary" style="margin: 0 30px">修改
