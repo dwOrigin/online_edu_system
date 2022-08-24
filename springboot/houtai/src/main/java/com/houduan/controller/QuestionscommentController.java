@@ -53,7 +53,8 @@ public Page<Questionscomment> findPage(@RequestParam Integer pageNum,
         }*/
 //    某个问题的全部评论
 @GetMapping("/detail")
-        public List<Questionscomment> getCommentDetail(@PathVariable Integer id){
+    public List<Questionscomment> getCommentDetail(Integer id){
+//        public List<Questionscomment> getCommentDetail(@PathVariable Integer id){
         List<Questionscomment> comments = questionscommentService.getIntactComments(id);
         return comments;
 }
