@@ -5,6 +5,8 @@ import com.houduan.entity.Coursefavorite;
 import com.houduan.entity.Coursehistory;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,5 +24,8 @@ public interface ICoursehistoryService extends IService<Coursehistory> {
     Result delete(Coursehistory coursehistory);
 
     List<Coursehistory> getbyuserid(Integer userid);
-     List<String> getbyuserid3(Integer userid);
+
+    List<String> getbyuserid3(Integer userid);
+
+    List<String> getbyuseridTime(Integer userid);
 }

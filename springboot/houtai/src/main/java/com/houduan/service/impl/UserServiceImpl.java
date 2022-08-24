@@ -1,6 +1,14 @@
 package com.houduan.service.impl;
 
-
+import com.aliyuncs.CommonRequest;
+import com.aliyuncs.CommonResponse;
+import com.aliyuncs.DefaultAcsClient;
+import com.aliyuncs.IAcsClient;
+import com.aliyuncs.dysmsapi.model.v20170525.SendSmsRequest;
+import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
+import com.aliyuncs.exceptions.ClientException;
+import com.aliyuncs.profile.DefaultProfile;
+import com.aliyuncs.profile.IClientProfile;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.houduan.common.Constants;
 import com.houduan.common.Result;
@@ -34,39 +42,33 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if(user==null){
             return Result.error(Constants.CODE_400,"用户名不存在");
         } else {
-            wrapper.eq("password",password);
-            User user1=getOne(wrapper);
-            if (user1==null) {
-                return Result.error(Constants.CODE_400,"密码错误");
-            }else{
+            wrapper.eq("password", password);
+            User user1 = getOne(wrapper);
+            if (user1 == null) {
+                return Result.error(Constants.CODE_400, "密码错误");
+            } else {
                 user.setLastSystemTime(LocalDateTime.now());
                 userMapper.updateById(user);
-                return Result.success(Constants.CODE_200,"登录成功",user1);
+                return Result.success(Constants.CODE_200, "登录成功", user1);
             }
-
         }
     }
 
     @Override
     public Result register(User user) {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
-        QueryWrapper<User> wrapper1 = new QueryWrapper<>();
         QueryWrapper<User> wrapper2 = new QueryWrapper<>();
         wrapper.eq("user_name",user.getUserName());
-        wrapper1.eq("email",user.getEmail());
         wrapper2.eq("mobile",user.getMobile());
         User user1 = getOne(wrapper);
-        User user2 = getOne(wrapper1);
+        User user2 = getOne(wrapper2);
         if(user1!=null){
             return Result.error(Constants.CODE_400,"用户名重复");
-        }
-        if(user1!=null){
-            return Result.error(Constants.CODE_400,"邮箱已被注册");
         }
         if(user2!=null){
             return Result.error(Constants.CODE_400,"手机号已被注册");
         }
-        userMapper.insert(user);
+        save(user);
         return Result.success(Constants.CODE_200,"注册成功");
     }
 
@@ -102,7 +104,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public String sendCode(String mobile) {
         String code = String.valueOf(Math.random()).substring(2, 8);
-        String TemplateParam = "{\"code\":\"" + code + "\"}";
+        String TemplateParam = "{\"code\":\""+code+"\"}";
         // 短信模板id
         String TemplateCode = "SMS_154950909";
         //产品名称:云通信短信API产品,开发者无需替换
@@ -117,8 +119,30 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
         System.setProperty("sun.net.client.defaultReadTimeout", "10000");
         //初始化acsClient,暂不支持region化
-        return  null;
+        IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessKeySecret);
+        try {
+            DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", product, domain);
+        } catch (ClientException e) {
+            throw new RuntimeException(e);
+        }
+        IAcsClient acsClient = new DefaultAcsClient(profile);
+
+        //组装请求对象-具体描述见控制台-文档部分内容
+        SendSmsRequest request = new SendSmsRequest();
+        //必填:待发送手机号
+        request.setPhoneNumbers(mobile);
+        //必填:短信签名-可在短信控制台中找到
+        request.setSignName("阿里云短信测试");
+        //必填:短信模板-可在短信控制台中找到
+        request.setTemplateCode(TemplateCode);
+        //可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
+        request.setTemplateParam(TemplateParam);
+        try {
+            SendSmsResponse response = acsClient.getAcsResponse(request);
+            System.out.println(response.getMessage());
+        } catch (ClientException e) {
+            throw new RuntimeException(e);
+        }
+        return code;
     }
-
-
 }

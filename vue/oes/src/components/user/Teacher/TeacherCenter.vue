@@ -55,31 +55,31 @@ export default {
   },
   methods: {
     searchTeacher(key) {
-      let promise = this.$axios({
-          url: 'http://localhost:8081/teacher/searchTeacher',
-          method: 'get',
-          params:{
-            //key == ''时查找所有讲师
-            str: key
-          }
-      });
-      // let promise = new Promise((a) => {
-      //   a({
-      //     data: {
-      //       teachers: [
-      //         {
-      //           name: 'Jean',
-      //           avatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-      //           intro: 'Hello, I am Jean from America.Hello, Hello, I am Jean from America.HelloHello, I am Jean from America.HelloI am Jean from America.',
-      //           nikeName: '金牌讲师',
-      //           teacherId: 8848
-      //         }
-      //       ]
+      // let promise = this.$axios({
+      //     url: '',
+      //     method: '',
+      //     data:{
+      //       //key == ''时查找所有讲师
+      //       key: key
       //     }
-      //   });
       // });
+      let promise = new Promise((a) => {
+        a({
+          data: {
+            teachers: [
+              {
+               /* name: 'Jean',
+                avatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+                intro: 'Hello, I am Jean from America.Hello, Hello, I am Jean from America.HelloHello, I am Jean from America.HelloI am Jean from America.',
+                nikeName: '金牌讲师',
+                teacherId: 8848*/
+              }
+            ]
+          }
+        });
+      });
       promise.then((res) => {
-        this.teachers = res.data;
+        this.teachers = res.data.teachers;
         //@test
         this.teachers = [...this.teachers, ...this.teachers];
         this.teachers = [...this.teachers, ...this.teachers];

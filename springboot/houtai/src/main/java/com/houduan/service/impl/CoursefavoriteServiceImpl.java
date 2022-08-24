@@ -33,8 +33,8 @@ public class CoursefavoriteServiceImpl extends ServiceImpl<CoursefavoriteMapper,
     @Override
     public Result delete(Coursefavorite coursefavorite) {
         QueryWrapper<Coursefavorite>queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("courseId",coursefavorite.getCourseId());
-        queryWrapper.eq("userId",coursefavorite.getUserId());
+        queryWrapper.eq("course_id",coursefavorite.getCourseId());
+        queryWrapper.eq("user_id",coursefavorite.getUserId());
         if(remove(queryWrapper)){
             return Result.success();
         }else return Result.error();
@@ -44,7 +44,7 @@ public class CoursefavoriteServiceImpl extends ServiceImpl<CoursefavoriteMapper,
     @Override
     public List<Coursefavorite> getbyuserid(Integer userid) {
         QueryWrapper<Coursefavorite>queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("userId",userid);
+        queryWrapper.eq("user_id",userid);
         return list(queryWrapper);
     }
 }
