@@ -27,7 +27,7 @@ public class TeacherController {
     @Resource
     private ITeacherService teacherService;
 
-    @GetMapping
+    @GetMapping("/findAll")
     public List<Teacher> findAll() {
         return teacherService.list();
     }

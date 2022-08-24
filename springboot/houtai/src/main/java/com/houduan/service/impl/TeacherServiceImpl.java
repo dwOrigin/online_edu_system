@@ -63,9 +63,14 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
 
     @Override
     public List<Teacher> searchTeacher(String str) {
-        List<Teacher> teachers = new ArrayList<>();
-        teachers = mapper.selectList(new QueryWrapper<Teacher>().like("name",str));
+        List<Teacher> teachers  = mapper.selectList(new QueryWrapper<Teacher>().like("name",str));
         return teachers;
     }
+
+   /* @Override
+    public List<Teacher> getAll() {
+        List<Teacher> teacherList = mapper.selectList(null);
+        return teacherList;
+    }*/
 
 }

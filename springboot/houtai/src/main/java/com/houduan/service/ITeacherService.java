@@ -22,4 +22,5 @@ public interface ITeacherService extends IService<Teacher> {
     Result deleteTeacher(Integer id);
 
     List<Teacher> searchTeacher(String str);
+//    List<Teacher> getAll();
 }
