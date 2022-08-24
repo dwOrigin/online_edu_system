@@ -40,8 +40,8 @@ public class QuestionsController {
         return questionsService.list();
     }
 
-    @GetMapping("/{id}")
-    public Questions findOne(@PathVariable Integer id) {
+    @GetMapping("/id")
+    public Questions findOne(Integer id) {
         return questionsService.getById(id);
     }
 
