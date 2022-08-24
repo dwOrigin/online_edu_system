@@ -56,24 +56,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public Result register(User user) {
+        System.out.println(user.getUserName());
+        System.out.println(user.getPassword());
+        System.out.println(user.getMobile());
         QueryWrapper<User> wrapper = new QueryWrapper<>();
-        QueryWrapper<User> wrapper1 = new QueryWrapper<>();
         QueryWrapper<User> wrapper2 = new QueryWrapper<>();
         wrapper.eq("user_name",user.getUserName());
-        wrapper1.eq("email",user.getEmail());
         wrapper2.eq("mobile",user.getMobile());
         User user1 = getOne(wrapper);
-        User user2 = getOne(wrapper1);
+        User user2 = getOne(wrapper2);
         if(user1!=null){
             return Result.error(Constants.CODE_400,"用户名重复");
-        }
-        if(user1!=null){
-            return Result.error(Constants.CODE_400,"邮箱已被注册");
         }
         if(user2!=null){
             return Result.error(Constants.CODE_400,"手机号已被注册");
         }
-        userMapper.insert(user);
+        save(user);
         return Result.success(Constants.CODE_200,"注册成功");
     }
 

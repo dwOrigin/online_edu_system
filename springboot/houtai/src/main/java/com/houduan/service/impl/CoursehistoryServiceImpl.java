@@ -42,8 +42,8 @@ private CourseMapper courseMapper;
     @Override
     public Result delete(Coursehistory coursehistory) {
         QueryWrapper<Coursehistory>queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("userId",coursehistory.getUserId());
-        queryWrapper.eq("courseId",coursehistory.getCourseId());
+        queryWrapper.eq("user_id",coursehistory.getUserId());
+        queryWrapper.eq("course_id",coursehistory.getCourseId());
         if(remove(queryWrapper)){
             return Result.success();
         }else return Result.error();
@@ -52,7 +52,7 @@ private CourseMapper courseMapper;
     @Override
     public List<Coursehistory> getbyuserid(Integer userid) {
         QueryWrapper<Coursehistory>queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("userId",userid);
+        queryWrapper.eq("user_id",userid);
         return list(queryWrapper);
     }
     @Override
@@ -92,6 +92,11 @@ private CourseMapper courseMapper;
             num++;
         }*/
         return stringArrayList;
+    }
+
+    @Override
+    public List<Coursehistory> getid3(Integer userid) {
+        return null;
     }
 
 

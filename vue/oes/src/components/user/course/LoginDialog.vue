@@ -92,6 +92,7 @@
 </template>
 
 <script>
+import CourseSearchResultVue from './CourseSearchResult.vue';
 export default {
   name: "LoginDialog",
   data() {
@@ -167,7 +168,12 @@ export default {
         passwordR: '',
         phone: '',
         code: '',
-        codeReceived: null
+        codeReceived: ''
+      },
+      user: {
+        userName: '',
+        password: '',
+        mobile: '',
       },
       //登录表单时校验规则
       RulesL: {
@@ -207,6 +213,7 @@ export default {
             this.$message.error('验证码发送失败');
           } else {
             this.registerForm.codeReceived = res.data;
+            console.log(res.data)
             this.sendCodeInterval = 60;
             let id = setInterval(() => {
               this.sendCodeInterval--;
@@ -222,7 +229,9 @@ export default {
     },
     //点击验证验证码时调用
     validateCode() {
-      if (this.registerForm.code === this.registerForm.codeReceived && this.registerForm.codeReceived !== null) {
+      console.log(this.registerForm.codeReceived);
+      console.log(this.registerForm.code);
+      if (this.registerForm.code == this.registerForm.codeReceived && this.registerForm.codeReceived != null) {
         this.codeIsRight = true;
         //防止用户验证成功后修改电话号码
       } else {
@@ -302,16 +311,13 @@ export default {
         this.$refs.registerForm.validate((valid) => {
           if (valid) {
             //用户注册
+            this.user.userName=this.registerForm.username;
+            this.user.password=this.registerForm.password;
+            this.user.mobile=this.registerForm.phone;
             let promise = this.$axios({
               url: 'http://localhost:8081/user/register',
               method: 'post',
-              data: {
-                user: {
-                  userName: this.registerForm.username,
-                  password: this.registerForm.password,
-                  mobile: this.registerForm.phone
-                }
-              }
+              data: this.user,
             });
             promise.then((res) => {
               if (res.data.code == "200") {

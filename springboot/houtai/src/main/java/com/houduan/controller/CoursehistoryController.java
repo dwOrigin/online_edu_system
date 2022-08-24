@@ -40,6 +40,15 @@ public class CoursehistoryController {
     public List<Coursehistory> getbyuserid(@RequestParam Integer userid){
         return coursehistoryService.getbyuserid(userid);
     }
+    @GetMapping("/getname3")
+    public List<String> getname3(@RequestParam String userId){
+        Integer userid=Integer.parseInt(userId);
+        return coursehistoryService.getbyuserid3(userid);
+    }
+    @GetMapping("/getid3")
+    public List<Coursehistory> getid3(@RequestParam Integer userid){
+        return coursehistoryService.getid3(userid);
+    }
 
     @GetMapping
     public List<Coursehistory> findAll() {

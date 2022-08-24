@@ -22,5 +22,8 @@ public interface ICoursehistoryService extends IService<Coursehistory> {
     Result delete(Coursehistory coursehistory);
 
     List<Coursehistory> getbyuserid(Integer userid);
-     List<String> getbyuserid3(Integer userid);
+
+    List<String> getbyuserid3(Integer userid);
+
+    List<Coursehistory> getid3(Integer userid);
 }
