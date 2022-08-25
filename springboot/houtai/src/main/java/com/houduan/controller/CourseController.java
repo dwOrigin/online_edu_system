@@ -71,7 +71,7 @@ public class CourseController {
     }
     @GetMapping("/getrecommend")
     public List<Course> getrecommend(){
-        return courseService.getrecommend();
+        return courseService.recommendCourses();
     }
 
 }

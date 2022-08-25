@@ -2,6 +2,7 @@ package com.houduan.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.houduan.common.Result;
+import com.houduan.entity.Course;
 import jdk.nashorn.internal.runtime.ListAdapter;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
@@ -66,6 +67,10 @@ public List<Article>findAllArticle(){
 public Page<Article> findPage(@RequestParam Integer pageNum,
 @RequestParam Integer pageSize) {
         return articleService.page(new Page<>(pageNum, pageSize));
+}
+@GetMapping("/getrecommend")
+public List<Article> getrecommend(){
+                return articleService.recommendArticles();
         }
 
         }

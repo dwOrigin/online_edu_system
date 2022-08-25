@@ -1,6 +1,7 @@
 package com.houduan.service;
 
 import com.houduan.common.Result;
+import com.houduan.entity.Article;
 import com.houduan.entity.Course;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,5 +28,7 @@ public interface ICourseService extends IService<Course> {
 
     Result praiseplus(Integer id);
 
-    List<Course> getrecommend();
+//    List<Course> getrecommend();
+    List<Course>recommendCourses();
+
 }
