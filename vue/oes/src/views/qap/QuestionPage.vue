@@ -37,7 +37,7 @@
       <div class="answers">
         <div style="width: 95%; margin: 0 auto">
           <div class="space-between">
-            <div style="color: #121212; font-size: small; font-weight: bold">{{question.answerCnt}} 个回答</div>
+            <div style="color: #121212; font-size: small; font-weight: bold">{{question.replyCount}} 个回答</div>
             <el-dropdown>
               <div class="sort">
                 默认排序
@@ -81,6 +81,7 @@ export default {
       let promise = this.$axios.get(`http://localhost:8081/questions/id?id=${qId}`);
       promise.then((res) => {
         this.question = res.data;
+        this.getUserName()
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
@@ -100,19 +101,17 @@ export default {
         this.$message.error('你的网络迷路了');
       });
     },
-    getUserName(userId){
-      alert(this.question.cusId)
+    getUserName(){
       //获取提问者姓名
-      console.log(this.question.cusId)
+      // let promise = this.$axios.get('http://localhost:8081/user/findOne');
       let promise = this.$axios({
-        url: 'http://localhost:8081/user/userId',
+        url: 'http://localhost:8081/user/findOne',
         method: 'get',
         params: {
-          id:userId
+          id:this.question.cusId
         }
       });
        promise.then((res) => {
-         console.log(id)
         this.user = res.data;
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
@@ -122,7 +121,7 @@ export default {
   mounted() {
     this.refreshQuestion(this.$route.query.qId);
     this.refreshComment(this.$route.query.qId);
-    this.getUserName(this.question.cusId);
+    // this.getUserName();
   }
 }
 </script>

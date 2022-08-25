@@ -7,7 +7,7 @@
         <span v-if="dataObj.commenterAvatarUrl === ''">{{ dataObj.commenterName }}</span>
       </el-avatar> -->
       &nbsp;&nbsp;&nbsp;
-      <span style="font-size: x-small; font-weight: bold; color:#4C4444;">{{ dataObj.cusId }}</span>
+      <span style="font-size: x-small; font-weight: bold; color:#4C4444;">{{ user.userName }}</span>
     </div>
     <div class="content">
       {{ dataObj.content }}
@@ -37,10 +37,33 @@ export default {
     return {
       dataObj: this.obj,
       likeC: '赞同',
-      type: this.typeM
+      type: this.typeM,
+      user:{}
     };
   },
+  mounted(){
+    this.getUserName()
+  },
   methods: {
+    refresh(){
+      this.$parent.refreshQuestion(this.$route.query.qId);
+      this.$parent.refreshComment(this.$route.query.qId);
+    },
+    getUserName(){
+      //获取提问者姓名
+      let promise = this.$axios({
+        url: 'http://localhost:8081/user/findOne',
+        method: 'get',
+        params: {
+          id:this.dataObj.cusId
+        }
+      });
+       promise.then((res) => {
+        this.user = res.data;
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });
+    },
     accept() {
       let usr = window.localStorage.getItem('user');
       if (usr === null) {
@@ -51,11 +74,11 @@ export default {
         if (this.type === 'PassageComment') {
           //点赞文章评论
           // let promise = this.$axios({
-          //   url: '',
-          //   method: '',
+          //   url: 'http://localhost:8081/questionscomment/addPraise',
+          //   method: 'get',
           //   data:{
-          //     uId: usr.id,
-          //     cId: this.dataObj.cId
+          //     cusId: usr.userId,
+          //     id: this.dataObj.id
           //   }
           // });
           let promise = new Promise((a) => {
@@ -66,7 +89,7 @@ export default {
             });
           });
           promise.then((res) => {
-            let ret = res.data.result;
+            let ret = res.data;
             if (ret) {
               this.likeC = '已赞同';
               this.dataObj.like++;
@@ -78,26 +101,19 @@ export default {
           });
         } else if (this.type === 'Answer') {
           //赞同回答
-          // let promise = this.$axios({
-          //   url: '',
-          //   method: '',
-          //   data: {
-          //         uId: usr.id,
-          //         aId: this.dataObj.cId
-          //   }
-          // });
-          let promise = new Promise((a) => {
-            a({
-              data: {
-                result: false
-              }
-            });
+          let promise = this.$axios({
+            url: 'http://localhost:8081/questionscomment/addPraise',
+            method: 'get',
+            params: {
+                  // cusId: usr.userId,
+                  id: this.dataObj.id
+            }
           });
           promise.then((res) => {
-            let ret = res.data.result;
+            let ret = res.data;
             if (ret) {
               this.likeC = '已赞同';
-              this.dataObj.like++;
+              this.dataObj.praiseCount++;
             } else {
               this.$message.error('请勿重复操作');
             }

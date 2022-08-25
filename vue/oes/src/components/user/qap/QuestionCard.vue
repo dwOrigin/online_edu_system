@@ -9,7 +9,8 @@
     <div class="body">
       <el-link :underline="false" type="info">
         <p class="answer-preview" v-if="type==='question'">
-          {{dataObj.hottestAnswererName}}:&nbsp;&nbsp;&nbsp;{{dataObj.hottestAnswer}}
+          <!-- {{dataObj.hottestAnswererName}}:&nbsp;&nbsp;&nbsp;{{dataObj.hottestAnswer}} -->
+         {{dataObj.content}}
         </p>
         <p class="answer-preview" v-if="type==='passage'">
           {{dataObj.content}}
@@ -49,14 +50,14 @@ export default {
         this.$router.push({
           name: 'questionPage',
           query:{
-            qId: this.dataObj.qId
+            qId: this.dataObj.id,
           }
         });
       }else if(this.type === 'passage'){
         this.$router.push({
           name: 'passagePage',
           query:{
-            pId: this.dataObj.pId
+            pId: this.dataObj.articleId,
           }
         });
       }
