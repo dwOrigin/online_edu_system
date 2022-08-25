@@ -18,15 +18,14 @@
                 placeholder="密码">
               </el-input>
             </el-form-item>
-            <div>
-              <span v-show="!antiRobotPassed">滑动到底进行人机验证</span>
-              <el-slider v-show="!antiRobotPassed" :max="1000" :min="0" :show-tooltip="false" @change="sliderChanged"
-                v-model="sliderValue"></el-slider>
-            </div>
+<!--            <div>-->
+<!--              <span v-show="!antiRobotPassed">滑动到底进行人机验证</span>-->
+<!--              <el-slider v-show="!antiRobotPassed" :max="1000" :min="0" :show-tooltip="false" @change="sliderChanged"-->
+<!--                v-model="sliderValue"></el-slider>-->
+<!--            </div>-->
           </el-form>
           <div style="display: flex; justify-content: center; margin-top: 20px">
-            <el-button type="primary" @click="handleFooterClick('login')" plain size="medium" class="footer-btn"
-              :disabled="!antiRobotPassed" round>
+            <el-button type="primary" @click="handleFooterClick('login')" plain size="medium" class="footer-btn" round>
               <span class="btn-content">登&nbsp;&nbsp;录</span>
             </el-button>
             <el-button round size="medium" class="footer-btn" @click="handleFooterClick('cancel')">
@@ -188,9 +187,9 @@ export default {
         phone: [{ validator: PhoneRuleR, trigger: 'blur' }],
       },
       //值为1000时反人机验证成功
-      sliderValue: 0,
+      // sliderValue: 0,
       //反人机验证是否通过
-      antiRobotPassed: false
+      // antiRobotPassed: false
     }
   },
   methods: {
@@ -213,7 +212,6 @@ export default {
             this.$message.error('验证码发送失败');
           } else {
             this.registerForm.codeReceived = res.data;
-            console.log(res.data)
             this.sendCodeInterval = 60;
             let id = setInterval(() => {
               this.sendCodeInterval--;
@@ -229,8 +227,6 @@ export default {
     },
     //点击验证验证码时调用
     validateCode() {
-      console.log(this.registerForm.codeReceived);
-      console.log(this.registerForm.code);
       if (this.registerForm.code == this.registerForm.codeReceived && this.registerForm.codeReceived != null) {
         this.codeIsRight = true;
         //防止用户验证成功后修改电话号码
@@ -242,7 +238,7 @@ export default {
     resetAllStatus() {
       setTimeout(() => {
         this.sliderValue = 0;
-        this.antiRobotPassed = false;
+        // this.antiRobotPassed = false;
         this.$refs.loginForm.resetFields();
         this.active = "logIn";
         this.codeIsRight = false;
@@ -250,11 +246,11 @@ export default {
       }, 50);
     },
     //滚动条改变时检测是否滑倒到底
-    sliderChanged() {
-      if (this.sliderValue === 1000) {
-        this.antiRobotPassed = true;
-      }
-    },
+    // sliderChanged() {
+    //   if (this.sliderValue === 1000) {
+    //     this.antiRobotPassed = true;
+    //   }
+    // },
     //登录窗口关闭时调用
     beforeClose(done) {
       this.resetAllStatus();
@@ -295,8 +291,8 @@ export default {
                   this.$message.success(ret.message);
                   this.$bus.$emit('AuthorizationChanged');
                 } else {//用户名或密码错误
-                  this.antiRobotPassed = false;
-                  this.sliderValue = 0;
+                  // this.antiRobotPassed = false;
+                  // this.sliderValue = 0;
                   this.$message.error(ret.message);
                 }
               }).catch((err) => {

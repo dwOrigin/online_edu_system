@@ -7,7 +7,7 @@
         <span v-if="dataObj.commenterAvatarUrl === ''">{{ dataObj.commenterName }}</span>
       </el-avatar> -->
       &nbsp;&nbsp;&nbsp;
-      <span style="font-size: x-small; font-weight: bold; color:#4C4444;">{{ user.userName }}</span>
+      <span style="font-size: x-small; font-weight: bold; color:#4C4444;">{{ dataObj.cusId }}</span>
     </div>
     <div class="content">
       {{ dataObj.content }}
@@ -37,85 +37,70 @@ export default {
     return {
       dataObj: this.obj,
       likeC: '赞同',
-      type: this.typeM,
-      user:{}
+      type: this.typeM
     };
   },
-  mounted(){
-    this.getUserName()
-  },
   methods: {
-    refresh(){
-      this.$parent.refreshQuestion(this.$route.query.qId);
-      this.$parent.refreshComment(this.$route.query.qId);
-    },
-    getUserName(){
-      //获取提问者姓名
-      let promise = this.$axios({
-        url: 'http://localhost:8081/user/findOne',
-        method: 'get',
-        params: {
-          id:this.dataObj.cusId
-        }
-      });
-       promise.then((res) => {
-        this.user = res.data;
-      }).catch((err) => {
-        this.$message.error('你的网络迷路了');
-      });
-    },
     accept() {
       let usr = window.localStorage.getItem('user');
       if (usr === null) {
         this.$bus.$emit('OpenLoginDialog');
       } else {
         usr = JSON.parse(usr);
-
         if (this.type === 'PassageComment') {
-          //点赞文章评论
+          // 修改文章评论的点赞状态
           // let promise = this.$axios({
-          //   url: 'http://localhost:8081/questionscomment/addPraise',
-          //   method: 'get',
+          //   url: '',
+          //   method: '',
           //   data:{
-          //     cusId: usr.userId,
-          //     id: this.dataObj.id
+          //     uId: usr.id,
+          //     cId: this.dataObj.cId,
+          //     like: this.likeC === '赞同'//修改后的点赞状态true or false
           //   }
           // });
           let promise = new Promise((a) => {
             a({
               data: {
-                result: true
               }
             });
           });
           promise.then((res) => {
-            let ret = res.data;
+            let ret = (this.likeC === '赞同') ;
             if (ret) {
               this.likeC = '已赞同';
               this.dataObj.like++;
             } else {
-              this.$message.error('请勿重复操作');
+              this.likeC = '赞同';
+              this.dataObj.like--;
             }
           }).catch((err) => {
             this.$message.error('你的网络迷路了');
           });
         } else if (this.type === 'Answer') {
-          //赞同回答
-          let promise = this.$axios({
-            url: 'http://localhost:8081/questionscomment/addPraise',
-            method: 'get',
-            params: {
-                  // cusId: usr.userId,
-                  id: this.dataObj.id
-            }
+          //修改回答的赞同状态
+          // let promise = this.$axios({
+          //   url: '',
+          //   method: '',
+          //   data: {
+          //         uId: usr.id,
+          //         aId: this.dataObj.cId,
+          //         like: this.likeC === '赞同'//修改后的点赞状态true or false
+          //   }
+          // });
+          let promise = new Promise((a) => {
+            a({
+              data: {
+              }
+            });
           });
           promise.then((res) => {
-            let ret = res.data;
+            let ret = (this.likeC === '赞同');
             if (ret) {
               this.likeC = '已赞同';
-              this.dataObj.praiseCount++;
+              this.dataObj.like++;
             } else {
-              this.$message.error('请勿重复操作');
+              this.likeC = '赞同';
+              this.dataObj.like--;
             }
           }).catch((err) => {
             this.$message.error('你的网络迷路了');

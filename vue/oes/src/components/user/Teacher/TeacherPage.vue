@@ -62,13 +62,13 @@ export default {
   },
   methods: {
     refreshTeacher(id) {
-      // 通过讲师id获取讲师详细信息
+      //通过讲师id获取讲师详细信息
       let promise = this.$axios({
-          url: 'http://localhost:8081/teacher',
+          url: '/teacher/id',
           method: 'get',
-          // data:{
-          //   teacherId: id
-          // }
+          params:{
+            id:id
+          }
       });
       // let promise = new Promise((a) => {
       //   a({
@@ -96,12 +96,23 @@ export default {
       // });
       promise.then((res) => {
         //@test
-        this.teacher = res.data;
-        this.teacher.subjectId = [...this.teacher.subjectId, ...this.teacher.subjectId];
-        // this.teacher.courses = [...this.teacher.courses, ...this.teacher.courses];
-        // this.teacher.courses = [...this.teacher.courses, ...this.teacher.courses];
-        // this.teacher.courses = [...this.teacher.courses, ...this.teacher.courses];
-        // this.teacher.courses = [...this.teacher.courses, ...this.teacher.courses];
+        this.teacher.avatarUrl = res.data.picPath;
+        this.teacher.name=res.data.name;
+        this.teacher.nikeName=res.data.education;
+        this.teacher.intro=res.data.career;
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });
+      let promise1 = this.$axios({
+          url: '/course/getbyteacher',
+          method: 'get',
+          params:{
+            teacherid:id
+          }
+      });
+      promise1.then((res1) => {
+        //@test
+        this.teacher.courses=res1.data;
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });

@@ -4,7 +4,7 @@
     params: {
       courseId: course.courseId
     }
-  });" class="course-record">
+  });" v-show="display" class="course-record">
     <el-image class="radius-img" style="width: 200px; height: 120px" ref="img" src=coursedetail.logo fit="fill">
     </el-image>
     <div class="right">
@@ -13,8 +13,11 @@
           {{ coursedetail.courseName }}
         </div>
         <div class="center-footer">
-          <div v-if="type === 'history'">{{ course.time }}</div>
-          <div v-if="type === 'star'">收藏于&nbsp;&nbsp; {{ course.addTime }}</div>
+          <div v-if="type === 'history'">{{ course.time.split('T')[0] }}&nbsp;&nbsp;{{ course.time.split('T')[1] }}
+          </div>
+          <div v-if="type === 'star'">收藏于&nbsp;&nbsp; {{ course.addTime.split('T')[0] }}&nbsp;&nbsp;{{
+              course.addTime.split('T')[1]
+          }}</div>
           <div class="teacher">
             <el-avatar :size="30" :src="teacher.picPath">
               <span v-if="teacher.picPath == '' || teacher.picPath == null">{{ teacher.name }}</span>
@@ -42,6 +45,7 @@ export default {
   },
   data() {
     return {
+      sK: '',
       course: this.courseP,
       coursedetail: {
         courseId: 0,
@@ -68,7 +72,8 @@ export default {
         createTime: null,
         subjectId: 0,
         sort: 0
-      }
+      },
+      display: true
     }
   },
   methods: {
@@ -127,6 +132,15 @@ export default {
     }
   },
   mounted() {
+    this.$bus.$on('KeyChanged', (newK) => {
+      this.sK = newK;
+      console.log(this.sK);
+      if (this.coursedetail.courseName.indexOf(this.sK) >= 0 || this.sK == '') {
+        this.display = true;
+      }else{
+        this.display = false;
+      }
+    });
     let promise = this.$axios({
       url: '/course/getById',
       method: 'get',
@@ -151,6 +165,7 @@ export default {
     }).catch((err) => {
       this.$message.error('你的网络迷路了');
     });
+
     // this.request.get("/course/getById", {
     //   param: {
     //     id: this.course.courseId
@@ -168,6 +183,9 @@ export default {
     //   .then((res) => {
     //     this.teacher = res;
     //   })
+  },
+  beforeDestroy() {
+    this.$bus.$off('KeyChanged');
   }
 }
 </script>
