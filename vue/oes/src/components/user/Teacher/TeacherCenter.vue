@@ -107,7 +107,8 @@ export default {
     // 显示第几页
     handleCurrentChange(val) {
       // 改变默认的页数
-      this.curPage = val
+      this.curPage = val;
+      console.log(this.teachers.slice((curPage - 1) * pageSize, curPage * pageSize));
     },
   },
   mounted() {

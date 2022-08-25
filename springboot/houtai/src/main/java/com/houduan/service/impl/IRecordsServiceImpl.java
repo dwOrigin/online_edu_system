@@ -7,13 +7,17 @@ import com.houduan.entity.Records;
 import com.houduan.mapper.RecordsMapper;
 import com.houduan.service.IRecordsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * @author dw
  * @date 2022/8/25 13:41
  */
+@Service
 public class IRecordsServiceImpl extends ServiceImpl<RecordsMapper, Records> implements IRecordsService {
-@Autowired
+@Resource
 private RecordsMapper recordsMapper;
 
 
@@ -49,7 +53,7 @@ private RecordsMapper recordsMapper;
         Wrapper.eq("user_id",userId)
                 .eq("xx_id",commentId)
                 .eq("type",2);//2是评论
-        Records records = recordsMapper.selectOne(Wrapper);
+        Object records = recordsMapper.selectObjs(Wrapper);
         if (records!=null) {
             return 1;
         }else {

@@ -33,8 +33,6 @@ public List<User> findAll() {
 
 @GetMapping("/findOne")
 public User findOne(@RequestParam Integer id) {
-//        Integer i = Integer.parseInt(id);
-        System.err.println("id--->"+id);
         return userService.getById(id);
 }
 
