@@ -64,10 +64,18 @@ private CourseMapper courseMapper;
         Collections.sort(List);
         System.out.println(List);
         List<Integer>numberList=new ArrayList<>();
+
 //        得到courseId的集合
         int number=List.size()-1;
-        for (int i=0;i<3;i++){
-            numberList.add(List.get(number-i).getCourseId());
+        if(number>=2) {
+            for (int i = 0; i < 3; i++) {
+                numberList.add(List.get(number - i).getCourseId());
+            }
+        }else {
+//            在整体的size值的大小小于3的时候，返回出所有的历史记录
+            for (int i = 0; i < List.size(); i++) {
+                numberList.add(List.get(number - i).getCourseId());
+        }
         }
 //        寻找对应的course内容
         java.util.List<Course> courseList = courseMapper.selectBatchIds(numberList);
@@ -104,8 +112,15 @@ public List<String> getbyuseridTime(Integer userid) {
     System.out.println(List);
     List<String>timeList=new ArrayList<>();
 //        得到courseId的集合
+//    通过param的值去调整对应的参数，实现size大于等于3就返回3个，小于3就返回所有的个数
     int number=List.size()-1;
-    for (int i=0;i<3;i++){
+    int param=0;
+    if (param>=number)
+        param=3;
+    else {
+        param=List.size();
+    }
+    for (int i=0;i<param;i++){
         Duration duration= Duration.between(List.get(number-i).getTime(),LocalDateTime.now());
         long days = duration.toDays(); //相差的天数
         long hours = duration.toHours()%24;//相差的小时数

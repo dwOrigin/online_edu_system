@@ -53,6 +53,7 @@ public class CourseController {
 
     @GetMapping("/getById")
     public Course findOne(@RequestParam Integer id) {
+        courseService.addViewPoint(id);
         return courseService.getById(id);
     }
 
@@ -71,8 +72,11 @@ public class CourseController {
     }
     @GetMapping("/getrecommend")
     public List<Course> getrecommend(){
-        return courseService.getrecommend();
+        return courseService.recommendCourses();
     }
-
+@GetMapping("/addViewPoint")
+    public Result addViewPoint(@RequestParam Integer id){
+        return courseService.addViewPoint(id);
+}
 }
 

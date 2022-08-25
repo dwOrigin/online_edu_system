@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.houduan.common.Result;
 import com.houduan.entity.Msgsystem;
 import com.houduan.entity.Questions;
+import com.houduan.service.IQuestionsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
@@ -28,20 +30,22 @@ import com.houduan.entity.Questionscomment;
 
 @Resource
 private IQuestionscommentService questionscommentService;
-
 //添加评论
 @PostMapping
 public Result addComment(@RequestBody Questionscomment questionscomment) {
         questionscomment.setAddTime(LocalDateTime.now());
         questionscomment.setIsBest(0);//初始化为0，有人点赞再加上一个
         questionscomment.setPraiseCount(0);
-        Result result = questionscommentService.addComment(questionscomment);
+    questionscommentService.addCommentCount(questionscomment.getQuestionId());
+    Result result = questionscommentService.addComment(questionscomment);
         return result;
         }
 // 删除评论
 @GetMapping("/delete")
 public Result delete(@RequestParam  Integer id) {
         Result deleteComment = questionscommentService.deleteComment(id);
+        questionscommentService.reduceCommentCount(
+                questionscommentService.getById(id).getQuestionId());
         return deleteComment;
 }
 
