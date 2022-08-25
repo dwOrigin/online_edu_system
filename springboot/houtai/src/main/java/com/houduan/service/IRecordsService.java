@@ -26,4 +26,39 @@ Result addRecordArticle(Integer userId,Integer articleId);
 Result reduceRecordComment(Integer userId,Integer commentId);
 Result reduceRecordArticle(Integer userId,Integer articleId);
 
+/*
+* 添加课程的点赞记录
+*
+* */
+Result addRecordCourseLike(Integer userId,Integer articleId);
+
+/*
+* 减少课程的点赞记录
+*
+* */
+Result reduceRecordCourseLike(Integer userId,Integer articleId);
+/*
+*
+* 添加课程的收藏记录
+* */
+Result addRecordCourseCollect(Integer userId,Integer articleId);
+/*
+* 减少课程的收藏记录
+*
+* */
+Result reduceRecordCourseCollect(Integer userId,Integer articleId);
+
+/*
+*
+* 是否点赞了该课程
+*
+* */
+Integer orLikedCourse(Integer userId,Integer articleId);
+
+/*
+* 是否收藏了该课程
+*
+* */
+Integer orCollectedCourse(Integer userId,Integer articleId);
+
 }
