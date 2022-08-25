@@ -7,7 +7,7 @@
       <el-button style="margin: 0 50px" @click="deleteAll">清除所有记录</el-button>
     </div>
     <div class="content">
-      <course-record v-for="obj in listToDisplay"
+      <course-record v-for="obj in historyList"
                      :key="obj.id"
                      :courseP="obj"></course-record>
     </div>
@@ -28,7 +28,7 @@ export default {
   },
   watch:{
     searchKey(newV){
-      this.handleSearch(newV);
+      this.$bus.$emit('KeyChanged', newV);
     }
   },
   components: {
@@ -86,14 +86,14 @@ export default {
       });
     },
     handleSearch(key) {
-      if(key === ''){
-        this.listToDisplay = this.historyList;
-      }else{
-        let list = this.historyList.filter((item)=>{
-          return item.title.indexOf(key) >= 0;
-        });
-        this.listToDisplay = list;
-      }
+      // if(key === ''){
+      //   this.listToDisplay = this.historyList;
+      // }else{
+      //   let list = this.historyList.filter((item)=>{
+      //     return item.title.indexOf(key) >= 0;
+      //   });
+      //   this.listToDisplay = list;
+      // }
     },
     deleteAll() {
       let usr = JSON.parse(window.localStorage.getItem('user'));

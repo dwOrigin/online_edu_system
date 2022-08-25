@@ -28,7 +28,7 @@ export default {
   },
   watch:{
     searchKey(newV){
-      this.handleSearch(newV);
+      this.$bus.$emit('KeyChanged', newV);
     }
   },
   methods: {
@@ -86,14 +86,14 @@ export default {
       });
     },
     handleSearch(key) {
-      if(key === ''){
-        this.listToDisplay = this.starList;
-      }else{
-        let list = this.starList.filter((item)=>{
-          return item.title.indexOf(key) >= 0;
-        });
-        this.listToDisplay = list;
-      }
+      // if(key === ''){
+      //   this.listToDisplay = this.starList;
+      // }else{
+      //   let list = this.starList.filter((item)=>{
+      //     return item.title.indexOf(key) >= 0;
+      //   });
+      //   this.listToDisplay = list;
+      // }
     },
   },
   mounted() {
