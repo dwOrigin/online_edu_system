@@ -5,6 +5,7 @@ import com.houduan.common.Result;
 import com.houduan.entity.Comment;
 import com.houduan.entity.Questions;
 import com.houduan.entity.Questionscomment;
+import com.houduan.mapper.QuestionsMapper;
 import com.houduan.mapper.QuestionscommentMapper;
 import com.houduan.service.IQuestionscommentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -27,6 +28,7 @@ import java.util.List;
 public class QuestionscommentServiceImpl extends ServiceImpl<QuestionscommentMapper, Questionscomment> implements IQuestionscommentService {
 @Autowired
 private QuestionscommentMapper mapper;
+private QuestionsMapper questionsMapper;
     @Override
     public Result addComment(Questionscomment questionscomment) {
         questionscomment.setAddTime(LocalDateTime.now());
@@ -97,6 +99,31 @@ for (int i=0;i<list.size();i++){
     }
 }
        return integer;
+    }
+
+    @Override
+    public Result addCommentCount(Integer integer) {
+        Questions questions = questionsMapper.selectById(integer);
+        questions.setReplyCount(questions.getReplyCount()+1);
+        int i = questionsMapper.updateById(questions);
+        if (i>=1){
+            return Result.success();
+        }else {
+            return Result.error();
+        }
+
+    }
+
+    @Override
+    public Result reduceCommentCount(Integer integer) {
+        Questions questions = questionsMapper.selectById(integer);
+        questions.setReplyCount(questions.getReplyCount()-1);
+        int i = questionsMapper.updateById(questions);
+        if (i>=1){
+            return Result.success();
+        }else {
+            return Result.error();
+        }
     }
 
 

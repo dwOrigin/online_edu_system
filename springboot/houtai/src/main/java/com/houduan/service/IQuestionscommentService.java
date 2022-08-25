@@ -34,5 +34,9 @@ public interface IQuestionscommentService extends IService<Questionscomment> {
     Result cancelPraise(Questionscomment questionscomment);
 // 获取点赞的最大值
     Integer getMaxPraise();
+//    增加评论数
+    Result addCommentCount(Integer integer);
+//    减少评论数
+    Result reduceCommentCount(Integer integer);
 
 }
