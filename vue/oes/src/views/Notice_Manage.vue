@@ -114,7 +114,7 @@ export default {
     submitForm() {
       if(this.ruleForm.type=="全体用户"){
         this.request
-          .post("http://localhost:8081/msgsystem/sendAllMsg",this.ruleForm.content)
+          .post("/msgsystem/sendAllMsg",this.ruleForm.content)
           .then((res)=>{
             if(res.code=="200"){
               this.$message.success("发送成功");
@@ -126,7 +126,7 @@ export default {
         this.msgsystem.content=this.ruleForm.content;
         this.msgsystem.acceptId=this.ruleForm.type;
         this.request
-          .post("http://localhost:8081/msgsystem/add",this.msgsystem)
+          .post("/msgsystem/add",this.msgsystem)
           .then((res)=>{
             if(res.code=="200"){
               this.$message.success("发送成功");
@@ -144,7 +144,7 @@ export default {
   },
   mounted() {
     this.request
-      .get("http://localhost:8081/user/")
+      .get("/user")
       .then((res) => {
         this.users = res;
       })

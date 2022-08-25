@@ -222,7 +222,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$axios.post('http://localhost:8081/user/deleteUser', {
+        this.$axios.post('/user/deleteUser', {
           userId: row.userId
         }).then(response=>{
         this.$message({
@@ -242,7 +242,7 @@ export default {
 
     changeUsermsg() {
       console.log(this.form.userId);
-      this.request.post('http://localhost:8081/user/updateUser', this.form)
+      this.request.post('/user/updateUser', this.form)
         .then((res) => {
           if (res.code == "200") {
             this.$message.success(res.message);
@@ -253,7 +253,7 @@ export default {
         this.reload();
     },
     fetchData() {
-      this.$axios.get("http://localhost:8081/user").then(
+      this.$axios.get("/user").then(
         response => {
           this.tableData = response.data;
           this.totalCount=response.data.length;

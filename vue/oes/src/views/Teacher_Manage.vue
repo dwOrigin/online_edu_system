@@ -295,7 +295,7 @@ export default{
           type: 'warning'
         }).then(() => {
           console.log(row.id);
-          this.$axios.get('http://localhost:8081/teacher/removeTeacher', {
+          this.$axios.get('/teacher/removeTeacher', {
                 params: {
                   teacherId: row.id
                 }
@@ -316,7 +316,7 @@ export default{
         });
       },
       changeUsermsg(){
-         this.request.post('http://localhost:8081/teacher/updateTeacher', this.form)
+         this.request.post('/teacher/updateTeacher', this.form)
         .then((res) => {
           if (res.code == "200") {
             this.$message.success(res.message);
@@ -327,7 +327,7 @@ export default{
        this.reload();
       },
       addTeachermsg(){
-        this.request.post('http://localhost:8081/teacher/addTeacher', this.newform)
+        this.request.post('/teacher/addTeacher', this.newform)
         .then((res) => {
           if (res.code == "200") {
             this.$message.success(res.message);
@@ -339,7 +339,7 @@ export default{
       },
       //不用手写时间
        fetchData(){
-        this.$axios.get('http://localhost:8081/teacher').then(
+        this.$axios.get('/teacher/findAll').then(
           response=>{
             this.tableData=response.data;
             this.totalCount=response.data.length;

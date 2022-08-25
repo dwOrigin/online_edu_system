@@ -135,7 +135,7 @@ export default{
         console.log(key, keyPath);
       },
          onSubmit(formName) {
-           this.request.post('http://localhost:8081/article', this.form)
+           this.request.post('/article', this.form)
         .then((res) => {
           if (res.code == "200") {
             this.$message.success(res.message);
@@ -189,7 +189,7 @@ export default{
 }
 //上传md文件
 export function postMd(content){
-  this.$axios.get('http://localhost:8081/file/upload',{
+  this.$axios.get('/file/upload',{
     params:{
        file:content,
        filetype:markdown,
@@ -219,7 +219,7 @@ export function postMd(content){
 export const uploadFile = (params) => {
    return this.$axios({
      method: 'get',
-     url: 'http://localhost:8081/file/upload',
+     url: '/file/upload',
      data: {
       file:params,filetype:picture},
      headers: {
