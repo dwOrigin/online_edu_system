@@ -19,4 +19,6 @@ public interface ICoursevideoService extends IService<Coursevideo> {
     List<Coursevideo> findbycourseid(Integer courseId);
 
     Result addnew(Coursevideo coursevideo);
+
+    Integer getnum(Integer courseId);
 }

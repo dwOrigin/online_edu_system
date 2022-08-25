@@ -34,8 +34,8 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         course.setCommentNum(0);
         course.setPageViewcount(0);
         course.setPraiseCount(0);
-        save(course);
-        return Result.success("200", "提交成功");
+        int a=baseMapper.insert(course);
+        return Result.success("200", "提交成功",a);
     }
 
     @Override

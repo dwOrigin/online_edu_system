@@ -77,5 +77,9 @@ public class CourseController {
     public Result addViewPoint(@RequestParam Integer id){
         return courseService.addViewPoint(id);
     }
+    @GetMapping("/getbyteacher")
+    public List<Course>getbyteacher(@RequestParam Integer teacherid){
+        return courseService.getbyteacher(teacherid);
+    }
 }
 

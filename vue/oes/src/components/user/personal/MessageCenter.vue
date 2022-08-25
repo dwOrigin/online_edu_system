@@ -5,6 +5,7 @@
         <span style="margin-left: 50px; color: #6A6A6A; font-size: x-small">近期消息</span>
       </div>
       <div class="friends-list">
+        <friend-card v-for="obj in SysMessages" :key="obj.friendId" :obj="obj"></friend-card>
         <friend-card v-for="obj in allMessages" :key="obj.friendId" :obj="obj"></friend-card>
       </div>
     </div>
@@ -13,18 +14,11 @@
         <span style="color: #353636; font-size: small;">{{ curChatObj.friendName }}</span>
       </div>
       <div class="chat-content">
-        <message v-for="obj in curChatObj.history" :key="obj.mId"
-                 :msg="obj"></message>
+        <message v-for="obj in curChatObj.history" :key="obj.mId" :msg="obj"></message>
       </div>
       <div class="chat-input">
-        <el-input
-            type="text"
-            placeholder="请输入内容"
-            v-model="text"
-            maxlength="50"
-            @keyup.enter.native="sendMsg"
-            show-word-limit
-        >
+        <el-input type="text" placeholder="请输入内容" v-model="text" maxlength="50" @keyup.enter.native="sendMsg"
+          show-word-limit>
           <template slot="append">
             <el-button @click="sendMsg">发送</el-button>
           </template>
@@ -47,86 +41,99 @@ export default {
   data() {
     return {
       text: '',
+      SysMessages: [],
       allMessages: [],
-      curChatObj: {history: [], friendName: ''},
-      user: {id: 888}
+      curChatObj: { history: [], friendName: '' },
+      user: { id: 888 }
     };
   },
   methods: {
     getUserMessage() {
       //获取特定用户id的所有通信消息
-      // let promise = this.$axios({
-      //   url: '',
-      //   method: '',
-      //   data: {
-      //     userId: this.user.id
-      //   }
-      // });
-      let promise = new Promise((a) => {
-        a({
-          data: {
-            messageList: [
-              {
-                friendId: 888,//好友的id
-                friendName: '留云借风',
-                friendAvatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-                unCheckedCnt: 1,//未读信息数
-                history: [
-                  {
-                    mId: 81,//消息id
-                    content: 'hello, my mother-in-law!',//消息内容
-                    time: '2022/12/25 16:00:00',//发送时间
-                    senderId: 1314520,
-                    senderName: '留云借风',
-                    senderAvatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
-                  },
-                  {
-                    mId: 8,//消息id
-                    content: 'hello, my mother-in-law!',//消息内容
-                    time: '2022/12/25 16:00:00',
-                    senderId: 888,
-                    senderName: '留云借风',
-                    senderAvatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
-                  }
-                ]
-              },
-              {
-                friendId: 889,//好友的id
-                friendName: '留云借风',
-                friendAvatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-                unCheckedCnt: 1,//未读信息数
-                history: [
-                  {
-                    mId: 83,//消息id
-                    content: 'hello, my mother-in-law!',//消息内容
-                    time: '2022/12/25 16:00:00',
-                    senderId: 888,
-                    senderName: '留云借风',
-                    senderAvatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
-                  },
-                  {
-                    mId: 88,//消息id
-                    content: 'hello, my mother-in-law!',//消息内容
-                    time: '2022/12/25 16:00:00',
-                    senderId: 888,
-                    senderName: '留云借风',
-                    senderAvatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
-                  }
-                ]
-              }
-            ]
-          }
-        });
+      let promise = this.$axios({
+        url: '/msgsystem/getbyid',
+        method: 'get',
+        params: {
+          id: this.user.userId
+        }
       });
+      // let promise = new Promise((a) => {
+      //   a({
+      //     data: {
+      //       messageList: [
+      //         {
+      //           friendId: 888,//好友的id
+      //           friendName: '留云借风',
+      //           friendAvatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+      //           unCheckedCnt: 1,//未读信息数
+      //           history: [
+      //             {
+      //               mId: 81,//消息id
+      //               content: 'hello, my mother-in-law!',//消息内容
+      //               time: '2022/12/25 16:00:00',//发送时间
+      //               senderId: 1314520,
+      //               senderName: '留云借风',
+      //               senderAvatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
+      //             },
+      //             {
+      //               mId: 8,//消息id
+      //               content: 'hello, my mother-in-law!',//消息内容
+      //               time: '2022/12/25 16:00:00',
+      //               senderId: 888,
+      //               senderName: '留云借风',
+      //               senderAvatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
+      //             }
+      //           ]
+      //         },
+      //         {
+      //           friendId: 889,//好友的id
+      //           friendName: '留云借风',
+      //           friendAvatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+      //           unCheckedCnt: 1,//未读信息数
+      //           history: [
+      //             {
+      //               mId: 83,//消息id
+      //               content: 'hello, my mother-in-law!',//消息内容
+      //               time: '2022/12/25 16:00:00',
+      //               senderId: 888,
+      //               senderName: '留云借风',
+      //               senderAvatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
+      //             },
+      //             {
+      //               mId: 88,//消息id
+      //               content: 'hello, my mother-in-law!',//消息内容
+      //               time: '2022/12/25 16:00:00',
+      //               senderId: 888,
+      //               senderName: '留云借风',
+      //               senderAvatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
+      //             }
+      //           ]
+      //         }
+      //       ]
+      //     }
+      //   });
+      // });
       promise.then((res) => {
-        this.allMessages = res.data.messageList;
-        this.curChatObj = this.allMessages[0];
+        this.SysMessages = res.data;
+        this.curChatObj = this.SysMessages[0];
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });
+      let promise1 = this.$axios({
+        url: '/msgreceive/getbyid',
+        method: 'get',
+        params: {
+          id: this.user.userId
+        }
+      });
+      promise1.then((res1) => {
+        this.allMessages=res1.data;
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
     },
     sendMsg() {
-      if(this.text.length === 0){
+      if (this.text.length === 0) {
         return;
       }
       let rId = this.curChatObj.friendId;
@@ -157,10 +164,10 @@ export default {
         });
       });
       promise.then((res) => {
-        if(res.data.result){
+        if (res.data.result) {
           this.curChatObj.history.push(res.data.msg);
           this.text = '';
-        }else{
+        } else {
           this.$message.error('消息发送失败');
         }
       }).catch((err) => {

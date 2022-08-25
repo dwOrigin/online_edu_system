@@ -32,11 +32,14 @@ public class CoursevideoController {
         return coursevideoService.addnew(coursevideo);
     }
 
-    @PostMapping("/findbycourseid")
+    @GetMapping("/findbycourseid")
     public List<Coursevideo> findbycourseid(@RequestParam Integer courseId) {
         return coursevideoService.findbycourseid(courseId);
     }
-
+    @GetMapping("/getnum")
+    public Integer getnum(@RequestParam Integer courseId){
+        return coursevideoService.getnum(courseId);
+    }
     @DeleteMapping("/{id}")
     public Boolean delete(@PathVariable Integer id) {
         return coursevideoService.removeById(id);
