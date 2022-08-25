@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author dw
@@ -34,6 +35,7 @@ private RecordsMapper recordsMapper;
                 .eq("xx_id",commentId)
                 .eq("type",1);//1是文章
         Records records = recordsMapper.selectOne(recordsQueryWrapper);
+        System.out.println(records);
         if (records!=null) {
             return 1;
         }else {
@@ -53,7 +55,9 @@ private RecordsMapper recordsMapper;
         Wrapper.eq("user_id",userId)
                 .eq("xx_id",commentId)
                 .eq("type",2);//2是评论
+
         Records records = recordsMapper.selectOne(Wrapper);
+        System.out.println(records);
         if (records!=null) {
             return 1;
         }else {
