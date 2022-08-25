@@ -108,4 +108,18 @@ private ArticleMapper articleMapper;
         }
         return returnList;
     }
+
+    @Override
+    public Result addViewPoint(Integer id) {
+        Article article = articleMapper.selectById(id);
+        article.setClickNum(article.getClickNum()+1);
+        int i = articleMapper.updateById(article);
+        if (i>=1){
+            return Result.success();
+        }else {
+            return Result.error();
+        }
+
+
+    }
 }

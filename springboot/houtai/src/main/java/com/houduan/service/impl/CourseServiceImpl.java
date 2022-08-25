@@ -103,5 +103,17 @@ private CourseMapper mapper;
 
     }
 
+    @Override
+    public Result addViewPoint(Integer id) {
+        Course course = mapper.selectById(id);
+        course.setPageViewcount(course.getPageViewcount()+1);
+        int i = mapper.updateById(course);
+        if (i>=1){
+            return Result.success();
+        }else {
+            return Result.error();
+        }
+    }
+
 
 }

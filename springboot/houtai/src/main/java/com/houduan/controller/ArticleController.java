@@ -55,6 +55,7 @@ public List<Article> searchByType(@RequestParam String type) {
 //        按照id去查找对应的文章
 @GetMapping("/getbyid")
 public Article findArticleById(@RequestParam Integer id){
+        articleService.addViewPoint(id);
         return articleService.findArticleByID(id);
 }
 @GetMapping("/findAll")

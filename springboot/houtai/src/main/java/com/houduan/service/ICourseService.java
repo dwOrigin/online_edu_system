@@ -30,5 +30,7 @@ public interface ICourseService extends IService<Course> {
 
 //    List<Course> getrecommend();
     List<Course>recommendCourses();
+//    增加浏览量操作
+    Result addViewPoint(Integer id);
 
 }

@@ -28,6 +28,7 @@ public interface IArticleService extends IService<Article> {
     List<Article>findAll();
 //    文章推荐机制，按照类别
     List<Article>recommendArticles();
-
+//增加文章的浏览量
+    Result addViewPoint(Integer id);
 
 }
