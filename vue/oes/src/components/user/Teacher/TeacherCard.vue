@@ -1,24 +1,24 @@
 <template>
   <div
-      @click="toTeacherPage(t.teacherId)"
+      @click="toTeacherPage(t.id)"
       class="teacher-card">
     <div>
       <el-avatar
           :size="60"
           style="margin: auto 20px"
-          :src="t.avatarUrl">
-        <span v-if="t.avatarUrl === ''">{{ t.name }}</span>
+          :src="t.picPath">
+        <span v-if="t.picPath == ''||t.picPath==null">{{ t.name }}</span>
       </el-avatar>
     </div>
     <div>
       <div>{{ t.name }}&nbsp;
-        <el-tag type="warning" size="mini">{{ t.nikeName }}</el-tag>
+        <el-tag type="warning" size="mini">{{ t.education }}</el-tag>
       </div>
       <div style="font-size: xx-small; margin-top: 10px; display: -webkit-box;
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 2;
             overflow: hidden;"
-      >{{ t.intro }}
+      >{{ t.career }}
       </div>
     </div>
   </div>

@@ -63,45 +63,56 @@ export default {
   methods: {
     refreshTeacher(id) {
       //通过讲师id获取讲师详细信息
-      // let promise = this.$axios({
-      //     url: '',
-      //     method: '',
-      //     data:{
-      //       teacherId: id
-      //     }
-      // });
-      let promise = new Promise((a) => {
-        a({
-          data: {
-            teacher: {
-              avatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-              name: 'JEAN',
-              nikeName: "银牌讲师",
-              intro: '我我我我问黄ahfdjdhsajkfhkfa我我我我问黄ahfdjdhsajkfhkfa我我我我问黄ahfdjdhsajkfhkfa我我我我问黄ahfdjd' +
-                  '我我我我问黄ahfdjdhsajkfhkfa我我我我问黄ahfdjdhsajkfhkfa我我我我问黄ahfdjdhsajkfhkfa我我我我问黄ahfdjdhsajkfhkfa',
-              courses: [
-                {
-                  id: 345,
-                  imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
-                  title: '[量学] 一秒钟一个单词 一小时考过四级! 你值得拥有',
-                  teacher: 'bilbil大学',
-                  chapterNum: 16,
-                  studentNum: 1000,
-                  likeRate: 87
-                }
-              ]
-            }
+      let promise = this.$axios({
+          url: '/teacher/id',
+          method: 'get',
+          params:{
+            id:id
           }
-        });
       });
+      // let promise = new Promise((a) => {
+      //   a({
+      //     data: {
+      //       teacher: {
+      //         avatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+      //         name: 'JEAN',
+      //         nikeName: "银牌讲师",
+      //         intro: '我我我我问黄ahfdjdhsajkfhkfa我我我我问黄ahfdjdhsajkfhkfa我我我我问黄ahfdjdhsajkfhkfa我我我我问黄ahfdjd' +
+      //             '我我我我问黄ahfdjdhsajkfhkfa我我我我问黄ahfdjdhsajkfhkfa我我我我问黄ahfdjdhsajkfhkfa我我我我问黄ahfdjdhsajkfhkfa',
+      //         courses: [
+      //           {
+      //             id: 345,
+      //             imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
+      //             title: '[量学] 一秒钟一个单词 一小时考过四级! 你值得拥有',
+      //             teacher: 'bilbil大学',
+      //             chapterNum: 16,
+      //             studentNum: 1000,
+      //             likeRate: 87
+      //           }
+      //         ]
+      //       }
+      //     }
+      //   });
+      // });
       promise.then((res) => {
         //@test
-        this.teacher = res.data.teacher;
-        this.teacher.courses = [...this.teacher.courses, ...this.teacher.courses];
-        this.teacher.courses = [...this.teacher.courses, ...this.teacher.courses];
-        this.teacher.courses = [...this.teacher.courses, ...this.teacher.courses];
-        this.teacher.courses = [...this.teacher.courses, ...this.teacher.courses];
-        this.teacher.courses = [...this.teacher.courses, ...this.teacher.courses];
+        this.teacher.avatarUrl = res.data.picPath;
+        this.teacher.name=res.data.name;
+        this.teacher.nikeName=res.data.education;
+        this.teacher.intro=res.data.career;
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });
+      let promise1 = this.$axios({
+          url: '/course/getbyteacher',
+          method: 'get',
+          params:{
+            teacherid:id
+          }
+      });
+      promise1.then((res1) => {
+        //@test
+        this.teacher.courses=res1.data;
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });

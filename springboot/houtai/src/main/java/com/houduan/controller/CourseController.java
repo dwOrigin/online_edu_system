@@ -3,6 +3,7 @@ package com.houduan.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.houduan.common.Constants;
 import com.houduan.common.Result;
+import io.swagger.models.auth.In;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -72,6 +73,10 @@ public class CourseController {
     @GetMapping("/getrecommend")
     public List<Course> getrecommend(){
         return courseService.getrecommend();
+    }
+    @GetMapping("/getbyteacher")
+    public List<Course>getbyteacher(@RequestParam Integer teacherid){
+        return courseService.getbyteacher(teacherid);
     }
 
 }

@@ -8,6 +8,7 @@ import com.houduan.entity.Course;
 import com.houduan.mapper.CourseMapper;
 import com.houduan.service.ICourseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.swagger.models.auth.In;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -74,5 +75,12 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     @Override
     public List<Course> getrecommend() {
         return null;
+    }
+
+    @Override
+    public List<Course> getbyteacher(Integer teacherid) {
+        QueryWrapper<Course>queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("teacher_id",teacherid);
+        return list(queryWrapper);
     }
 }
