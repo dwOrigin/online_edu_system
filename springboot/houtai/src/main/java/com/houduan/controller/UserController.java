@@ -20,7 +20,8 @@ import com.houduan.entity.User;
  */
 @RestController
 @RequestMapping("/user")
-    public class UserController {
+@CrossOrigin
+public class UserController {
 
 @Resource
 private IUserService userService;
@@ -30,10 +31,12 @@ public List<User> findAll() {
         return userService.list();
         }
 
-@GetMapping("/id")
+@GetMapping("/findOne")
 public User findOne(@RequestParam Integer id) {
+//        Integer i = Integer.parseInt(id);
+        System.err.println("id--->"+id);
         return userService.getById(id);
-        }
+}
 
 @GetMapping("/page")
 public Page<User> findPage(@RequestParam Integer pageNum,

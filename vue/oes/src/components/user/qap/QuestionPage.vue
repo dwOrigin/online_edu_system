@@ -11,7 +11,7 @@
               {{question.askerName}}
             </span>
           </el-avatar> -->
-          {{question.cusId}}&nbsp;&nbsp;
+          {{user.userName}}&nbsp;&nbsp;
         </div>
         <div class="content">
           {{question.content}}
@@ -106,7 +106,8 @@ export default {
       question: {},
       answers: [],
       dialogVisible: false,
-      answer: ''
+      answer: '',
+      user:{}
     };
   },
   methods: {
@@ -124,20 +125,13 @@ export default {
           url: 'http://localhost:8081/questionscomment',
           method: 'post',
           data: {
-            answer: this.answer,
-            userId: user.id,
-            qId: this.question.pId
+            content: this.answer,
+            cusId: user.userId,
+            questionId: this.question.id
           }
         });
-        // let promise = new Promise((a) => {
-        //   a({
-        //     data: {
-        //       result: false
-        //     }
-        //   });
-        // });
         promise.then((res) => {
-          let ret = res.data.result;
+          let ret = res.data;
           if (ret) {
             this.$message.success('回答成功');
             this.refreshComment(this.$route.query.qId);
@@ -150,7 +144,6 @@ export default {
       }
       this.answer = '';
       this.dialogVisible = false;
-      this.reload();
     },
     handleClick() {
       let usr = window.localStorage.getItem('user');
@@ -164,9 +157,16 @@ export default {
     },
     refreshQuestion(qId) {
       // 获取问题详细信息
-      let promise = this.$axios.get(`http://localhost:8081/questions/id?id=${qId}`);
+      let promise = this.$axios({
+        url: 'http://localhost:8081/questions/id',
+        method: 'get',
+        params: {
+          id: qId
+        }
+      });
       promise.then((res) => {
         this.question = res.data;
+        this.getUserName()
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
@@ -186,6 +186,22 @@ export default {
         this.$message.error('你的网络迷路了');
       });
     },
+     getUserName(){
+      //获取提问者姓名
+      // let promise = this.$axios.get('http://localhost:8081/user/findOne');
+      let promise = this.$axios({
+        url: 'http://localhost:8081/user/findOne',
+        method: 'get',
+        params: {
+          id:this.question.cusId
+        }
+      });
+       promise.then((res) => {
+        this.user = res.data;
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });
+    }
   },
   mounted() {
     this.refreshQuestion(this.$route.query.qId);
