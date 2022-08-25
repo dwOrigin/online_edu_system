@@ -6,8 +6,8 @@
                  type="primary"
                  @click="starClass"
                  class="starLink"
-                 icon="el-icon-star-off"><span style="font-size: small">
-        {{ infoToDisplay }}
+                 :icon="starStateIcon"><span style="font-size: small">
+        收藏
       </span></el-link>
       </div>
       <el-rate
@@ -22,7 +22,7 @@
       <el-tabs v-model="activeName">
         <el-tab-pane name="intro">
           <div slot="label" class="title-tag">课程介绍</div>
-          <div style="margin: 20px">
+          <div style="margin: 20px; font-weight: lighter; font-size: small; line-height: 33px;">
             {{course.intro}}
           </div>
         </el-tab-pane>
@@ -45,30 +45,63 @@ export default {
   },
   data() {
     return {
-      infoToDisplay: '收藏课程',
+      stared: false,
       course: {},
       activeName: 'comment'
     };
+  },
+  computed:{
+    starStateIcon(){
+      if(this.stared){
+        return 'el-icon-star-on';
+      }else{
+        return 'el-icon-star-off';
+      }
+    }
   },
   methods: {
     //点击收藏
     starClass() {
       //  获取登录信息
       let user = window.localStorage.getItem('user');
+      //test
       if (user === null) {
         this.$message.info('请先登录或注册');
       } else {
-        if (this.infoToDisplay === '收藏成功') {
-          this.$message.error({
-            message: '你已经收藏该课程',
-          });
-        } else {
+        if (this.stared) {
+          // 修改课程收藏信息
           // let promise = this.$axios({
           //     url: '',
           //     method: '',
           //     data:{
           //       userId: user.id,
-          //       courseId: this.course.courseId
+          //       courseId: this.course.courseId,
+          //       star: false//是否收藏
+          //     }
+          // });
+          let promise = new Promise((a) => {
+            a({
+              data: {
+                stared: false
+              }
+            });
+          });
+          promise.then((res) => {
+            if (!res.data.stared) {
+              this.stared = false;
+            }
+          }).catch((err) => {
+            this.$message.error('你的网络迷路了');
+          });
+        } else {
+          // 修改课程收藏信息
+          // let promise = this.$axios({
+          //     url: '',
+          //     method: '',
+          //     data:{
+          //       userId: user.id,
+          //       courseId: this.course.courseId,
+          //       star: true//是否收藏
           //     }
           // });
           let promise = new Promise((a) => {
@@ -81,7 +114,7 @@ export default {
           promise.then((res) => {
             if (res.data.stared) {
               this.$message.success('收藏成功');
-              this.infoToDisplay = '收藏成功';
+              this.stared = true;
             }
           }).catch((err) => {
             this.$message.error('你的网络迷路了');

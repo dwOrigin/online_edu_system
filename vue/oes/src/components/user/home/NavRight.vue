@@ -19,14 +19,25 @@
   <el-link :underline="false"
            @click="$bus.$emit('OpenLoginDialog')"
            class="tag-item" v-if="user == null">登录|注册</el-link>
-  <a href="#"
-     class="mini-img-container" v-if="user != null">
-    <el-avatar size="small" :src="user.picImg">
+<!--  <a href="#"-->
+<!--     class="mini-img-container" v-if="user != null">-->
+<!--    <el-avatar size="small" :src="user.picImg">-->
+<!--      <span v-if="user.picImg==null||user.picImg==''" >-->
+<!--        {{user.userName}}-->
+<!--      </span>-->
+<!--    </el-avatar>-->
+
+<!--  </a>-->
+  <el-dropdown @command="exit" v-if="user != null">
+    <el-avatar :size="40" :src="user.picImg">
       <span v-if="user.picImg==null||user.picImg==''" >
         {{user.userName}}
       </span>
     </el-avatar>
-  </a>
+    <el-dropdown-menu slot="dropdown">
+      <el-dropdown-item icon="el-icon-back">退出登录</el-dropdown-item>
+    </el-dropdown-menu>
+  </el-dropdown>
 </ul>
 </div>
 </template>
@@ -55,10 +66,15 @@ export default {
       } else {
         this.user = null;
       }
+    },
+  //  退出登录
+    exit(){
+      window.localStorage.removeItem('user');
+      this.$bus.$emit('AuthorizationChanged');
     }
   },
   mounted() {
-    this.refreshAuthorization();
+    // this.refreshAuthorization();
     this.$bus.$on('AuthorizationChanged', ()=>{
       this.refreshAuthorization();
     });

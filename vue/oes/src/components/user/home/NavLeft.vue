@@ -148,10 +148,11 @@ export default {
   position: relative;
   height: 100%;
   line-height: 80px;
+  color: #63627C;
 }
 
 .category-dropdown:hover {
-  color: red;
+  color: #409eff;
 }
 
 .category-dropdown:hover .dropdown-content {

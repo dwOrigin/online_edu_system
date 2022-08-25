@@ -1,20 +1,20 @@
 <template>
   <div class="play-title">
     <div>
-      <span style="font-size: large;">{{ course.title }}</span>
+      <span style="font-size: large;">{{ course.courseName }}</span>
     </div>
     <div class="course-info" style="margin-top: 10px;">
       <div style="margin-left: 20px; margin-right: 20px;">
         <i class="el-icon-video-play"></i>
-        {{ course.viewCnt }}
+        {{ course.pageViewcount }}
       </div>
       <div style="margin-right: 20px">
         <i class="el-icon-chat-dot-square"></i>
-        {{ course.commentCnt }}
+        {{ course.commentNum }}
       </div>
       <div style="margin-right: 20px">
         <i class="el-icon-time"></i>
-        {{ course.updateTime}}
+        {{ course.addTime.split('T')[0]}}&nbsp;&nbsp;{{ course.addTime.split('T')[1] }}
       </div>
     </div>
   </div>

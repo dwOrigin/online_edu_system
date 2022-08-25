@@ -60,7 +60,7 @@ public class TeacherController {
     }
 
     @GetMapping("/searchTeacher")
-    public List<Teacher> searchTeachers(@PathVariable String str) {
+    public List<Teacher> searchTeachers(@RequestParam String str) {
         return teacherService.searchTeacher(str);
     }
 }

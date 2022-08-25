@@ -44,17 +44,17 @@ export default {
       user:{}
     };
   },
-  mounted:{
-    // getUserName(dataObj.cusId)
+  mounted(){
+    this.getUserName()
   },
   methods:{
-   getUserName(userId){
+   getUserName(){
       //获取提问者姓名
       let promise = this.$axios({
-        url: 'http://localhost:8081/user/userId',
+        url: 'http://localhost:8081/user/findOne',
         method: 'get',
         params: {
-          id:userId
+          id:this.dataObj.cusId
         }
       });
        promise.then((res) => {
@@ -67,13 +67,6 @@ export default {
       this.$axios.get('http://localhost:8081/questionscomment/delete',{
         params:{id:dataObj.id}
     })
-    //  .then((res) => {
-    //       if (res.code == "200") {
-    //         this.$message.success(res.message);
-    //       } else {
-    //         this.$message.error(res.message);
-    //       }
-    //     });
     this.reload();
     }
   }

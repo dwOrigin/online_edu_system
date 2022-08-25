@@ -74,35 +74,35 @@ export default {
     },
     refreshQuestion(append) {
       //获取推荐问题
-      // let promise = this.$axios({
-      //     url: '',
-      //     method: '',
-      //     data:{}
-      // });
-      let promise = new Promise((a) => {
-        a({
-          data: {
-            questionList: [
-              {
-                title: '这是一个问题?',
-                hottestAnswer: '我是这个问题最好的回答',
-                hottestAnswererName: '最好的回答者',
-                like: '999万',//赞同数
-                answerCnt: 10,
-                qId: 888
-              }
-            ]
-          }
-        });
+      let promise = this.$axios({
+          url: 'http://localhost:8081/questions',
+          method: 'get',
+          // data:{}
       });
+      // let promise = new Promise((a) => {
+      //   a({
+      //     data: {
+      //       questionList: [
+      //         {
+      //           title: '这是一个问题?',
+      //           hottestAnswer: '我是这个问题最好的回答',
+      //           hottestAnswererName: '最好的回答者',
+      //           like: '999万',//赞同数
+      //           answerCnt: 10,
+      //           qId: 888
+      //         }
+      //       ]
+      //     }
+      //   });
+      // });
       promise.then((res) => {
         if (append === false) {
-          this.questionList = res.data.questionList;
+          this.questionList = res.data;
           this.questionList = [...this.questionList, ...this.questionList];
           this.questionList = [...this.questionList, ...this.questionList];
           this.questionList = [...this.questionList, ...this.questionList];
         } else {
-          this.questionList = [...this.questionList, ...res.data.questionList];
+          this.questionList = [...this.questionList, ...res.data];
         }
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
@@ -110,33 +110,33 @@ export default {
     },
     refreshPassage(append) {
       //获取热门文章
-      // let promise = this.$axios({
-      //     url: '',
-      //     method: '',
-      //     data:{}
-      // });
-      let promise = new Promise((a) => {
-        a({
-          data: {
-            passageList: [
-              {
-                title: '我是文章标题',
-                content: '我是文章内容',
-                like: '16万',
-                pId: 999
-              }
-            ]
-          }
-        });
+      let promise = this.$axios({
+          url: 'http://localhost:8081/article/findAll',
+          method: 'get',
+          // data:{}
       });
+      // let promise = new Promise((a) => {
+      //   a({
+      //     data: {
+      //       passageList: [
+      //         {
+      //           title: '我是文章标题',
+      //           content: '我是文章内容',
+      //           like: '16万',
+      //           pId: 999
+      //         }
+      //       ]
+      //     }
+      //   });
+      // });
       promise.then((res) => {
         if (append === false) {
-          this.passageList = res.data.passageList;
+          this.passageList = res.data;
           this.passageList = [...this.passageList, ...this.passageList];
           this.passageList = [...this.passageList, ...this.passageList];
           this.passageList = [...this.passageList, ...this.passageList];
         } else {
-          this.passageList = [...this.passageList, ...res.data.passageList];
+          this.passageList = [...this.passageList, ...res.data];
         }
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
