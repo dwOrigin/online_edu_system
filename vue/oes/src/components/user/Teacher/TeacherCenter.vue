@@ -53,6 +53,7 @@ export default {
         });
         promise.then((res) => {
           this.teachers = res.data;
+          console.log(this.teachers.slice((curPage - 1) * pageSize, curPage * pageSize))
           //@test
           // if (key == '') {
           //   this.resultTitle = '全部讲师';

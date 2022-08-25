@@ -78,6 +78,7 @@ export default {
         });
          promise.then((res) => {
         this.isPraise = res.data;
+        console.log('这是getpraise'+res.data);
         if(this.isPraise=='1'){
           this.likeC = '已赞同';
         }
@@ -126,8 +127,17 @@ export default {
         //   });
         // } else if (this.type === 'Answer') {
           //修改回答的赞同状态
-          this.getPraise();
-          console.log(this.isPraise);
+          let promise=this.$axios({
+          url:'http://localhost:8081/records/orLikedCom',
+          method:'get',
+          params:{
+            userId:usr.userId,
+            commentId:this.dataObj.id
+          }
+        });
+         promise.then((res) => {
+        this.isPraise = res.data;
+          console.log('这是点赞里的'+this.isPraise);
           if(this.isPraise=='2'){
             let promise = this.$axios({
             url: 'http://localhost:8081/records/addRecordCom',
@@ -163,9 +173,9 @@ export default {
             this.$message.error('你的网络迷路了');
           });
           }
-
-
-          
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });         
         }
       }
     }
