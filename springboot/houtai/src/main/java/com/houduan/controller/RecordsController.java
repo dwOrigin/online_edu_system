@@ -56,4 +56,49 @@ public class RecordsController {
 /*
 * ---------------------课程部分---------------------
 * */
+
+    @GetMapping("/addRecordCourseLike")
+    public Result addRecordCourseLike(@RequestParam Integer userId,@RequestParam Integer courseLikeId){
+        Result result = service.addRecordCourseLike(userId, courseLikeId);
+        return result;
+    }
+
+    @GetMapping("/reduceRecordCourseLike")
+    public Result reduceRecordCourseLike(@RequestParam Integer userId,@RequestParam Integer courseLikeId){
+        Result result = service.reduceRecordCourseLike(userId, courseLikeId);
+        return result;
+    }
+
+
+    @GetMapping("/addRecordCourseCollect")
+    public Result addRecordCourseCollect(@RequestParam Integer userId,@RequestParam Integer courseCollectId){
+        Result result = service.addRecordCourseCollect(userId, courseCollectId);
+        return result;
+    }
+    @GetMapping("/reduceRecordCourseCollect")
+    public Result reduceRecordCourseCollect(@RequestParam Integer userId,@RequestParam Integer courseCollectId){
+        Result result = service.reduceRecordCourseCollect(userId, courseCollectId);
+        return result;
+    }
+
+    @GetMapping("/orCollectedCourse")
+    public Integer orCollectedCourse(@RequestParam Integer userId,@RequestParam Integer courseId ){
+        Integer integer = service.orCollectedCourse(userId, courseId);
+        return integer;
+    }
+
+    @GetMapping("/orLikedCourse")
+    public Integer orLikedCourse(@RequestParam Integer userId,@RequestParam Integer courseId ){
+        Integer integer = service.orLikedCourse(userId, courseId);
+        return integer;
+    }
+
+
 }
+
+
+
+
+
+
+
