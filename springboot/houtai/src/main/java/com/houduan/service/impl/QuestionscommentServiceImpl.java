@@ -2,8 +2,10 @@ package com.houduan.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.houduan.common.Result;
+import com.houduan.entity.Comment;
 import com.houduan.entity.Questions;
 import com.houduan.entity.Questionscomment;
+import com.houduan.mapper.QuestionsMapper;
 import com.houduan.mapper.QuestionscommentMapper;
 import com.houduan.service.IQuestionscommentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -26,6 +28,7 @@ import java.util.List;
 public class QuestionscommentServiceImpl extends ServiceImpl<QuestionscommentMapper, Questionscomment> implements IQuestionscommentService {
 @Autowired
 private QuestionscommentMapper mapper;
+private QuestionsMapper questionsMapper;
     @Override
     public Result addComment(Questionscomment questionscomment) {
         questionscomment.setAddTime(LocalDateTime.now());
@@ -58,5 +61,71 @@ private QuestionscommentMapper mapper;
         return questionscommentList;
     }
 
+    @Override
+    public Result addPraise(Questionscomment questionscomment) {
+        questionscomment.setPraiseCount(questionscomment.getPraiseCount()+1);
+        int i = mapper.updateById(questionscomment);
+        if (i>=1)
+        {
+            return Result.success();
+        }else {
+            return Result.error();
+        }
+
+
+    }
+
+    @Override
+    public Result cancelPraise(Questionscomment questionscomment) {
+
+        questionscomment.setPraiseCount(questionscomment.getPraiseCount()-1);
+        int i = mapper.updateById(questionscomment);
+        if (i>=1)
+        {
+            return Result.success();
+        }else {
+            return Result.error();
+        }
+    }
+
+    @Override
+    public Integer getMaxPraise() {
+        List<Questionscomment> list = mapper.selectList(null);
+        Integer integer = new Integer(0);
+        integer=list.get(0).getPraiseCount();
+for (int i=0;i<list.size();i++){
+    if (integer<=list.get(i).getPraiseCount()){
+        integer=list.get(i).getPraiseCount();
+    }
+}
+       return integer;
+    }
+
+    @Override
+    public Result addCommentCount(Integer integer) {
+        Questions questions = questionsMapper.selectById(integer);
+        questions.setReplyCount(questions.getReplyCount()+1);
+        int i = questionsMapper.updateById(questions);
+        if (i>=1){
+            return Result.success();
+        }else {
+            return Result.error();
+        }
+
+    }
+
+    @Override
+    public Result reduceCommentCount(Integer integer) {
+        Questions questions = questionsMapper.selectById(integer);
+        questions.setReplyCount(questions.getReplyCount()-1);
+        int i = questionsMapper.updateById(questions);
+        if (i>=1){
+            return Result.success();
+        }else {
+            return Result.error();
+        }
+    }
+
 
 }
+

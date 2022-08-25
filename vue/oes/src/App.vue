@@ -25,7 +25,12 @@ export default {
         this.isRouterAlive=true
       })
     }
-  }
+  },
+  // provide(){
+  //   return{
+  //     reload:this.reload
+  //   }
+  // }
   // 据说这样刷新页面效果最好
   // mounted() {
   //   this.$router.replace({

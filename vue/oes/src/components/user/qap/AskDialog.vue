@@ -49,21 +49,14 @@ export default {
           return;
         }
         let user = JSON.parse(window.localStorage.getItem('user'));
-        //提问
-        // let promise = this.$axios({
-        //     url: '',
-        //     method: '',
-        //     data:{
-        //       qContent: this.qContent,
-        //       userId: user.id
-        //     }
-        // });
-        let promise = new Promise((a)=>{
-            a({
-                data:{
-                  passed: true
-                }
-            });
+        提问
+        let promise = this.$axios({
+            url: 'http://localhost:8081/questions',
+            method: 'post',
+            params:{
+              qContent: this.qContent,
+              userId: user.id
+            }
         });
         promise.then((res)=>{
           let ret = res.data.passed;
@@ -78,6 +71,7 @@ export default {
       }
       this.qContent = '';
       this.dialogVisible = false;
+      this.reload();
     }
   },
   mounted() {

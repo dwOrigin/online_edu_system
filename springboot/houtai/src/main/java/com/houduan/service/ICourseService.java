@@ -27,7 +27,10 @@ public interface ICourseService extends IService<Course> {
 
     Result praiseplus(Integer id);
 
-    List<Course> getrecommend();
+    List<Course>recommendCourses();
+    //    增加浏览量操作
+    Result addViewPoint(Integer id);
 
     List<Course> getbyteacher(Integer teacherid);
+
 }

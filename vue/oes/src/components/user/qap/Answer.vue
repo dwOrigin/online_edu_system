@@ -1,23 +1,23 @@
 <template>
   <div class="answer">
     <div style="display: flex; align-items: center">
-      <el-avatar
+      <!-- <el-avatar
           :src="dataObj.commenterAvatarUrl"
           shape="square">
         <span v-if="dataObj.commenterAvatarUrl === ''">{{ dataObj.commenterName }}</span>
-      </el-avatar>
+      </el-avatar> -->
       &nbsp;&nbsp;&nbsp;
-      <span style="font-size: x-small; font-weight: bold; color:#4C4444;">{{ dataObj.commenterName }}</span>
+      <span style="font-size: x-small; font-weight: bold; color:#4C4444;">{{ dataObj.cusId }}</span>
     </div>
     <div class="content">
       {{ dataObj.content }}
     </div>
     <div class="footer">
-      <div>发布于 {{ dataObj.time }}</div>
+      <div>发布于 {{ dataObj.addTime }}</div>
       <div>
         <el-button
             @click="accept"
-            type="primary" size="small" :plain="true">{{ likeC }}({{ dataObj.like }})
+            type="primary" size="small" :plain="true">{{ likeC }}({{ dataObj.praiseCount }})
         </el-button>
       </div>
     </div>
@@ -27,6 +27,7 @@
 
 <script>
 export default {
+  inject: ['reload'],
   name: "Answer",
   props: {
     obj: {},

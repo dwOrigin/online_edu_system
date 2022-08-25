@@ -2,6 +2,7 @@ package com.houduan.service;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.houduan.common.Result;
+import com.houduan.entity.Comment;
 import com.houduan.entity.Questions;
 import com.houduan.entity.Questionscomment;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -27,5 +28,15 @@ public interface IQuestionscommentService extends IService<Questionscomment> {
 //问答的评论是单条的，显示出该问题的所有回答
 //    显示出某个问题的全部回答
      List<Questionscomment> getIntactComments(Integer id);
+//添加点赞
+    Result addPraise(Questionscomment questionscomment);
+    //    取消点赞
+    Result cancelPraise(Questionscomment questionscomment);
+// 获取点赞的最大值
+    Integer getMaxPraise();
+//    增加评论数
+    Result addCommentCount(Integer integer);
+//    减少评论数
+    Result reduceCommentCount(Integer integer);
 
 }

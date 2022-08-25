@@ -18,13 +18,13 @@
     </div>
     <div class="question-card-footer">
       <el-tag v-if="type==='question'">
-        &nbsp;&nbsp;{{dataObj.like}}赞同&nbsp;&nbsp;
+        &nbsp;&nbsp;{{dataObj.praiseCount}}赞同&nbsp;&nbsp;
       </el-tag>
       <el-tag v-if="type==='passage'">
-        &nbsp;&nbsp;{{dataObj.like}}点赞&nbsp;&nbsp;
+        &nbsp;&nbsp;{{dataObj.praiseCount}}点赞&nbsp;&nbsp;
       </el-tag>
       &nbsp;&nbsp;&nbsp;&nbsp;
-      <el-tag type="success" v-if="type==='question'">&nbsp;&nbsp;{{dataObj.answerCnt}}条答案</el-tag>
+      <el-tag type="success" v-if="type==='question'">&nbsp;&nbsp;{{dataObj.replyCount}}条答案</el-tag>
     </div>
   </div>
 </template>
