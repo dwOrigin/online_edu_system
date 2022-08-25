@@ -117,8 +117,6 @@ export default {
       if (this.newUser.code == this.newUser.codeR) {
         this.codeIsRight = true;
       } else {
-        console.log(this.newUser.codeR);
-        console.log(this.newUser.code);
         this.$message.error('验证失败');
       }
     },
@@ -288,6 +286,7 @@ export default {
         window.localStorage.removeItem('user');
         window.localStorage.setItem('user', JSON.stringify(nUser));
         this.user = nUser;
+        this.$bus.$emit('AuthorizationChanged');
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });

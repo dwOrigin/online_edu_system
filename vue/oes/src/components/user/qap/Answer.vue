@@ -46,59 +46,60 @@ export default {
         this.$bus.$emit('OpenLoginDialog');
       } else {
         usr = JSON.parse(usr);
-
         if (this.type === 'PassageComment') {
-          //点赞文章评论
+          // 修改文章评论的点赞状态
           // let promise = this.$axios({
           //   url: '',
           //   method: '',
           //   data:{
           //     uId: usr.id,
-          //     cId: this.dataObj.cId
+          //     cId: this.dataObj.cId,
+          //     like: this.likeC === '赞同'//修改后的点赞状态true or false
           //   }
           // });
           let promise = new Promise((a) => {
             a({
               data: {
-                result: true
               }
             });
           });
           promise.then((res) => {
-            let ret = res.data.result;
+            let ret = (this.likeC === '赞同') ;
             if (ret) {
               this.likeC = '已赞同';
               this.dataObj.like++;
             } else {
-              this.$message.error('请勿重复操作');
+              this.likeC = '赞同';
+              this.dataObj.like--;
             }
           }).catch((err) => {
             this.$message.error('你的网络迷路了');
           });
         } else if (this.type === 'Answer') {
-          //赞同回答
+          //修改回答的赞同状态
           // let promise = this.$axios({
           //   url: '',
           //   method: '',
           //   data: {
           //         uId: usr.id,
-          //         aId: this.dataObj.cId
+          //         aId: this.dataObj.cId,
+          //         like: this.likeC === '赞同'//修改后的点赞状态true or false
           //   }
           // });
           let promise = new Promise((a) => {
             a({
               data: {
-                result: false
               }
             });
           });
           promise.then((res) => {
-            let ret = res.data.result;
+            let ret = (this.likeC === '赞同');
             if (ret) {
               this.likeC = '已赞同';
               this.dataObj.like++;
             } else {
-              this.$message.error('请勿重复操作');
+              this.likeC = '赞同';
+              this.dataObj.like--;
             }
           }).catch((err) => {
             this.$message.error('你的网络迷路了');
