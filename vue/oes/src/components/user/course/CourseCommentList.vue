@@ -2,70 +2,45 @@
   <div class="comment-list">
     <div style="margin-left: 100px">
       <!--      <span style="font-size: x-small;"></span>-->
-      <el-rate
-          v-model="commentRate"
-          show-text>
+      <el-rate v-model="commentRate" show-text>
       </el-rate>
     </div>
     <div class="comment-input-box">
       <div>
-        <el-avatar
-            :size="70"
-            :src="user.avatarUrl">
-          <span v-if="user.id === undefined">未登录</span>
-          <span v-if="user.avatarUrl === '' && user.id !== undefined">{{ user.name }}</span>
+        <el-avatar :size="70" :src="user.picImg">
+          <span v-if="user.userId === undefined">未登录</span>
+          <span v-if="user.picImg === '' && user.userId !== undefined">{{ user.name }}</span>
         </el-avatar>
       </div>
-      <el-input
-          type="textarea"
-          class="comment-input-area"
-          :rows="3"
-          placeholder="请输入一条友善的评论内容"
-          v-model="userComment">
+      <el-input type="textarea" class="comment-input-area" :rows="3" placeholder="请输入一条友善的评论内容" v-model="userComment">
       </el-input>
-      <el-button type="primary"
-                 @click="commitComment"
-                 plain class="comment-confirm-btn">发布
+      <el-button type="primary" @click="commitComment" plain class="comment-confirm-btn">发布
       </el-button>
     </div>
-    <div><h4>好评率：{{ (goodReview / comments.length) * 100 }}%</h4></div>
+    <div>
+      <h4>好评率：{{ (goodReview / comments.length) * 100 }}%</h4>
+    </div>
     <div class="comment-selector">
-      <el-button :plain="filterMethod !== 'all'"
-                 type="primary"
-                 @click="filterMethod = 'all'"
-                 class="selector-tag" style="margin-left: 0">全部评论({{ comments.length }})
+      <el-button :plain="filterMethod !== 'all'" type="primary" @click="filterMethod = 'all'" class="selector-tag"
+        style="margin-left: 0">全部评论({{ comments.length }})
       </el-button>
-      <el-button
-          :plain="filterMethod !== 'good'"
-          type="primary"
-          @click="filterMethod = 'good'"
-          plain class="selector-tag">好评({{ goodReview }})
+      <el-button :plain="filterMethod !== 'good'" type="primary" @click="filterMethod = 'good'" plain
+        class="selector-tag">好评({{ goodReview }})
       </el-button>
-      <el-button
-          :plain="filterMethod !== 'medium'"
-          type="primary"
-          @click="filterMethod = 'medium'"
-          plain class="selector-tag">中评({{ mediumReview }})
+      <el-button :plain="filterMethod !== 'medium'" type="primary" @click="filterMethod = 'medium'" plain
+        class="selector-tag">中评({{ mediumReview }})
       </el-button>
-      <el-button
-          :plain="filterMethod !== 'bad'"
-          type="primary"
-          @click="filterMethod = 'bad'"
-          plain class="selector-tag">差评({{ badReview }})
+      <el-button :plain="filterMethod !== 'bad'" type="primary" @click="filterMethod = 'bad'" plain
+        class="selector-tag">差评({{ badReview }})
       </el-button>
     </div>
     <div>
       <comment v-for="c in
-      commentsToDisplay.slice((curPage-1)*pageSize, (curPage)*pageSize)" :comment="c"></comment>
+      commentsToDisplay.slice((curPage - 1) * pageSize, (curPage) * pageSize)" :comment="c"></comment>
     </div>
     <div class="comment-pagination-container">
-      <el-pagination
-          background
-          hide-on-single-page
-          :current-page.sync="curPage"
-          :page-size="pageSize"
-          :total="commentsToDisplay.length"
-          layout="prev, pager, next">
+      <el-pagination background hide-on-single-page :current-page.sync="curPage" :page-size="pageSize"
+        :total="commentsToDisplay.length" layout="prev, pager, next">
       </el-pagination>
     </div>
   </div>
@@ -152,7 +127,7 @@ export default {
         // });
         let promise = new Promise((a) => {
           a({
-            data: {result: false}
+            data: { result: false }
           });
         });
         promise.then((res) => {
@@ -203,12 +178,6 @@ export default {
       promise.then((res) => {
         //测试用
         let c = res.data.comments;
-        c = [...c, ...c];
-        c = [...c, ...c];
-        c = [...c, ...c];
-        c = [...c, ...c];
-        c = [...c, ...c];
-        c = [...c, ...c];
         this.comments = c;
         this.countReview();
         this.filterComment('all');
@@ -218,6 +187,10 @@ export default {
     }
   },
   mounted() {
+    this.$bus.$on('AuthorizationChanged', () => {
+      let user = window.localStorage.getItem('user');
+      this.user = JSON.parse(user);
+    })
     this.$bus.$on('courseChanged', (c) => {
       this.course = c;
       this.updateComments();
@@ -229,6 +202,7 @@ export default {
   },
   beforeDestroy() {
     this.$bus.$off('courseChanged');
+    this.$bus.$off('AuthorizationChanged');
   },
   // directives:{
   //   autoClick:{
@@ -274,5 +248,4 @@ export default {
   width: 90%;
   margin: 30px auto;
 }
-
 </style>

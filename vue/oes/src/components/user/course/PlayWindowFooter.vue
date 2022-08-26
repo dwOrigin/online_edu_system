@@ -2,20 +2,12 @@
   <div class="play-window-footer">
     <div class="star-score">
       <div>
-        <el-link :underline="false"
-                 type="primary"
-                 @click="starClass"
-                 class="starLink"
-                 :icon="starStateIcon"><span style="font-size: small">
-        收藏
-      </span></el-link>
+        <el-link :underline="false" type="primary" @click="starClass" class="starLink" :icon="starStateIcon"><span
+            style="font-size: small">
+            收藏
+          </span></el-link>
       </div>
-      <el-rate
-          v-model="course.grade"
-          disabled
-          show-score
-          text-color="#ff9900"
-          score-template="{value}">
+      <el-rate v-model="course.grade" disabled show-score text-color="#ff9900" score-template="{value}">
       </el-rate>
     </div>
     <div class="comment-and-info-card">
@@ -23,7 +15,7 @@
         <el-tab-pane name="intro">
           <div slot="label" class="title-tag">课程介绍</div>
           <div style="margin: 20px; font-weight: lighter; font-size: small; line-height: 33px;">
-            {{course.title}}
+            {{ course.title }}
           </div>
         </el-tab-pane>
         <el-tab-pane name="comment">
@@ -47,14 +39,15 @@ export default {
     return {
       stared: false,
       course: {},
-      activeName: 'comment'
+      activeName: 'comment',
+      user: {}
     };
   },
-  computed:{
-    starStateIcon(){
-      if(this.stared){
+  computed: {
+    starStateIcon() {
+      if (this.stared) {
         return 'el-icon-star-on';
-      }else{
+      } else {
         return 'el-icon-star-off';
       }
     }
@@ -62,59 +55,56 @@ export default {
   methods: {
     //点击收藏
     starClass() {
-      //  获取登录信息
-      let user = window.localStorage.getItem('user');
       //test
-      if (user === null) {
+      if (this.user === null) {
         this.$message.info('请先登录或注册');
       } else {
         if (this.stared) {
           // 修改课程收藏信息
-          // let promise = this.$axios({
-          //     url: '',
-          //     method: '',
-          //     data:{
-          //       userId: user.id,
-          //       courseId: this.course.courseId,
-          //       star: false//是否收藏
-          //     }
-          // });
-          let promise = new Promise((a) => {
-            a({
-              data: {
-                stared: false
-              }
-            });
+          let promise = this.$axios({
+            url: '/records/reduceRecordCourseCollect',
+            method: 'get',
+            params: {
+              userId: this.user.userId,
+              courseCollectId: this.course.courseId,
+            }
           });
+          // let promise = new Promise((a) => {
+          //   a({
+          //     data: {
+          //       stared: false
+          //     }
+          //   });
+          // });
           promise.then((res) => {
-            if (!res.data.stared) {
+            if (res.data.code == '200') {
               this.stared = false;
+              this.$message.info("取消收藏");
             }
           }).catch((err) => {
             this.$message.error('你的网络迷路了');
           });
         } else {
           // 修改课程收藏信息
-          // let promise = this.$axios({
-          //     url: '',
-          //     method: '',
-          //     data:{
-          //       userId: user.id,
-          //       courseId: this.course.courseId,
-          //       star: true//是否收藏
-          //     }
-          // });
-          let promise = new Promise((a) => {
-            a({
-              data: {
-                stared: true
-              }
-            });
+          let promise = this.$axios({
+            url: '/records/addRecordCourseCollect',
+            method: 'get',
+            params: {
+              userId: this.user.userId,
+              courseCollectId: this.course.courseId,
+            }
           });
+          // let promise = new Promise((a) => {
+          //   a({
+          //     data: {
+          //       stared: false
+          //     }
+          //   });
+          // });
           promise.then((res) => {
-            if (res.data.stared) {
-              this.$message.success('收藏成功');
+            if (res.data.code == '200') {
               this.stared = true;
+              this.$message.success("收藏成功");
             }
           }).catch((err) => {
             this.$message.error('你的网络迷路了');
@@ -125,8 +115,26 @@ export default {
   },
   mounted() {
     this.$bus.$on('courseChanged', (data) => {
+      let user = window.localStorage.getItem('user');
+      this.user = JSON.parse(user);
       this.course = data;
-      
+      let promise = this.$axios({
+        url: '/records/orCollectedCourse',
+        method: 'get',
+        params: {
+          userId: this.user.userId,
+          courseId: this.course.courseId,
+        }
+      });
+      promise.then((res) => {
+        if (res.data == 1) {
+          this.stared = true;
+        } else {
+          this.stared = false;
+        }
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });
     });
   },
   beforeDestroy() {

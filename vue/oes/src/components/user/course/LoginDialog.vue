@@ -284,7 +284,6 @@ export default {
                 //用户名和密码正确
                 if (ret.code == "200") {
                   let user = ret.data;
-                  console.log(ret.data);
                   window.localStorage.setItem('user', JSON.stringify(user));
                   this.isVisible = false;
                   this.resetAllStatus();

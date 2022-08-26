@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.houduan.service.IQuestionsService;
@@ -27,6 +28,9 @@ public class QuestionsController {
 
     @PostMapping
     public Boolean save(@RequestBody Questions questions) {
+        questions.setPraiseCount(0);
+        questions.setReplyCount(0);
+        questions.setBrowseCount(0);
         return questionsService.saveOrUpdate(questions);
     }
 

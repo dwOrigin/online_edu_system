@@ -75,7 +75,7 @@ export default {
     refreshQuestion(append) {
       //获取推荐问题
       let promise = this.$axios({
-          url: 'http://localhost:8081/questions',
+          url: '/questions',
           method: 'get',
           // data:{}
       });
@@ -98,11 +98,6 @@ export default {
       promise.then((res) => {
         if (append === false) {
           this.questionList = res.data;
-          this.questionList = [...this.questionList, ...this.questionList];
-          this.questionList = [...this.questionList, ...this.questionList];
-          this.questionList = [...this.questionList, ...this.questionList];
-        } else {
-          this.questionList = [...this.questionList, ...res.data];
         }
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
@@ -111,7 +106,7 @@ export default {
     refreshPassage(append) {
       //获取热门文章
       let promise = this.$axios({
-          url: 'http://localhost:8081/article/findAll',
+          url: '/article/findAll',
           method: 'get',
           // data:{}
       });
@@ -132,12 +127,7 @@ export default {
       promise.then((res) => {
         if (append === false) {
           this.passageList = res.data;
-          this.passageList = [...this.passageList, ...this.passageList];
-          this.passageList = [...this.passageList, ...this.passageList];
-          this.passageList = [...this.passageList, ...this.passageList];
-        } else {
-          this.passageList = [...this.passageList, ...res.data];
-        }
+        } 
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
@@ -154,9 +144,14 @@ export default {
         this.refreshPassage(true);
       }
     });
+    this.$bus.$on('refreshQAOMain',()=>{
+      this.refreshQuestion(false);
+    })
   },
   beforeDestroy() {
     this.$bus.$off('scrollToBottom');
+    this.$bus.$off('refreshQAOMain');
+    
   }
 }
 </script>

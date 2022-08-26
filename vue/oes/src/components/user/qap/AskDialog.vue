@@ -56,7 +56,14 @@ export default {
       qContent: '',
       qTitle: '',
       category: '',
-      options:[{value: '分类一'}, {value: '分类二'}]
+      options:[{value: '闲聊'}, {value: '知识'}],
+      question:{
+        cusId:'',
+        title:'',
+        content:'',
+        type:'',
+        status:1,
+      }
     };
   },
   methods: {
@@ -74,33 +81,26 @@ export default {
         }
         let user = JSON.parse(window.localStorage.getItem('user'));
         //提问
-        // let promise = this.$axios({
-        //     url: '',
-        //     method: '',
-        //     data:{
-        //       qTitle: this.qTitle,
-        //       category: this.category,
-        //       qContent: this.qContent,
-        //       userId: user.id
-        //     }
-        // });
-        let promise = new Promise((a)=>{
-            a({
-                data:{
-                  passed: true
-                }
-            });
-        });
-        promise.then((res)=>{
-          let ret = res.data.passed;
-          if(ret){
-            this.$message.success('提问成功');
+        this.question.content=this.qContent;
+        this.question.cusId=user.userId;
+        this.question.title=this.qTitle;
+        this.question.type=this.category;
+        this.request.post('/questions',this.question)
+        .then((res)=>{
+          if(res){
+            this.$message.success("提问成功");
+            this.$bus.$emit('refreshQAOMain');
           }else{
-            this.$message.error('提问失败');
+            this.$message.error("提问失败");
           }
-        }).catch((err)=>{
-            this.$message.error('你的网络迷路了');
-        });
+        })
+        // let promise = new Promise((a)=>{
+        //     a({
+        //         data:{
+        //           passed: true
+        //         }
+        //     });
+        // });
       }
       this.qContent = '';
       this.qTitle = '';

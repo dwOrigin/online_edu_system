@@ -59,9 +59,9 @@ export default {
       //分类标签集合
       tagList: {
         it: [
-          {title: '分类标签'},
-          {title: '分类标签'},
-          {title: '分类标签'},
+          {title: 'code'},
+          {title: 'language'},
+          {title: 'dance'},
           {title: '分类标签'},
           {title: '分类标签'},
           {title: '分类标签'},
