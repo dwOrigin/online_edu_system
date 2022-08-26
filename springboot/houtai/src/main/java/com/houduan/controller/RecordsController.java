@@ -92,6 +92,28 @@ public class RecordsController {
         Integer integer = service.orLikedCourse(userId, courseId);
         return integer;
     }
+/*------------------------------------*/
+    @GetMapping("/addRecordArticleComment")
+    public Result addRecordArticleComment(@RequestParam Integer userId,@RequestParam Integer articleCommentId){
+        Result result = service.addRecordArticleComment(userId, articleCommentId);
+        return result;
+    }
+    @GetMapping("/reduceRecordArticleComment")
+    public Result reduceRecordArticleComment(@RequestParam Integer userId,@RequestParam Integer articleCommentId){
+        Result result = service.reduceRecordArticleComment(userId, articleCommentId);
+        return result;
+    }
+    @GetMapping("/orLikedCom")
+    public Integer orLikedArticleComment(@RequestParam Integer userId,@RequestParam Integer articleCommentId ){
+        Integer integer = service.orLikedArticleComment(userId, articleCommentId);
+        return integer;
+    }
+
+
+
+
+
+
 
 
 }

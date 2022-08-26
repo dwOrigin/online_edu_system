@@ -123,8 +123,6 @@ private ArticleMapper articleMapper;
         }else {
             return Result.error();
         }
-
-
     }
 
     @Override
@@ -146,10 +144,6 @@ private ArticleMapper articleMapper;
 
             initArticles.get(i).setSort(sortScore);
         }
-
         return Result.success();
-
-
-
     }
 }
