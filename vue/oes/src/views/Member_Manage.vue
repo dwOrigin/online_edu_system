@@ -21,6 +21,9 @@
           <el-menu-item index="6" @click="gotoNotice">
             <span slot="title">通知管理</span>
           </el-menu-item>
+           <el-menu-item index="7" @click="gotoHome">
+            <span slot="title">退出</span>
+          </el-menu-item>
         </el-menu>
       </el-aside>
 
@@ -179,6 +182,9 @@ export default {
     },
     gotoNotice() {
       this.$router.push('/notice_manage')
+    },
+    gotoHome(){
+      this.$router.push('/home')
     },
     handleSizeChange(val) {
       this.pageSize=val;
