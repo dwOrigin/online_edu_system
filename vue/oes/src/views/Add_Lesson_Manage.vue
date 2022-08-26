@@ -90,6 +90,16 @@
                 @change="getVideo">
               </upload-video>
             </el-form-item> -->
+            <el-row>
+              <el-col span="10">
+                <el-form-item label="视频名称" prop="name">
+                  <el-input v-model="video.name"></el-input>
+                </el-form-item>
+                <el-form-item label="视频长度" prop="time">
+                  <el-input v-model="video.time"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
             <el-form-item label="上传视频">
               <div class="img__con">
                 <el-upload class="avatar-uploader" action="http://localhost:8081/file/upload"
@@ -141,6 +151,8 @@ export default {
         type: '',
       },
       video: {
+        name: '',
+        time: '',
         videoLink: '',
         courseId: '',
         courseRank: 1,
@@ -174,7 +186,7 @@ export default {
       this.request.post("/course/add", this.form)
         .then((res) => {
           if (res.code == '200') {
-            this.video.courseId=res.data;
+            this.video.courseId = res.data;
             this.request.post("/coursevideo/save", this.video);
             this.$message.success("上传成功");
             this.resetForm();
@@ -201,10 +213,10 @@ export default {
       })
       this.form.courseId = '';
       this.form.courseName = '';
-      this.form.title='';
-      this.form.logo='';
-      this.form.teacherId='';
-      this.form.type='';
+      this.form.title = '';
+      this.form.logo = '';
+      this.form.teacherId = '';
+      this.form.type = '';
     },
     getVideo(event) {
       this.videoInfo.allVideo = event

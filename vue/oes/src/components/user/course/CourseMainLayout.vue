@@ -65,7 +65,6 @@ export default {
       //     });
       // });
       promise.then((res)=>{
-        console.log(res.data);
         this.$bus.$emit('courseChanged', res.data);
       }).catch((err)=>{
           this.$message.error('你的网络迷路了, 课程加载失败!');

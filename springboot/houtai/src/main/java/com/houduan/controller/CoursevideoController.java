@@ -34,6 +34,7 @@ public class CoursevideoController {
 
     @GetMapping("/findbycourseid")
     public List<Coursevideo> findbycourseid(@RequestParam Integer courseId) {
+        System.out.println(courseId);
         return coursevideoService.findbycourseid(courseId);
     }
     @GetMapping("/getnum")

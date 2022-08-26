@@ -32,5 +32,9 @@ public class Coursevideo implements Serializable {
 
     private String videoLink;
 
+    private String name;
+
+    private String time;
+
 
 }

@@ -71,6 +71,7 @@ export default {
     exit(){
       window.localStorage.removeItem('user');
       this.$bus.$emit('AuthorizationChanged');
+      this.$router.push('/home/recommend');
     }
   },
   mounted() {
