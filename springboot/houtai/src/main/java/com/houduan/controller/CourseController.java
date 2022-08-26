@@ -77,5 +77,12 @@ public class CourseController {
     public Result addViewPoint(@RequestParam Integer id){
         return courseService.addViewPoint(id);
     }
+    @GetMapping("/sortCourses")
+    public Result sortCourses(){
+        return courseService.sortArticles();
+    }
+
+
+
 }
 

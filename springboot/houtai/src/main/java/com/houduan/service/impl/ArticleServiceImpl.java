@@ -122,4 +122,30 @@ private ArticleMapper articleMapper;
 
 
     }
+
+    @Override
+    public Result sortArticles() {
+        /*
+        * 文章的推荐规则是按照得分来进行
+        * 按照对应数值划分比例
+        * 得分越高，被推荐的程度是要越大的
+        * fullReturnList.add(articles.get(articles.size()-1-j));
+        *
+        * */
+        int sortScore=0;
+        List<Article> initArticles = articleMapper.selectList(null);
+        //按照点击量、点赞量、评论数量为5：3：2的比例去划分
+        for (int i=0;i<initArticles.size();i++){
+            sortScore=(int)(initArticles.get(i).getPraiseCount()*0.3+
+                    initArticles.get(i).getClickNum()*0.5+
+                    initArticles.get(i).getCommentNum()*0.2);
+
+            initArticles.get(i).setSort(sortScore);
+        }
+
+        return Result.success();
+
+
+
+    }
 }

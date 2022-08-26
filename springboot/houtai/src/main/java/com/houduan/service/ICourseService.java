@@ -32,5 +32,6 @@ public interface ICourseService extends IService<Course> {
     Result addViewPoint(Integer id);
 
     List<Course> getbyteacher(Integer teacherid);
-
+    //    对课程的推荐程度进行一个按比例排序
+    Result sortArticles();
 }
