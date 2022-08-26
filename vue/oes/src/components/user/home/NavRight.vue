@@ -74,7 +74,7 @@ export default {
     }
   },
   mounted() {
-    // this.refreshAuthorization();
+    this.refreshAuthorization();
     this.$bus.$on('AuthorizationChanged', ()=>{
       this.refreshAuthorization();
     });
