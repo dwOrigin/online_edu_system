@@ -36,7 +36,11 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      qContent: ''
+      qContent: '',
+      questions:{
+        cusId:'',
+
+      }
     };
   },
   methods: {
@@ -51,7 +55,7 @@ export default {
         let user = JSON.parse(window.localStorage.getItem('user'));
         提问
         let promise = this.$axios({
-            url: 'http://localhost:8081/questions',
+            url: '/questions',
             method: 'post',
             params:{
               qContent: this.qContent,

@@ -44,4 +44,7 @@ public interface IMsgreceiveService extends IService<Msgreceive> {
 * */
 Result autoAddMsgReceive(Msgreceive msgreceive);
 
+    List<Msgreceive> getbyid(Integer id);
+
+    Result haveread(Integer id);
 }

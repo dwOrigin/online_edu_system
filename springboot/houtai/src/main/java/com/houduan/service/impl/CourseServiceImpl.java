@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.houduan.common.Constants;
 import com.houduan.common.Result;
 import com.houduan.entity.Course;
+import com.houduan.entity.Teacher;
 import com.houduan.mapper.CourseMapper;
 import com.houduan.service.ICourseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -34,8 +35,8 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         course.setCommentNum(0);
         course.setPageViewcount(0);
         course.setPraiseCount(0);
-        save(course);
-        return Result.success("200", "提交成功");
+        int a=baseMapper.insert(course);
+        return Result.success("200", "提交成功",a);
     }
 
     @Override
@@ -79,6 +80,29 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         queryWrapper.eq("teacher_id",teacherid);
         return list(queryWrapper);
     }
+
+    @Override
+    public List<Course> getbyname(String name) {
+        List<Course> courses  = mapper.selectList(new QueryWrapper<Course>().like("course_name",name));
+        return courses;
+    }
+
+    @Override
+    public List<Course> getbyboth(String select, String key) {
+        QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
+        if(select==null&&key==null){
+            return null;
+        }else if(select!=null&&key==null){
+            queryWrapper.eq("type", select);
+        }else if(select==null&&key!=null){
+            queryWrapper.like("course_name",key);
+        }else{
+            queryWrapper.eq("type", select);
+            queryWrapper.like("course_name",key);
+        }
+        return mapper.selectList(queryWrapper);
+    }
+
     @Override
     public List<Course> recommendCourses() {
         List<Course> fullReturnList = new ArrayList<Course>();
@@ -90,22 +114,43 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         for (int i = 0; i < initCourse.size(); i++) {
             getTypeName.add(initCourse.get(i).getType());
         }
-        List typeList = new ArrayList(getTypeName);
-        QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
-        for (int i = 0; i < typeList.size(); i++) {
-            queryWrapper.eq("article_type", typeList.get(i));
+        List<String> typeList = new ArrayList(getTypeName);
+
+        System.out.println(typeList.size());
+        int i = 0;
+        for (; i < typeList.size(); i++) {
+//            注意此处的queryWrapper的声明位置，
+//            如果声明被放在了122行，就会导致出现
+//            eq的条件越来越多，也就是理论上的.eq().eq().eq()
+//            这种多重的筛选条件，因此就会出现只有第一个类别是可以出现结果
+//            但是后面的都没有办法出现结果的情况！！！
+            QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("type",typeList.get(i) );
             List<Course> courses = mapper.selectList(queryWrapper);
+            System.out.println("运行第"+i+"次");
+            System.out.println(courses);
             Collections.sort(courses);
-            for (int j = 0; j < 5; j++) {
-                fullReturnList.add(courses.get(courses.size() - 1 - j));
+//            当某个种类的课程大于5个时，进行如下操作
+//            如果该种类的课程小于5个的时候，就将该种类的课程全部加进去
+//            --------------------------------------------
+            if(courses.size()>5) {
+                for (int j = 0; j < 5; j++) {
+                    fullReturnList.add(courses.get(courses.size() - 1 - j));
+                }
+                for (int t = 0; t < 2; t++) {
+                    double number = 0 + Math.random() * (4 - 0 + 1);
+                    returnList.add(fullReturnList.get((int) (number)));
+                }
+            }else {
+                for (int j=0;j<courses.size();j++)
+                    returnList.add(courses.get(j));
             }
-            for (int t = 0; t < 2; t++) {
-                returnList.add(fullReturnList.get((int) (0 + Math.random() * (4 - 0 + 1))));
-            }
+//            --------------------------------------------
         }
         return returnList;
 
     }
+
 
     @Override
     public Result addViewPoint(Integer id) {

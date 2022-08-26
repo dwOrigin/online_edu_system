@@ -2,44 +2,31 @@
   <!--  <div style="width: 1100px; margin: 0 auto;">-->
   <div class="main">
     <div class="space-between">
-      <div><h5 style="color: #409EFF">搜索结果</h5></div>
+      <div>
+        <h5 style="color: #409EFF">搜索结果</h5>
+      </div>
       <div style="font-weight: lighter; color: #99a9bf; font-size: small">共找到
         <span style="font-weight: bold; color: teal">{{ coursesToDisplay.length }}</span>个课程
       </div>
     </div>
     <div>
-      <el-link :underline="false"
-               ref="default"
-               @click="setSortType('default')"
-               class="sort-tag" style="margin-left: 0">综合
+      <el-link :underline="false" ref="default" @click="setSortType('default')" class="sort-tag" style="margin-left: 0">
+        综合
       </el-link>
-      <el-link :underline="false"
-               ref="likeRate"
-               @click="setSortType('likeRate')"
-               class="sort-tag">好评率
+      <el-link :underline="false" ref="likeRate" @click="setSortType('likeRate')" class="sort-tag">点赞数
       </el-link>
-      <el-link :underline="false"
-               ref="studentNum"
-               @click="setSortType('studentNum')"
-               class="sort-tag">人气
+      <el-link :underline="false" ref="studentNum" @click="setSortType('studentNum')" class="sort-tag">人气
       </el-link>
     </div>
     <div class="result-table">
-      <course-card
-          :course="course"
-          v-for="course in
-          coursesToDisplay.slice((curPage-1)*pageSize, (curPage)*pageSize)">
+      <course-card :course="course" v-for="course in
+          coursesToDisplay.slice((curPage - 1) * pageSize, (curPage) * pageSize)">
       </course-card>
     </div>
     <div>
-      <el-pagination
-          background
-          :page-size.sync="pageSize"
-          :current-page.sync="curPage"
-          @current-change="handleCurrentChange"
-          class="page-controller"
-          layout="prev, pager, next"
-          :total="courseList.length">
+      <el-pagination background :page-size.sync="pageSize" :current-page.sync="curPage"
+        @current-change="handleCurrentChange" class="page-controller" layout="prev, pager, next"
+        :total="courseList.length">
       </el-pagination>
     </div>
 
@@ -71,11 +58,11 @@ export default {
   },
   methods: {
     //页码改变时调用
-    handleCurrentChange(v){
+    handleCurrentChange(v) {
       this.curPage = v;
     },
     //排序方式改变
-    setSortType(newV){
+    setSortType(newV) {
       this.sortList(newV);
       this.curPage = 1;
     },
@@ -85,11 +72,11 @@ export default {
       if (type === 'default') {
       } else if (type === 'likeRate') {
         this.coursesToDisplay.sort((a, b) => {
-          return b.likeRate - a.likeRate;
+          return b.praiseCount - a.praiseCount;
         });
       } else if (type === 'studentNum') {
         this.coursesToDisplay.sort((a, b) => {
-          return b.studentNum - a.studentNum;
+          return b.pageViewcount - a.pageViewcount;
         });
       }
     },
@@ -103,62 +90,52 @@ export default {
         //分类搜索
         key = null;
       }
-      // let promise = this.$axios({
-      //    url: '',
-      //    method: 'post',
-      //    data: {
-      //      select: select,
-      //      key: key
-      //    }
-      // });
-      let promise = new Promise((a) => {
-        a({
-          data: {
-            retList: [
-              {
-                id: 123,
-                imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
-                title: '[量子速学] 一秒钟一个单词 一小时考过四级! 你值得拥有',
-                teacher: 'bilbil大学',
-                chapterNum: 16,
-                studentNum: 156,
-                likeRate: 99
-              },
-              {
-                id: 234,
-                imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
-                title: '[量子速学] 一秒钟一个单词 一小时考过四级! 你值得拥有',
-                teacher: 'bilbil大学',
-                chapterNum: 16,
-                studentNum: 10086,
-                likeRate: 100
-              },
-              {
-                id: 345,
-                imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
-                title: '[量子速学] 一秒钟一个单词 一小时考过四级! 你值得拥有',
-                teacher: 'bilbil大学',
-                chapterNum: 16,
-                studentNum: 1000,
-                likeRate: 87
-              }
-            ]
+      if (select == null && key == null) {
+        let promise = null;
+      } else if (select == null && key != null) {
+        let promise = this.$axios({
+          url: '/course/getbyname',
+          method: 'get',
+          params: {
+            name: key
           }
         });
-      });
-      promise.then((res) => {
-        this.courseList = res.data.retList;
-        //测试用, 要删掉
-        this.courseList = [...this.courseList, ...this.courseList];
-        this.courseList = [...this.courseList, ...this.courseList];
-        this.courseList = [...this.courseList, ...this.courseList];
-        this.courseList = [...this.courseList, ...this.courseList];
-        this.courseList = [...this.courseList, ...this.courseList];
-        this.courseList = [...this.courseList, ...this.courseList];
-        this.sortList(this.sortType);
-      }).catch((err) => {
-        this.$message.error('你的网络迷路了');
-      });
+        promise.then((res) => {
+          this.courseList = res.data;
+          this.sortList(this.sortType);
+        }).catch((err) => {
+          this.$message.error('你的网络迷路了');
+        });
+      } else if (select != null && key == null) {
+        let promise = this.$axios({
+          url: '/course/getByType',
+          method: 'get',
+          params: {
+            type: select
+          }
+        });
+        promise.then((res) => {
+          this.courseList = res.data;
+          this.sortList(this.sortType);
+        }).catch((err) => {
+          this.$message.error('你的网络迷路了');
+        });
+      } else {
+        let promise = this.$axios({
+          url: '/course/gebyboth',
+          method: 'get',
+          params: {
+            select: select,
+            key: key,
+          }
+        });
+        promise.then((res) => {
+          this.courseList = res.data;
+          this.sortList(this.sortType);
+        }).catch((err) => {
+          this.$message.error('你的网络迷路了');
+        });
+      }
     }
   },
   mounted() {
@@ -191,11 +168,11 @@ export default {
   margin: 20px 20px;
 }
 
-.active-tag{
+.active-tag {
   border: 1px solid #409EFF;
 }
 
-.not-active-tag{
+.not-active-tag {
   border: none;
 }
 

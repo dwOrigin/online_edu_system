@@ -66,28 +66,43 @@ export default {
     },
     getMsgUnCheckCnt() {
       //获取用户未读消息数
-      // let promise = this.$axios({
-      //   url: '',
-      //   method: '',
-      //   data: {
-      //     userId: this.user.id
-      //   }
-      // });
-      let promise = new Promise((a) => {
-        a({
-          data: {
-            cnt: 10
-          }
-        });
+      let promise = this.$axios({
+        url: '/msgsystem/getbyid',
+        method: 'get',
+        params: {
+          id: this.user.userId
+        }
       });
+      // let promise = new Promise((a) => {
+      //   a({
+      //     data: {
+      //       cnt: 10
+      //     }
+      //   });
+      // });
       promise.then((res) => {
-        this.msgUnCheckCnt = res.data.cnt;
+        this.msgUnCheckCnt = res.data.length;
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
+      let promise1 = this.$axios({
+        url: '/msgreceive/getbyid',
+        method: 'get',
+        params: {
+          id: this.user.userId
+        }
+      });
+      promise1.then((res1) => {
+        this.msgUnCheckCnt =this.msgUnCheckCnt + res1.data.length;
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });
+      console.log(this.msgUnCheckCnt);
     }
   },
   mounted() {
+    let user = window.localStorage.getItem('user');
+    this.user = JSON.parse(user);
     this.$bus.$on('clearUnCheckedCnt', (data)=>{
       this.msgUnCheckCnt -= 1;
     });

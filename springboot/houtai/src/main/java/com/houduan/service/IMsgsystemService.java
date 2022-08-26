@@ -40,4 +40,7 @@ public interface IMsgsystemService extends IService<Msgsystem> {
      Result sendAllMsg(String message);
 
 
+    List<Msgsystem> getbyid(Integer id);
+
+     Result haveread(Integer id);
 }

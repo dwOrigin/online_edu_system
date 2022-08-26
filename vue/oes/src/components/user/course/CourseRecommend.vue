@@ -57,11 +57,11 @@ export default {
     refreshCourse() {
       //获取10门推荐课程
       // let promise = this.$axios({
-      //   url: 'http://localhost:8081/course',
-      //   method: 'post',
+      //   url: '/course/getrecommend',
+      //   method: 'get',
       // });
       let promise = new Promise((a)=>{
-        a({data:{courseList: [
+        a({data:[
               {
                 id: 9999,
                 imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
@@ -152,10 +152,10 @@ export default {
                 studentNum: 1086,
                 likeRate: 10
               },
-            ]}});
+            ]});
       });
       promise.then((res) => {
-        let cl = res.data.courseList;
+        let cl = res.data;
         this.hotCourseList = cl;
       }).catch((err) => {
         this.$message.error("你的网络迷路了");

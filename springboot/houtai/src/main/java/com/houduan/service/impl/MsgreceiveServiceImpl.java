@@ -93,4 +93,20 @@ private MsgreceiveMapper mapper;
         }
 
     }
+
+    @Override
+    public List<Msgreceive> getbyid(Integer id) {
+        QueryWrapper<Msgreceive>queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("receiving_cusid",id);
+        queryWrapper.eq("status",0);
+        return list(queryWrapper);
+    }
+
+    @Override
+    public Result haveread(Integer id) {
+         Msgreceive msgreceive=getById(id);
+         msgreceive.setStatus(1);
+         updateById(msgreceive);
+         return Result.success();
+    }
 }

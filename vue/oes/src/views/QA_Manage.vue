@@ -176,7 +176,7 @@ export default{
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$axios.get('http://localhost:8081/questions/delete',{
+          this.$axios.get('/questions/delete',{
             params: {
               id: row.id
             }
@@ -223,7 +223,7 @@ export default{
         return row.type === value;
       },
        fetchData(){
-        this.$axios.get('http://localhost:8081/questions').then(
+        this.$axios.get('/questions').then(
           response=>{
             this.tableData=response.data;
             this.totalCount=response.data.length;

@@ -182,7 +182,7 @@ export default{
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-              this.$axios.get('http://localhost:8081/article/delete',{
+              this.$axios.get('/article/delete',{
                 params: {
                   articleId: row.articleId
                 }
@@ -218,7 +218,7 @@ export default{
         this.$router.push('/add_article_manage')
       },
        fetchData(){
-        this.$axios.get('http://localhost:8081/article/findAll').then(
+        this.$axios.get('/article/findAll').then(
           response=>{
             this.tableData=response.data;
             this.totalCount=response.data.length;
