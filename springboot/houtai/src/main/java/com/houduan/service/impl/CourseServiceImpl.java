@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.houduan.common.Constants;
 import com.houduan.common.Result;
 import com.houduan.entity.Course;
+import com.houduan.entity.Teacher;
 import com.houduan.mapper.CourseMapper;
 import com.houduan.service.ICourseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -79,6 +80,29 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         queryWrapper.eq("teacher_id",teacherid);
         return list(queryWrapper);
     }
+
+    @Override
+    public List<Course> getbyname(String name) {
+        List<Course> courses  = mapper.selectList(new QueryWrapper<Course>().like("course_name",name));
+        return courses;
+    }
+
+    @Override
+    public List<Course> getbyboth(String select, String key) {
+        QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
+        if(select==null&&key==null){
+            return null;
+        }else if(select!=null&&key==null){
+            queryWrapper.eq("type", select);
+        }else if(select==null&&key!=null){
+            queryWrapper.like("course_name",key);
+        }else{
+            queryWrapper.eq("type", select);
+            queryWrapper.like("course_name",key);
+        }
+        return mapper.selectList(queryWrapper);
+    }
+
     @Override
     public List<Course> recommendCourses() {
         List<Course> fullReturnList = new ArrayList<Course>();
@@ -93,7 +117,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         List typeList = new ArrayList(getTypeName);
         QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
         for (int i = 0; i < typeList.size(); i++) {
-            queryWrapper.eq("article_type", typeList.get(i));
+            queryWrapper.eq("type", typeList.get(i));
             List<Course> courses = mapper.selectList(queryWrapper);
             Collections.sort(courses);
             for (int j = 0; j < 5; j++) {
