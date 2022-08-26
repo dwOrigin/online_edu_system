@@ -3,15 +3,25 @@
       style="overflow: hidden; margin-bottom: -50px">
     <div class="passage-page">
       <div class="title">{{ passage.title }}</div>
-      <div class="time"> {{ passage.time }} 修改</div>
+      <div class="time"> {{ passage.createTime }} 修改</div>
       <div class="content">
-        {{ passage.content }}
+        {{ passage.summary }}
+        <!-- 等下想怎么展示md文件 -->
+         <!-- <mavon-editor
+            class="md"
+            :value="htmlContent" 
+            :subfield="prop.subfield" 
+            :defaultOpen="prop.defaultOpen"
+            :toolbarsFlag="prop.toolbarsFlag"
+            :editable="prop.editable"
+            :scrollStyle="prop.scrollStyle"
+          /> -->
       </div>
       <div class="footer">
         <div>
           <el-button
-              @click="handleClick('like')"
-              type="primary" plain>{{ likeBtnContent }}({{ passage.like }})
+              @click="handleClick()"
+              type="primary" plain>{{ likeBtnContent }}({{ passage.praiseCount }})
           </el-button>
         </div>
         <div>
@@ -25,7 +35,7 @@
         <div style="margin-top: 10px">
           <answer
               typeM="PassageComment"
-              v-for="obj in passage.comments.slice(0, length)" :obj="obj"></answer>
+              v-for="obj in answers" :obj="obj"></answer>
         </div>
       </div>
     </div>
@@ -64,124 +74,151 @@
 
 <script>
 import Answer from "@/components/user/qap/Answer";
-
 export default {
   name: "PassagePage",
   components: {
-    Answer
+    Answer,
+    // mavonEditor
   },
   data() {
     return {
-      number: 10,
+      // number: 10,
       passage: {
-        comments: []
+        // comments: []
       },
+      answers:[],
       likeBtnContent: '点赞',
       CommentDialogVisible: false,
       cc: '',
-      length: 5,
+      isPraise:'',
+      htmlContent:'',
+      // length: 5,
     };
   },
+  // computed: {
+  // // 解析器配置
+  //   prop () {
+  //     let data = {
+  //       subfield: false,// 单双栏模式
+  //       defaultOpen: 'preview',//edit： 默认展示编辑区域 ， preview： 默认展示预览区域 
+  //       editable: false,    // 是否允许编辑
+  //       toolbarsFlag: false,
+  //       scrollStyle: true
+  //     }
+  //     return data
+  //   }
+  // },
   methods: {
-    loadPassage() {
-      let id = this.$route.query.pId;
-      //获取文章详细信息
-      // let promise = this.$axios({
-      //     url: '',
-      //     method: '',
-      //     data:{
-      //       pId: id
-      //     }
-      // });
-      let promise = new Promise((a) => {
-        a({
-          data: {
-            passage: {
-              pId: 8889,
-              title: '文章标题',
-              time: '2022/12/26',
-              like: 1888,
-              content: '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容这是' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容',
-              comments: [
-                {
-                  cId: 10086,//评论id
-                  commenterName: '评论者名字',
-                  commenterAvatarUrl: 'https://pic4.zhimg.com/v2-d41c2ceaed8f51999522f903672a521f_xs.jpg?source=1940ef5c',
-                  content: '这是评论内容',
-                  time: '2022/8/71',
-                  like: 998
-                }
-              ]
-            }
-          }
-        });
+    // getInfo(){
+    //    this.htmlContent=data
+    // },
+     refreshComment(qId) {
+      // 获取问题答案
+      let promise = this.$axios({
+        url: 'http://localhost:8081/comment/showA',
+        method: 'get',
+        params: {
+          articleId: qId
+        }
       });
       promise.then((res) => {
-        //@test
-        let c = res.data.passage.comments;
-        c = [...c, ...c];
-        c = [...c, ...c];
-        c = [...c, ...c];
-        c = [...c, ...c];
-        c = [...c, ...c];
-        res.data.passage.comments = c;
-        this.passage = res.data.passage;
+        this.answers = res.data;
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
     },
-    handleClick(btnName) {
+    loadPassage() {
+      let id = this.$route.query.pId;
+      //获取文章详细信息
+      let promise = this.$axios({
+          url: 'http://localhost:8081/article/getbyid',
+          method: 'get',
+          params:{
+            id: id
+          }
+      });
+      promise.then((res) => {
+        this.passage = res.data;
+        let usr = window.localStorage.getItem('user');
+      if (usr === null) {
+        this.$bus.$emit('OpenLoginDialog');
+      } else {
+        usr = JSON.parse(usr);
+        let promise = this.$axios({
+          url: 'http://localhost:8081/records/orLikedArt',
+          method: 'get',
+          params:{
+            articleId: id,
+            userId:usr.userId
+          }
+      });
+       promise.then((res) => {
+        this.isPraise = res.data;
+        console.log('这是getpraise'+res.data);
+        if(this.isPraise=='1'){
+          this.likeBtnContent = '已喜欢';
+        }
+        else if(this.isPraise=='2'){
+          this.likeBtnContent='喜欢'
+        }
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });
+      }
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });
+    },
+    handleClick() {
       let usr = window.localStorage.getItem('user');
       if (usr === null) {
         this.$bus.$emit('OpenLoginDialog');
         return;
       }
-      if (btnName === 'like') {
+       usr = JSON.parse(usr);
+       let promise = this.$axios({
+          url: 'http://localhost:8081/records/orLikedArt',
+          method: 'get',
+          params:{
+            articleId: this.passage.articleId,
+            userId:usr.userId
+          }
+      });
+       promise.then((res) => {
+        this.isPraise = res.data;
+        if (this.isPraise == '2') {
         //点赞文章
-        // let promise = this.$axios({
-        //   url: '',
-        //   method: '',
-        //   data: {
-        //     pId: this.passage.pId,
-        //     uId: JSON.parse(usr).id
-        //   }
-        // });
-        let promise = new Promise((a) => {
-          a({
-            data: {
-              result: false
-            }
-          });
+        let promise = this.$axios({
+          url: 'http://localhost:8081/records/addRecordArt',
+          method: 'get',
+          params: {
+            commentId: this.passage.articleId,
+            userId: usr.userId
+          }
         });
         promise.then((res) => {
-          if (res.data.result) {
-            this.passage.like++;
-            this.likeBtnContent = '已点赞';
-          } else {
-            this.$message.error('请勿重复点赞');
-          }
+            this.passage.praiseCount++;
+            this.likeBtnContent = '已喜欢';
         }).catch((err) => {
           this.$message.error('你的网络迷路了');
         });
-      } else if (btnName === 'comment') {
-        this.CommentDialogVisible = true;
-      }
+      } else if (this.isPraise == '1') {
+         let promise = this.$axios({
+            url: 'http://localhost:8081/records/reduceRecordArt',
+            method: 'get',
+            params: {
+                  userId: usr.userId,
+                  commentId: this.passage.articleId,
+            }
+          });
+          promise.then((res) => {
+            this.passage.praiseCount--;
+            this.likeBtnContent = '喜欢';
+          }).catch((err) => {
+            this.$message.error('你的网络迷路了');
+          });
+          }     
+       });
     },
     handleClickFooter(btnName) {
       if (btnName === 'cancel') {
@@ -227,13 +264,9 @@ export default {
   },
   mounted() {
     this.loadPassage();
-    this.$bus.$on('scrollToBottom', (data) => {
-      this.length += 2;
-    });
+    this.refreshComment(this.$route.query.pId);
+    // this.getInfo();
   },
-  beforeDestroy() {
-    this.$bus.$off('scrollToBottom');
-  }
 }
 </script>
 

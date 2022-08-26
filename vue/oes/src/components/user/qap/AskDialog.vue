@@ -53,7 +53,7 @@ export default {
           return;
         }
         let user = JSON.parse(window.localStorage.getItem('user'));
-        提问
+        // 提问
         let promise = this.$axios({
             url: '/questions',
             method: 'post',
