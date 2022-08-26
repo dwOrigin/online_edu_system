@@ -94,8 +94,9 @@ private ArticleMapper articleMapper;
             getTypeName.add(initArticles.get(i).getArticleType());
         }
         List typeList = new ArrayList(getTypeName);
-        QueryWrapper<Article> queryWrapper = new QueryWrapper<>();
+
         for (int i=0;i<typeList.size();i++){
+            QueryWrapper<Article> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("article_type",typeList.get(i));
             List<Article> articles = articleMapper.selectList(queryWrapper);
             Collections.sort(articles);
