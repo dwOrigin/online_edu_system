@@ -80,7 +80,8 @@ public Page<Comment> findPage(@RequestParam Integer pageNum,
     return result;
 }
 @GetMapping("/cancelPrise")
-    public Result deletePraise(@RequestParam Comment comment){
+    public Result deletePraise(Integer commentId){
+    Comment comment = commentService.getById(commentId);
     Result result = commentService.cancelPraise(comment);
     return result;
 }
