@@ -68,6 +68,12 @@ export default {
       mediumReview: 0,
       curPage: 1,
       pageSize: 10,
+      comment: {
+        userId: '',
+        totalId: '',
+        content: '',
+        praiseCount: '',
+      },
     }
   },
   watch: {
@@ -111,27 +117,28 @@ export default {
     },
     //提交评论
     commitComment() {
-      if (this.user.id === undefined) {
+      if (this.user.userId === undefined) {
         this.$bus.$emit('OpenLoginDialog');
       } else {
         //提交评论信息
-        // let promise = this.$axios({
-        //   url: '',
-        //   method: '',
-        //   data: {
-        //     userId: this.user.id,
-        //     courseId: this.course.courseId,
-        //     comment: this.userComment,
-        //     rate: this.commentRate
-        //   }
-        // });
-        let promise = new Promise((a) => {
-          a({
-            data: { result: false }
-          });
+        this.comment.userId=this.user.userId;
+        this.comment.totalId=this.course.courseId;
+        this.comment.content=this.userComment;
+        this.comment.praiseCount=this.commentRate;
+        let promise = this.$axios({
+          url: '/comment/sendCourse',
+          method: 'get',
+          params: {
+            comment:this.comment
+          }
         });
+        // let promise = new Promise((a) => {
+        //   a({
+        //     data: { result: false }
+        //   });
+        // });
         promise.then((res) => {
-          if (res.data.result) {
+          if (res.data == '200') {
             this.$message.success('评论成功');
             this.userComment = '';
             this.updateComments();
