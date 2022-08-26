@@ -5,6 +5,7 @@ import com.houduan.common.Result;
 import com.houduan.entity.Article;
 import com.houduan.entity.Course;
 import com.houduan.entity.User;
+import io.swagger.models.auth.In;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
@@ -56,38 +57,48 @@ public Page<Comment> findPage(@RequestParam Integer pageNum,
         return commentService.page(new Page<>(pageNum, pageSize));
         }*/
 @GetMapping("/sendArticle")
-    public Result sendComArt(@RequestParam User user, @RequestParam Comment comment, @RequestParam Article article){
+    public Result sendComArt(Integer userId, Integer commentId, Integer articleId){
+
+    User user = commentService.getUserById(userId);
+    Comment comment = commentService.getById(commentId);
+    Article article = commentService.getArticleById(articleId);
     Result result = commentService.sendComment(user, comment, article);
     return result;
 }
 @GetMapping("/sendCourse")
-    public Result sendComCou(@RequestParam User user, @RequestParam Comment comment, @RequestParam Course course){
+    public Result sendComCou(Integer userId, Integer commentId, Integer courseId){
+    User user = commentService.getUserById(userId);
+    Comment comment = commentService.getById(commentId);
+    Course course = commentService.getCourseById(courseId);
     Result result = commentService.sendComment(user, comment, course);
     return result;
 }
-@PostMapping("/praise")
-    public Result praise(@RequestBody Comment comment){
+@GetMapping("/praise")
+    public Result praise(Integer id){
+    Comment comment = commentService.getById(id);
     Result result = commentService.addPraise(comment);
     return result;
 }
-@PostMapping("/cancelPrise")
+@GetMapping("/cancelPrise")
     public Result deletePraise(@RequestParam Comment comment){
     Result result = commentService.cancelPraise(comment);
     return result;
 }
-@PostMapping("/showA")
-    public List<Comment>showCommentArticle(@RequestBody Article article){
+@GetMapping("/showA")
+    public List<Comment>showCommentArticle(Integer articleId){
+    Article article = commentService.getArticleById(articleId);
     List<Comment> comments = commentService.showInitComment(article);
     return comments;
 }
-@PostMapping("/showC")
-public  List<Comment>showCommentCourse(@RequestBody Course course){
+@GetMapping("/showC")
+public  List<Comment>showCommentCourse(Integer courseId){
+    Course course = commentService.getCourseById(courseId);
     List<Comment> comments = commentService.showInitComment(course);
     return comments;
 }
 
-@DeleteMapping("/delete")
-    public Result deleteComment(@PathVariable Integer integer){
+@GetMapping("/delete")
+    public Result deleteComment( Integer integer){
     Result result = commentService.deleteComment(integer);
     return result;
 }

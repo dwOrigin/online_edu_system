@@ -56,4 +56,11 @@ public interface ICommentService extends IService<Comment> {
 //    删除评论，如果删除某条评论后
 Result deleteComment(Integer integer);
 
+//根据id查找文章
+    Article getArticleById(Integer id);
+//    根据id查找课程
+    Course getCourseById(Integer id);
+    User getUserById(Integer id);
+
+
 }

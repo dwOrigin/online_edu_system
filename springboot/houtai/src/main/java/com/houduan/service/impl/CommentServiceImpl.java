@@ -6,12 +6,16 @@ import com.houduan.entity.Article;
 import com.houduan.entity.Comment;
 import com.houduan.entity.Course;
 import com.houduan.entity.User;
+import com.houduan.mapper.ArticleMapper;
 import com.houduan.mapper.CommentMapper;
+import com.houduan.mapper.CourseMapper;
+import com.houduan.mapper.UserMapper;
 import com.houduan.service.ICommentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -27,6 +31,12 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
     @Autowired
     private  CommentMapper mapper;
+    @Resource
+    private CourseMapper courseMapper;
+    @Resource
+    private ArticleMapper articleMapper;
+    @Resource
+    private UserMapper userMapper;
     @Override
     public Result sendComment(User user, Comment comment, Article article) {
 //        设置文章评论的一些基本属性值
@@ -122,17 +132,19 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
     @Override
     public List<Comment> showInitComment(Article article) {
+        System.out.println(article);
         QueryWrapper<Comment> wrapper = new QueryWrapper<>();
-        wrapper.eq("pCommentId",-1)
-                .eq("totalId",article.getArticleId());
+        wrapper.eq("type",1)//1是文章
+                .eq("total_id",article.getArticleId());
         List<Comment> list = mapper.selectList(wrapper);
+        System.out.println(list);
         return list;
     }
 
     @Override
     public List<Comment> showInitComment(Course course) {
         QueryWrapper<Comment> wrapper = new QueryWrapper<>();
-        wrapper.eq("pCommentId",-1)
+        wrapper.eq("type",2)//2是课程
                 .eq("totalId",course.getCourseId());
         List<Comment> list = mapper.selectList(wrapper);
         return list;
@@ -151,6 +163,24 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
     }
 
+    @Override
+    public Article getArticleById(Integer id) {
+
+        Article article = articleMapper.selectById(id);
+        return article;
+    }
+
+    @Override
+    public Course getCourseById(Integer id) {
+        Course course = courseMapper.selectById(id);
+        return course;
+    }
+
+    @Override
+    public User getUserById(Integer id) {
+        User user = userMapper.selectById(id);
+        return user;
+    }
 
 
 }
