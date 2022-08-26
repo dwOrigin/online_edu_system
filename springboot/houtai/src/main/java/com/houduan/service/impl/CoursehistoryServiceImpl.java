@@ -121,11 +121,16 @@ public List<String> getbyuseridTime(Integer userid) {
         param=List.size();
     }
     for (int i=0;i<param;i++){
+        String remem="";
         Duration duration= Duration.between(List.get(number-i).getTime(),LocalDateTime.now());
         long days = duration.toDays(); //相差的天数
-        long hours = duration.toHours()%24;//相差的小时数
-        long minutes = duration.toMinutes()%60;//相差的分钟数
-        String remem=days+"天"+hours+"小时"+minutes+"分钟前看过";
+        if(days>0){
+            remem=days+"天前";
+        }else{
+            long hours = duration.toHours()%24;//相差的小时数
+            long minutes = duration.toMinutes()%60;//相差的分钟数
+            remem=hours+"小时"+minutes+"分钟前";
+        }
         timeList.add(remem);
     }
     return timeList;

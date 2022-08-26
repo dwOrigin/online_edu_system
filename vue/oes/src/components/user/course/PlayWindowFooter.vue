@@ -23,7 +23,7 @@
         <el-tab-pane name="intro">
           <div slot="label" class="title-tag">课程介绍</div>
           <div style="margin: 20px; font-weight: lighter; font-size: small; line-height: 33px;">
-            {{course.intro}}
+            {{course.title}}
           </div>
         </el-tab-pane>
         <el-tab-pane name="comment">
@@ -126,6 +126,7 @@ export default {
   mounted() {
     this.$bus.$on('courseChanged', (data) => {
       this.course = data;
+      
     });
   },
   beforeDestroy() {
