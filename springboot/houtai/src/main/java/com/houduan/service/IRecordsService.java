@@ -61,4 +61,8 @@ Integer orLikedCourse(Integer userId,Integer articleId);
 * */
 Integer orCollectedCourse(Integer userId,Integer articleId);
 
+/*-----------------------------------------------*/
+   Result addRecordArticleComment(Integer userId,Integer articleCommentId);
+   Result reduceRecordArticleComment(Integer userId,Integer articleCommentId);
+   Integer orLikedArticleComment(Integer userId,Integer articleCommentId);
 }

@@ -1,4 +1,5 @@
 package com.houduan.service.impl;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.houduan.common.Result;
 import com.houduan.entity.Article;
@@ -13,6 +14,7 @@ import com.houduan.service.ICommentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -90,7 +92,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     }
     @Override
     public Result addPraise(Comment comment) {
-        comment.setPraiseCount(comment.getPraiseCount()+1);
+      comment.setPraiseCount(comment.getPraiseCount()+1);
         int i = mapper.updateById(comment);
         if (i>=1)
         {

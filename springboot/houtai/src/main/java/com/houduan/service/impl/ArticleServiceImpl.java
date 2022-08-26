@@ -76,14 +76,17 @@ private ArticleMapper articleMapper;
 
     @Override
     public List<Article> recommendArticles() {
-/*
-* 采用随机数的方式，每次调用出每个类别里面排名前几的课程，将其加入到数组中，
-* 然后将该部分的内容返回到前台，
-* 此时可能会出现有些课程被重复推荐了两次或者是多次
-* 或许去加入一个全局的变量，让每次推荐过的课程，不会再被推荐了
-* 当重新登录的时候就重新计数
-*
-* */
+
+
+
+/**
+ *
+ *采用随机数的方式，每次调用出每个类别里面排名前几的课程，将其加入到数组中，
+ * 然后将该部分的内容返回到前台，
+ * 此时可能会出现有些课程被重复推荐了两次或者是多次
+ * 或许去加入一个全局的变量，让每次推荐过的课程，不会再被推荐了
+ * 当重新登录的时候就重新计数
+ * */
         List<Article>fullReturnList=new ArrayList<Article>();
         List<Article>returnList=new ArrayList<Article>();
 
@@ -94,8 +97,9 @@ private ArticleMapper articleMapper;
             getTypeName.add(initArticles.get(i).getArticleType());
         }
         List typeList = new ArrayList(getTypeName);
-        QueryWrapper<Article> queryWrapper = new QueryWrapper<>();
+
         for (int i=0;i<typeList.size();i++){
+            QueryWrapper<Article> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("article_type",typeList.get(i));
             List<Article> articles = articleMapper.selectList(queryWrapper);
             Collections.sort(articles);
@@ -119,7 +123,27 @@ private ArticleMapper articleMapper;
         }else {
             return Result.error();
         }
+    }
 
+    @Override
+    public Result sortArticles() {
+        /*
+        * 文章的推荐规则是按照得分来进行
+        * 按照对应数值划分比例
+        * 得分越高，被推荐的程度是要越大的
+        * fullReturnList.add(articles.get(articles.size()-1-j));
+        *
+        * */
+        int sortScore=0;
+        List<Article> initArticles = articleMapper.selectList(null);
+        //按照点击量、点赞量、评论数量为5：3：2的比例去划分
+        for (int i=0;i<initArticles.size();i++){
+            sortScore=(int)(initArticles.get(i).getPraiseCount()*0.3+
+                    initArticles.get(i).getClickNum()*0.5+
+                    initArticles.get(i).getCommentNum()*0.2);
 
+            initArticles.get(i).setSort(sortScore);
+        }
+        return Result.success();
     }
 }

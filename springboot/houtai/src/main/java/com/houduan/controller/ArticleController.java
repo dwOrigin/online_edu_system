@@ -74,5 +74,10 @@ public List<Article> getrecommend(){
                 return articleService.recommendArticles();
         }
 
-        }
+
+@GetMapping("/sortArticles")
+public Result sortArticles(){
+        return articleService.sortArticles();
+}
+}
 

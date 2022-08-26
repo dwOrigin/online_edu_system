@@ -31,4 +31,7 @@ public interface IArticleService extends IService<Article> {
 //增加文章的浏览量
     Result addViewPoint(Integer id);
 
+//    对文章的推荐程度进行一个按比例排序
+    Result sortArticles();
+
 }

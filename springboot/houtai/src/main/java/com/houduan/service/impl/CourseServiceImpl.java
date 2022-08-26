@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.houduan.common.Constants;
 import com.houduan.common.Result;
+import com.houduan.entity.Article;
 import com.houduan.entity.Course;
-import com.houduan.entity.Teacher;
 import com.houduan.mapper.CourseMapper;
 import com.houduan.service.ICourseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -35,8 +35,8 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         course.setCommentNum(0);
         course.setPageViewcount(0);
         course.setPraiseCount(0);
-        int a=baseMapper.insert(course);
-        return Result.success("200", "提交成功",a);
+        save(course);
+        return Result.success("200", "提交成功");
     }
 
     @Override
@@ -82,25 +82,53 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     }
 
     @Override
-    public List<Course> getbyname(String name) {
-        List<Course> courses  = mapper.selectList(new QueryWrapper<Course>().like("course_name",name));
-        return courses;
-    }
+    public Result sortArticles() {
+        /*
+         * 文章的推荐规则是按照得分来进行
+         * 按照对应数值划分比例
+         * 得分越高，被推荐的程度是要越大的
+         * fullReturnList.add(articles.get(articles.size()-1-j));
+         *
+         * */
+        int sortScore=0;
+        List<Course> initCourses = mapper.selectList(null);
+        //按照点击量、点赞量、评论数量为5：3：2的比例去划分
+        for (int i=0;i<initCourses.size();i++){
+            sortScore=(int)(initCourses.get(i).getPraiseCount()*0.3+
+                    initCourses.get(i).getPageViewcount()*0.5+
+                    initCourses.get(i).getCommentNum()*0.2);
 
-    @Override
-    public List<Course> getbyboth(String select, String key) {
-        QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
-        if(select==null&&key==null){
-            return null;
-        }else if(select!=null&&key==null){
-            queryWrapper.eq("type", select);
-        }else if(select==null&&key!=null){
-            queryWrapper.like("course_name",key);
-        }else{
-            queryWrapper.eq("type", select);
-            queryWrapper.like("course_name",key);
+            initCourses.get(i).setSort(sortScore);
+            mapper.updateById(initCourses.get(i));
+            System.out.println(initCourses.get(i).getSort());
         }
-        return mapper.selectList(queryWrapper);
+
+        return Result.success();
+
+    }
+/*
+* 推荐课程的操作
+*如果是同一个类别的
+* 小于三门就全部推荐
+* 大于三门的就只会随机推荐三门
+*
+* */
+    @Override
+    public List<Course> recommendCoursesType(Integer id) {
+        QueryWrapper<Course> Wrapper = new QueryWrapper<>();
+        Wrapper.eq("course_id",id);
+        Course course = mapper.selectOne(Wrapper);
+        QueryWrapper<Course> Wrapper2 = new QueryWrapper<>();
+        Wrapper2.eq("type",course.getType());
+        List<Course> initList = mapper.selectList(Wrapper2);
+        if (initList.size()>3){
+            List<Course> courses = new ArrayList<>();
+            for (int i=0;i<3;i++){
+                courses.add(initList.get((int)Math.random()*(initList.size()-1)));
+            }
+            return courses;
+        }
+        else return initList;
     }
 
     @Override
@@ -110,7 +138,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
 
         List<Course> initCourse = mapper.selectList(null);
         Set<String> getTypeName = new HashSet<String>();
-//        文章的种类是固定的几个内容，然后先就随便设置一下吧
+//        种类是固定的几个内容，然后先就随便设置一下吧
         for (int i = 0; i < initCourse.size(); i++) {
             getTypeName.add(initCourse.get(i).getType());
         }
@@ -140,17 +168,16 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
                 for (int t = 0; t < 2; t++) {
                     double number = 0 + Math.random() * (4 - 0 + 1);
                     returnList.add(fullReturnList.get((int) (number)));
-                }
+               }
             }else {
                 for (int j=0;j<courses.size();j++)
-                    returnList.add(courses.get(j));
+                returnList.add(courses.get(j));
             }
 //            --------------------------------------------
         }
         return returnList;
 
     }
-
 
     @Override
     public Result addViewPoint(Integer id) {

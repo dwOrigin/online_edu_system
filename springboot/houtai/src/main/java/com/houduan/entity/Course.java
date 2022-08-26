@@ -7,6 +7,7 @@ import java.sql.Time;
 import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
@@ -21,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
  */
 @Getter
 @Setter
+@Data
 @ApiModel(value = "Course对象", description = "")
 public class Course implements Serializable,Comparable<Course> {
 
