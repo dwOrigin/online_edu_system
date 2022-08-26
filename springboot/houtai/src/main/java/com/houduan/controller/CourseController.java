@@ -81,7 +81,10 @@ public class CourseController {
     public Result sortCourses(){
         return courseService.sortArticles();
     }
-
+@GetMapping("/typeRecommend")
+    public List<Course> typeRecommend(Integer courseId){
+        return courseService.recommendCoursesType(courseId);
+}
 
 
 }

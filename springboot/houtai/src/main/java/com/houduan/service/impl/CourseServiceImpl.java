@@ -106,6 +106,30 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         return Result.success();
 
     }
+/*
+* 推荐课程的操作
+*如果是同一个类别的
+* 小于三门就全部推荐
+* 大于三门的就只会随机推荐三门
+*
+* */
+    @Override
+    public List<Course> recommendCoursesType(Integer id) {
+        QueryWrapper<Course> Wrapper = new QueryWrapper<>();
+        Wrapper.eq("course_id",id);
+        Course course = mapper.selectOne(Wrapper);
+        QueryWrapper<Course> Wrapper2 = new QueryWrapper<>();
+        Wrapper2.eq("type",course.getType());
+        List<Course> initList = mapper.selectList(Wrapper2);
+        if (initList.size()>3){
+            List<Course> courses = new ArrayList<>();
+            for (int i=0;i<3;i++){
+                courses.add(initList.get((int)Math.random()*(initList.size()-1)));
+            }
+            return courses;
+        }
+        else return initList;
+    }
 
     @Override
     public List<Course> recommendCourses() {

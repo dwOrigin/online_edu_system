@@ -76,14 +76,17 @@ private ArticleMapper articleMapper;
 
     @Override
     public List<Article> recommendArticles() {
-/*
-* 采用随机数的方式，每次调用出每个类别里面排名前几的课程，将其加入到数组中，
-* 然后将该部分的内容返回到前台，
-* 此时可能会出现有些课程被重复推荐了两次或者是多次
-* 或许去加入一个全局的变量，让每次推荐过的课程，不会再被推荐了
-* 当重新登录的时候就重新计数
-*
-* */
+
+
+
+/**
+ *
+ *采用随机数的方式，每次调用出每个类别里面排名前几的课程，将其加入到数组中，
+ * 然后将该部分的内容返回到前台，
+ * 此时可能会出现有些课程被重复推荐了两次或者是多次
+ * 或许去加入一个全局的变量，让每次推荐过的课程，不会再被推荐了
+ * 当重新登录的时候就重新计数
+ * */
         List<Article>fullReturnList=new ArrayList<Article>();
         List<Article>returnList=new ArrayList<Article>();
 
