@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author dw
@@ -35,7 +34,6 @@ private RecordsMapper recordsMapper;
                 .eq("xx_id",commentId)
                 .eq("type",1);//1是文章
         Records records = recordsMapper.selectOne(recordsQueryWrapper);
-        System.out.println(records);
         if (records!=null) {
             return 1;
         }else {
@@ -55,9 +53,7 @@ private RecordsMapper recordsMapper;
         Wrapper.eq("user_id",userId)
                 .eq("xx_id",commentId)
                 .eq("type",2);//2是评论
-
-        Records records = recordsMapper.selectOne(Wrapper);
-        System.out.println(records);
+        Object records = recordsMapper.selectObjs(Wrapper);
         if (records!=null) {
             return 1;
         }else {
@@ -123,7 +119,7 @@ private RecordsMapper recordsMapper;
             return Result.error();
         }
     }
-/*--------------------------课程--------------------------*/
+    /*--------------------------课程--------------------------*/
     @Override
     public Result addRecordCourseLike(Integer userId, Integer courseLikeId) {
         Records records = new Records();
@@ -188,19 +184,16 @@ private RecordsMapper recordsMapper;
     @Override
     public Integer orLikedCourse(Integer userId, Integer courseId) {
         QueryWrapper<Records> recordsQueryWrapper = new QueryWrapper<>();
-        recordsQueryWrapper.eq("user_id",userId)
-                .eq("xx_id",courseId)
-                .eq("collect_or_like",2)//2是点赞
-                .eq("type",3);//3是课程
+        recordsQueryWrapper.eq("user_id", userId)
+                .eq("xx_id", courseId)
+                .eq("collect_or_like", 2)//2是点赞
+                .eq("type", 3);//3是课程
         Records records = recordsMapper.selectOne(recordsQueryWrapper);
-        if (records!=null) {
+        if (records != null) {
             return 1;
-        }else {
+        } else {
             return 2;
         }
-
-
-
     }
 
     @Override
@@ -217,4 +210,6 @@ private RecordsMapper recordsMapper;
             return 2;
         }
     }
+
+
 }
