@@ -23,10 +23,10 @@ export default {
   },
   mounted() {
     this.$bus.$on('courseChanged', (course) => {
-      this.course=course;
+       this.course=course;
         //通过课程id 获取<10门推荐课程
         let promise = this.$axios({
-            url: '/courses/',
+            url: '/course/typeRecommend',
             method: 'get',
             params: {courseId: course.courseId}
         });
@@ -48,6 +48,7 @@ export default {
         //     });
         // });
         promise.then((res)=>{
+          console.log(res.data);
           //测试用, 要删
           this.courses = res.data;
         }).catch((err)=>{

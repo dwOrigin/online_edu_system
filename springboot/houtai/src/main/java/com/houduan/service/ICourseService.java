@@ -37,4 +37,8 @@ public interface ICourseService extends IService<Course> {
 
     List<Course> recommendCoursesType(Integer id);
 
+    List<Course> getbyname(String name);
+
+    List<Course> getbyboth(String select, String key);
+
 }
