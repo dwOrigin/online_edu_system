@@ -2,7 +2,7 @@ package com.houduan.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.houduan.entity.Records;
-import org.mapstruct.Mapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author dw
