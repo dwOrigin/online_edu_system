@@ -43,7 +43,11 @@ export default {
           teacherId: id
         }
       });
-    }
+    },
+    load(){
+    // this.reload()
+    this.$forceUpdate()
+  },
   }
 }
 </script>

@@ -15,11 +15,11 @@
       </div>
     </div>
     <div class="search-result">
-      <teacher-card :teacher="t" v-for="t in
-      teachers.slice((curPage - 1) * pageSize, curPage * pageSize)"></teacher-card>
+      <teacher-card v-if="update" :teacher="t" v-for="t in
+      teachers.slice((this.curPage - 1) * this.pageSize, this.curPage * this.pageSize)"></teacher-card>
     </div>
     <div class="page">
-      <el-pagination background :page-size="pageSize" :current-page="curPage" hide-on-single-page
+      <el-pagination background :page-size="pageSize" :current-page.sync="curPage" hide-on-single-page
         @current-change="handleCurrentChange" 
         layout="prev, pager, next" :total="teachers.length">
       </el-pagination>
@@ -41,11 +41,13 @@ export default {
       resultTitle: '全部讲师',
       teachers: [],
       pageSize: 15,
-      curPage: 1
+      curPage: 1,
+      update:true
     };
   },
   methods: {
     searchTeacher(key) {
+      console.log(this.curPage)
       if (key == '') {
         let promise = this.$axios({
           url: '/teacher/findAll',
@@ -53,13 +55,6 @@ export default {
         });
         promise.then((res) => {
           this.teachers = res.data;
-          console.log(this.teachers.slice((curPage - 1) * pageSize, curPage * pageSize))
-          //@test
-          // if (key == '') {
-          //   this.resultTitle = '全部讲师';
-          // } else {
-          //   this.resultTitle = '" ' + key + ' "搜索结果';
-          // }
           this.resultTitle = '全部讲师';
           this.key = '';
         }).catch((err) => {
@@ -75,41 +70,27 @@ export default {
         });
         promise.then((res) => {
           this.teachers = res.data;
-          //@test
-          // if (key == '') {
-          //   this.resultTitle = '全部讲师';
-          // } else {
-          //   this.resultTitle = '" ' + key + ' "搜索结果';
-          // }
           this.resultTitle = '" ' + key + ' "搜索结果';
           this.key = '';
         }).catch((err) => {
           this.$message.error('你的网络迷路了');
         });
-
       }
-
-      // let promise = new Promise((a) => {
-      //   a({
-      //     data: {
-      //       teachers: [
-      //         {
-      //           name: 'Jean',
-      //           avatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-      //           intro: 'Hello, I am Jean from America.Hello, Hello, I am Jean from America.HelloHello, I am Jean from America.HelloI am Jean from America.',
-      //           nikeName: '金牌讲师',
-      //           teacherId: 8848
-      //         }
-      //       ]
-      //     }
-      //   });
-      // });
     },
     // 显示第几页
     handleCurrentChange(val) {
       // 改变默认的页数
+      console.log("现在是"+this.curPage);
       this.curPage = val;
-      console.log(this.teachers.slice((curPage - 1) * pageSize, curPage * pageSize));
+       // 移除组件
+            this.update = false
+            // 在组件移除后，重新渲染组件
+            // this.$nextTick可实现在DOM 状态更新后，执行传入的方法。
+            this.$nextTick(() => {
+                this.update = true
+            })
+      // this.$refs.mychild.load();
+      // this.$forceUpdate();
     },
   },
   mounted() {
