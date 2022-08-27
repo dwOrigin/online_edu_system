@@ -60,7 +60,9 @@ public interface ICommentService extends IService<Comment> {
     Article getArticleById(Integer id);
 //    根据id查找课程
     Course getCourseById(Integer id);
+
     User getUserById(Integer id);
 
 
+    Comment getbyuser(Integer userId,Integer courseId);
 }

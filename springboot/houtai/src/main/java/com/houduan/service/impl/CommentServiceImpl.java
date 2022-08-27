@@ -196,6 +196,15 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         return user;
     }
 
+    @Override
+    public Comment getbyuser(Integer userId,Integer courseId) {
+        QueryWrapper<Comment>queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("user_id",userId);
+        queryWrapper.eq("total_id",courseId);
+        queryWrapper.eq("type",2);
+        return mapper.selectOne(queryWrapper);
+    }
+
 
 }
 

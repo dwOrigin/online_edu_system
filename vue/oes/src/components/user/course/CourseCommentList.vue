@@ -7,18 +7,19 @@
     </div>
     <div class="comment-input-box">
       <div @click="$router.push({
-              name: 'personal',
-              query:{select:'pinfo'}
-           });">
-        <el-avatar :size="70" :src="user.picImg" >
+        name: 'personal',
+        query: { select: 'pinfo' }
+      });">
+        <el-avatar :size="70" :src="user.picImg">
           <span v-if="user.userId === undefined">未登录</span>
           <span v-if="user.picImg === '' && user.userId !== undefined">{{ user.name }}</span>
         </el-avatar>
       </div>
       <el-input type="textarea" class="comment-input-area" :rows="3" placeholder="请输入一条友善的评论内容" v-model="userComment">
       </el-input>
-      <el-button type="primary" @click="commitComment" plain class="comment-confirm-btn">发布
+      <el-button type="primary" v-if="commentable == true" @click="commitComment" plain class="comment-confirm-btn">发布
       </el-button>
+      <!-- <el-button type="primary"  v-if="commentable == false" disabled plain class="comment-confirm-btn">发布</el-button> -->
     </div>
     <div>
       <h4>好评率：{{ (goodReview / comments.length) * 100 }}%</h4>
@@ -59,6 +60,7 @@ export default {
   },
   data() {
     return {
+      commentable: true,
       userComment: '',
       commentRate: null,
       course: {},
@@ -122,10 +124,10 @@ export default {
           url: '/comment/sendCourse',
           method: 'get',
           params: {
-            userId:this.user.userId,
-            commentContent:this.userComment,
-            courseId:this.course.courseId,
-            rate:this.commentRate
+            userId: this.user.userId,
+            commentContent: this.userComment,
+            courseId: this.course.courseId,
+            rate: this.commentRate
           }
         });
         // let promise = new Promise((a) => {
@@ -148,39 +150,59 @@ export default {
     },
     //更新评论
     updateComments() {
-      //获取课程评论
-      // let promise = this.$axios({
-      //   url: '',
-      //   method: '',
-      //   data: {
-      //     courseId: this.course.courseId
-      //   }
-      // });
-      let promise = new Promise((a) => {
-        a({
-          data: {
-            comments: [
-              {
-                score: 4,
-                commentId: 115,
-                commenterId: 555,
-                content: '这是评论内容',
-                time: '2022/05/16 13:00:00',
-              },
-              {
-                score: 1,
-                commentId: 115,
-                commenterId: 555,
-                content: '这是评论内容',
-                time: '2022/05/16 13:00:00',
-              }
-            ]
-          }
-        });
+      let promise = this.$axios({
+        url: '/comment/getbyuser',
+        method: 'get',
+        params: {
+          userId: this.user.userId,
+          courseId: this.course.courseId
+        }
       });
       promise.then((res) => {
+        if (res.data != "") {
+          this.userComment = res.data.content;
+          this.commentRate = res.data.praiseCount;
+          this.commentable = false;
+        }else{
+          this.userComment='';
+          this.commentRate='';
+          this.commentable=true;
+        }
+      }).catch((err) => {
+      });
+      //获取课程评论
+      let promise1 = this.$axios({
+        url: '/comment/showC',
+        method: 'get',
+        params: {
+          courseId: this.course.courseId
+        }
+      });
+      // let promise1 = new Promise((a) => {
+      //   a({
+      //     data: {
+      //       comments: [
+      //         {
+      //           score: 4,
+      //           commentId: 115,
+      //           commenterId: 555,
+      //           content: '这是评论内容',
+      //           time: '2022/05/16 13:00:00',
+      //         },
+      //         {
+      //           score: 1,
+      //           commentId: 115,
+      //           commenterId: 555,
+      //           content: '这是评论内容',
+      //           time: '2022/05/16 13:00:00',
+      //         }
+      //       ]
+      //     }
+      //   });
+      // });
+      promise1.then((res) => {
         //测试用
-        let c = res.data.comments;
+        let c = res.data;
         this.comments = c;
         this.countReview();
         this.filterComment('all');
@@ -193,16 +215,22 @@ export default {
     this.$bus.$on('AuthorizationChanged', () => {
       let user = window.localStorage.getItem('user');
       this.user = JSON.parse(user);
+      this.updateComments();
     })
     this.$bus.$on('courseChanged', (c) => {
+      let u = window.localStorage.getItem('user');
+      if (u !== null) {
+        this.user = JSON.parse(u);
+      }
       this.course = c;
       this.updateComments();
-      
     });
     let u = window.localStorage.getItem('user');
     if (u !== null) {
       this.user = JSON.parse(u);
+      this.updateComments();
     }
+
   },
   beforeDestroy() {
     this.$bus.$off('courseChanged');

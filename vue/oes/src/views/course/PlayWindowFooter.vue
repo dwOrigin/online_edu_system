@@ -36,23 +36,12 @@ export default {
   },
   data() {
     return {
-      stared: false,
       course: {},
       activeName: 'comment',
-      user: {},
       form: {
         introduce: ''
       }
     };
-  },
-  computed: {
-    starStateIcon() {
-      if (this.stared) {
-        return 'el-icon-star-on';
-      } else {
-        return 'el-icon-star-off';
-      }
-    }
   },
   methods: {
     submitForm() {
@@ -73,8 +62,6 @@ export default {
   },
   mounted() {
     this.$bus.$on('courseChanged1', (data) => {
-      let user = window.localStorage.getItem('user');
-      this.user = JSON.parse(user);
       this.course = data;
       this.form.introduce=this.course.title;
       let promise = this.$axios({

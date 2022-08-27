@@ -77,5 +77,9 @@ private ICommentService commentService;
     Result result = commentService.deleteComment(commentId);
     return result;
 }
+@GetMapping("/getbyuser")
+    public Comment getbyuser(Integer userId,Integer courseId){
+    return commentService.getbyuser(userId,courseId);
+}
 
 }
