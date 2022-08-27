@@ -53,7 +53,7 @@ private RecordsMapper recordsMapper;
         Wrapper.eq("user_id",userId)
                 .eq("xx_id",commentId)
                 .eq("type",2);//2是评论
-        Object records = recordsMapper.selectObjs(Wrapper);
+        Records records = recordsMapper.selectOne(Wrapper);
         if (records!=null) {
             return 1;
         }else {
