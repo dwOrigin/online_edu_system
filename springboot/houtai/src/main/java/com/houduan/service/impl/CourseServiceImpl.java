@@ -195,9 +195,17 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
                 for (int j = 0; j < 5; j++) {
                     fullReturnList.add(courses.get(courses.size() - 1 - j));
                 }
+//              使用这种方式是因为
+//              在使用date()传值的时候会出现由于时间过短，出现了类似于伪随机的情况
+                int MAXNUM=fullReturnList.size();//其实就是五
+                List<Integer> integers = new ArrayList<>();//创建个集合用来存储
+                for(int j=0;j<MAXNUM;j++)
+                    integers.add(j);
+                Collections.shuffle(integers);
+
                 for (int t = 0; t < 2; t++) {
-                    double number = 0 + Math.random() * (4 - 0 + 1);
-                    returnList.add(fullReturnList.get((int) (number)));
+                    int number = integers.get(t);
+                    returnList.add(fullReturnList.get( number));
                }
             }else {
                 for (int j=0;j<courses.size();j++)
