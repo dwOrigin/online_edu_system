@@ -27,7 +27,7 @@
       </div>
       <div style="margin-right: 20px">
         <i class="el-icon-time"></i>
-        {{ course.addTime.split('T')[0] }}&nbsp;&nbsp;{{ course.addTime.split('T')[1] }}
+        {{ course.addTime.split('T')[0] }}&nbsp;{{ course.addTime.split('T')[1] }}
       </div>
     </div>
   </div>

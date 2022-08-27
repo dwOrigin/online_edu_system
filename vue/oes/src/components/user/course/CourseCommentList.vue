@@ -22,7 +22,8 @@
       <!-- <el-button type="primary"  v-if="commentable == false" disabled plain class="comment-confirm-btn">发布</el-button> -->
     </div>
     <div>
-      <h4>好评率：{{ (goodReview / comments.length) * 100 }}%</h4>
+      <h4 v-if="comments.length==0">暂无评论</h4>
+      <h4 v-if="comments.length!=0">好评率：{{ Math.round((goodReview / comments.length) * 100) }}%</h4>
     </div>
     <div class="comment-selector">
       <el-button :plain="filterMethod !== 'all'" type="primary" @click="filterMethod = 'all'" class="selector-tag"
@@ -87,9 +88,9 @@ export default {
       this.badReview = 0;
       this.mediumReview = 0;
       this.comments.forEach((item) => {
-        if (item.score >= 4) {
+        if (item.praiseCount >= 4) {
           this.goodReview++;
-        } else if (item.score <= 2) {
+        } else if (item.praiseCount <= 2) {
           this.badReview++
         } else {
           this.mediumReview++;
@@ -98,19 +99,19 @@ export default {
     },
     //过滤评论
     filterComment(type) {
-      this.commentsToDisplay = [...this.comments];
+      this.commentsToDisplay =this.comments;
       if (type === 'all' || type == null) {
       } else if (type === 'bad') {
         this.commentsToDisplay = this.commentsToDisplay.filter((item) => {
-          return item.score <= 2;
+          return item.praiseCount <= 2;
         });
       } else if (type === 'good') {
         this.commentsToDisplay = this.commentsToDisplay.filter((item) => {
-          return item.score >= 4;
+          return item.praiseCount >= 4;
         });
       } else if (type === 'medium') {
         this.commentsToDisplay = this.commentsToDisplay.filter((item) => {
-          return item.score > 2 && item.score < 4;
+          return item.praiseCount > 2 && item.praiseCount < 4;
         });
       }
     },
@@ -171,6 +172,7 @@ export default {
       }).catch((err) => {
       });
       //获取课程评论
+
       let promise1 = this.$axios({
         url: '/comment/showC',
         method: 'get',
@@ -201,6 +203,7 @@ export default {
       //   });
       // });
       promise1.then((res) => {
+        console.log(res.data);
         //测试用
         let c = res.data;
         this.comments = c;
@@ -215,7 +218,6 @@ export default {
     this.$bus.$on('AuthorizationChanged', () => {
       let user = window.localStorage.getItem('user');
       this.user = JSON.parse(user);
-      this.updateComments();
     })
     this.$bus.$on('courseChanged', (c) => {
       let u = window.localStorage.getItem('user');
@@ -228,7 +230,6 @@ export default {
     let u = window.localStorage.getItem('user');
     if (u !== null) {
       this.user = JSON.parse(u);
-      this.updateComments();
     }
 
   },

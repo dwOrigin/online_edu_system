@@ -21,6 +21,9 @@
           <el-form-item label="标题" prop="title">
             <el-input v-model="form.name"></el-input>
           </el-form-item>
+          <el-form-item label="时长" prop="title">
+            <el-input v-model="form.time"></el-input>
+          </el-form-item>
           <el-form-item label="上传视频">
             <el-upload class="avatar-uploader" action="http://localhost:8081/file/upload" :data="{ filetype: 'video' }"
               :show-file-list="false" :on-success="handlevideoSuccess" :on-progress="uploadVideoProcess">
@@ -46,7 +49,7 @@
 </template>
 
 <script>
-import PlayListItem from "@/components/user/course/PlayListItem";
+import PlayListItem from "@/views/course/PlayListItem";
 import UploadVideo from "@/views/UploadVideo";
 export default {
   name: "PlayList",
@@ -69,7 +72,9 @@ export default {
       },
       form: {
         name: '',
-        videoLink: ''
+        videoLink: '',
+        time: '',
+        courseId: 0,
       },
       dialogFormVisible: false
     }
@@ -79,15 +84,31 @@ export default {
       this.dialogFormVisible = true
     },
     onSubmit() {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('添加课程成功!');
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
+      this.form.courseId = this.course.courseId;
+      let promise = this.$axios({
+        url: '/coursevideo/addCourseVideo',
+        method: 'post',
+        data: this.form
       });
-      this.resetForm(formName);
+      promise.then((res) => {
+        if (res.data.code == "200") {
+          this.$message.success("增加成功");
+          this.$bus.$emit('courseChanged1', this.course);
+        } else {
+          this.$message.error("增加失败");
+        }
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });
+      // this.request.post('/coursevideo/addCourseVideo', this.form)
+      //   .then((res) => {
+      //     if (res.code == "200") {
+      //       this.$message.success("增加成功");
+      //     } else {
+      //       this.$message.error("增加失败");
+      //     }
+      //   })
+      this.resetForm();
     },
     handlevideoSuccess(res, file) {
       // 进度条恢复到初始状态
@@ -109,7 +130,10 @@ export default {
       this.videoUploadPercent = parseInt(file.percentage);
     },
     resetForm() {
-      this.$refs[formName].resetFields();
+      this.form.courseId = '';
+      this.form.name = '';
+      this.form.time = '';
+      this.form.videoLink = '';
       this.dialogFormVisible = false;
       // 不知道怎么把视频删了
     },
@@ -148,7 +172,7 @@ export default {
     // },
     deleteOld() {
       let promise = this.$axios({
-        url: '/coursevideo/id',
+        url: '/coursevideo/deleteCourseVideo',
         method: 'get',
         params: {
           id: this.chapters[this.curChapter - 1].videoId

@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import CourseCommentList from "@/components/user/course/CourseCommentList";
+import CourseCommentList from "@/views/course/CourseCommentList";
 
 export default {
   name: "PlayWindowFooter",
