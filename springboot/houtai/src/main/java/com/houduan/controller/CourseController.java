@@ -69,9 +69,17 @@ public class CourseController {
     public Result praiseplus(@RequestParam Integer id){
         return courseService.praiseplus(id);
     }
+    @GetMapping("/praisedeplus")
+    public Result praisedeplus(@RequestParam Integer id){
+        return courseService.praisedeplus(id);
+    }
     @GetMapping("/commentplus")
     public Result commentplus(@RequestParam Integer id){
         return courseService.commentplus(id);
+    }
+    @GetMapping("/commentdeplus")
+    public Result commentdeplus(@RequestParam Integer id){
+        return courseService.commentdeplus(id);
     }
     @GetMapping("/getrecommend")
     public List<Course> getrecommend(){
@@ -100,6 +108,7 @@ public class CourseController {
     }
     @GetMapping("/getbyboth")
     public List<Course>getbyboth(@RequestParam String select,@RequestParam String key){
+        System.out.println(select);
         return courseService.getbyboth(select,key);
     }
 }

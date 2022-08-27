@@ -60,6 +60,11 @@ export default {
   },
   methods: {
     pushcourse() {
+      this.request.get('/course/pageviewplus',{
+        params:{
+          id:this.course.courseId
+        }
+      })
       this.$bus.$emit('courseChanged',this.course)
       this.$router.push({
         name: 'course',

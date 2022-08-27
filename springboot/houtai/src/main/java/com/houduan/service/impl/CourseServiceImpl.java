@@ -42,7 +42,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     @Override
     public List<Course> findType(String type) {
         QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("type", type);
+        queryWrapper.like("type", type);
         return list(queryWrapper);
     }
 
@@ -63,6 +63,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         queryWrapper.eq("course_id", id);
         Course course = getOne(queryWrapper);
         course.setPageViewcount(course.getPageViewcount() + 1);
+        mapper.updateById(course);
         return Result.success();
     }
 
@@ -71,7 +72,8 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("course_id", id);
         Course course = getOne(queryWrapper);
-        course.setPraiseCount(course.getPraiseCount());
+        course.setPraiseCount(course.getPraiseCount()+1);
+        mapper.updateById(course);
         return Result.success();
     }
     @Override
@@ -255,6 +257,27 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         queryWrapper.eq("course_id", id);
         Course course = getOne(queryWrapper);
         course.setCommentNum(course.getCommentNum()+1);
+        mapper.updateById(course);
+        return Result.success();
+    }
+
+    @Override
+    public Result praisedeplus(Integer id) {
+        QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("course_id", id);
+        Course course = getOne(queryWrapper);
+        course.setPraiseCount(course.getPraiseCount()-1);
+        mapper.updateById(course);
+        return Result.success();
+    }
+
+    @Override
+    public Result commentdeplus(Integer id) {
+        QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("course_id", id);
+        Course course = getOne(queryWrapper);
+        course.setCommentNum(course.getCommentNum()-1);
+        mapper.updateById(course);
         return Result.success();
     }
 

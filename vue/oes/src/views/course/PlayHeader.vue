@@ -64,6 +64,7 @@ export default {
       .then((res)=>{
         if(res.code=="200"){
           this.$message.success("更新成功");
+          this.form.courseName='';
         }else{
           this.$message.error("更新失败");
         }
