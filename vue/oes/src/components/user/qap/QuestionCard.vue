@@ -17,7 +17,7 @@
     </div>
     <div class="question-card-footer">
       <el-tag v-if="type === 'question'">
-        &nbsp;&nbsp;{{ dataObj.praiseCount }}赞同&nbsp;&nbsp;
+        &nbsp;&nbsp;{{ dataObj.browseCount }}次浏览&nbsp;&nbsp;
       </el-tag>
       <el-tag v-if="type === 'passage'">
         &nbsp;&nbsp;{{ dataObj.praiseCount }}点赞&nbsp;&nbsp;
