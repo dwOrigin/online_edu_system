@@ -108,19 +108,4 @@ public class RecordsController {
         Integer integer = service.orLikedArticleComment(userId, articleCommentId);
         return integer;
     }
-
-
-
-
-
-
-
-
 }
-
-
-
-
-
-
-
