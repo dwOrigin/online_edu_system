@@ -28,6 +28,7 @@ import java.util.List;
 public class QuestionscommentServiceImpl extends ServiceImpl<QuestionscommentMapper, Questionscomment> implements IQuestionscommentService {
 @Autowired
 private QuestionscommentMapper mapper;
+@Autowired
 private QuestionsMapper questionsMapper;
     @Override
     public Result addComment(Questionscomment questionscomment) {

@@ -7,7 +7,7 @@
       <div class="content">
         {{ passage.summary }}
         <!-- 等下想怎么展示md文件 -->
-         <!-- <mavon-editor
+         <mavon-editor
             class="md"
             :value="htmlContent" 
             :subfield="prop.subfield" 
@@ -15,7 +15,7 @@
             :toolbarsFlag="prop.toolbarsFlag"
             :editable="prop.editable"
             :scrollStyle="prop.scrollStyle"
-          /> -->
+          />
       </div>
       <div class="footer">
         <div>
@@ -26,7 +26,7 @@
         </div>
         <div>
           <el-button
-              @click="handleClick('comment')"
+              @click="handleComment"
               ype="primary" plain>评论文章
           </el-button>
         </div>
@@ -74,11 +74,13 @@
 
 <script>
 import Answer from "@/components/user/qap/Answer";
+import { mavonEditor } from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
 export default {
   name: "PassagePage",
   components: {
     Answer,
-    // mavonEditor
+    mavonEditor
   },
   data() {
     return {
@@ -95,23 +97,23 @@ export default {
       // length: 5,
     };
   },
-  // computed: {
-  // // 解析器配置
-  //   prop () {
-  //     let data = {
-  //       subfield: false,// 单双栏模式
-  //       defaultOpen: 'preview',//edit： 默认展示编辑区域 ， preview： 默认展示预览区域 
-  //       editable: false,    // 是否允许编辑
-  //       toolbarsFlag: false,
-  //       scrollStyle: true
-  //     }
-  //     return data
-  //   }
-  // },
+  computed: {
+  // 解析器配置
+    prop () {
+      let data = {
+        subfield: false,// 单双栏模式
+        defaultOpen: 'preview',//edit： 默认展示编辑区域 ， preview： 默认展示预览区域 
+        editable: false,    // 是否允许编辑
+        toolbarsFlag: false,
+        scrollStyle: true
+      }
+      return data
+    }
+  },
   methods: {
-    // getInfo(){
-    //    this.htmlContent=data
-    // },
+    getInfo(){
+       this.htmlContent=data
+    },
      refreshComment(qId) {
       // 获取问题答案
       let promise = this.$axios({
@@ -192,7 +194,7 @@ export default {
           url: 'http://localhost:8081/records/addRecordArt',
           method: 'get',
           params: {
-            commentId: this.passage.articleId,
+            articleId: this.passage.articleId,
             userId: usr.userId
           }
         });
@@ -208,7 +210,7 @@ export default {
             method: 'get',
             params: {
                   userId: usr.userId,
-                  commentId: this.passage.articleId,
+                  articleId: this.passage.articleId,
             }
           });
           promise.then((res) => {
@@ -220,6 +222,9 @@ export default {
           }     
        });
     },
+    handleComment(){
+      this.CommentDialogVisible = true;
+    },
     handleClickFooter(btnName) {
       if (btnName === 'cancel') {
 
@@ -230,22 +235,22 @@ export default {
         }
         let user = JSON.parse(window.localStorage.getItem('user'));
         //评论文章
-        // let promise = this.$axios({
-        //   url: '',
-        //   method: '',
-        //   data: {
-        //     comment: this.cc,
-        //     userId: user.id,
-        //     pId: this.passage.pId
-        //   }
-        // });
-        let promise = new Promise((a) => {
-          a({
-            data: {
-              result: true
-            }
-          });
+        let promise = this.$axios({
+          url: 'http://localhost:8081/comment/sendArticle',
+          method: 'get',
+          data: {
+            comment: this.cc,
+            userId: user.id,
+            pId: this.passage.pId
+          }
         });
+        // let promise = new Promise((a) => {
+        //   a({
+        //     data: {
+        //       result: true
+        //     }
+        //   });
+        // });
         promise.then((res) => {
           let ret = res.data.result;
           if (ret) {
@@ -265,7 +270,7 @@ export default {
   mounted() {
     this.loadPassage();
     this.refreshComment(this.$route.query.pId);
-    // this.getInfo();
+    this.getInfo();
   },
 }
 </script>

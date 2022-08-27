@@ -103,7 +103,7 @@ public class RecordsController {
         Result result = service.reduceRecordArticleComment(userId, articleCommentId);
         return result;
     }
-    @GetMapping("/orLikedCom")
+    @GetMapping("/orLikedArticleCom")
     public Integer orLikedArticleComment(@RequestParam Integer userId,@RequestParam Integer articleCommentId ){
         Integer integer = service.orLikedArticleComment(userId, articleCommentId);
         return integer;
