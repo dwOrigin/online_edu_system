@@ -36,6 +36,7 @@ public Result addComment(@RequestBody Questionscomment questionscomment) {
         questionscomment.setAddTime(LocalDateTime.now());
         questionscomment.setIsBest(0);//初始化为0，有人点赞再加上一个
         questionscomment.setPraiseCount(0);
+    System.out.println(questionscomment);
     questionscommentService.addCommentCount(questionscomment.getQuestionId());
     Result result = questionscommentService.addComment(questionscomment);
         return result;

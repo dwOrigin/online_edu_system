@@ -28,88 +28,54 @@ import com.houduan.entity.Comment;
 
 @Resource
 private ICommentService commentService;
-
-/*
-@PostMapping
-public Boolean save(@RequestBody Comment comment) {
-        return commentService.saveOrUpdate(comment);
-        }
-
-@DeleteMapping("/{id}")
-public Boolean delete(@PathVariable Integer id) {
-        return commentService.removeById(id);
-        }
-
-@GetMapping
-public List<Comment> findAll() {
-        return commentService.list();
-        }
-
-@GetMapping("/{id}")
-public Comment findOne(@PathVariable Integer id) {
-        return commentService.getById(id);
-        }
-*/
 //新增评论或者是更新评论
-/*@GetMapping("/page")
-public Page<Comment> findPage(@RequestParam Integer pageNum,
-@RequestParam Integer pageSize) {
-        return commentService.page(new Page<>(pageNum, pageSize));
-        }*/
+//测试通过
 @GetMapping("/sendArticle")
-    public Result sendComArt(Integer userId, Integer commentId, Integer articleId){
-
-    User user = commentService.getUserById(userId);
-    Comment comment = commentService.getById(commentId);
-    Article article = commentService.getArticleById(articleId);
-    Result result = commentService.sendComment(user, comment, article);
+    public Result sendComArt(Integer userId, String commentContent, Integer articleId){
+    Result result = commentService.sendCommentArticle(userId, commentContent, articleId);
     return result;
 }
+//测试通过
 @GetMapping("/sendCourse")
-    public Result sendComCou(Integer userId, Integer commentId, Integer courseId){
-    User user = commentService.getUserById(userId);
-    Comment comment = commentService.getById(commentId);
-    Course course = commentService.getCourseById(courseId);
-    Result result = commentService.sendComment(user, comment, course);
+    public Result sendComCourse(Integer userId, String commentContent, Integer courseId){
+    Result result = commentService.sendCommentCourse(userId, commentContent, courseId);
     return result;
 }
+//验证通过
 @GetMapping("/praise")
     public Result praise(Integer id){
     Comment comment = commentService.getById(id);
     Result result = commentService.addPraise(comment);
     return result;
 }
+//验证通过
 @GetMapping("/cancelPrise")
     public Result deletePraise(Integer commentId){
     Comment comment = commentService.getById(commentId);
     Result result = commentService.cancelPraise(comment);
     return result;
 }
+//测试通过
 @GetMapping("/showA")
     public List<Comment>showCommentArticle(Integer articleId){
     Article article = commentService.getArticleById(articleId);
+    System.out.println(article);
     List<Comment> comments = commentService.showInitComment(article);
     return comments;
 }
+//测试通过
 @GetMapping("/showC")
-public  List<Comment>showCommentCourse(Integer courseId){
+    public  List<Comment>showCommentCourse(Integer courseId){
     Course course = commentService.getCourseById(courseId);
     List<Comment> comments = commentService.showInitComment(course);
     return comments;
 }
 
+//测试通过
 @GetMapping("/delete")
-    public Result deleteComment( Integer integer){
-    Result result = commentService.deleteComment(integer);
+    public Result deleteComment( Integer commentId){
+    Result result = commentService.deleteComment(commentId);
     return result;
 }
-
-
-
-
-
-
-
-
 
 }

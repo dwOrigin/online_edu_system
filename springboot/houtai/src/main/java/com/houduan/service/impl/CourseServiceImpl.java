@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.houduan.common.Constants;
 import com.houduan.common.Result;
+import com.houduan.entity.Article;
 import com.houduan.entity.Course;
 import com.houduan.mapper.CourseMapper;
 import com.houduan.service.ICourseService;
@@ -79,6 +80,86 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         queryWrapper.eq("teacher_id",teacherid);
         return list(queryWrapper);
     }
+
+    @Override
+    public Result sortArticles() {
+        /*
+         * 文章的推荐规则是按照得分来进行
+         * 按照对应数值划分比例
+         * 得分越高，被推荐的程度是要越大的
+         * fullReturnList.add(articles.get(articles.size()-1-j));
+         *
+         * */
+        int sortScore=0;
+        List<Course> initCourses = mapper.selectList(null);
+        //按照点击量、点赞量、评论数量为5：3：2的比例去划分
+        for (int i=0;i<initCourses.size();i++){
+            sortScore=(int)(initCourses.get(i).getPraiseCount()*0.3+
+                    initCourses.get(i).getPageViewcount()*0.5+
+                    initCourses.get(i).getCommentNum()*0.2);
+
+            initCourses.get(i).setSort(sortScore);
+            mapper.updateById(initCourses.get(i));
+            System.out.println(initCourses.get(i).getSort());
+        }
+
+        return Result.success();
+
+    }
+/*
+* 推荐课程的操作
+*如果是同一个类别的
+* 小于三门就全部推荐
+* 大于三门的就只会随机推荐三门
+*
+* */
+    @Override
+    public List<Course> recommendCoursesType(Integer id) {
+
+
+
+        /*----------------------------------------*/
+        QueryWrapper<Course> Wrapper = new QueryWrapper<>();
+        Wrapper.eq("course_id",id);
+        Course courseInit = mapper.selectOne(Wrapper);
+        System.out.println(courseInit);
+        QueryWrapper<Course> Wrapper2 = new QueryWrapper<>();
+        Wrapper2.eq("type",courseInit.getType());
+        List<Course> initList = mapper.selectList(Wrapper2);
+        if (initList.size()>3){
+            List<Course> courses = new ArrayList<>();
+            int MAXNUM=initList.size();
+            List<Integer> integers = new ArrayList<>();//创建个集合用来存储
+            for (int i = 0; i < MAXNUM; i++) {
+                integers.add(i);
+            }
+            Collections.shuffle(integers);
+            for (int i=0;i<3;i++){
+                /*Date date=new Date();
+                int seed= Integer.parseInt(String.format("%ts",date));
+                Random r= new Random(seed);
+                int t=0 + r.nextInt(initList.size()-1 - 0);
+                System.out.println(t);
+                if (initList.get(t)!=courseInit) {
+                    courses.add(initList.get(t));
+                }*/
+                if (initList.get(integers.get(i))!=courseInit) {
+                    System.out.println(integers.get(i));
+                    courses.add(initList.get(integers.get(i)));
+                }else {
+                    i--;//防止被播放的视频还被推荐了
+                }
+//                courses.add(initList.get((int)Math.random()*(initList.size()-1)));
+            }
+            System.out.println(courses);
+            return courses;
+        }
+        else {
+            System.out.println(initList);
+            return initList;
+        }
+    }
+
     @Override
     public List<Course> recommendCourses() {
         List<Course> fullReturnList = new ArrayList<Course>();
@@ -86,7 +167,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
 
         List<Course> initCourse = mapper.selectList(null);
         Set<String> getTypeName = new HashSet<String>();
-//        文章的种类是固定的几个内容，然后先就随便设置一下吧
+//        种类是固定的几个内容，然后先就随便设置一下吧
         for (int i = 0; i < initCourse.size(); i++) {
             getTypeName.add(initCourse.get(i).getType());
         }
@@ -116,10 +197,10 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
                 for (int t = 0; t < 2; t++) {
                     double number = 0 + Math.random() * (4 - 0 + 1);
                     returnList.add(fullReturnList.get((int) (number)));
-                }
+               }
             }else {
                 for (int j=0;j<courses.size();j++)
-                    returnList.add(courses.get(j));
+                returnList.add(courses.get(j));
             }
 //            --------------------------------------------
         }
