@@ -6,30 +6,13 @@
       append-to-body
       modal-append-to-body
       width="30%">
-    <div style="margin: 0 auto 20px auto; display: flex; justify-content: center">
-      <el-input
-          style="margin-right: 10px"
-          maxlength="30"
-          v-model="qTitle" placeholder="输入你的问题标题">
-      </el-input>
-      <el-select v-model="category"
-                 placeholder="问题分类">
-        <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.value"
-            :value="item.value">
-        </el-option>
-      </el-select>
-    </div>
     <el-input
         type="textarea"
         ref="qC"
         :rows="6"
         maxlength="100"
         show-word-limit
-        style="margin-bottom: 0"
-        placeholder="输入问题描述"
+        placeholder="请输入你的问题"
         v-model="qContent">
     </el-input>
     <span slot="footer" class="dialog-footer">
@@ -54,15 +37,9 @@ export default {
     return {
       dialogVisible: false,
       qContent: '',
-      qTitle: '',
-      category: '',
-      options:[{value: '闲聊'}, {value: '知识'}],
-      question:{
+      questions:{
         cusId:'',
-        title:'',
-        content:'',
-        type:'',
-        status:1,
+
       }
     };
   },
@@ -70,42 +47,35 @@ export default {
     handleClickFooter(btnName) {
       if(btnName === 'cancel'){
 
-      }else if (btnName === 'ask' || this.qTitle.length < 10){
+      }else if (btnName === 'ask'){
         if(this.qContent.length < 10){
-          this.$message.error('问题标题或描述不能少于10个字');
-          return;
-        }
-        if(this.category === ''){
-          this.$message.error('请选择问题分类');
+          this.$message.error('问题不能少于10个字');
           return;
         }
         let user = JSON.parse(window.localStorage.getItem('user'));
-        //提问
-        this.question.content=this.qContent;
-        this.question.cusId=user.userId;
-        this.question.title=this.qTitle;
-        this.question.type=this.category;
-        this.request.post('/questions',this.question)
-        .then((res)=>{
-          if(res){
-            this.$message.success("提问成功");
-            this.$bus.$emit('refreshQAOMain');
+        // 提问
+        let promise = this.$axios({
+            url: '/questions',
+            method: 'post',
+            params:{
+              qContent: this.qContent,
+              userId: user.id
+            }
+        });
+        promise.then((res)=>{
+          let ret = res.data.passed;
+          if(ret){
+            this.$message.success('提问成功');
           }else{
-            this.$message.error("提问失败");
+            this.$message.error('提问失败');
           }
-        })
-        // let promise = new Promise((a)=>{
-        //     a({
-        //         data:{
-        //           passed: true
-        //         }
-        //     });
-        // });
+        }).catch((err)=>{
+            this.$message.error('你的网络迷路了');
+        });
       }
       this.qContent = '';
-      this.qTitle = '';
-      this.category = '';
       this.dialogVisible = false;
+      this.reload();
     }
   },
   mounted() {
