@@ -18,7 +18,8 @@ import java.util.List;
  */
 @Service
 public class IRecordsServiceImpl extends ServiceImpl<RecordsMapper, Records> implements IRecordsService {
-@Resource
+
+@Autowired
 private RecordsMapper recordsMapper;
 
 
@@ -63,6 +64,7 @@ private RecordsMapper recordsMapper;
         }else {
             return 2;
         }
+
 
     }
 
@@ -210,6 +212,52 @@ private RecordsMapper recordsMapper;
                 .eq("xx_id",courseId)
                 .eq("collect_or_like",1)//1是收藏
                 .eq("type",3);//3是课程
+        Records records = recordsMapper.selectOne(recordsQueryWrapper);
+        if (records!=null) {
+            return 1;
+        }else {
+            return 2;
+        }
+    }
+    @Override
+    public Result addRecordArticleComment(Integer userId, Integer articleCommentId) {
+        Records records = new Records();
+        records.setUserId(userId);
+        records.setCollectOrLike(2);//2是点赞
+        records.setType(4);//4是文章评论
+        records.setXxId(articleCommentId);
+        int i = recordsMapper.insert(records);
+        if (i>=1){
+            return Result.success();
+        }else {
+            return Result.error();
+        }
+    }
+
+    @Override
+    public Result reduceRecordArticleComment(Integer userId, Integer articleCommentId) {
+        QueryWrapper<Records> recordsQueryWrapper = new QueryWrapper<>();
+        recordsQueryWrapper.eq("user_id",userId)
+                .eq("xx_id",articleCommentId)
+                .eq("collect_or_like",2)//2是点赞
+                .eq("type",4);//4是文章评论
+        int i = recordsMapper.delete(recordsQueryWrapper);
+        if (i>=1){
+            return Result.success();
+        }else {
+            return Result.error();
+        }
+
+
+    }
+
+    @Override
+    public Integer orLikedArticleComment(Integer userId, Integer articleCommentId) {
+        QueryWrapper<Records> recordsQueryWrapper = new QueryWrapper<>();
+        recordsQueryWrapper.eq("user_id",userId)
+                .eq("xx_id",articleCommentId)
+                .eq("collect_or_like",2)//2是点赞
+                .eq("type",4);//3是文章评论
         Records records = recordsMapper.selectOne(recordsQueryWrapper);
         if (records!=null) {
             return 1;
