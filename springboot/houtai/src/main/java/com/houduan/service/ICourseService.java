@@ -41,4 +41,5 @@ public interface ICourseService extends IService<Course> {
 
     List<Course> getbyboth(String select, String key);
 
+    Result commentplus(Integer id);
 }

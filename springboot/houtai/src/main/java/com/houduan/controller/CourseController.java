@@ -69,6 +69,10 @@ public class CourseController {
     public Result praiseplus(@RequestParam Integer id){
         return courseService.praiseplus(id);
     }
+    @GetMapping("/commentplus")
+    public Result commentplus(@RequestParam Integer id){
+        return courseService.commentplus(id);
+    }
     @GetMapping("/getrecommend")
     public List<Course> getrecommend(){
         return courseService.recommendCourses();
