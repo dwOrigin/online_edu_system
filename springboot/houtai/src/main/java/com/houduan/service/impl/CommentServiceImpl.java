@@ -2,6 +2,7 @@ package com.houduan.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.reflect.SpringReflectionHelper;
+import com.houduan.common.Constants;
 import com.houduan.common.Result;
 import com.houduan.entity.Article;
 import com.houduan.entity.Comment;
@@ -63,21 +64,26 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
     }
     @Override
-    public Result sendCommentCourse(Integer userId, String  commentContent, Integer courseId) {
+    public Result sendCommentCourse(Integer userId, String  commentContent, Integer courseId,Integer rate) {
         Comment comment = new Comment();
 //        设置文章评论的一些基本属性值
+        QueryWrapper<Comment>queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("user_id",userId);
+        if(getOne(queryWrapper)!=null){
+            return Result.error(Constants.CODE_500,"请勿重复评论");
+        }
         comment.setUserId(userId);
         comment.setContent(commentContent);
         comment.setTotalId(courseId);
         comment.setType(2);//2是课程
-        comment.setPraiseCount(0);
+        comment.setPraiseCount(rate);
         comment.setReplyCount(0);
         comment.setOtherId(-1);
         int insert = mapper.insert(comment);
         if (insert>=1){
             return Result.success();
         }else {
-            return Result.error();
+            return Result.error(Constants.CODE_500,"评论失败");
         }
 
     }
@@ -188,6 +194,15 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     public User getUserById(Integer id) {
         User user = userMapper.selectById(id);
         return user;
+    }
+
+    @Override
+    public Comment getbyuser(Integer userId,Integer courseId) {
+        QueryWrapper<Comment>queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("user_id",userId);
+        queryWrapper.eq("total_id",courseId);
+        queryWrapper.eq("type",2);
+        return mapper.selectOne(queryWrapper);
     }
 
 

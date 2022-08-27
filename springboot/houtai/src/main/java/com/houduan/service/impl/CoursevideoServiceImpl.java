@@ -27,7 +27,7 @@ public class CoursevideoServiceImpl extends ServiceImpl<CoursevideoMapper, Cours
     @Override
     public List<Coursevideo> findbycourseid(Integer courseId) {
         QueryWrapper<Coursevideo>queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("courseId",courseId);
+        queryWrapper.eq("course_id",courseId);
         return list(queryWrapper);
     }
 
@@ -38,6 +38,13 @@ public class CoursevideoServiceImpl extends ServiceImpl<CoursevideoMapper, Cours
         }else{
             return Result.error(Constants.CODE_500,"失败");
         }
+    }
+
+    @Override
+    public Integer getnum(Integer courseId) {
+        QueryWrapper<Coursevideo>queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("course_id",courseId);
+        return list(queryWrapper).size();
     }
 
     @Override

@@ -75,4 +75,12 @@ public class QuestionsServiceImpl extends ServiceImpl<QuestionsMapper, Questions
         queryWrapper.eq("cus_id",userid);
         return list(queryWrapper);
     }
+
+    @Override
+    public Result plusread(Integer id) {
+        Questions questions= baseMapper.selectById(id);
+        questions.setBrowseCount(questions.getBrowseCount()+1);
+        updateById(questions);
+        return Result.success();
+    }
 }

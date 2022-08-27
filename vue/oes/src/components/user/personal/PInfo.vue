@@ -373,6 +373,7 @@ export default {
         promise.then((res) => {
           if (res.data.code == "200") {
             this.$message.success('修改密码成功');
+            this.reloadUser();
           } else {
             this.$message.error('修改密码失败');
           }
@@ -411,7 +412,7 @@ export default {
     reloadUser() {
       //获取用户信息(同登录)
       let promise = this.$axios({
-        url: '/user/id',
+        url: '/user/findOne',
         method: 'get',
         params: {
           id: this.user.userId

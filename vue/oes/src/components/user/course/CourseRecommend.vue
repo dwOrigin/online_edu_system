@@ -56,104 +56,104 @@ export default {
     //点击换一批调用
     refreshCourse() {
       //获取10门推荐课程
-      // let promise = this.$axios({
-      //   url: '/course/getrecommend',
-      //   method: 'get',
-      // });
-      let promise = new Promise((a)=>{
-        a({data:[
-              {
-                id: 9999,
-                imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
-                title: '课成标题1',
-                teacher: '僵尸1',
-                chapterNum: 1,
-                studentNum: 1086,
-                likeRate: 10
-              },
-              {
-                id: 9999,
-                imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
-                title: '课成标题2',
-                teacher: '僵尸2',
-                chapterNum: 121,
-                studentNum: 108126,
-                likeRate: 10
-              },
-              {
-                id: 9999,
-                imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
-                title: '课成标题3',
-                teacher: '僵尸3',
-                chapterNum: 1,
-                studentNum: 1086,
-                likeRate: 10
-              },
-              {
-                id: 9999,
-                imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
-                title: '课成标题4',
-                teacher: '僵尸4',
-                chapterNum: 1,
-                studentNum: 1086,
-                likeRate: 10
-              },
-              {
-                id: 9999,
-                imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
-                title: '课成标题5',
-                teacher: '僵尸5',
-                chapterNum: 1,
-                studentNum: 1086,
-                likeRate: 10
-              },
-              {
-                id: 9999,
-                imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
-                title: '课成标题6',
-                teacher: '僵尸6',
-                chapterNum: 1,
-                studentNum: 1086,
-                likeRate: 10
-              },
-              {
-                id: 9999,
-                imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
-                title: '课成标题7',
-                teacher: '僵尸7',
-                chapterNum: 1,
-                studentNum: 1086,
-                likeRate: 10
-              },
-              {
-                id: 9999,
-                imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
-                title: '课成标题8',
-                teacher: '僵尸8',
-                chapterNum: 1,
-                studentNum: 1086,
-                likeRate: 10
-              },
-              {
-                id: 9999,
-                imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
-                title: '课成标题9',
-                teacher: '僵尸9',
-                chapterNum: 1,
-                studentNum: 1086,
-                likeRate: 10
-              },
-              {
-                id: 112,
-                imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
-                title: '课成标题10',
-                teacher: '僵尸10',
-                chapterNum: 1,
-                studentNum: 1086,
-                likeRate: 10
-              },
-            ]});
+      let promise = this.$axios({
+        url: '/course/getrecommend',
+        method: 'get',
       });
+      // let promise = new Promise((a)=>{
+      //   a({data:[
+      //         {
+      //           id: 9999,
+      //           imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
+      //           title: '课成标题1',
+      //           teacher: '僵尸1',
+      //           chapterNum: 1,
+      //           studentNum: 1086,
+      //           likeRate: 10
+      //         },
+      //         {
+      //           id: 9999,
+      //           imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
+      //           title: '课成标题2',
+      //           teacher: '僵尸2',
+      //           chapterNum: 121,
+      //           studentNum: 108126,
+      //           likeRate: 10
+      //         },
+      //         {
+      //           id: 9999,
+      //           imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
+      //           title: '课成标题3',
+      //           teacher: '僵尸3',
+      //           chapterNum: 1,
+      //           studentNum: 1086,
+      //           likeRate: 10
+      //         },
+      //         {
+      //           id: 9999,
+      //           imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
+      //           title: '课成标题4',
+      //           teacher: '僵尸4',
+      //           chapterNum: 1,
+      //           studentNum: 1086,
+      //           likeRate: 10
+      //         },
+      //         {
+      //           id: 9999,
+      //           imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
+      //           title: '课成标题5',
+      //           teacher: '僵尸5',
+      //           chapterNum: 1,
+      //           studentNum: 1086,
+      //           likeRate: 10
+      //         },
+      //         {
+      //           id: 9999,
+      //           imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
+      //           title: '课成标题6',
+      //           teacher: '僵尸6',
+      //           chapterNum: 1,
+      //           studentNum: 1086,
+      //           likeRate: 10
+      //         },
+      //         {
+      //           id: 9999,
+      //           imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
+      //           title: '课成标题7',
+      //           teacher: '僵尸7',
+      //           chapterNum: 1,
+      //           studentNum: 1086,
+      //           likeRate: 10
+      //         },
+      //         {
+      //           id: 9999,
+      //           imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
+      //           title: '课成标题8',
+      //           teacher: '僵尸8',
+      //           chapterNum: 1,
+      //           studentNum: 1086,
+      //           likeRate: 10
+      //         },
+      //         {
+      //           id: 9999,
+      //           imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
+      //           title: '课成标题9',
+      //           teacher: '僵尸9',
+      //           chapterNum: 1,
+      //           studentNum: 1086,
+      //           likeRate: 10
+      //         },
+      //         {
+      //           id: 112,
+      //           imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
+      //           title: '课成标题10',
+      //           teacher: '僵尸10',
+      //           chapterNum: 1,
+      //           studentNum: 1086,
+      //           likeRate: 10
+      //         },
+      //       ]});
+      // });
       promise.then((res) => {
         let cl = res.data;
         this.hotCourseList = cl;

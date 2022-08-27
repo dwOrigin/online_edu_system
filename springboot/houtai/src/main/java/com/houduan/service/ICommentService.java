@@ -24,7 +24,7 @@ public interface ICommentService extends IService<Comment> {
 * */
 //    发送一个评论
     Result sendCommentArticle(Integer userId, String commentContent, Integer articleId);
-    Result sendCommentCourse(Integer userId, String  commentContent, Integer courseId);
+    Result sendCommentCourse(Integer userId, String  commentContent, Integer courseId, Integer rate);
 
     //    回复一个评论
 //    Result answerComment(User user,Comment parComment,Comment sonComment);
@@ -60,7 +60,9 @@ public interface ICommentService extends IService<Comment> {
     Article getArticleById(Integer id);
 //    根据id查找课程
     Course getCourseById(Integer id);
+
     User getUserById(Integer id);
 
 
+    Comment getbyuser(Integer userId,Integer courseId);
 }

@@ -17,7 +17,24 @@ export default {
   methods:{
     returnLesson(){
         this.$router.push('/lesson_manage')
+    },
+     refreshCourse(){
+      let promise = this.$axios({
+          url: '/course/getById',
+          method: 'get',
+          params:{
+            id: this.$route.params.courseId
+          }
+      })
+      promise.then((res)=>{
+        this.$bus.$emit('courseChanged1', res.data);
+      }).catch((err)=>{
+          this.$message.error('你的网络迷路了, 课程加载失败!');
+      });
     }
+  },
+  mounted(){
+    this.refreshCourse();
   }
 }
 </script>

@@ -105,10 +105,9 @@ for (int i=0;i<list.size();i++){
     @Override
     public Result addCommentCount(Integer integer) {
         QueryWrapper<Questions> wrapper = new QueryWrapper<>();
-wrapper.eq("id",integer);
+        wrapper.eq("id",integer);
+        System.out.println(integer);
         Questions questions = questionsMapper.selectOne(wrapper);
-
-//        Questions questions = questionsMapper.selectById(integer);
         questions.setReplyCount(questions.getReplyCount()+1);
         int i = questionsMapper.updateById(questions);
         if (i>=1){

@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.xml.bind.SchemaOutputResolver;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -220,4 +219,26 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
             return Result.error();
         }
     }
+    @Override
+    public List<Course> getbyname(String name) {
+        List<Course> courses  = mapper.selectList(new QueryWrapper<Course>().like("course_name",name));
+        return courses;
+    }
+
+    @Override
+    public List<Course> getbyboth(String select, String key) {
+        QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
+        if(select==null&&key==null){
+            return null;
+        }else if(select!=null&&key==null){
+            queryWrapper.eq("type", select);
+        }else if(select==null&&key!=null){
+            queryWrapper.like("course_name",key);
+        }else{
+            queryWrapper.eq("type", select);
+            queryWrapper.like("course_name",key);
+        }
+        return mapper.selectList(queryWrapper);
+    }
+
 }

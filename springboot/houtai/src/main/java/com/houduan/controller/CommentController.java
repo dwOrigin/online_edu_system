@@ -37,8 +37,8 @@ private ICommentService commentService;
 }
 //测试通过
 @GetMapping("/sendCourse")
-    public Result sendComCourse(Integer userId, String commentContent, Integer courseId){
-    Result result = commentService.sendCommentCourse(userId, commentContent, courseId);
+    public Result sendComCourse(Integer userId, String commentContent, Integer courseId,Integer rate){
+    Result result = commentService.sendCommentCourse(userId, commentContent, courseId,rate);
     return result;
 }
 //验证通过
@@ -76,6 +76,10 @@ private ICommentService commentService;
     public Result deleteComment( Integer commentId){
     Result result = commentService.deleteComment(commentId);
     return result;
+}
+@GetMapping("/getbyuser")
+    public Comment getbyuser(Integer userId,Integer courseId){
+    return commentService.getbyuser(userId,courseId);
 }
 
 }

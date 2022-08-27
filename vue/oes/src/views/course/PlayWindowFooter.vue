@@ -1,40 +1,21 @@
 <template>
   <div class="play-window-footer">
-    <div class="star-score">
-      <div>
-        <el-link :underline="false"
-                 type="primary"
-                 @click="starClass"
-                 class="starLink"
-                 icon="el-icon-star-off"><span style="font-size: small">
-        {{ infoToDisplay }}
-      </span></el-link>
-      </div>
-      <el-rate
-          v-model="course.grade"
-          disabled
-          show-score
-          text-color="#ff9900"
-          score-template="{value}">
-      </el-rate>
-    </div>
     <div class="comment-and-info-card">
       <el-tabs v-model="activeName">
         <el-tab-pane name="intro">
           <div slot="label" class="title-tag">课程介绍</div>
-          <!-- <div style="margin: 20px">
-            {{course.intro}}
+          <el-form :model="form">
+            <el-form-item prop="introduce">
+              <el-input type="textarea" v-model="form.introduce" :autosize="{ minRows: 10 }"></el-input>
+            </el-form-item>
+            <el-form-item class="btn">
+              <el-button type="primary" @click="submitForm">确认修改</el-button>
+              <el-button @click="resetForm">取消</el-button>
+            </el-form-item>
+          </el-form>
+          <!-- <div style="margin: 20px; font-weight: lighter; font-size: small; line-height: 33px;">
+            {{ course.title }}
           </div> -->
-           <el-form :model="form">
-    <el-form-item prop="introduce">
-      <el-input type="textarea" v-model="form.introduce" :autosize="{minRows:10}"></el-input>
-    </el-form-item>
-   <el-form-item class="btn">
-    <el-button type="primary" @click="submitForm('newForm')">确认修改</el-button>
-    <el-button >取消</el-button>
-    <!-- 这里还不知道写什么 -->
-  </el-form-item>
-  </el-form>
         </el-tab-pane>
         <el-tab-pane name="comment">
           <div slot="label" class="title-tag">用户评论</div>
@@ -45,90 +26,77 @@
   </div>
 </template>
 
-
 <script>
 import CourseCommentList from "@/views/course/CourseCommentList";
+
 export default {
   name: "PlayWindowFooter",
-  components:{
+  components: {
     CourseCommentList
   },
-  data(){
+  data() {
     return {
-       infoToDisplay: '收藏课程',
       course: {},
       activeName: 'comment',
-      form:{
-        introduce:''
+      form: {
+        introduce: ''
       }
-    }
+    };
   },
-  methods:{
-    //点击收藏
-    starClass() {
-      //  获取登录信息
-      let user = window.localStorage.getItem('user');
-      if (user === null) {
-        this.$message.info('请先登录或注册');
-      } else {
-        if (this.infoToDisplay === '收藏成功') {
-          this.$message.error({
-            message: '你已经收藏该课程',
-          });
-        } else {
-          // let promise = this.$axios({
-          //     url: '',
-          //     method: '',
-          //     data:{
-          //       userId: user.id,
-          //       courseId: this.course.courseId
-          //     }
-          // });
-          let promise = new Promise((a) => {
-            a({
-              data: {
-                stared: true
-              }
-            });
-          });
-          promise.then((res) => {
-            if (res.data.stared) {
-              this.$message.success('收藏成功');
-              this.infoToDisplay = '收藏成功';
-            }
-          }).catch((err) => {
-            this.$message.error('你的网络迷路了');
-          });
+  methods: {
+    submitForm() {
+      this.course.title=this.form.introduce;
+      this.request.post("/course/update",this.course)
+      .then((res)=>{
+        console.log(res);
+        if(res.code=="200"){
+          this.$message.success("修改成功");
+        }else{
+          this.$message.error("修改失败");
         }
-      }
+      })
     },
-    submitForm(form){
-      this.$notify({
-          title: '成功',
-          message: '信息修改成功',
-          type: 'success'
-        });
-        // 还没写传输
-    }
+    resetForm(){
+      this.form.introduce=this.course.title;
+    },
   },
-   mounted() {
-    this.$bus.$on('courseChanged', (data) => {
+  mounted() {
+    this.$bus.$on('courseChanged1', (data) => {
       this.course = data;
+      this.form.introduce=this.course.title;
+      let promise = this.$axios({
+        url: '/records/orCollectedCourse',
+        method: 'get',
+        params: {
+          userId: this.user.userId,
+          courseId: this.course.courseId,
+        }
+      });
+      promise.then((res) => {
+        if (res.data == 1) {
+          this.stared = true;
+        } else {
+          this.stared = false;
+        }
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });
     });
   },
   beforeDestroy() {
-    this.$bus.$off('courseChanged');
+    this.$bus.$off('courseChanged1');
   }
 }
 </script>
 
 <style scoped>
-.star-score{
+.star-score {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-p{
+
+p {
   font-size: medium;
   line-height: 30px;
   color: #0f1419;
@@ -137,27 +105,32 @@ p{
   width: 80%;
   text-indent: 2em;
 }
-.title-tag{
+
+.title-tag {
   font-size: small;
   margin: 0 156px;
 }
-.comment-and-info-card{
+
+.comment-and-info-card {
   margin-top: 20px;
   border-radius: 5px;
   border: 2px solid #F1F2F3;
   box-shadow: 0 3px 12px rgb(0 36 153 / 6%);
 }
-.starLink{
+
+.starLink {
   font-size: x-large;
 }
-.play-window-footer{
+
+.play-window-footer {
   margin-top: 30px;
   width: 100%;
   height: auto;
   /*background-color: teal;*/
 }
-.btn{
-  display:flex;
+
+.btn {
+  display: flex;
   justify-content: center;
 }
 </style>

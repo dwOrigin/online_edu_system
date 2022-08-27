@@ -48,8 +48,6 @@ export default {
       });
       promise.then((res) => {
         this.chapters = res.data;
-        console.log(res.data);
-        console.log(this.chapters);
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });

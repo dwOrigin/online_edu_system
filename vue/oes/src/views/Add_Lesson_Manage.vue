@@ -218,16 +218,16 @@ export default {
       this.form.teacherId = '';
       this.form.type = '';
     },
-    getVideo(event) {
-      this.videoInfo.allVideo = event
-    },
-    deleteVideo(index) {
-      const video = this.videoInfo.allVideo[index]
-      if (video.videoLink) {
-        this.videoInfo.deleteVideo.push(video)
-      }
-      this.videoInfo.allVideo.splice(index, 1)
-    },
+    // getVideo(event) {
+    //   this.videoInfo.allVideo = event
+    // },
+    // deleteVideo(index) {
+    //   const video = this.videoInfo.allVideo[index]
+    //   if (video.videoLink) {
+    //     this.videoInfo.deleteVideo.push(video)
+    //   }
+    //   this.videoInfo.allVideo.splice(index, 1)
+    // },
     changeAvatar() {
       this.avatar = true;
     },

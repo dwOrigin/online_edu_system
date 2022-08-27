@@ -1,22 +1,20 @@
 <template>
-  <div
-      @click="openTeacher"
-      class="teacher-header">
+  <div @click="openTeacher" class="teacher-header">
     <div class="large-avatar">
       <a href="#">
-        <el-avatar
-            :size="60"
-            :src="teacher.avatarUrl">
-          <span v-if="teacher.avatarUrl === ''">{{ teacher.name }}</span>
+        <el-avatar :size="60" :src="teacher.picPath">
+          <span v-if="teacher.picPath == '' || teacher.picPath == null">{{ teacher.name }}</span>
         </el-avatar>
       </a>
     </div>
     <div>
       <div style="font-weight: lighter; margin: 20px 0 5px  0">
         {{ teacher.name }}
+        &nbsp;
+        <el-tag type="warning" size="mini">{{ teacher.education }}</el-tag>
       </div>
       <div style="font-size: x-small; color: #99a9bf;">
-        {{ teacher.intro }}
+        {{ teacher.career }}
       </div>
     </div>
   </div>
@@ -33,31 +31,19 @@ export default {
       course: {}
     };
   },
-  watch:{
-    course(newV){
+  watch: {
+    course(newV) {
       // while (this.course.teacherId ==  null);
       //获取讲师简略信息
-      // let promise = this.$axios({
-      //     url: '',
-      //     method: '',
-      //     data:{
-      //       teacherId: newV.teacherId
-      //     }
-      // });
-      let promise = new Promise((a) => {
-        a({
-          data: {
-            teacher: {
-              name: '韩愈',
-              avatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',//头像url, 没有时显示默认头像
-              intro: '闻道有先后,术业有专攻!',//简介,
-              id: 9999//讲师id
-            }
-          }
-        });
+      let promise = this.$axios({
+        url: '/teacher/id',
+        method: 'get',
+        params: {
+          id: newV.teacherId
+        }
       });
       promise.then((res) => {
-        this.teacher = res.data.teacher;
+        this.teacher = res.data;
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
@@ -67,20 +53,20 @@ export default {
     // 路由到讲师界面
     openTeacher() {
       this.$router.push({
-        name: 'teacher',
-        query: {
+        name: 'teacherPage',
+        params: {
           teacherId: this.teacher.id
         }
       });
     }
   },
   mounted() {
-    this.$bus.$on('courseChanged', (data) => {
+    this.$bus.$on('courseChanged1', (data) => {
       this.course = data;
     });
   },
   beforeDestroy() {
-    this.$bus.$off('courseChanged');
+    this.$bus.$off('courseChanged1');
   }
 }
 </script>
@@ -99,5 +85,4 @@ export default {
   border-radius: 5px;
   border: 1px solid #409EFF;
 }
-
 </style>

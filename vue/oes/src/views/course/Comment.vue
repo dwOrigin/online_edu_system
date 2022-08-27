@@ -1,27 +1,22 @@
 <template>
-<div class="comment">
+  <div class="comment">
     <div class="comment-header">
       <div class="comment-avatar">
-        <el-avatar
-            :size="40"
-            :src="commenter.avatarUrl">
-          <span v-if="commenter.avatarUrl === ''">{{ commenter.name }}</span>
+        <el-avatar :size="40" :src="commenter.picImg">
+          <span v-if="commenter.picImg == ''">{{ commenter.name }}</span>
         </el-avatar>
-         <div style="float:right;display: inline-block;">
+      </div>
+      <div class="comment-info">
+        <div style="font-size: 16px;">{{ commenter.userName }}</div>
+        <div style="float:right;display: inline-block;">
           <i class="el-icon-delete" @click="deleteComment"></i>
           <!-- 需要参数，但现在没有，以后会有的 -->
         </div>
-        <!-- 没办法让删除靠右，就这样吧 -->
-      </div>
-      <div class="comment-info">
-        <div style="font-size: 16px;">{{ commenter.name }}</div>
         <div class="time-and-score">
-          <div style="margin-right: 10px">{{ comment.time }}</div>
-          <el-rate
-              v-model="comment.score"
-              disabled
-              text-color="#ff9900"
-              score-template="{value}">
+          <div style="margin-right: 10px">{{ comment.addtime.split('T')[0] }}&nbsp;{{
+              comment.addtime.split('T')[1].split(':')[0]
+          }}:{{ comment.addtime.split('T')[1].split(':')[1] }}</div>
+          <el-rate v-model="comment.praiseCount" disabled text-color="#ff9900" score-template="{value}">
           </el-rate>
         </div>
       </div>
@@ -40,8 +35,9 @@ export default {
   name: "Comment",
   data() {
     return {
-     commenter: {},
-      myComment : this.comment
+      commenter: {},
+      myComment: this.comment,
+      course: {}
     }
   },
   props: {
@@ -57,41 +53,49 @@ export default {
       }
     }
   },
-  methods:{
-     //更新评论者信息
+  methods: {
+    //更新评论者信息
     refreshCommenter(id) {
       //根据评论者id获取评论者信息
-      // let promise = this.$axios({
-      //   url: '',
-      //   method: '',
-      //   data: {
-      //     id: id
-      //   }
-      // });
-      let promise = new Promise((a) => {
-        a({
-          data: {user: {
-              name: '评论者555',
-              avatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
-            }}
-        });
+      let promise = this.$axios({
+        url: '/user/findOne',
+        method: 'get',
+        params: {
+          id: this.myComment.userId
+        }
       });
       promise.then((res) => {
-          this.commenter = res.data.user;
+        this.commenter = res.data;
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
     },
-    deleteComment(){
-       this.$alert('你将删除这条评论', '提示', {
-          confirmButtonText: '确定',
-          callback: action => {
-            this.$message({
-              type: 'info',
-              message: `删除成功`
-            });
-          }
-        });
+    deleteComment() {
+      this.$alert('你将删除这条评论', '提示', {
+        confirmButtonText: '确定',
+        callback: action => {
+          this.request.get('/comment/delete', {
+            params: {
+              commentId: this.myComment.commentId
+            }
+          })
+            .then((res) => {
+              if (res.code == "200") {
+                this.$message.success("删除成功")
+                this.request.get('/course/getById', {
+                  params: {
+                    id: this.myComment.totalId
+                  }
+                })
+                  .then((res) => {
+                    this.$bus.$emit('courseChanged1',res);
+                  })
+              } else {
+                this.$message.error("删除失败")
+              }
+            })
+        }
+      });
     }
   }
 }
@@ -108,6 +112,7 @@ export default {
   margin-top: 20px;
   /*background-color: teal;*/
 }
+
 .time-and-score {
   color: #99a9bf;
   font-size: 12px;
@@ -115,16 +120,20 @@ export default {
   display: flex;
   align-items: center;
 }
+
 .comment-info {
   font-weight: lighter;
 }
+
 .comment-avatar {
   margin-right: 20px;
 }
+
 .comment-header {
   display: flex;
   margin-top: 10px;
 }
+
 .comment {
   border-bottom: 1px solid #edeff2;
   margin-top: 15px;

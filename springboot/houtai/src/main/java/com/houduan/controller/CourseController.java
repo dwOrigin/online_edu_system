@@ -77,15 +77,26 @@ public class CourseController {
     public Result addViewPoint(@RequestParam Integer id){
         return courseService.addViewPoint(id);
     }
+
     @GetMapping("/sortCourses")
     public Result sortCourses(){
         return courseService.sortArticles();
     }
-@GetMapping("/typeRecommend")
+    @GetMapping("/typeRecommend")
     public List<Course> typeRecommend(Integer courseId){
         return courseService.recommendCoursesType(courseId);
-}
-
-
+    }
+    @GetMapping("/getbyteacher")
+    public List<Course>getbyteacher(@RequestParam Integer teacherid){
+        return courseService.getbyteacher(teacherid);
+    }
+    @GetMapping("/getbyname")
+    public List<Course>getbyname(@RequestParam String name){
+        return courseService.getbyname(name);
+    }
+    @GetMapping("/getbyboth")
+    public List<Course>getbyboth(@RequestParam String select,@RequestParam String key){
+        return courseService.getbyboth(select,key);
+    }
 }
 

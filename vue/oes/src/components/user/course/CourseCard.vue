@@ -1,11 +1,6 @@
 <template>
-  <div class="main" @click="$router.push({
-    name: 'course',
-    params: {
-      courseId: course.courseId
-    }
-  });" ref="card">
-    <el-image style="width: 100%; height: 120px" ref="img" :src="course.logo" fit="fill">
+  <div class="main" @click="pushcourse" ref="card">
+    <el-image :style="imgStyle" :src="course.logo" fit="fill">
     </el-image>
     <div>
       <span style="max-height: 40px;
@@ -35,6 +30,11 @@ export default {
     return {
       num: 1,
       teacher: '',
+      imgStyle: {
+        width: '100%',
+        height: '120px'
+
+      }
     }
   },
   props: {//对接收到的参数进行限制
@@ -57,6 +57,18 @@ export default {
       //   };
       // }
     }
+  },
+  methods: {
+    pushcourse() {
+      this.$bus.$emit('courseChanged',this.course)
+      this.$router.push({
+        name: 'course',
+        params: {
+          courseId: this.course.courseId
+        }
+      });
+    }
+
   },
   mounted() {
     //切换方向
@@ -87,8 +99,9 @@ export default {
       // this.$message.error('你的网络迷路了');
     });
     if (this.direction === 'row') {
+      this.imgStyle.width = '50%';
       this.$refs.card.style.flexDirection = 'row';
-      this.$refs.card.style.justifyContent = 'space-between';
+      this.$refs.card.style.justifyContent = 'center';
       this.$refs.card.style.width = '400px';
       this.$refs.card.style.height = '150px';
       this.$refs.card.style.alignItems = 'center';

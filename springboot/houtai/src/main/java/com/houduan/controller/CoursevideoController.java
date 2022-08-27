@@ -24,8 +24,6 @@ import com.houduan.entity.Coursevideo;
 @RequestMapping("/coursevideo")
 public class CoursevideoController {
     @Resource
-    private ICoursevideoService service;
-    @Resource
     private ICoursevideoService coursevideoService;
     @PostMapping("/save")
     public Result addnew(@RequestBody Coursevideo coursevideo) {
@@ -41,8 +39,8 @@ public class CoursevideoController {
     public Integer getnum(@RequestParam Integer courseId){
         return coursevideoService.getnum(courseId);
     }
-    @DeleteMapping("/{id}")
-    public Boolean delete(@PathVariable Integer id) {
+    @GetMapping("/id")
+    public Boolean delete(@RequestParam Integer id) {
         return coursevideoService.removeById(id);
     }
 
@@ -64,13 +62,13 @@ public class CoursevideoController {
 //    测试通过
 @PostMapping("/addCourseVideo")
     public Result addCourseVideo(@RequestBody Coursevideo coursevideo){
-    Result result = service.addCourseVideo(coursevideo);
+    Result result = coursevideoService.addCourseVideo(coursevideo);
     return result;
 }
 
 @GetMapping("/deleteCourseVideo")
     public Result deleteCourseVideo(Integer courseVideoId){
-    Result result = service.deleteCourseVideo(courseVideoId);
+    Result result = coursevideoService.deleteCourseVideo(courseVideoId);
     return result;
 }
 
