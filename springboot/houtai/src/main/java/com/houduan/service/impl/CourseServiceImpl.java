@@ -241,4 +241,13 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         return mapper.selectList(queryWrapper);
     }
 
+    @Override
+    public Result commentplus(Integer id) {
+        QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("course_id", id);
+        Course course = getOne(queryWrapper);
+        course.setCommentNum(course.getCommentNum()+1);
+        return Result.success();
+    }
+
 }
