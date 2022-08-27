@@ -38,8 +38,8 @@ public class RecordsController {
     }
 
     @GetMapping("/addRecordArt")
-    public Result addRecordArticle(@RequestParam Integer userId,@RequestParam Integer articleId){
-        Result result = service.addRecordArticle(userId, articleId);
+    public Result addRecordArticle(@RequestParam Integer userId,@RequestParam Integer commentId){
+        Result result = service.addRecordArticle(userId, commentId);
         return result;
     }
     @GetMapping("/reduceRecordCom")
@@ -49,8 +49,8 @@ public class RecordsController {
     }
 
     @GetMapping("/reduceRecordArt")
-    public Result reduceRecordArticle(@RequestParam Integer userId,@RequestParam Integer articleId){
-        Result result = service.reduceRecordArticle(userId, articleId);
+    public Result reduceRecordArticle(@RequestParam Integer userId,@RequestParam Integer commentId){
+        Result result = service.reduceRecordArticle(userId, commentId);
         return result;
     }
 /*
@@ -103,7 +103,7 @@ public class RecordsController {
         Result result = service.reduceRecordArticleComment(userId, articleCommentId);
         return result;
     }
-    @GetMapping("/orLikedArticleCom")
+    @GetMapping("/orLikedArticleComment")
     public Integer orLikedArticleComment(@RequestParam Integer userId,@RequestParam Integer articleCommentId ){
         Integer integer = service.orLikedArticleComment(userId, articleCommentId);
         return integer;

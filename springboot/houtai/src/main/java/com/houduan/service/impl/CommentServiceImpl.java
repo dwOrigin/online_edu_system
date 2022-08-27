@@ -1,6 +1,7 @@
 package com.houduan.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.reflect.SpringReflectionHelper;
 import com.houduan.common.Result;
 import com.houduan.entity.Article;
 import com.houduan.entity.Comment;
@@ -14,6 +15,7 @@ import com.houduan.service.ICommentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -29,23 +31,27 @@ import java.util.List;
 @Service
 public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements ICommentService {
 
-    @Autowired
-    private  CommentMapper mapper;
     @Resource
+    private  CommentMapper mapper;
+
+   @Resource
+   private UserMapper userMapper;
+   @Resource
     private CourseMapper courseMapper;
     @Resource
     private ArticleMapper articleMapper;
-    @Resource
-    private UserMapper userMapper;
+
     @Override
-    public Result sendComment(User user, Comment comment, Article article) {
+    public Result sendCommentArticle(Integer userId, String commentContent, Integer articleId) {
 //        设置文章评论的一些基本属性值
-        comment.setUserId(user.getUserId());
-        comment.setPCommentId(-1);
-        comment.setTotalId(article.getArticleId());
+        Comment comment = new Comment();
+        comment.setUserId(userId);
+        comment.setType(1);//1是文章
+        comment.setTotalId(articleId);
         comment.setOtherId(-1);
         comment.setPraiseCount(0);
         comment.setReplyCount(0);
+        comment.setContent(commentContent);
 ////////////////////////待会需要设置关于视频的属性值
 
         int insert = mapper.insert(comment);
@@ -57,14 +63,16 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
     }
     @Override
-    public Result sendComment(User user, Comment comment, Course course) {
+    public Result sendCommentCourse(Integer userId, String  commentContent, Integer courseId) {
+        Comment comment = new Comment();
 //        设置文章评论的一些基本属性值
-        comment.setUserId(user.getUserId());
-        comment.setPCommentId(-1);
-        comment.setTotalId(course.getCourseId());
-        comment.setOtherId(-1);
+        comment.setUserId(userId);
+        comment.setContent(commentContent);
+        comment.setTotalId(courseId);
+        comment.setType(2);//2是课程
         comment.setPraiseCount(0);
         comment.setReplyCount(0);
+        comment.setOtherId(-1);
         int insert = mapper.insert(comment);
         if (insert>=1){
             return Result.success();
@@ -73,7 +81,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         }
 
     }
-    @Override
+   /* @Override
     public Result answerComment(User user, Comment parComment,Comment sonComment) {
         //设置评论的一些属性值
 
@@ -89,7 +97,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         }else {
             return Result.error();
         }
-    }
+    }*/
     @Override
     public Result addPraise(Comment comment) {
       comment.setPraiseCount(comment.getPraiseCount()+1);
@@ -126,11 +134,6 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     }
 
     @Override
-    public Result cancelReply(Comment comment) {
-        return null;
-    }
-
-    @Override
     public List<Comment> showInitComment(Article article) {
         System.out.println(article);
         QueryWrapper<Comment> wrapper = new QueryWrapper<>();
@@ -145,15 +148,15 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     public List<Comment> showInitComment(Course course) {
         QueryWrapper<Comment> wrapper = new QueryWrapper<>();
         wrapper.eq("type",2)//2是课程
-                .eq("totalId",course.getCourseId());
+                .eq("total_id",course.getCourseId());
         List<Comment> list = mapper.selectList(wrapper);
         return list;
     }
 
     @Override
-    public Result deleteComment(Integer integer) {
+    public Result deleteComment(Integer commentId) {
         QueryWrapper<Comment> wrapper = new QueryWrapper<>();
-        wrapper.eq("commentId",integer);
+        wrapper.eq("comment_id",commentId);
         int i = mapper.delete(wrapper);
         if (i>=1){
             return Result.success();
@@ -165,14 +168,19 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
     @Override
     public Article getArticleById(Integer id) {
-
-        Article article = articleMapper.selectById(id);
+        QueryWrapper<Article> wrapper = new QueryWrapper<>();
+        wrapper.eq("article_id",id);
+        Article article = articleMapper.selectOne(wrapper);
+        System.out.println(article);
+        System.out.println("-----------------");
         return article;
     }
 
     @Override
     public Course getCourseById(Integer id) {
-        Course course = courseMapper.selectById(id);
+        QueryWrapper<Course> wrapper = new QueryWrapper<>();
+        wrapper.eq("course_id",id);
+        Course course = courseMapper.selectOne(wrapper);
         return course;
     }
 
