@@ -5,7 +5,7 @@
       courseId: course.courseId
     }
   });" v-show="display" class="course-record">
-    <el-image class="radius-img" style="width: 200px; height: 120px" ref="img" src=coursedetail.logo fit="fill">
+    <el-image class="radius-img" style="width: 200px; height: 120px" ref="img" :src="coursedetail.logo" fit="fill">
     </el-image>
     <div class="right">
       <div class="center-part">
