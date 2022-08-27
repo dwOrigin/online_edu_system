@@ -72,86 +72,45 @@ export default {
       });
       return true;
     },
-    refreshQuestion(append) {
+    refreshQuestion() {
       //获取推荐问题
       let promise = this.$axios({
-          url: '/questions',
+          url: 'http://localhost:8081/questions',
           method: 'get',
-          // data:{}
       });
-      // let promise = new Promise((a) => {
-      //   a({
-      //     data: {
-      //       questionList: [
-      //         {
-      //           title: '这是一个问题?',
-      //           hottestAnswer: '我是这个问题最好的回答',
-      //           hottestAnswererName: '最好的回答者',
-      //           like: '999万',//赞同数
-      //           answerCnt: 10,
-      //           qId: 888
-      //         }
-      //       ]
-      //     }
-      //   });
-      // });
-      promise.then((res) => {
-        if (append === false) {
-          this.questionList = res.data;
-        }
+      promise.then((res) => {   
+          this.questionList = res.data;      
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
     },
-    refreshPassage(append) {
+    refreshPassage() {
       //获取热门文章
       let promise = this.$axios({
-          url: '/article/findAll',
+          url: 'http://localhost:8081/article/findAll',
           method: 'get',
-          // data:{}
       });
-      // let promise = new Promise((a) => {
-      //   a({
-      //     data: {
-      //       passageList: [
-      //         {
-      //           title: '我是文章标题',
-      //           content: '我是文章内容',
-      //           like: '16万',
-      //           pId: 999
-      //         }
-      //       ]
-      //     }
-      //   });
-      // });
       promise.then((res) => {
-        if (append === false) {
           this.passageList = res.data;
-        } 
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
     }
   },
   mounted() {
-    this.refreshQuestion(false);
-    this.refreshPassage(false);
-    this.$bus.$on('scrollToBottom', (data) => {
+    this.refreshQuestion();
+    this.refreshPassage();
+    // this.$bus.$on('scrollToBottom', (data) => {
       //  添加
-      if (this.$route.params.select === 'q') {
-        this.refreshQuestion(true);
-      } else if (this.$route.params.select === 'p') {
-        this.refreshPassage(true);
-      }
-    });
-    this.$bus.$on('refreshQAOMain',()=>{
-      this.refreshQuestion(false);
-    })
+      // if (this.$route.params.select === 'q') {
+      //   this.refreshQuestion();
+      // } else if (this.$route.params.select === 'p') {
+      //   this.refreshPassage();
+      // }
+    // });
   },
   beforeDestroy() {
     this.$bus.$off('scrollToBottom');
-    this.$bus.$off('refreshQAOMain');
-    
   }
 }
 </script>

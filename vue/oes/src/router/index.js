@@ -39,7 +39,7 @@ const router = new VueRouter({
         {
             //用户主页
             name: 'home',
-            path: '/home',
+            path: '/home', 
             component: Home,
             meta: {title: '欢迎访问在线教育系统!', changeTitle: true},
             children:[
