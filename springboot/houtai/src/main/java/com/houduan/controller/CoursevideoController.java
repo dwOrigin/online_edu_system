@@ -2,6 +2,7 @@ package com.houduan.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.houduan.common.Result;
+import io.swagger.models.auth.In;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -22,11 +23,10 @@ import com.houduan.entity.Coursevideo;
 @RestController
 @RequestMapping("/coursevideo")
 public class CoursevideoController {
-
+    @Resource
+    private ICoursevideoService service;
     @Resource
     private ICoursevideoService coursevideoService;
-
-
     @PostMapping("/save")
     public Result addnew(@RequestBody Coursevideo coursevideo) {
         return coursevideoService.addnew(coursevideo);
@@ -61,6 +61,21 @@ public class CoursevideoController {
                                       @RequestParam Integer pageSize) {
         return coursevideoService.page(new Page<>(pageNum, pageSize));
     }
+//    测试通过
+@PostMapping("/addCourseVideo")
+    public Result addCourseVideo(@RequestBody Coursevideo coursevideo){
+    Result result = service.addCourseVideo(coursevideo);
+    return result;
+}
+
+@GetMapping("/deleteCourseVideo")
+    public Result deleteCourseVideo(Integer courseVideoId){
+    Result result = service.deleteCourseVideo(courseVideoId);
+    return result;
+}
+
+
+
 
 }
 

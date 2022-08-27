@@ -21,4 +21,6 @@ public interface ICoursevideoService extends IService<Coursevideo> {
     Result addnew(Coursevideo coursevideo);
 
     Integer getnum(Integer courseId);
+    Result addCourseVideo(Coursevideo coursevideo);
+    Result deleteCourseVideo(Integer courseVideoId);
 }
