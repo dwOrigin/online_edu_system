@@ -6,8 +6,11 @@
       </el-rate>
     </div>
     <div class="comment-input-box">
-      <div>
-        <el-avatar :size="70" :src="user.picImg">
+      <div @click="$router.push({
+              name: 'personal',
+              query:{select:'pinfo'}
+           });">
+        <el-avatar :size="70" :src="user.picImg" >
           <span v-if="user.userId === undefined">未登录</span>
           <span v-if="user.picImg === '' && user.userId !== undefined">{{ user.name }}</span>
         </el-avatar>
@@ -68,12 +71,6 @@ export default {
       mediumReview: 0,
       curPage: 1,
       pageSize: 10,
-      comment: {
-        userId: '',
-        totalId: '',
-        content: '',
-        praiseCount: '',
-      },
     }
   },
   watch: {
@@ -121,17 +118,14 @@ export default {
         this.$bus.$emit('OpenLoginDialog');
       } else {
         //提交评论信息
-        this.comment.userId=this.user.userId;
-        this.comment.totalId=this.course.courseId;
-        this.comment.content=this.userComment;
-        this.comment.praiseCount=this.commentRate;
         let promise = this.$axios({
           url: '/comment/sendCourse',
           method: 'get',
           params: {
-            user:this.user,
-            comment:this.comment,
-            course:this.course,
+            userId:this.user.userId,
+            commentContent:this.userComment,
+            courseId:this.course.courseId,
+            rate:this.commentRate
           }
         });
         // let promise = new Promise((a) => {
@@ -140,12 +134,12 @@ export default {
         //   });
         // });
         promise.then((res) => {
-          if (res.data == '200') {
+          if (res.data.code == "200") {
             this.$message.success('评论成功');
             this.userComment = '';
             this.updateComments();
           } else {
-            this.$message.error('请勿重复评论');
+            this.$message.error(res.data.message);
           }
         }).catch((err) => {
           this.$message.error('你的网络迷路了');
@@ -203,6 +197,7 @@ export default {
     this.$bus.$on('courseChanged', (c) => {
       this.course = c;
       this.updateComments();
+      
     });
     let u = window.localStorage.getItem('user');
     if (u !== null) {
