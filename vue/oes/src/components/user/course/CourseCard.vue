@@ -1,10 +1,5 @@
 <template>
-  <div class="main" @click="$router.push({
-    name: 'course',
-    params: {
-      courseId: course.courseId
-    }
-  });" ref="card">
+  <div class="main" @click="pushcourse" ref="card">
     <el-image :style="imgStyle" :src="course.logo" fit="fill">
     </el-image>
     <div>
@@ -35,7 +30,7 @@ export default {
     return {
       num: 1,
       teacher: '',
-      imgStyle:{
+      imgStyle: {
         width: '100%',
         height: '120px'
 
@@ -62,6 +57,18 @@ export default {
       //   };
       // }
     }
+  },
+  methods: {
+    pushcourse() {
+      this.$bus.$emit('courseChanged',this.course)
+      this.$router.push({
+        name: 'course',
+        params: {
+          courseId: this.course.courseId
+        }
+      });
+    }
+
   },
   mounted() {
     //切换方向

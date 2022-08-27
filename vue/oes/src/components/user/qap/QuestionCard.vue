@@ -1,31 +1,29 @@
 <template>
-  <div
-      @click="clickedM"
-      class="card">
+  <div @click="clickedM" class="card">
     <el-link :underline="false" style="font-size: 18px; font-weight: bold">
-      <span v-if="type==='question'">{{dataObj.title}}</span>
-      <span v-if="type==='passage'">{{dataObj.title}}</span>
+      <span v-if="type === 'question'">{{ dataObj.title }}</span>
+      <span v-if="type === 'passage'">{{ dataObj.title }}</span>
     </el-link>
     <div class="body">
       <el-link :underline="false" type="info">
-        <p class="answer-preview" v-if="type==='question'">
+        <p class="answer-preview" v-if="type === 'question'">
           <!-- {{dataObj.hottestAnswererName}}:&nbsp;&nbsp;&nbsp;{{dataObj.hottestAnswer}} -->
-         {{dataObj.content}}
+          {{ dataObj.content }}
         </p>
-        <p class="answer-preview" v-if="type==='passage'">
-          {{dataObj.content}}
+        <p class="answer-preview" v-if="type === 'passage'">
+          {{ dataObj.content }}
         </p>
       </el-link>
     </div>
     <div class="question-card-footer">
-      <el-tag v-if="type==='question'">
-        &nbsp;&nbsp;{{dataObj.praiseCount}}赞同&nbsp;&nbsp;
+      <el-tag v-if="type === 'question'">
+        &nbsp;&nbsp;{{ dataObj.praiseCount }}赞同&nbsp;&nbsp;
       </el-tag>
-      <el-tag v-if="type==='passage'">
-        &nbsp;&nbsp;{{dataObj.praiseCount}}点赞&nbsp;&nbsp;
+      <el-tag v-if="type === 'passage'">
+        &nbsp;&nbsp;{{ dataObj.praiseCount }}点赞&nbsp;&nbsp;
       </el-tag>
       &nbsp;&nbsp;&nbsp;&nbsp;
-      <el-tag type="success" v-if="type==='question'">&nbsp;&nbsp;{{dataObj.replyCount}}条答案</el-tag>
+      <el-tag type="success" v-if="type === 'question'">&nbsp;&nbsp;{{ dataObj.replyCount }}条答案</el-tag>
     </div>
   </div>
 </template>
@@ -37,26 +35,37 @@ export default {
     type: {
       type: String,
     },
-    obj:{}
+    obj: {}
   },
-  data(){
-      return {
-        dataObj: this.obj
-      };
+  data() {
+    return {
+      dataObj: this.obj
+    };
   },
-  methods:{
-    clickedM(){
-      if(this.type === 'question'){
+  methods: {
+    clickedM() {
+      if (this.type === 'question') {
+        let promise = this.$axios({
+          url: '/questions/plusread',
+          method: 'get',
+          params: {
+            id: this.dataObj.id
+          }
+        });
+        promise.then((res)=>{
+          console.log(res);
+        })
         this.$router.push({
           name: 'questionPage',
-          query:{
+          query: {
             qId: this.dataObj.id,
           }
         });
-      }else if(this.type === 'passage'){
+
+      } else if (this.type === 'passage') {
         this.$router.push({
           name: 'passagePage',
-          query:{
+          query: {
             pId: this.dataObj.articleId,
           }
         });
@@ -67,14 +76,16 @@ export default {
 </script>
 
 <style scoped>
-.card:hover{
+.card:hover {
   cursor: pointer;
 }
-.card{
+
+.card {
   border-bottom: 1px solid #9499A0;
   margin-top: 15px;
 }
-.body{
+
+.body {
   margin: 10px auto;
 }
 

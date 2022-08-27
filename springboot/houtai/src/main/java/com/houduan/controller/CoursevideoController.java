@@ -41,8 +41,8 @@ public class CoursevideoController {
     public Integer getnum(@RequestParam Integer courseId){
         return coursevideoService.getnum(courseId);
     }
-    @DeleteMapping("/{id}")
-    public Boolean delete(@PathVariable Integer id) {
+    @GetMapping("/id")
+    public Boolean delete(@RequestParam Integer id) {
         return coursevideoService.removeById(id);
     }
 

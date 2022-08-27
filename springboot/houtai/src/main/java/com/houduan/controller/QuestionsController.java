@@ -1,6 +1,7 @@
 package com.houduan.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.houduan.common.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -57,6 +58,11 @@ public class QuestionsController {
     @GetMapping("/getbyuserid")
     public List<Questions> getbyuserid(@RequestParam Integer userid){
         return questionsService.getbyuserid(userid);
+    }
+
+    @GetMapping("/plusread")
+    public Result plusread(@RequestParam Integer id){
+        return questionsService.plusread(id);
     }
 
 }

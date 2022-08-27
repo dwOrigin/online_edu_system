@@ -129,7 +129,9 @@ export default {
           url: '/comment/sendCourse',
           method: 'get',
           params: {
-            comment:this.comment
+            user:this.user,
+            comment:this.comment,
+            course:this.course,
           }
         });
         // let promise = new Promise((a) => {

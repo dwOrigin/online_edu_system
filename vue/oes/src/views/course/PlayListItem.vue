@@ -1,13 +1,13 @@
 <template>
   <div ref="pli" class="li">
-    <div @click="chapterChanged(chapter.url, chapter.order)"
+    <div @click="chapterChanged(chapter.videoLink, chapter.courseRank)"
          class="play-list-item">
       <div style="margin-left: 15px">
       <span>
-        &nbsp;&nbsp;&nbsp;{{ chapter.title }}
+        &nbsp;&nbsp;&nbsp;{{ chapter.name }}
       </span>
       </div>
-      <div style="color: #9499A0; font-size: x-small">{{ chapter.length }}</div>
+      <div style="color: #9499A0; font-size: x-small">{{ chapter.time }}</div>
     </div>
   </div>
 </template>
@@ -21,12 +21,12 @@ export default {
   methods: {
     //播放的集数改变
     chapterChanged(url, order) {
-      this.$bus.$emit('chapterChanged', url, order);
+      this.$bus.$emit('chapterChanged1', url, order);
     }
   },
   mounted() {
-    this.$bus.$on('chapterChanged', (url, order) => {
-      if (order === this.chapter.order) {
+    this.$bus.$on('chapterChanged1', (url, order) => {
+      if (order === this.chapter.courseRank) {
         this.$refs.pli.className = 'myActive';
       } else {
         this.$refs.pli.className = 'li';
@@ -34,7 +34,7 @@ export default {
     });
   },
   beforeDestroy() {
-    this.$bus.$off('chapterChanged');
+    this.$bus.$off('chapterChanged1');
   }
 }
 </script>
