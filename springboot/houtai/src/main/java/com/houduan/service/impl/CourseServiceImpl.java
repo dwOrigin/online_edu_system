@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.xml.bind.SchemaOutputResolver;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -115,20 +116,49 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
 * */
     @Override
     public List<Course> recommendCoursesType(Integer id) {
+
+
+
+        /*----------------------------------------*/
         QueryWrapper<Course> Wrapper = new QueryWrapper<>();
         Wrapper.eq("course_id",id);
-        Course course = mapper.selectOne(Wrapper);
+        Course courseInit = mapper.selectOne(Wrapper);
+        System.out.println(courseInit);
         QueryWrapper<Course> Wrapper2 = new QueryWrapper<>();
-        Wrapper2.eq("type",course.getType());
+        Wrapper2.eq("type",courseInit.getType());
         List<Course> initList = mapper.selectList(Wrapper2);
         if (initList.size()>3){
             List<Course> courses = new ArrayList<>();
-            for (int i=0;i<3;i++){
-                courses.add(initList.get((int)Math.random()*(initList.size()-1)));
+            int MAXNUM=initList.size();
+            List<Integer> integers = new ArrayList<>();//创建个集合用来存储
+            for (int i = 0; i < MAXNUM; i++) {
+                integers.add(i);
             }
+            Collections.shuffle(integers);
+            for (int i=0;i<3;i++){
+                /*Date date=new Date();
+                int seed= Integer.parseInt(String.format("%ts",date));
+                Random r= new Random(seed);
+                int t=0 + r.nextInt(initList.size()-1 - 0);
+                System.out.println(t);
+                if (initList.get(t)!=courseInit) {
+                    courses.add(initList.get(t));
+                }*/
+                if (initList.get(integers.get(i))!=courseInit) {
+                    System.out.println(integers.get(i));
+                    courses.add(initList.get(integers.get(i)));
+                }else {
+                    i--;//防止被播放的视频还被推荐了
+                }
+//                courses.add(initList.get((int)Math.random()*(initList.size()-1)));
+            }
+            System.out.println(courses);
             return courses;
         }
-        else return initList;
+        else {
+            System.out.println(initList);
+            return initList;
+        }
     }
 
     @Override
