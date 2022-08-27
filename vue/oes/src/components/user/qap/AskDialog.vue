@@ -6,13 +6,30 @@
       append-to-body
       modal-append-to-body
       width="30%">
+    <div style="margin: 0 auto 20px auto; display: flex; justify-content: center">
+      <el-input
+          style="margin-right: 10px"
+          maxlength="30"
+          v-model="qTitle" placeholder="输入你的问题标题">
+      </el-input>
+      <el-select v-model="category"
+                 placeholder="问题分类">
+        <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.value"
+            :value="item.value">
+        </el-option>
+      </el-select>
+    </div>
     <el-input
         type="textarea"
         ref="qC"
         :rows="6"
         maxlength="100"
         show-word-limit
-        placeholder="请输入你的问题"
+        style="margin-bottom: 0"
+        placeholder="输入问题描述"
         v-model="qContent">
     </el-input>
     <span slot="footer" class="dialog-footer">
@@ -36,27 +53,43 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      qContent: ''
+      qContent: '',
+      qTitle: '',
+      category: '',
+      options:[{value: '分类一'}, {value: '分类二'}]
     };
   },
   methods: {
     handleClickFooter(btnName) {
       if(btnName === 'cancel'){
 
-      }else if (btnName === 'ask'){
+      }else if (btnName === 'ask' || this.qTitle.length < 10){
         if(this.qContent.length < 10){
-          this.$message.error('问题不能少于10个字');
+          this.$message.error('问题标题或描述不能少于10个字');
+          return;
+        }
+        if(this.category === ''){
+          this.$message.error('请选择问题分类');
           return;
         }
         let user = JSON.parse(window.localStorage.getItem('user'));
-        提问
-        let promise = this.$axios({
-            url: 'http://localhost:8081/questions',
-            method: 'post',
-            params:{
-              qContent: this.qContent,
-              userId: user.id
-            }
+        //提问
+        // let promise = this.$axios({
+        //     url: '',
+        //     method: '',
+        //     data:{
+        //       qTitle: this.qTitle,
+        //       category: this.category,
+        //       qContent: this.qContent,
+        //       userId: user.id
+        //     }
+        // });
+        let promise = new Promise((a)=>{
+            a({
+                data:{
+                  passed: true
+                }
+            });
         });
         promise.then((res)=>{
           let ret = res.data.passed;
@@ -70,8 +103,9 @@ export default {
         });
       }
       this.qContent = '';
+      this.qTitle = '';
+      this.category = '';
       this.dialogVisible = false;
-      this.reload();
     }
   },
   mounted() {

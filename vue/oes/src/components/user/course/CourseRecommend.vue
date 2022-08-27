@@ -5,10 +5,12 @@
         <!--  走马灯-->
         <el-col :span="15" :offset="1">
           <el-carousel height="320px" style="border-radius: 6px">
-            <el-carousel-item v-for="item in 4" :key="item">
+            <el-carousel-item v-for="img in imgs">
               <el-image
                   style="width: 100%; height: 100%"
-                  src="https://img.alicdn.com/imgextra/i1/6000000007842/O1CN01awUHxQ27ngiY2gNm5_!!6000000007842-0-octopus.jpg"
+                  :src="img.src"
+                  class="p-on-hover"
+                  @click="imgClicked(img.href)"
                   fit="fill"></el-image>
             </el-carousel-item>
           </el-carousel>
@@ -49,10 +51,35 @@ export default {
   },
   data() {
     return {
-      hotCourseList: []
+      hotCourseList: [],
+      imgs: [
+        {
+          src: require('../../../assets/VCG5_c.jpg'),
+          href: 'https://www.seu.edu.cn/'
+        },
+        {
+          src: require('../../../assets/VCG2_c.jpg'),
+          href: 'https://www.seu.edu.cn/'
+        },
+        {
+          src: require('../../../assets/VCG1_c.jpg'),
+          href: 'https://www.seu.edu.cn/'
+        },
+        {
+          src: require('../../../assets/VCG4_c.jpg'),
+          href: 'https://www.seu.edu.cn/'
+        },
+        {
+          src: require('../../../assets/VCG3_c.jpg'),
+          href: 'https://www.seu.edu.cn/'
+        }
+      ]
     };
   },
   methods: {
+    imgClicked(href){
+      window.open(href);
+    },
     //点击换一批调用
     refreshCourse() {
       //获取10门推荐课程
@@ -175,6 +202,9 @@ export default {
   flex-wrap: wrap;
 }
 
+.p-on-hover:hover{
+  cursor: pointer;
+}
 /*.myRefresh:hover {*/
 /*  color: red;*/
 /*}*/
