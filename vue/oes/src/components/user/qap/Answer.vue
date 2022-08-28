@@ -13,7 +13,7 @@
       {{ dataObj.content }}
     </div>
     <div class="footer">
-      <!-- <div>发布于 {{ dataObj.addtime }}</div> -->
+     <!-- <div>发布于 {{ dataObj.addtime }}</div> -->
         <div v-if="typeM=='PassageComment'">发布于{{ dataObj.addtime.split('T')[0] }}&nbsp;{{ dataObj.addtime.split('T')[1].split(':')[0] }}:{{ dataObj.addtime.split('T')[1].split(':')[1] }}</div>
       <div v-if="typeM=='Answer'">发布于{{ dataObj.addTime.split('T')[0] }}&nbsp;{{ dataObj.addTime.split('T')[1] }}</div>
       <div>

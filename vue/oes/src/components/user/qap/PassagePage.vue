@@ -5,7 +5,7 @@
       <div class="title">{{ passage.title }}</div>
       <div class="time"> {{ passage.createTime }} 修改</div>
       <div class="content">
-        {{ passage.summary }}
+        <!-- {{ passage.summary }} -->
         <!-- 等下想怎么展示md文件 -->
          <mavon-editor
             class="md"
