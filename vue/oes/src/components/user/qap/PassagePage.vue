@@ -5,7 +5,7 @@
       <div class="title">{{ passage.title }}</div>
       <div class="time"> {{ passage.createTime }} 修改</div>
       <div class="content">
-        {{ passage.summary }}
+        <!-- {{ passage.summary }} -->
         <!-- 等下想怎么展示md文件 -->
          <mavon-editor
             class="md"
@@ -34,7 +34,7 @@
       <div>
         <div style="margin-top: 10px">
           <answer
-              typeM="PassageComment"
+              typeM="PassageComment" v-if="update"
               v-for="obj in answers" :obj="obj"></answer>
         </div>
       </div>
@@ -85,15 +85,14 @@ export default {
   data() {
     return {
       // number: 10,
-      passage: {
-        // comments: []
-      },
+      passage: {},
       answers:[],
       likeBtnContent: '点赞',
       CommentDialogVisible: false,
       cc: '',
       isPraise:'',
       htmlContent:'',
+      update:true
       // length: 5,
     };
   },
@@ -111,9 +110,9 @@ export default {
     }
   },
   methods: {
-    getInfo(){
-       this.htmlContent=data
-    },
+    // getInfo(){
+    //    this.htmlContent=data
+    // },
      refreshComment(qId) {
       // 获取问题答案
       let promise = this.$axios({
@@ -141,6 +140,7 @@ export default {
       });
       promise.then((res) => {
         this.passage = res.data;
+        this.htmlContent=res.data.summary;
         let usr = window.localStorage.getItem('user');
       if (usr === null) {
         this.$bus.$emit('OpenLoginDialog');
@@ -226,6 +226,12 @@ export default {
       this.CommentDialogVisible = true;
     },
     handleClickFooter(btnName) {
+       let usr = window.localStorage.getItem('user');
+      if (usr === null) {
+        this.$bus.$emit('OpenLoginDialog');
+        return;
+      }
+       usr = JSON.parse(usr);
       if (btnName === 'cancel') {
 
       } else if (btnName === 'ask') {
@@ -238,24 +244,24 @@ export default {
         let promise = this.$axios({
           url: 'http://localhost:8081/comment/sendArticle',
           method: 'get',
-          data: {
-            comment: this.cc,
-            userId: user.id,
-            pId: this.passage.pId
+          params: {
+            commentContent: this.cc,
+            userId: user.userId,
+            articleId: this.passage.articleId
           }
         });
-        // let promise = new Promise((a) => {
-        //   a({
-        //     data: {
-        //       result: true
-        //     }
-        //   });
-        // });
         promise.then((res) => {
-          let ret = res.data.result;
+          let ret = res.data;
           if (ret) {
             this.$message.success('评论成功')
-            this.loadPassage();
+            this.refreshComment(this.$route.query.pId);
+            // this.loadPassage();
+             this.update = false
+            // 在组件移除后，重新渲染组件
+            // this.$nextTick可实现在DOM 状态更新后，执行传入的方法。
+            this.$nextTick(() => {
+                this.update = true
+            })
           } else {
             this.$message.error('请勿重复评论');
           }
@@ -270,7 +276,7 @@ export default {
   mounted() {
     this.loadPassage();
     this.refreshComment(this.$route.query.pId);
-    this.getInfo();
+    // this.getInfo();
   },
 }
 </script>

@@ -17,7 +17,9 @@
       {{ dataObj.content }}
     </div>
     <div class="footer">
-      <div>发布于 {{ dataObj.addTime }}</div>
+      <!-- <div>发布于 {{ dataObj.addTime }}</div> -->
+         <div v-if="typeM=='PassageComment'">发布于{{ dataObj.addtime.split('T')[0] }}&nbsp;{{ dataObj.addtime.split('T')[1].split(':')[0] }}:{{ dataObj.addtime.split('T')[1].split(':')[1] }}</div>
+      <div v-if="typeM=='Answer'">发布于{{ dataObj.addTime.split('T')[0] }}&nbsp;{{ dataObj.addTime.split('T')[1] }}</div>
       <div>
         <el-button
             type="primary" size="small" :plain="true">赞同({{ dataObj.praiseCount }})
@@ -49,7 +51,22 @@ export default {
   },
   methods:{
    getUserName(){
-      //获取提问者姓名
+     //获取回答者姓名
+      if(this.type === 'PassageComment'){
+        let promise = this.$axios({
+        url: 'http://localhost:8081/user/findOne',
+        method: 'get',
+        params: {
+          id:this.dataObj.userId
+        }
+      });
+       promise.then((res) => {
+        this.user = res.data;
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });
+      }else if(this.type==='Answer'){
+
       let promise = this.$axios({
         url: 'http://localhost:8081/user/findOne',
         method: 'get',
@@ -62,11 +79,18 @@ export default {
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
+      }
     },
     deleteComment(dataObj){
-      this.$axios.get('http://localhost:8081/questionscomment/delete',{
+      if(this.type==='PassageComment')
+      {this.$axios.get('http://localhost:8081/comment/delete',{
+        params:{commentId:dataObj.commentId}
+      })
+      }else if(this.type==='Answer'){
+         this.$axios.get('http://localhost:8081/questionscomment/delete',{
         params:{id:dataObj.id}
     })
+      }    
     this.reload();
     }
   }
