@@ -108,4 +108,13 @@ public class RecordsController {
         Integer integer = service.orLikedArticleComment(userId, articleCommentId);
         return integer;
     }
+    /*---------------2022-8-28---------------*/
+    @GetMapping("/deleteACommentLikes")
+        public Result deleteACommentLikes(Integer commentId){
+            Result result = service.deleteACommentLikes(commentId);
+            return result;
+        }
+
+
+
 }

@@ -65,4 +65,10 @@ Integer orCollectedCourse(Integer userId,Integer articleId);
    Result addRecordArticleComment(Integer userId,Integer articleCommentId);
    Result reduceRecordArticleComment(Integer userId,Integer articleCommentId);
    Integer orLikedArticleComment(Integer userId,Integer articleCommentId);
+/*---------------2022-8-28---------------*/
+//   删除评论时将所有的点赞记录全部除去
+   Result deleteACommentLikes(Integer commentId);
+
+
+
 }
