@@ -3,237 +3,108 @@
       style="overflow: hidden; margin-bottom: -50px">
     <div class="passage-page">
       <div class="title">{{ passage.title }}</div>
-      <div class="time"> {{ passage.time }} 修改</div>
+      <div class="time"> {{ passage.createTime }} 修改</div>
       <div class="content">
-        {{ passage.content }}
+        {{ passage.summary }}
+        <!-- 等下想怎么展示md文件 -->
+         <mavon-editor
+            class="md"
+            :value="htmlContent" 
+            :subfield="prop.subfield" 
+            :defaultOpen="prop.defaultOpen"
+            :toolbarsFlag="prop.toolbarsFlag"
+            :editable="prop.editable"
+            :scrollStyle="prop.scrollStyle"
+          />
       </div>
       <div class="footer">
         <div>
           <el-button
-              @click="handleClick('like')"
-              type="primary" plain>{{ likeBtnContent }}({{ passage.like }})
+              @click="handleClick()"
+              type="primary" plain>喜欢({{ passage.praiseCount }})
           </el-button>
-        </div>
-        <div>
-          <el-button
-              @click="handleClick('comment')"
-              ype="primary" plain>评论文章
-          </el-button>
-        </div>
+        </div>     
       </div>
       <div>
         <div style="margin-top: 10px">
           <answer
-              typeM="PassageComment"
-              v-for="obj in passage.comments.slice(0, length)" :obj="obj"></answer>
+              typeM="PassageComment" v-if="update"
+              v-for="obj in answers" :obj="obj"></answer>
         </div>
       </div>
     </div>
-    <el-dialog
-        :visible.sync="CommentDialogVisible"
-        center
-        :show-close="false"
-        append-to-body
-        modal-append-to-body
-        width="30%">
-      <el-input
-          type="textarea"
-          ref="cc"
-          :rows="5"
-          maxlength="100"
-          show-word-limit
-          placeholder="请输入你的评论"
-          v-model="cc">
-      </el-input>
-      <span slot="footer" class="dialog-footer">
-      <el-button
-          plain
-          style='padding-left: 30px; padding-right: 30px; margin-right: 50px'
-          type="primary" @click="handleClickFooter('ask')">评论
-      </el-button>
-        <el-button
-            plain
-            style='padding-left: 30px; padding-right: 30px'
-            type="info" @click="handleClickFooter('cancel')">
-          取消
-        </el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
 <script>
 import Answer from "@/views/qap/Answer";
-
+import { mavonEditor } from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
 export default {
   name: "PassagePage",
   components: {
-    Answer
+    Answer,
+    mavonEditor
   },
   data() {
     return {
-      number: 10,
-      passage: {
-        comments: []
-      },
-      likeBtnContent: '点赞',
-      CommentDialogVisible: false,
-      cc: '',
-      length: 5,
+      passage: {},
+      answers:[],
+      htmlContent:'',
+      update:true
     };
   },
+  computed: {
+  // 解析器配置
+    prop () {
+      let data = {
+        subfield: false,// 单双栏模式
+        defaultOpen: 'preview',//edit： 默认展示编辑区域 ， preview： 默认展示预览区域 
+        editable: false,    // 是否允许编辑
+        toolbarsFlag: false,
+        scrollStyle: true
+      }
+      return data
+    }
+  },
   methods: {
-    loadPassage() {
-      let id = this.$route.query.pId;
-      //获取文章详细信息
-      // let promise = this.$axios({
-      //     url: '',
-      //     method: '',
-      //     data:{
-      //       pId: id
-      //     }
-      // });
-      let promise = new Promise((a) => {
-        a({
-          data: {
-            passage: {
-              pId: 8889,
-              title: '文章标题',
-              time: '2022/12/26',
-              like: 1888,
-              content: '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容这是' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容' +
-                  '这是文章内容这是文章内容这是文章内容这是文章内容这是文章内容文章内容',
-              comments: [
-                {
-                  cId: 10086,//评论id
-                  commenterName: '评论者名字',
-                  commenterAvatarUrl: 'https://pic4.zhimg.com/v2-d41c2ceaed8f51999522f903672a521f_xs.jpg?source=1940ef5c',
-                  content: '这是评论内容',
-                  time: '2022/8/71',
-                  like: 998
-                }
-              ]
-            }
-          }
-        });
+     refreshComment(qId) {
+      // 获取问题答案
+      let promise = this.$axios({
+        url: 'http://localhost:8081/comment/showA',
+        method: 'get',
+        params: {
+          articleId: qId
+        }
       });
       promise.then((res) => {
-        //@test
-        let c = res.data.passage.comments;
-        c = [...c, ...c];
-        c = [...c, ...c];
-        c = [...c, ...c];
-        c = [...c, ...c];
-        c = [...c, ...c];
-        res.data.passage.comments = c;
-        this.passage = res.data.passage;
+        this.answers = res.data;
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
     },
-    handleClick(btnName) {
-      let usr = window.localStorage.getItem('user');
-      if (usr === null) {
-        this.$bus.$emit('OpenLoginDialog');
-        return;
-      }
-      if (btnName === 'like') {
-        //点赞文章
-        // let promise = this.$axios({
-        //   url: '',
-        //   method: '',
-        //   data: {
-        //     pId: this.passage.pId,
-        //     uId: JSON.parse(usr).id
-        //   }
-        // });
-        let promise = new Promise((a) => {
-          a({
-            data: {
-              result: false
-            }
-          });
-        });
-        promise.then((res) => {
-          if (res.data.result) {
-            this.passage.like++;
-            this.likeBtnContent = '已点赞';
-          } else {
-            this.$message.error('请勿重复点赞');
+    loadPassage() {
+      let id = this.$route.query.pId;
+      //获取文章详细信息
+      let promise = this.$axios({
+          url: 'http://localhost:8081/article/getbyid',
+          method: 'get',
+          params:{
+            id: id
           }
-        }).catch((err) => {
-          this.$message.error('你的网络迷路了');
-        });
-      } else if (btnName === 'comment') {
-        this.CommentDialogVisible = true;
-      }
+      });
+      promise.then((res) => {
+        this.passage = res.data;
+        this.htmlContent=res.data.summary;
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });
     },
-    handleClickFooter(btnName) {
-      if (btnName === 'cancel') {
-
-      } else if (btnName === 'ask') {
-        if (this.cc.length < 10) {
-          this.$message.error('评论不能少于10个字');
-          return;
-        }
-        let user = JSON.parse(window.localStorage.getItem('user'));
-        //评论文章
-        // let promise = this.$axios({
-        //   url: '',
-        //   method: '',
-        //   data: {
-        //     comment: this.cc,
-        //     userId: user.id,
-        //     pId: this.passage.pId
-        //   }
-        // });
-        let promise = new Promise((a) => {
-          a({
-            data: {
-              result: true
-            }
-          });
-        });
-        promise.then((res) => {
-          let ret = res.data.result;
-          if (ret) {
-            this.$message.success('评论成功')
-            this.loadPassage();
-          } else {
-            this.$message.error('请勿重复评论');
-          }
-        }).catch((err) => {
-          this.$message.error('你的网络迷路了');
-        });
-      }
-      this.cc = '';
-      this.CommentDialogVisible = false;
-    }
   },
   mounted() {
     this.loadPassage();
-    this.$bus.$on('scrollToBottom', (data) => {
-      this.length += 2;
-    });
+    this.refreshComment(this.$route.query.pId);
   },
-  beforeDestroy() {
-    this.$bus.$off('scrollToBottom');
-  }
 }
 </script>
 
