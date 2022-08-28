@@ -5,22 +5,22 @@
         <span style="margin-left: 50px; color: #6A6A6A; font-size: x-small">近期消息</span>
       </div>
       <div class="friends-list">
-        <friend-card v-for="obj in SysMessages" :key="obj.friendId" :obj="obj"></friend-card>
-        <friend-card v-for="obj in allMessages" :key="obj.friendId" :obj="obj"></friend-card>
+        <friend-card typer="system" v-if="SysMessages.length != 0"></friend-card>
+        <friend-card typer="receive" v-for="obj in allMessages" :key="obj.friendId" :obj="obj"></friend-card>
       </div>
     </div>
     <div class="chat-window">
       <div class="chat-header">
-        <span style="color: #353636; font-size: small;">{{ curChatObj.friendName }}</span>
+        <span style="color: #353636; font-size: small;">{{ name }}</span>
       </div>
       <div class="chat-content">
-        <message v-for="obj in curChatObj.history" :key="obj.mId" :msg="obj"></message>
+        <message v-for="obj in curChatObj" :key="obj" :msg="obj" :typer="type"></message>
       </div>
       <div class="chat-input">
         <el-input type="text" placeholder="请输入内容" v-model="text" maxlength="50" @keyup.enter.native="sendMsg"
           show-word-limit>
           <template slot="append">
-            <el-button @click="sendMsg">发送</el-button>
+            <el-button v-if="type!='system'" @click="sendMsg">发送</el-button>
           </template>
         </el-input>
       </div>
@@ -43,8 +43,10 @@ export default {
       text: '',
       SysMessages: [],
       allMessages: [],
-      curChatObj: { history: [], friendName: '' },
-      user: { id: 888 }
+      curChatObj: {},
+      name:'系统消息',
+      user: {},
+      type:'system'
     };
   },
   methods: {
@@ -57,65 +59,9 @@ export default {
           id: this.user.userId
         }
       });
-      // let promise = new Promise((a) => {
-      //   a({
-      //     data: {
-      //       messageList: [
-      //         {
-      //           friendId: 888,//好友的id
-      //           friendName: '留云借风',
-      //           friendAvatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-      //           unCheckedCnt: 1,//未读信息数
-      //           history: [
-      //             {
-      //               mId: 81,//消息id
-      //               content: 'hello, my mother-in-law!',//消息内容
-      //               time: '2022/12/25 16:00:00',//发送时间
-      //               senderId: 1314520,
-      //               senderName: '留云借风',
-      //               senderAvatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
-      //             },
-      //             {
-      //               mId: 8,//消息id
-      //               content: 'hello, my mother-in-law!',//消息内容
-      //               time: '2022/12/25 16:00:00',
-      //               senderId: 888,
-      //               senderName: '留云借风',
-      //               senderAvatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
-      //             }
-      //           ]
-      //         },
-      //         {
-      //           friendId: 889,//好友的id
-      //           friendName: '留云借风',
-      //           friendAvatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-      //           unCheckedCnt: 1,//未读信息数
-      //           history: [
-      //             {
-      //               mId: 83,//消息id
-      //               content: 'hello, my mother-in-law!',//消息内容
-      //               time: '2022/12/25 16:00:00',
-      //               senderId: 888,
-      //               senderName: '留云借风',
-      //               senderAvatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
-      //             },
-      //             {
-      //               mId: 88,//消息id
-      //               content: 'hello, my mother-in-law!',//消息内容
-      //               time: '2022/12/25 16:00:00',
-      //               senderId: 888,
-      //               senderName: '留云借风',
-      //               senderAvatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
-      //             }
-      //           ]
-      //         }
-      //       ]
-      //     }
-      //   });
-      // });
       promise.then((res) => {
         this.SysMessages = res.data;
-        this.curChatObj = this.SysMessages[0];
+        this.curChatObj = this.SysMessages;
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
@@ -127,45 +73,42 @@ export default {
         }
       });
       promise1.then((res1) => {
-        this.allMessages=res1.data;
+        this.allMessages = res1.data;
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
     },
     sendMsg() {
-      if (this.text.length === 0) {
+      if (this.text.length == 0) {
         return;
       }
-      let rId = this.curChatObj.friendId;
-      let sId = this.user.id;
       //发送消息到rId的用户
-      // let promise = this.$axios({
-      //   url: '',
-      //   method: '',
-      //   data: {
-      //     sId: sId,
-      //     rId: rId,
-      //     content: this.text,
-      //   }
-      // });
-      let promise = new Promise((a) => {
-        a({
-          data: {
-            result: true,
-            msg: {//发送的消息
-              mId: 8555,//消息id
-              content: 'hello, my mother-in-law!!!!!!!',//消息内容
-              time: '2022/12/25 16:00:00',//发送时间
-              senderId: 1314520,
-              senderName: '留云借风',
-              senderAvatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
-            }
-          }
-        });
+      let promise = this.$axios({
+        url: '/msgreceive/add',
+        method: 'get',
+        params: {
+          cusId: this.user.userId,
+          receiveId:this.curChatObj[0].cusId,
+          content: this.text,
+        }
       });
+      // let promise = new Promise((a) => {
+      //   a({
+      //     data: {
+      //       result: true,
+      //       msg: {//发送的消息
+      //         mId: 8555,//消息id
+      //         content: 'hello, my mother-in-law!!!!!!!',//消息内容
+      //         time: '2022/12/25 16:00:00',//发送时间
+      //         senderId: 1314520,
+      //         senderName: '留云借风',
+      //         senderAvatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
+      //       }
+      //     }
+      //   });
+      // });
       promise.then((res) => {
-        if (res.data.result) {
-          this.curChatObj.history.push(res.data.msg);
+        if (res.data) {
           this.text = '';
         } else {
           this.$message.error('消息发送失败');
@@ -178,24 +121,42 @@ export default {
   mounted() {
     this.user = JSON.parse(window.localStorage.getItem('user'));
     this.getUserMessage();
-    this.$bus.$on('clearUnCheckedCnt', (id) => {
-      this.allMessages.forEach((item) => {
-        if (item.friendId === id) {
-          item.unCheckedCnt = 0;
-        }
-      });
-    });
+    // this.$bus.$on('clearUnCheckedCnt', (id) => {
+    //   this.allMessages.forEach((item) => {
+    //     if (item.friendId === id) {
+    //       item.unCheckedCnt = 0;
+    //     }
+    //   });
+    // });
     this.$bus.$on('changeChatWindow', (id) => {
-      this.allMessages.forEach((item) => {
-        if (item.friendId === id) {
-          this.curChatObj = item;
-          this.text = '';
-        }
-      });
+      if (id == -1) {
+        this.curChatObj = this.SysMessages;
+        this.name="系统消息"
+        this.type="system"
+      } else {
+        this.request.get('/msgreceive/getcus',{
+          params:{
+            cusId:id,
+            userId:this.user.userId
+          }
+        })
+        .then((res)=>{
+          this.curChatObj=res;
+          this.type="receive"
+        })
+        this.request.get('/user/findOne',{
+          params:{
+            id:id
+          }
+        })
+        .then((res)=>{
+          this.name=res.userName
+        })
+      }
     });
   },
   beforeDestroy() {
-    this.$bus.$off('clearUnCheckedCnt');
+    // this.$bus.$off('clearUnCheckedCnt');
     this.$bus.$off('changeChatWindow');
   }
 }

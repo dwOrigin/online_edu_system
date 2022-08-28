@@ -109,4 +109,36 @@ private MsgreceiveMapper mapper;
          updateById(msgreceive);
          return Result.success();
     }
+
+    @Override
+    public Result readone(Integer cusId, Integer userId) {
+        QueryWrapper<Msgreceive>queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("cus_id",cusId);
+        queryWrapper.eq("receiving_cusid",userId);
+        List<Msgreceive>list=list(queryWrapper);
+        for(int i=0;i<list.size();i++){
+            list.get(i).setStatus(1);
+            baseMapper.updateById(list.get(i));
+        }
+        return Result.success();
+    }
+
+    @Override
+    public List<Msgreceive> getcus(Integer cusId, Integer userId) {
+        QueryWrapper<Msgreceive>queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("cus_id",cusId);
+        queryWrapper.eq("receiving_cusid",userId);
+        return list(queryWrapper);
+    }
+
+    @Override
+    public Result add(Integer cusId, Integer receiveId, String content) {
+        Msgreceive msgreceive=new Msgreceive();
+        msgreceive.setCusId(cusId);
+        msgreceive.setReceivingCusid(receiveId);
+        msgreceive.setContent(content);
+        msgreceive.setStatus(0);
+        baseMapper.insert(msgreceive);
+        return Result.success();
+    }
 }
