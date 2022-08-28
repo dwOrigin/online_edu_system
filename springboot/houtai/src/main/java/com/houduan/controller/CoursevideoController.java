@@ -1,7 +1,10 @@
 package com.houduan.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.houduan.common.Result;
+import io.swagger.models.auth.In;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -11,7 +14,7 @@ import com.houduan.entity.Coursevideo;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author online_system
@@ -19,36 +22,59 @@ import com.houduan.entity.Coursevideo;
  */
 @RestController
 @RequestMapping("/coursevideo")
-    public class CoursevideoController {
+public class CoursevideoController {
+    @Resource
+    private ICoursevideoService coursevideoService;
+    @PostMapping("/save")
+    public Result addnew(@RequestBody Coursevideo coursevideo) {
+        return coursevideoService.addnew(coursevideo);
+    }
 
-@Resource
-private ICoursevideoService coursevideoService;
-
-@PostMapping
-public Boolean save(@RequestBody Coursevideo coursevideo) {
-        return coursevideoService.saveOrUpdate(coursevideo);
-        }
-
-@DeleteMapping("/{id}")
-public Boolean delete(@PathVariable Integer id) {
+    @GetMapping("/findbycourseid")
+    public List<Coursevideo> findbycourseid(@RequestParam Integer courseId) {
+        System.out.println(courseId);
+        return coursevideoService.findbycourseid(courseId);
+    }
+    @GetMapping("/getnum")
+    public Integer getnum(@RequestParam Integer courseId){
+        return coursevideoService.getnum(courseId);
+    }
+    @GetMapping("/id")
+    public Boolean delete(@RequestParam Integer id) {
         return coursevideoService.removeById(id);
-        }
+    }
 
-@GetMapping
-public List<Coursevideo> findAll() {
+    @GetMapping
+    public List<Coursevideo> findAll() {
         return coursevideoService.list();
-        }
+    }
 
-@GetMapping("/{id}")
-public Coursevideo findOne(@PathVariable Integer id) {
+    @GetMapping("/{id}")
+    public Coursevideo findOne(@PathVariable Integer id) {
         return coursevideoService.getById(id);
-        }
+    }
 
-@GetMapping("/page")
-public Page<Coursevideo> findPage(@RequestParam Integer pageNum,
-@RequestParam Integer pageSize) {
+    @GetMapping("/page")
+    public Page<Coursevideo> findPage(@RequestParam Integer pageNum,
+                                      @RequestParam Integer pageSize) {
         return coursevideoService.page(new Page<>(pageNum, pageSize));
-        }
+    }
+//    测试通过
+@PostMapping("/addCourseVideo")
+    public Result addCourseVideo(@RequestBody Coursevideo coursevideo){
+    Result result = coursevideoService.addCourseVideo(coursevideo);
+    return result;
+}
 
-        }
+@GetMapping("/deleteCourseVideo")
+    public Result deleteCourseVideo(Integer courseVideoId){
+        System.out.println(courseVideoId);
+    Result result = coursevideoService.deleteCourseVideo(courseVideoId);
+    return result;
+}
+
+
+
+
+}
 

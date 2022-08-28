@@ -1,9 +1,15 @@
 package com.houduan.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.houduan.common.Result;
+import com.houduan.entity.Coursefavorite;
+import io.swagger.models.auth.In;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 
 import com.houduan.service.ICoursehistoryService;
 import com.houduan.entity.Coursehistory;
@@ -11,7 +17,7 @@ import com.houduan.entity.Coursehistory;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author online_system
@@ -19,36 +25,52 @@ import com.houduan.entity.Coursehistory;
  */
 @RestController
 @RequestMapping("/coursehistory")
-    public class CoursehistoryController {
+public class CoursehistoryController {
 
-@Resource
-private ICoursehistoryService coursehistoryService;
+    @Resource
+    private ICoursehistoryService coursehistoryService;
 
-@PostMapping
-public Boolean save(@RequestBody Coursehistory coursehistory) {
-        return coursehistoryService.saveOrUpdate(coursehistory);
-        }
+    @PostMapping
+    public Result savenew(@RequestBody Coursehistory coursehistory) {
+        return coursehistoryService.savenew(coursehistory);
+    }
+    @PostMapping("/delete")
+    public Result deleteone(@RequestBody Coursehistory coursehistory){
+        return coursehistoryService.delete(coursehistory);
+    }
+    @GetMapping("/getbyuserid")
+    public List<Coursehistory> getbyuserid(@RequestParam Integer userid){
+        return coursehistoryService.getbyuserid(userid);
+    }
+    @GetMapping("/deletebyuserid")
+    public Result deletebyuserid(@RequestParam Integer userid){
+        return coursehistoryService.deletebyuserid(userid);
+    }
 
-@DeleteMapping("/{id}")
-public Boolean delete(@PathVariable Integer id) {
-        return coursehistoryService.removeById(id);
-        }
-
-@GetMapping
-public List<Coursehistory> findAll() {
+    @GetMapping
+    public List<Coursehistory> findAll() {
         return coursehistoryService.list();
-        }
+    }
 
-@GetMapping("/{id}")
-public Coursehistory findOne(@PathVariable Integer id) {
+    @GetMapping("/{id}")
+    public Coursehistory findOne(@PathVariable Integer id) {
         return coursehistoryService.getById(id);
-        }
+    }
 
-@GetMapping("/page")
-public Page<Coursehistory> findPage(@RequestParam Integer pageNum,
-@RequestParam Integer pageSize) {
+    @GetMapping("/page")
+    public Page<Coursehistory> findPage(@RequestParam Integer pageNum,
+                                        @RequestParam Integer pageSize) {
         return coursehistoryService.page(new Page<>(pageNum, pageSize));
-        }
+    }
+    @GetMapping("/getByUserId")
+    public List<String>getThreeHistory(@RequestParam Integer id){
+    List<String> stringList = coursehistoryService.getbyuserid3(id);
+    return stringList;
+}
+    @GetMapping("/getByUserIdT")
+    public List<String>getThreeHistoryTime(@RequestParam  Integer id){
+        return coursehistoryService.getbyuseridTime(id);
+    }
 
-        }
+}
 

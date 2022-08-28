@@ -3,11 +3,14 @@ package com.houduan.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+import java.sql.Time;
 import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * <p>
@@ -19,8 +22,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Data
 @ApiModel(value = "Course对象", description = "")
-public class Course implements Serializable {
+public class Course implements Serializable,Comparable<Course> {
 
     private static final long serialVersionUID = 1L;
 
@@ -33,7 +37,7 @@ public class Course implements Serializable {
 
     private LocalDateTime addTime;
 
-    private LocalDateTime timeLong;
+    private Time timeLong;
 
     private String title;
 
@@ -49,5 +53,10 @@ public class Course implements Serializable {
 
     private Integer teacherId;
 
+    private Integer sort;
 
+    @Override
+    public int compareTo( Course course) {
+        return this.sort.compareTo(course.getSort());
+    }
 }

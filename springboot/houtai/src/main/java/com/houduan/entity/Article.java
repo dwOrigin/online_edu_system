@@ -1,13 +1,19 @@
 package com.houduan.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * <p>
@@ -20,7 +26,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @ApiModel(value = "Article对象", description = "")
-public class Article implements Serializable {
+public class Article implements Serializable,Comparable<Article> {
 
     private static final long serialVersionUID = 1L;
 
@@ -39,7 +45,8 @@ public class Article implements Serializable {
 
     private String author;
 
-    private LocalDateTime createTime;
+    @TableField(fill = FieldFill.INSERT)
+    private Date createTime;
 
     private String articleType;
 
@@ -52,4 +59,8 @@ public class Article implements Serializable {
     private Integer sort;
 
 
+    @Override
+    public int compareTo( Article article) {
+        return this.sort.compareTo(article.getSort());
+    }
 }

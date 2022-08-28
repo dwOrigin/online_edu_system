@@ -1,25 +1,24 @@
 <template>
 <div id="main">
-<!--  <course-search-result></course-search-result>-->
-  <course-recommend></course-recommend>
+      <router-view></router-view>
+      <login-dialog></login-dialog>
 </div>
 </template>
 
 <script>
-import CourseRecommend from "@/components/user/course/CourseRecommend";
-import CourseSearchResult from "@/components/user/course/CourseSearchResult";
+import LoginDialog from "@/components/user/course/LoginDialog";
 export default {
   name: "HomeMain",
   components:{
-    CourseRecommend,
-    CourseSearchResult
+    LoginDialog
+  },
+  mounted() {
   }
 }
 </script>
 
 <style scoped>
 #main{
-  margin: 0 auto;
-  width: 1100px;
+  width: 100%;
 }
 </style>

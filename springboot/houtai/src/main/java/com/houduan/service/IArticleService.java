@@ -23,5 +23,15 @@ public interface IArticleService extends IService<Article> {
     Result updateArticle(Article article);
 //    查询文章的信息，用于文章的初始化部分
     Article findArticleByID(Integer articleId);
-    public List<Article>searchByType(String type);
+    List<Article>searchByType(String type);
+//    返回所有文章
+    List<Article>findAll();
+//    文章推荐机制，按照类别
+    List<Article>recommendArticles();
+//增加文章的浏览量
+    Result addViewPoint(Integer id);
+
+//    对文章的推荐程度进行一个按比例排序
+    Result sortArticles();
+
 }

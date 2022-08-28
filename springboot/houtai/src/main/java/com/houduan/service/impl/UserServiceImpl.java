@@ -19,6 +19,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 /**
  * <p>
  *  服务实现类
@@ -39,33 +41,34 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         User user = getOne(wrapper);
         if(user==null){
             return Result.error(Constants.CODE_400,"用户名不存在");
-        } else if (!getOne(wrapper).getPassword().equals(password)) {
-            return Result.error(Constants.CODE_400,"密码错误");
-        }else{
-            return Result.success(Constants.CODE_200,"登录成功");
+        } else {
+            wrapper.eq("password", password);
+            User user1 = getOne(wrapper);
+            if (user1 == null) {
+                return Result.error(Constants.CODE_400, "密码错误");
+            } else {
+                user.setLastSystemTime(LocalDateTime.now());
+                userMapper.updateById(user);
+                return Result.success(Constants.CODE_200, "登录成功", user1);
+            }
         }
     }
 
     @Override
     public Result register(User user) {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
-        QueryWrapper<User> wrapper1 = new QueryWrapper<>();
         QueryWrapper<User> wrapper2 = new QueryWrapper<>();
         wrapper.eq("user_name",user.getUserName());
-        wrapper1.eq("email",user.getEmail());
         wrapper2.eq("mobile",user.getMobile());
         User user1 = getOne(wrapper);
-        User user2 = getOne(wrapper1);
+        User user2 = getOne(wrapper2);
         if(user1!=null){
             return Result.error(Constants.CODE_400,"用户名重复");
-        }
-        if(user1!=null){
-            return Result.error(Constants.CODE_400,"邮箱已被注册");
         }
         if(user2!=null){
             return Result.error(Constants.CODE_400,"手机号已被注册");
         }
-        userMapper.insert(user);
+        save(user);
         return Result.success(Constants.CODE_200,"注册成功");
     }
 

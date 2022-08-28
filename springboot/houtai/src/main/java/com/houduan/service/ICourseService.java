@@ -1,7 +1,11 @@
 package com.houduan.service;
 
+import com.houduan.common.Result;
 import com.houduan.entity.Course;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,5 +17,33 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ICourseService extends IService<Course> {
 
-    Boolean addnew(Course course);
+    Result addnew(Course course);
+
+    List<Course> findType(String type);
+
+    Result updatecourse(Course course);
+
+    Result pageviewplus(Integer id);
+
+    Result praiseplus(Integer id);
+
+    List<Course>recommendCourses();
+    //    增加浏览量操作
+    Result addViewPoint(Integer id);
+
+    List<Course> getbyteacher(Integer teacherid);
+
+    Result sortArticles();
+
+    List<Course> recommendCoursesType(Integer id);
+
+    List<Course> getbyname(String name);
+
+    List<Course> getbyboth(String select, String key);
+
+    Result commentplus(Integer id);
+
+    Result praisedeplus(Integer id);
+
+    Result commentdeplus(Integer id);
 }

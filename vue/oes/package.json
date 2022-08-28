@@ -11,8 +11,17 @@
     "axios": "^0.27.2",
     "core-js": "^3.23.3",
     "element-ui": "^2.15.9",
+    "flv.js": "^1.6.2",
+    "mavon-editor": "^2.10.4",
+    "module": "^1.2.5",
+    "n": "^9.0.0",
+    "style-loader": "^3.3.1",
+    "video.js": "^7.20.2",
     "vue": "^2.6.14",
-    "vue-router": "^3.5.4"
+    "vue-meditor": "^2.1.2",
+    "vue-puzzle-vcode": "^1.1.9",
+    "vue-router": "^3.5.4",
+    "vue-video-player": "^5.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
@@ -22,6 +31,8 @@
     "@vue/cli-service": "~5.0.0",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
+    "node-sass": "^7.0.1",
+    "sass-loader": "^13.0.2",
     "vue-template-compiler": "^2.6.14"
   },
   "eslintConfig": {

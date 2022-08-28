@@ -1,6 +1,8 @@
 package com.houduan.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.houduan.common.Constants;
+import com.houduan.common.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -26,18 +28,22 @@ public class CourseController {
     private ICourseService courseService;
 
     @PostMapping("/add")
-    public Boolean addnew(@RequestBody Course course){
+    public Result addnew(@RequestBody Course course) {
         return courseService.addnew(course);
     }
 
-    @PostMapping
-    public Boolean save(@RequestBody Course course) {
-        return courseService.saveOrUpdate(course);
+    @PostMapping("/update")
+    public Result updatecourse(@RequestBody Course course) {
+        return courseService.updatecourse(course);
     }
-
-    @DeleteMapping("/{id}")
-    public Boolean delete(@PathVariable Integer id) {
-        return courseService.removeById(id);
+//此处在删除的时候返回的变量不要添上路径直接都不要就可以了
+    @GetMapping("/delete")
+    public Result delete( Integer courseId) {
+        if (courseService.removeById(courseId)) {
+            return Result.success(Constants.CODE_200, "删除成功");
+        } else {
+            return Result.error(Constants.CODE_400, "删除失败");
+        }
     }
 
     @GetMapping
@@ -45,16 +51,65 @@ public class CourseController {
         return courseService.list();
     }
 
-    @GetMapping("/{id}")
-    public Course findOne(@PathVariable Integer id) {
+    @GetMapping("/getById")
+    public Course findOne(@RequestParam Integer id) {
         return courseService.getById(id);
     }
 
-    @GetMapping("/page")
-    public Page<Course> findPage(@RequestParam Integer pageNum,
-                                 @RequestParam Integer pageSize) {
-        return courseService.page(new Page<>(pageNum, pageSize));
+    @GetMapping("getByType")
+    public List<Course> findType(@RequestParam String type) {
+        return courseService.findType(type);
     }
 
+    @GetMapping("/pageviewplus")
+    public Result pageviewplus(@RequestParam Integer id){
+        return courseService.pageviewplus(id);
+    }
+    @GetMapping("/praiseplus")
+    public Result praiseplus(@RequestParam Integer id){
+        return courseService.praiseplus(id);
+    }
+    @GetMapping("/praisedeplus")
+    public Result praisedeplus(@RequestParam Integer id){
+        return courseService.praisedeplus(id);
+    }
+    @GetMapping("/commentplus")
+    public Result commentplus(@RequestParam Integer id){
+        return courseService.commentplus(id);
+    }
+    @GetMapping("/commentdeplus")
+    public Result commentdeplus(@RequestParam Integer id){
+        return courseService.commentdeplus(id);
+    }
+    @GetMapping("/getrecommend")
+    public List<Course> getrecommend(){
+        return courseService.recommendCourses();
+    }
+    @GetMapping("/addViewPoint")
+    public Result addViewPoint(@RequestParam Integer id){
+        return courseService.addViewPoint(id);
+    }
+
+    @GetMapping("/sortCourses")
+    public Result sortCourses(){
+        return courseService.sortArticles();
+    }
+    @GetMapping("/typeRecommend")
+    public List<Course> typeRecommend(Integer courseId){
+        return courseService.recommendCoursesType(courseId);
+    }
+    @GetMapping("/getbyteacher")
+    public List<Course>getbyteacher(@RequestParam Integer teacherid){
+        return courseService.getbyteacher(teacherid);
+    }
+    @GetMapping("/getbyname")
+    public List<Course>getbyname(@RequestParam String name){
+        return courseService.getbyname(name);
+    }
+    @GetMapping("/getbyboth")
+    public List<Course>getbyboth(@RequestParam String select,@RequestParam String key){
+        System.out.println(select);
+        return courseService.getbyboth(select,key);
+    }
 }
 

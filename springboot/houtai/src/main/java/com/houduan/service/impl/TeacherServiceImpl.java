@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
         QueryWrapper<Teacher> wrapper = new QueryWrapper<>();
         wrapper.eq("name",teacher.getName());
         if(getOne(wrapper)==null){
+            teacher.setCreateTime(LocalDateTime.now());
             mapper.insert(teacher);
             return Result.success(Constants.CODE_200,"添加成功");
         }else{
@@ -49,8 +51,8 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
     }
 
     @Override
-    public Result deleteTeacher(Teacher teacher) {
-        int i = mapper.updateById(teacher);
+    public Result deleteTeacher(Integer id) {
+        int i = mapper.deleteById(id);
         if(i==0){
             return Result.error(Constants.CODE_400,"删除失败");
         }else {
@@ -58,11 +60,17 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
         }
     }
 
+
     @Override
     public List<Teacher> searchTeacher(String str) {
-        List<Teacher> teachers = new ArrayList<>();
-        teachers = mapper.selectList(new QueryWrapper<Teacher>().like("name",str));
+        List<Teacher> teachers  = mapper.selectList(new QueryWrapper<Teacher>().like("name",str));
         return teachers;
     }
+
+   /* @Override
+    public List<Teacher> getAll() {
+        List<Teacher> teacherList = mapper.selectList(null);
+        return teacherList;
+    }*/
 
 }
