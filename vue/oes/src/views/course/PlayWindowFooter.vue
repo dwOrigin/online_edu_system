@@ -51,6 +51,7 @@ export default {
         console.log(res);
         if(res.code=="200"){
           this.$message.success("修改成功");
+          this.form.introduce='';
         }else{
           this.$message.error("修改失败");
         }

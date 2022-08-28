@@ -19,7 +19,7 @@
       </el-input>
       <el-button type="primary" v-if="commentable == true" @click="commitComment" plain class="comment-confirm-btn">发布
       </el-button>
-      <!-- <el-button type="primary"  v-if="commentable == false" disabled plain class="comment-confirm-btn">发布</el-button> -->
+      <el-button type="danger"  v-if="commentable == false" @click="deleteComment" plain class="comment-confirm-btn">删除</el-button>
     </div>
     <div>
       <h4 v-if="comments.length==0">暂无评论</h4>
@@ -74,6 +74,7 @@ export default {
       mediumReview: 0,
       curPage: 1,
       pageSize: 10,
+      mycommentid:0,
     }
   },
   watch: {
@@ -115,6 +116,25 @@ export default {
         });
       }
     },
+    //删除评论
+    deleteComment(){
+      this.request.get("/comment/delete",{
+        params:{
+          commentId:this.mycommentid
+        }
+      })
+      .then((res)=>{
+        if(res.code=="200"){
+          this.$message.success("删除成功");
+          this.request.get("/course/commentdeplus",{
+              params:{
+                id:this.course.courseId
+              }
+            })
+          this.updateComments();
+        }
+      })
+    },
     //提交评论
     commitComment() {
       if (this.user.userId === undefined) {
@@ -140,6 +160,11 @@ export default {
           if (res.data.code == "200") {
             this.$message.success('评论成功');
             this.userComment = '';
+            this.request.get("/course/commentplus",{
+              params:{
+                id:this.course.courseId
+              }
+            })
             this.updateComments();
           } else {
             this.$message.error(res.data.message);
@@ -161,6 +186,7 @@ export default {
       });
       promise.then((res) => {
         if (res.data != "") {
+          this.mycommentid=res.data.commentId;
           this.userComment = res.data.content;
           this.commentRate = res.data.praiseCount;
           this.commentable = false;
@@ -212,6 +238,7 @@ export default {
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
+      this.$bus.$emit('courseChanged',this.course);
     }
   },
   mounted() {

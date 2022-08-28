@@ -91,5 +91,17 @@ public class MsgreceiveController {
     public Result haveread(@RequestParam Integer id){
         return msgreceiveService.haveread(id);
     }
+    @GetMapping("/readone")
+    public Result readone(@RequestParam Integer cusId,@RequestParam Integer userId){
+        return msgreceiveService.readone(cusId,userId);
+    }
+    @GetMapping("/getcus")
+    public List<Msgreceive> getcus(@RequestParam Integer cusId,@RequestParam Integer userId){
+        return msgreceiveService.getcus(cusId,userId);
+    }
+    @GetMapping("/add")
+    public Result add(@RequestParam Integer cusId,@RequestParam Integer receiveId,@RequestParam String content){
+        return msgreceiveService.add(cusId,receiveId,content);
+    }
 }
 

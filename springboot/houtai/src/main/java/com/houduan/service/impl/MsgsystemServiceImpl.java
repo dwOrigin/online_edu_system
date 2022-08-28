@@ -77,6 +77,16 @@ private UserMapper userMapper;
     }
 
     @Override
+    public Result havereadall(Integer userId) {
+        List<Msgsystem>list= getbyid(userId);
+        for(int i=0;i<list.size();i++){
+            list.get(i).setStatus(1);
+            baseMapper.updateById(list.get(i));
+        }
+        return Result.success();
+    }
+
+    @Override
     public Result updateMsgSystem(Msgsystem msgsystem){
     int i= msgsystemMapper.updateById(msgsystem);
     if (i>=1){

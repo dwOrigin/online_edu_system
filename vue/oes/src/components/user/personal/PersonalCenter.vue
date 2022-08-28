@@ -20,7 +20,7 @@
             <i class="el-icon-star-off"></i>
             <span slot="title">收藏</span>
           </el-menu-item>
-          <el-menu-item index='/home/personal/message'>
+          <el-menu-item index='/home/personal/message' @click="pushm">
             <i class="el-icon-chat-dot-square"></i>
             <span slot="title">
               消息
@@ -60,12 +60,16 @@ export default {
     }
   },
   methods: {
+    pushm(){
+      this.$bus.$emit('clearUnCheckedCnt', -1);
+    },
     exit() {
       window.localStorage.removeItem('user');
       this.$bus.$emit('AuthorizationChanged');
     },
     getMsgUnCheckCnt() {
       //获取用户未读消息数
+      this.msgUnCheckCnt=0;
       let promise = this.$axios({
         url: '/msgsystem/getbyid',
         method: 'get',
@@ -81,10 +85,11 @@ export default {
       //   });
       // });
       promise.then((res) => {
-        this.msgUnCheckCnt = res.data.length;
+        this.msgUnCheckCnt = this.msgUnCheckCnt+res.data.length;
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
+
       let promise1 = this.$axios({
         url: '/msgreceive/getbyid',
         method: 'get',
@@ -93,6 +98,8 @@ export default {
         }
       });
       promise1.then((res1) => {
+        console.log(this.msgUnCheckCnt);
+        console.log(res1.data.length);
         this.msgUnCheckCnt =this.msgUnCheckCnt + res1.data.length;
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
@@ -104,7 +111,7 @@ export default {
     let user = window.localStorage.getItem('user');
     this.user = JSON.parse(user);
     this.$bus.$on('clearUnCheckedCnt', (data)=>{
-      this.msgUnCheckCnt -= 1;
+      this.getMsgUnCheckCnt();
     });
     this.getMsgUnCheckCnt();
     let url = this.$route.query.select;
@@ -117,7 +124,7 @@ export default {
     }
   },
   beforeDestroy() {
-    this.$bus.$off('');
+    this.$bus.$off('clearUnCheckedCnt');
   }
 }
 </script>

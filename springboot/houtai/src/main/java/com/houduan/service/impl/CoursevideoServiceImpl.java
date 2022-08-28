@@ -24,6 +24,7 @@ import java.util.List;
 public class CoursevideoServiceImpl extends ServiceImpl<CoursevideoMapper, Coursevideo> implements ICoursevideoService {
     @Resource
     private CoursevideoMapper mapper;
+
     @Override
     public List<Coursevideo> findbycourseid(Integer courseId) {
         QueryWrapper<Coursevideo>queryWrapper=new QueryWrapper<>();

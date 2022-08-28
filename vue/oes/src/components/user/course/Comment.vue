@@ -5,13 +5,13 @@
         <el-avatar
             :size="40"
             :src="commenter.picImg">
-          <span v-if="commenter.picImg == ''">{{ commenter.name }}</span>
+          <span v-if="commenter.picImg == ''">{{ commenter.userName }}</span>
         </el-avatar>
       </div>
       <div class="comment-info">
         <div style="font-size: 16px;">{{ commenter.userName }}</div>
         <div class="time-and-score">
-          <div style="margin-right: 10px">{{ comment.addtime.split('T')[0] }}&nbsp;{{ comment.addtime.split('T')[1] }}</div>
+          <div style="margin-right: 10px">{{ comment.addtime.split('T')[0] }}&nbsp;{{ comment.addtime.split('T')[1].split(':')[0] }}:{{ comment.addtime.split('T')[1].split(':')[1] }}</div>
           <el-rate
               v-model="comment.praiseCount"
               disabled

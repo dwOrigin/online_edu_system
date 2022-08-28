@@ -70,5 +70,9 @@ public class MsgsystemController {
     public Result haveread(@RequestParam Integer id){
         return msgsystemService.haveread(id);
     }
+    @GetMapping("/readall")
+    public Result havereadall(@RequestParam Integer userId){
+        return  msgsystemService.havereadall(userId);
+    }
 }
 

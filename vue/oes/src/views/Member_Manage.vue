@@ -53,7 +53,7 @@
                 <span v-else>是</span>
               </template>
             </el-table-column>
-            <el-table-column fixed="right" label="操作" width="100">
+            <el-table-column label="操作" width="100">
               <template slot-scope="scope">
                 <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
                 <el-dialog title="详细信息" :visible.sync="dialogFormVisible" append-to-body>

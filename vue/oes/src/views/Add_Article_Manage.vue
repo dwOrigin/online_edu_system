@@ -58,10 +58,10 @@
   </el-form-item>
         </el-row>
   <el-form-item label="文章类型" prop="articleType">
-    <el-select v-model="form.articleType" placeholder="请选择文章类型">
+    <!-- <el-select v-model="form.articleType" placeholder="请选择文章类型">
       <el-option label="美女" value="shanghai"></el-option>
       <el-option label="高中生" value="beijing"></el-option>
-    </el-select>
+    </el-select> -->
   </el-form-item>
     <mavon-editor ref="md" v-model="form.summary" :ishljs="true" @imgAdd="imgAdd"/> 
    <!-- imgAdd监听图片上传 save监听图片保存 value保存整个markdown文件内容 -->

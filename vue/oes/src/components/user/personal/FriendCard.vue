@@ -1,14 +1,18 @@
 <template>
   <div class="friend-card" @click="changeChatWindow">
-    <el-avatar
-        style="margin: 0 10px 0 20px"
-        :src="friend.friendAvatar">
-      <span v-if="friend.friendAvatar === ''">{{ friend.friendName }}</span>
+    <el-avatar v-if="type == 'receive'" style="margin: 0 10px 0 20px" :src="friend.picImg">
+      <span v-if="friend.picImg == '' || friend.picImg == null">{{ friend.userName }}</span>
     </el-avatar>
-    <span style="font-weight: lighter; font-size: x-small">
-      {{ friend.friendName }}
-  </span>
-    <el-badge v-if="friend.unCheckedCnt !== 0" is-dot style="margin-left: 5px"></el-badge>
+    <el-avatar v-if="type == 'system'" style="margin: 0 10px 0 20px">
+      <span>系</span>
+    </el-avatar>
+    <span v-if="type == 'receive'" style="font-weight: lighter; font-size: x-small">
+      {{ friend.userName }}
+    </span>
+    <span v-if="type == 'system'" style="font-weight: lighter; font-size: x-small">
+      系统消息
+    </span>
+    <el-badge v-if="unCheckedCnt !== 0" is-dot style="margin-left: 5px"></el-badge>
 
     <!--    <el-button type="info"-->
     <!--               size="mini"-->
@@ -22,41 +26,101 @@
 export default {
   name: "FriendCard",
   props: {
-    obj: {}
+    obj: {},
+    typer: ''
   },
   data() {
     return {
-      friend: this.obj
+      message: this.obj,
+      type: this.typer,
+      friend: {},
+      unCheckedCnt: 0,
+      user: {}
     };
   },
   methods: {
     changeChatWindow() {
       //将用户和特定好友的聊天记录全部标为已读
       // let usr = JSON.parse(window.localStorage.getItem('user'));
-      // let promise = this.$axios({
-      //     url: '',
-      //     method: '',
-      //     data:{
-      //       userId: usr.id,
-      //       friendId: this.friend.friendId
-      //     }
-      // });
-      let promise = new Promise((a) => {
-        a({
-          data: {
-            result: true
+      if (this.type == 'system') {
+        let promise = this.$axios({
+          url: '/msgsystem/readall',
+          method: 'get',
+          params: {
+            userId: this.user.userId
           }
         });
-      });
-      promise.then((res) => {
-        if (this.friend.unCheckedCnt !== 0) {
-          this.$bus.$emit('clearUnCheckedCnt', this.friend.friendId);
+        promise.then((res) => {
+          if (this.unCheckedCnt != 0) {
+            this.$bus.$emit('clearUnCheckedCnt', -1);
+          }
+          this.unCheckedCnt = 0;
+        }).catch((err) => {
+          this.$message.error('你的网络迷路了');
+        });
+        this.$bus.$emit('changeChatWindow', -1);
+      } else {
+        let promise = this.$axios({
+          url: '/msgreceive/readone',
+          method: 'get',
+          params: {
+            cusId:this.friend.userId,
+            userId: this.user.userId
+          }
+        });
+        promise.then((res) => {
+          if (this.unCheckedCnt !== 0) {
+            this.$bus.$emit('clearUnCheckedCnt', this.friend.userId);
+          }
+          this.unCheckedCnt = 0;
+        }).catch((err) => {
+          this.$message.error('你的网络迷路了');
+        });
+        this.$bus.$emit('changeChatWindow', this.friend.userId);
+      }
+      // let promise = new Promise((a) => {
+      //   a({
+      //     data: {
+      //       result: true
+      //     }
+      //   });
+      // });
+    }
+  },
+  mounted() {
+    let user = window.localStorage.getItem('user');
+    this.user = JSON.parse(user);
+    if (this.type == 'receive') {
+      let promise1 = this.$axios({
+        url: '/msgreceive/getbyid',
+        method: 'get',
+        params: {
+          id: this.user.userId
         }
-        this.friend.unCheckedCnt = 0;
+      });
+      promise1.then((res1) => {
+        this.unCheckedCnt = res1.data.length;
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
-      this.$bus.$emit('changeChatWindow', this.friend.friendId);
+      this.request.get('/user/findOne', {
+        params: {
+          id: this.message.cusId
+        }
+      })
+        .then((res) => {
+          this.friend = res;
+        })
+    } else {
+      this.request.get('/msgsystem/getbyid', {
+        params: {
+          id: this.user.userId
+        }
+      })
+        .then((res) => {
+          console.log(res)
+          this.unCheckedCnt = res.length;
+        })
     }
   }
 }
@@ -85,5 +149,4 @@ export default {
   flex-shrink: 0;
   height: 80px;
 }
-
 </style>

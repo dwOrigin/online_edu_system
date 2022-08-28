@@ -40,7 +40,7 @@ export default {
   },
   methods:{
     onPlayEnd(){
-      this.$bus.$emit('playEnd');
+      this.$bus.$emit('playEnd1');
     },
     onCanplay(){
       if(!this.autoP){
@@ -49,7 +49,7 @@ export default {
     }
   },
   mounted() {
-    this.$bus.$on('chapterChanged', (url, order, auto) => {
+    this.$bus.$on('chapterChanged1', (url, order, auto) => {
       this.playerOptions.sources[0] = {
         src: url,
         type: 'video/mp4'
@@ -67,7 +67,7 @@ export default {
     // });
   },
   beforeDestroy() {
-    this.$bus.$off('chapterChanged');
+    this.$bus.$off('chapterChanged1');
     // this.$bus.$off('courseChanged');
   }
 }
