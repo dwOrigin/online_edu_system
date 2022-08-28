@@ -7,7 +7,7 @@
       <div class="content">
         {{ passage.summary }}
         <!-- 等下想怎么展示md文件 -->
-         <mavon-editor
+         <!-- <mavon-editor
             class="md"
             :value="htmlContent" 
             :subfield="prop.subfield" 
@@ -15,7 +15,7 @@
             :toolbarsFlag="prop.toolbarsFlag"
             :editable="prop.editable"
             :scrollStyle="prop.scrollStyle"
-          />
+          /> -->
       </div>
       <div class="footer">
         <div>
@@ -74,13 +74,13 @@
 
 <script>
 import Answer from "@/components/user/qap/Answer";
-import { mavonEditor } from 'mavon-editor'
-import 'mavon-editor/dist/css/index.css'
+// import { mavonEditor } from 'mavon-editor'
+// import 'mavon-editor/dist/css/index.css'
 export default {
   name: "PassagePage",
   components: {
     Answer,
-    mavonEditor
+    // mavonEditor
   },
   data() {
     return {
@@ -97,23 +97,23 @@ export default {
       // length: 5,
     };
   },
-  computed: {
-  // 解析器配置
-    prop () {
-      let data = {
-        subfield: false,// 单双栏模式
-        defaultOpen: 'preview',//edit： 默认展示编辑区域 ， preview： 默认展示预览区域 
-        editable: false,    // 是否允许编辑
-        toolbarsFlag: false,
-        scrollStyle: true
-      }
-      return data
-    }
-  },
+  // computed: {
+  // // 解析器配置
+  //   prop () {
+  //     let data = {
+  //       subfield: false,// 单双栏模式
+  //       defaultOpen: 'preview',//edit： 默认展示编辑区域 ， preview： 默认展示预览区域 
+  //       editable: false,    // 是否允许编辑
+  //       toolbarsFlag: false,
+  //       scrollStyle: true
+  //     }
+  //     return data
+  //   }
+  // },
   methods: {
-    getInfo(){
-       this.htmlContent=data
-    },
+    // getInfo(){
+    //    this.htmlContent=data
+    // },
      refreshComment(qId) {
       // 获取问题答案
       let promise = this.$axios({
@@ -226,6 +226,12 @@ export default {
       this.CommentDialogVisible = true;
     },
     handleClickFooter(btnName) {
+       let usr = window.localStorage.getItem('user');
+      if (usr === null) {
+        this.$bus.$emit('OpenLoginDialog');
+        return;
+      }
+       usr = JSON.parse(usr);
       if (btnName === 'cancel') {
 
       } else if (btnName === 'ask') {
@@ -238,21 +244,14 @@ export default {
         let promise = this.$axios({
           url: 'http://localhost:8081/comment/sendArticle',
           method: 'get',
-          data: {
-            comment: this.cc,
-            userId: user.id,
-            pId: this.passage.pId
+          params: {
+            commentContent: this.cc,
+            userId: user.userId,
+            articleId: this.passage.articleId
           }
         });
-        // let promise = new Promise((a) => {
-        //   a({
-        //     data: {
-        //       result: true
-        //     }
-        //   });
-        // });
         promise.then((res) => {
-          let ret = res.data.result;
+          let ret = res.data;
           if (ret) {
             this.$message.success('评论成功')
             this.loadPassage();
@@ -270,7 +269,7 @@ export default {
   mounted() {
     this.loadPassage();
     this.refreshComment(this.$route.query.pId);
-    this.getInfo();
+    // this.getInfo();
   },
 }
 </script>
