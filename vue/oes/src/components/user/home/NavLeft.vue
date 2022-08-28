@@ -59,31 +59,30 @@ export default {
       //分类标签集合
       tagList: {
         it: [
-          {title: '分类标签'},
-          {title: '分类标签'},
-          {title: '分类标签'},
-          {title: '分类标签'},
-          {title: '分类标签'},
-          {title: '分类标签'},
-          {title: '分类标签'},
+          {title: '大数据与人工智能'},
+          {title: '计算机基础与应用'},
+          {title: '软件工程'},
+          {title: '计算机语言基础'},
+          {title: '硬件系统与原理'},
+          {title: '网络技术'},
         ],
         exam: [
-          {title: '分类标签'},
-          {title: '分类标签'},
-          {title: '分类标签'},
-          {title: '分类标签'},
-          {title: '分类标签'},
+          {title: '四六级'},
+          {title: '考研'},
+          {title: '期末突击'},
+          {title: '专升本'},
+          {title: '考编'},
         ],
         skill: [
-          {title: '分类标签'},
-          {title: '分类标签'},
-          {title: '分类标签'},
-          {title: '分类标签'},
+          {title: '经济管理'},
+          {title: '文史哲法'},
+          {title: '医学与保健'},
+          {title: '教育教学'},
         ],
         hobby: [
-          {title: '分类标签'},
-          {title: '分类标签'},
-          {title: '分类标签'},
+          {title: '音乐与艺术'},
+          {title: '有声课堂'},
+          {title: '世界文化'},
         ]
       }
     }

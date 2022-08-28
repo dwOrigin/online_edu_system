@@ -1,5 +1,6 @@
 package com.houduan.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.houduan.common.Result;
 import com.houduan.entity.Msgreceive;
 import com.houduan.entity.Msgsystem;
@@ -49,7 +50,7 @@ private UserMapper userMapper;
             Msgsystem msgsystem = new Msgsystem();
             msgsystem.setAcceptId(userList.get(i).getUserId());
             msgsystem.setContent(message);
-            System.out.println(msgsystem);
+            msgsystem.setStatus(0);
             msgsystemMapper.insert(msgsystem);
         }
         if (i>=1){
@@ -57,6 +58,32 @@ private UserMapper userMapper;
         }else {
             return Result.error();
         }
+    }
+
+    @Override
+    public List<Msgsystem> getbyid(Integer id) {
+        QueryWrapper<Msgsystem>queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("accept_id",id);
+        queryWrapper.eq("status",0);
+        return list(queryWrapper);
+    }
+
+    @Override
+    public Result haveread(Integer id) {
+        Msgsystem msgsystem=getById(id);
+        msgsystem.setStatus(1);
+        updateById(msgsystem);
+        return Result.success();
+    }
+
+    @Override
+    public Result havereadall(Integer userId) {
+        List<Msgsystem>list= getbyid(userId);
+        for(int i=0;i<list.size();i++){
+            list.get(i).setStatus(1);
+            baseMapper.updateById(list.get(i));
+        }
+        return Result.success();
     }
 
     @Override

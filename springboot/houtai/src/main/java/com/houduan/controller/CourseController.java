@@ -69,6 +69,18 @@ public class CourseController {
     public Result praiseplus(@RequestParam Integer id){
         return courseService.praiseplus(id);
     }
+    @GetMapping("/praisedeplus")
+    public Result praisedeplus(@RequestParam Integer id){
+        return courseService.praisedeplus(id);
+    }
+    @GetMapping("/commentplus")
+    public Result commentplus(@RequestParam Integer id){
+        return courseService.commentplus(id);
+    }
+    @GetMapping("/commentdeplus")
+    public Result commentdeplus(@RequestParam Integer id){
+        return courseService.commentdeplus(id);
+    }
     @GetMapping("/getrecommend")
     public List<Course> getrecommend(){
         return courseService.recommendCourses();
@@ -76,6 +88,28 @@ public class CourseController {
     @GetMapping("/addViewPoint")
     public Result addViewPoint(@RequestParam Integer id){
         return courseService.addViewPoint(id);
+    }
+
+    @GetMapping("/sortCourses")
+    public Result sortCourses(){
+        return courseService.sortArticles();
+    }
+    @GetMapping("/typeRecommend")
+    public List<Course> typeRecommend(Integer courseId){
+        return courseService.recommendCoursesType(courseId);
+    }
+    @GetMapping("/getbyteacher")
+    public List<Course>getbyteacher(@RequestParam Integer teacherid){
+        return courseService.getbyteacher(teacherid);
+    }
+    @GetMapping("/getbyname")
+    public List<Course>getbyname(@RequestParam String name){
+        return courseService.getbyname(name);
+    }
+    @GetMapping("/getbyboth")
+    public List<Course>getbyboth(@RequestParam String select,@RequestParam String key){
+        System.out.println(select);
+        return courseService.getbyboth(select,key);
     }
 }
 

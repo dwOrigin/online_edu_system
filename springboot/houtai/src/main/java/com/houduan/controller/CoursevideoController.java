@@ -2,6 +2,7 @@ package com.houduan.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.houduan.common.Result;
+import io.swagger.models.auth.In;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -22,23 +23,24 @@ import com.houduan.entity.Coursevideo;
 @RestController
 @RequestMapping("/coursevideo")
 public class CoursevideoController {
-
     @Resource
     private ICoursevideoService coursevideoService;
-
-
     @PostMapping("/save")
     public Result addnew(@RequestBody Coursevideo coursevideo) {
         return coursevideoService.addnew(coursevideo);
     }
 
-    @PostMapping("/findbycourseid")
+    @GetMapping("/findbycourseid")
     public List<Coursevideo> findbycourseid(@RequestParam Integer courseId) {
+        System.out.println(courseId);
         return coursevideoService.findbycourseid(courseId);
     }
-
-    @DeleteMapping("/{id}")
-    public Boolean delete(@PathVariable Integer id) {
+    @GetMapping("/getnum")
+    public Integer getnum(@RequestParam Integer courseId){
+        return coursevideoService.getnum(courseId);
+    }
+    @GetMapping("/id")
+    public Boolean delete(@RequestParam Integer id) {
         return coursevideoService.removeById(id);
     }
 
@@ -57,6 +59,22 @@ public class CoursevideoController {
                                       @RequestParam Integer pageSize) {
         return coursevideoService.page(new Page<>(pageNum, pageSize));
     }
+//    测试通过
+@PostMapping("/addCourseVideo")
+    public Result addCourseVideo(@RequestBody Coursevideo coursevideo){
+    Result result = coursevideoService.addCourseVideo(coursevideo);
+    return result;
+}
+
+@GetMapping("/deleteCourseVideo")
+    public Result deleteCourseVideo(Integer courseVideoId){
+        System.out.println(courseVideoId);
+    Result result = coursevideoService.deleteCourseVideo(courseVideoId);
+    return result;
+}
+
+
+
 
 }
 

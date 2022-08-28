@@ -27,4 +27,6 @@ public interface IQuestionsService extends IService<Questions> {
     Questions getById(Integer id);
 
     List<Questions> getbyuserid(Integer userid);
+
+    Result plusread(Integer id);
 }

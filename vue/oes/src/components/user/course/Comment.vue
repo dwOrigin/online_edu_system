@@ -4,16 +4,16 @@
       <div class="comment-avatar">
         <el-avatar
             :size="40"
-            :src="commenter.avatarUrl">
-          <span v-if="commenter.avatarUrl === ''">{{ commenter.name }}</span>
+            :src="commenter.picImg">
+          <span v-if="commenter.picImg == ''">{{ commenter.userName }}</span>
         </el-avatar>
       </div>
       <div class="comment-info">
-        <div style="font-size: 16px;">{{ commenter.name }}</div>
+        <div style="font-size: 16px;">{{ commenter.userName }}</div>
         <div class="time-and-score">
-          <div style="margin-right: 10px">{{ comment.time }}</div>
+          <div style="margin-right: 10px">{{ comment.addtime.split('T')[0] }}&nbsp;{{ comment.addtime.split('T')[1].split(':')[0] }}:{{ comment.addtime.split('T')[1].split(':')[1] }}</div>
           <el-rate
-              v-model="comment.score"
+              v-model="comment.praiseCount"
               disabled
               text-color="#ff9900"
               score-template="{value}">
@@ -36,7 +36,7 @@ export default {
   data() {
     return {
       commenter: {},
-      myComment : this.comment
+      myComment : this.comment,
     }
   },
   props: {
@@ -56,23 +56,23 @@ export default {
     //更新评论者信息
     refreshCommenter(id) {
       //根据评论者id获取评论者信息
-      // let promise = this.$axios({
-      //   url: '',
-      //   method: '',
-      //   data: {
-      //     id: id
-      //   }
-      // });
-      let promise = new Promise((a) => {
-        a({
-          data: {user: {
-              name: '评论者555',
-              avatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
-            }}
-        });
+      let promise = this.$axios({
+        url: '/user/findOne',
+        method: 'get',
+        params: {
+          id: this.myComment.userId
+        }
       });
+      // let promise = new Promise((a) => {
+      //   a({
+      //     data: {user: {
+      //         name: '评论者555',
+      //         avatarUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
+      //       }}
+      //   });
+      // });
       promise.then((res) => {
-          this.commenter = res.data.user;
+          this.commenter = res.data;
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });

@@ -1,19 +1,17 @@
 <template>
-  <div
-      @click="openTeacher"
-      class="teacher-header">
+  <div @click="openTeacher" class="teacher-header">
     <div class="large-avatar">
       <a href="#">
-        <el-avatar
-            :size="60"
-            :src="teacher.picPath">
-          <span v-if="teacher.picPath == ''||teacher.picPath == null">{{ teacher.name }}</span>
+        <el-avatar :size="60" :src="teacher.picPath">
+          <span v-if="teacher.picPath == '' || teacher.picPath == null">{{ teacher.name }}</span>
         </el-avatar>
       </a>
     </div>
     <div>
       <div style="font-weight: lighter; margin: 20px 0 5px  0">
         {{ teacher.name }}
+        &nbsp;
+        <el-tag type="warning" size="mini">{{ teacher.education }}</el-tag>
       </div>
       <div style="font-size: x-small; color: #99a9bf;">
         {{ teacher.career }}
@@ -33,16 +31,16 @@ export default {
       course: {}
     };
   },
-  watch:{
-    course(newV){
+  watch: {
+    course(newV) {
       // while (this.course.teacherId ==  null);
       //获取讲师简略信息
       let promise = this.$axios({
-          url: '/teacher/id',
-          method: 'get',
-          params:{
-            id: newV.teacherId
-          }
+        url: '/teacher/id',
+        method: 'get',
+        params: {
+          id: newV.teacherId
+        }
       });
       // let promise = new Promise((a) => {
       //   a({
@@ -67,8 +65,8 @@ export default {
     // 路由到讲师界面
     openTeacher() {
       this.$router.push({
-        name: 'teacher',
-        query: {
+        name: 'teacherPage',
+        params: {
           teacherId: this.teacher.id
         }
       });
@@ -99,5 +97,4 @@ export default {
   border-radius: 5px;
   border: 1px solid #409EFF;
 }
-
 </style>

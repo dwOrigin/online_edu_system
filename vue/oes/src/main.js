@@ -30,6 +30,8 @@ require('vue-video-player/node_modules/video.js/dist/video-js.css')
 require('vue-video-player/src/custom-theme.css')
 Vue.use(VideoPlayer)
 
+
+
 //关闭生产提示
 Vue.config.productionTip = false
 Vue.prototype.request=request

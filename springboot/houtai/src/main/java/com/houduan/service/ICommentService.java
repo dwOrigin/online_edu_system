@@ -23,11 +23,11 @@ public interface ICommentService extends IService<Comment> {
 * 普通用户
 * */
 //    发送一个评论
-    Result sendComment(User user, Comment comment, Article article);
-    Result sendComment(User user, Comment comment, Course course);
+    Result sendCommentArticle(Integer userId, String commentContent, Integer articleId);
+    Result sendCommentCourse(Integer userId, String  commentContent, Integer courseId, Integer rate);
 
     //    回复一个评论
-    Result answerComment(User user,Comment parComment,Comment sonComment);
+//    Result answerComment(User user,Comment parComment,Comment sonComment);
 
     //前端返回当前评论中最顶级的评论的对象的id值
     //然后再去查找多级评论中的所有内容
@@ -39,7 +39,7 @@ public interface ICommentService extends IService<Comment> {
 //加回复数
     Result addReply(Comment comment);
 //  减少回复，仅用于管理员删除评论后
-    Result cancelReply(Comment comment);
+//    Result cancelReply(Comment comment);
 /*
 * 系统端
 * 初始化时，只显示没有父评论的评论
@@ -54,6 +54,15 @@ public interface ICommentService extends IService<Comment> {
 *
 * */
 //    删除评论，如果删除某条评论后
-Result deleteComment(Integer integer);
+    Result deleteComment(Integer integer);
 
+//根据id查找文章
+    Article getArticleById(Integer id);
+//    根据id查找课程
+    Course getCourseById(Integer id);
+
+    User getUserById(Integer id);
+
+
+    Comment getbyuser(Integer userId,Integer courseId);
 }

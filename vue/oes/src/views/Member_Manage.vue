@@ -21,6 +21,9 @@
           <el-menu-item index="6" @click="gotoNotice">
             <span slot="title">通知管理</span>
           </el-menu-item>
+           <el-menu-item index="7" @click="gotoHome">
+            <span slot="title">退出</span>
+          </el-menu-item>
         </el-menu>
       </el-aside>
 
@@ -50,7 +53,7 @@
                 <span v-else>是</span>
               </template>
             </el-table-column>
-            <el-table-column fixed="right" label="操作" width="100">
+            <el-table-column label="操作" width="100">
               <template slot-scope="scope">
                 <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
                 <el-dialog title="详细信息" :visible.sync="dialogFormVisible" append-to-body>
@@ -180,6 +183,9 @@ export default {
     gotoNotice() {
       this.$router.push('/notice_manage')
     },
+    gotoHome(){
+      this.$router.push('/home')
+    },
     handleSizeChange(val) {
       this.pageSize=val;
       this.currentPage=1;
@@ -222,7 +228,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$axios.post('http://localhost:8081/user/deleteUser', {
+        this.$axios.post('/user/deleteUser', {
           userId: row.userId
         }).then(response=>{
         this.$message({
@@ -242,7 +248,7 @@ export default {
 
     changeUsermsg() {
       console.log(this.form.userId);
-      this.request.post('http://localhost:8081/user/updateUser', this.form)
+      this.request.post('/user/updateUser', this.form)
         .then((res) => {
           if (res.code == "200") {
             this.$message.success(res.message);
@@ -253,7 +259,7 @@ export default {
         this.reload();
     },
     fetchData() {
-      this.$axios.get("http://localhost:8081/user").then(
+      this.$axios.get("/user").then(
         response => {
           this.tableData = response.data;
           this.totalCount=response.data.length;

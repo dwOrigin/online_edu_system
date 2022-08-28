@@ -6,6 +6,25 @@
         <el-link @click="changeName" :underline="false" type="primary" style="margin: 0 10px">修改
         </el-link>
       </el-descriptions-item>
+       <el-descriptions-item label="性别">
+        <!-- {{ user.userName }} -->
+        <p v-if="user.sex==1">男  
+        <el-link @click="changeSex" :underline="false" type="primary" style="margin: 0 10px">修改
+        </el-link></p>
+        <p v-if="user.sex==2">女
+         <el-link @click="changeSex" :underline="false" type="primary" style="margin: 0 10px">修改
+        </el-link></p>
+      </el-descriptions-item>
+       <el-descriptions-item label="年龄">
+        {{ user.age }}
+        <el-link @click="changeAge" :underline="false" type="primary" style="margin: 0 10px">修改
+        </el-link>
+      </el-descriptions-item>
+       <el-descriptions-item label="邮箱">
+        {{ user.email }}
+        <el-link @click="changeEmail" :underline="false" type="primary" style="margin: 0 10px">修改
+        </el-link>
+      </el-descriptions-item>
       <el-descriptions-item label="手机号">
         {{ user.mobile }}
         <el-link @click="changePhone" :underline="false" type="primary" style="margin: 0 10px">修改
@@ -27,6 +46,28 @@
       <el-input v-model="newUser.name" placeholder="请输入新的用户名"></el-input>
       <span slot="footer" class="dialog-footer">
         <el-button plain type="primary" @click="changeNameConfirm">确 定</el-button>
+      </span>
+    </el-dialog>
+     <el-dialog :visible.sync="visible.sex" append-to-body lock-scroll top="25vh" center modal-append-to-body
+      width="25%">
+       <el-radio v-model="newUser.sex" :label="1">男</el-radio>
+       <el-radio v-model="newUser.sex" :label="2">女</el-radio>
+      <span slot="footer" class="dialog-footer">
+        <el-button plain type="primary" @click="changeSexConfirm">确 定</el-button>
+      </span>
+    </el-dialog>
+     <el-dialog :visible.sync="visible.age" append-to-body lock-scroll top="25vh" center modal-append-to-body
+      width="25%">
+      <el-input v-model="newUser.age" placeholder="请输入要修改的年龄"></el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button plain type="primary" @click="changeAgeConfirm">确 定</el-button>
+      </span>
+    </el-dialog>
+     <el-dialog :visible.sync="visible.email" append-to-body lock-scroll top="25vh" center modal-append-to-body
+      width="25%">
+      <el-input v-model="newUser.email" placeholder="请输入新的邮箱"></el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button plain type="primary" @click="changeEmailConfirm">确 定</el-button>
       </span>
     </el-dialog>
     <el-dialog :visible.sync="visible.phone" append-to-body :close-on-click-modal="false" lock-scroll top="25vh" center
@@ -93,7 +134,10 @@ export default {
         name: false,
         phone: false,
         pwd: false,
-        avatar: false
+        avatar: false,
+        sex:false,
+        email:false,
+        age:false
       },
       sendCoolDown: 0,
       codeIsRight: false,
@@ -105,6 +149,9 @@ export default {
         codeR: '',
         pwd: '',
         pwdR: '',
+        sex:'',
+        age:'',
+        email:''
       }
     }
   },
@@ -125,10 +172,6 @@ export default {
     },
     changeNameConfirm() {
       //不进行过于复杂的验证
-      if (this.newUser.name.length < 8) {
-        this.$message.error('用户名至少8位');
-        return;
-      }
       if (this.newUser.name === this.user.userName) {
         this.$message.error('与旧用户名相同');
       } else {
@@ -145,6 +188,99 @@ export default {
             this.newUser.name = '';
             this.visible.name = false;
             this.$message.success('用户名修改成功');
+          } else {
+            this.$message.error(res.data.message);
+          }
+        }).catch((err) => {
+          this.$message.error('你的网络迷路了');
+        });
+      }
+      this.reloadUser();
+    },
+    changeAge(){
+      this.visible.age = true;
+    },
+    changeAgeConfirm(){
+     if (this.newUser.age< '0') {
+        this.$message.error('请输入合适的年龄');
+        return;
+      }
+      if (this.newUser.age === this.user.age) {
+        this.$message.error('与原有年龄相同');
+      } else {
+        //修改年龄
+        this.user.age = this.newUser.age;
+        let promise = this.$axios({
+          url: '/user/updateUser',
+          method: 'post',
+          data: this.user
+        });
+        promise.then((res) => {
+          if (res.data.code == "200") {
+            this.reloadUser();
+            this.newUser.age = '';
+            this.visible.age = false;
+            this.$message.success('年龄修改成功');
+          } else {
+            this.$message.error(res.data.message);
+          }
+        }).catch((err) => {
+          this.$message.error('你的网络迷路了');
+        });
+      }
+    },
+    changeEmail(){
+      this.visible.email = true;
+    },
+    changeEmailConfirm(){
+     if (!this.newUser.email.match(/^\w+@\w+\.\w+$/i)) {
+        this.$message.error('请输入正确的邮箱');
+        return;
+      }
+      if (this.newUser.email === this.user.email) {
+        this.$message.error('与原有邮箱相同');
+      } else {
+        //修改邮箱
+        this.user.email = this.newUser.email;
+        let promise = this.$axios({
+          url: '/user/updateUser',
+          method: 'post',
+          data: this.user
+        });
+        promise.then((res) => {
+          if (res.data.code == "200") {
+            this.reloadUser();
+            this.newUser.email = '';
+            this.visible.email = false;
+            this.$message.success('邮箱修改成功');
+          } else {
+            this.$message.error(res.data.message);
+          }
+        }).catch((err) => {
+          this.$message.error('你的网络迷路了');
+        });
+      }
+    },
+     changeSex(){
+      this.visible.sex = true;
+    },
+    changeSexConfirm(){
+      if (this.newUser.sex === this.user.sex) {
+        this.$message.error('与原有性别相同');
+      } else {
+        //修改性别
+        this.user.sex = this.newUser.sex;
+        let promise = this.$axios({
+          url: '/user/updateUser',
+          method: 'post',
+          data: this.user
+        });
+        promise.then((res) => {
+          if (res.data.code == "200") {
+            this.reloadUser();
+            this.newUser.sex = '';
+            this.visible.sex = false;
+            this.$message.success('性别修改成功');
           } else {
             this.$message.error(res.data.message);
           }
@@ -237,6 +373,7 @@ export default {
         promise.then((res) => {
           if (res.data.code == "200") {
             this.$message.success('修改密码成功');
+            this.reloadUser();
           } else {
             this.$message.error('修改密码失败');
           }
@@ -275,7 +412,7 @@ export default {
     reloadUser() {
       //获取用户信息(同登录)
       let promise = this.$axios({
-        url: '/user/id',
+        url: '/user/findOne',
         method: 'get',
         params: {
           id: this.user.userId

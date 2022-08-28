@@ -25,6 +25,9 @@
       <el-menu-item index="6" @click="gotoNotice">
         <span slot="title">通知管理</span>
       </el-menu-item>
+       <el-menu-item index="7" @click="gotoHome">
+            <span slot="title">退出</span>
+          </el-menu-item>
     </el-menu>
   </el-aside>
   <el-container>
@@ -70,17 +73,16 @@
      <el-table-column
       prop="articleType"
       label="文章类型"
-      width="100"
-      :filters="[{ text: '美女', value: '美女' }, { text: '高中生', value: '高中生' },{text:'帅哥',value:'帅哥'}]"
+      width="100">
+      <!-- :filters="[{ text: '美女', value: '美女' }, { text: '高中生', value: '高中生' },{text:'帅哥',value:'帅哥'}]"
       :filter-method="filterTag"
-      filter-placement="bottom-end">
+      filter-placement="bottom-end"> -->
       <template slot-scope="scope">
         <el-tag
           close-transition>{{scope.row.articleType}}</el-tag>
       </template>
     </el-table-column>
     <el-table-column
-      fixed="right"
       label="操作"
       width="100">
       <template slot-scope="scope">
@@ -143,6 +145,9 @@ export default{
          gotoNotice(){
             this.$router.push('/notice_manage')
         },
+        gotoHome(){
+      this.$router.push('/home')
+    },
        handleSizeChange(val) {
       this.pageSize=val;
       this.currentPage=1;
@@ -182,7 +187,7 @@ export default{
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-              this.$axios.get('http://localhost:8081/article/delete',{
+              this.$axios.get('/article/delete',{
                 params: {
                   articleId: row.articleId
                 }
@@ -218,7 +223,7 @@ export default{
         this.$router.push('/add_article_manage')
       },
        fetchData(){
-        this.$axios.get('http://localhost:8081/article/findAll').then(
+        this.$axios.get('/article/findAll').then(
           response=>{
             this.tableData=response.data;
             this.totalCount=response.data.length;

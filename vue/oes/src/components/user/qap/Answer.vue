@@ -7,13 +7,13 @@
         <span v-if="dataObj.commenterAvatarUrl === ''">{{ dataObj.commenterName }}</span>
       </el-avatar> -->
       &nbsp;&nbsp;&nbsp;
-      <span style="font-size: x-small; font-weight: bold; color:#4C4444;">{{ dataObj.cusId }}</span>
+      <span style="font-size: x-small; font-weight: bold; color:#4C4444;">{{ user.userName }}</span>
     </div>
     <div class="content">
       {{ dataObj.content }}
     </div>
     <div class="footer">
-      <div>发布于 {{ dataObj.addTime }}</div>
+      <div>发布于 {{ dataObj.addtime.split('T')[0] }}&nbsp;{{ dataObj.addtime.split('T')[1].split(':')[0] }}:{{ dataObj.addtime.split('T')[1].split(':')[1] }}</div>
       <div>
         <el-button
             @click="accept"
@@ -37,10 +37,98 @@ export default {
     return {
       dataObj: this.obj,
       likeC: '赞同',
-      type: this.typeM
+      type: this.typeM,
+      user:{},
+      isPraise:''
     };
   },
+  mounted(){
+    this.getUserName();
+    this.getPraise();
+  },
   methods: {
+     getUserName(){
+      //获取回答者姓名
+      if(this.type === 'PassageComment'){
+        let promise = this.$axios({
+        url: 'http://localhost:8081/user/findOne',
+        method: 'get',
+        params: {
+          id:this.dataObj.userId
+        }
+      });
+       promise.then((res) => {
+        this.user = res.data;
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });
+      }else if(this.type=='Answer'){
+
+      let promise = this.$axios({
+        url: 'http://localhost:8081/user/findOne',
+        method: 'get',
+        params: {
+          id:this.dataObj.cusId
+        }
+      });
+       promise.then((res) => {
+        this.user = res.data;
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });
+      }
+    },
+    getPraise(){
+      let usr = window.localStorage.getItem('user');
+      if (usr === null) {
+        this.$bus.$emit('OpenLoginDialog');
+      } else {
+        usr = JSON.parse(usr);
+        if (this.type === 'PassageComment'){
+          let promise=this.$axios({
+          url:'http://localhost:8081/records/orLikedArticleCom',
+          method:'get',
+          params:{
+            userId:usr.userId,
+            articleCommentId:this.dataObj.commentId
+          }
+        });
+         promise.then((res) => {
+        this.isPraise = res.data;
+        console.log('这是getpraise'+res.data);
+        if(this.isPraise=='1'){
+          this.likeC = '已赞同';
+        }
+        else if(this.isPraise=='2'){
+          this.likeC='赞同'
+        }
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });
+        }else if(this.type=='Answer'){
+           let promise=this.$axios({
+          url:'http://localhost:8081/records/orLikedCom',
+          method:'get',
+          params:{
+            userId:usr.userId,
+            commentId:this.dataObj.id
+          }
+        });
+         promise.then((res) => {
+        this.isPraise = res.data;
+        console.log('这是getpraise'+res.data);
+        if(this.isPraise=='1'){
+          this.likeC = '已赞同';
+        }
+        else if(this.isPraise=='2'){
+          this.likeC='赞同'
+        }
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });
+        }      
+      }
+    },
     accept() {
       let usr = window.localStorage.getItem('user');
       if (usr === null) {
@@ -48,63 +136,132 @@ export default {
       } else {
         usr = JSON.parse(usr);
         if (this.type === 'PassageComment') {
-          // 修改文章评论的点赞状态
-          // let promise = this.$axios({
-          //   url: '',
-          //   method: '',
-          //   data:{
-          //     uId: usr.id,
-          //     cId: this.dataObj.cId,
-          //     like: this.likeC === '赞同'//修改后的点赞状态true or false
-          //   }
-          // });
-          let promise = new Promise((a) => {
-            a({
-              data: {
-              }
-            });
+        //   修改文章评论的点赞状态
+        let promise=this.$axios({
+          url:'http://localhost:8081/records/orLikedArticleCom',
+          method:'get',
+          params:{
+            userId:usr.userId,
+            articleCommentId:this.dataObj.commentId
+          }
+        });
+         promise.then((res) => {
+        this.isPraise = res.data;
+          if(this.isPraise=='2'){
+            this.$axios({
+            url: 'http://localhost:8081/comment/praise',
+            method: 'get',
+            params: {
+                  id: this.dataObj.commentId,
+            }
+          });
+            let promise = this.$axios({
+            url: 'http://localhost:8081/records/addRecordArticleComment',
+            method: 'get',
+            params: {
+                  userId: usr.userId,
+                  articleCommentId: this.dataObj.commentId,
+            }
           });
           promise.then((res) => {
-            let ret = (this.likeC === '赞同') ;
-            if (ret) {
+              // this.reload();
               this.likeC = '已赞同';
-              this.dataObj.like++;
-            } else {
-              this.likeC = '赞同';
-              this.dataObj.like--;
-            }
+              this.dataObj.praiseCount++;
           }).catch((err) => {
             this.$message.error('你的网络迷路了');
           });
+          }else if(this.isPraise=='1'){
+            this.$axios({
+            url: 'http://localhost:8081/comment/cancelPrise',
+            method: 'get',
+            params: {
+                  commentId: this.dataObj.commentId,
+            }
+          });
+             let promise = this.$axios({
+            url: 'http://localhost:8081/records/reduceRecordArticleComment',
+            method: 'get',
+            params: {
+                  userId: usr.userId,
+                  articleCommentId: this.dataObj.commentId,
+            }
+          });
+          promise.then((res) => {
+            this.likeC = '赞同';
+              this.dataObj.praiseCount--;
+              // this.reload();
+          }).catch((err) => {
+            this.$message.error('你的网络迷路了');
+          });
+          }
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });         
         } else if (this.type === 'Answer') {
           //修改回答的赞同状态
-          // let promise = this.$axios({
-          //   url: '',
-          //   method: '',
-          //   data: {
-          //         uId: usr.id,
-          //         aId: this.dataObj.cId,
-          //         like: this.likeC === '赞同'//修改后的点赞状态true or false
-          //   }
-          // });
-          let promise = new Promise((a) => {
-            a({
-              data: {
-              }
-            });
+          let promise=this.$axios({
+          url:'http://localhost:8081/records/orLikedCom',
+          method:'get',
+          params:{
+            userId:usr.userId,
+            commentId:this.dataObj.id
+          }
+        });
+         promise.then((res) => {
+        this.isPraise = res.data;
+          console.log('这是点赞里的'+this.isPraise);
+          if(this.isPraise=='2'){
+            this.$axios({
+            url: 'http://localhost:8081/questionscomment/addPraise',
+            method: 'get',
+            params: {
+                  id: this.dataObj.id,
+            }
+          });
+            let promise = this.$axios({
+            url: 'http://localhost:8081/records/addRecordCom',
+            method: 'get',
+            params: {
+                  userId: usr.userId,
+                  commentId: this.dataObj.id,
+                  // like: this.likeC === '赞同'//修改后的点赞状态true or false
+            }
           });
           promise.then((res) => {
-            let ret = (this.likeC === '赞同');
-            if (ret) {
+              // this.reload();
               this.likeC = '已赞同';
-              this.dataObj.like++;
-            } else {
-              this.likeC = '赞同';
-              this.dataObj.like--;
-            }
+              this.dataObj.praiseCount++;
           }).catch((err) => {
             this.$message.error('你的网络迷路了');
           });
+          }else if(this.isPraise=='1'){
+            this.$axios({
+            url: 'http://localhost:8081/questionscomment/reducePraise',
+            method: 'get',
+            params: {
+                  id: this.dataObj.id,
+            }
+          });
+             let promise = this.$axios({
+            url: 'http://localhost:8081/records/reduceRecordCom',
+            method: 'get',
+            params: {
+                  userId: usr.userId,
+                  commentId: this.dataObj.id,
+                  // like: this.likeC === '赞同'//修改后的点赞状态true or false
+            }
+          });
+          promise.then((res) => {
+            this.likeC = '赞同';
+              this.dataObj.praiseCount--;
+              // this.reload();
+          }).catch((err) => {
+            this.$message.error('你的网络迷路了');
+          });
+          }
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });         
         }
       }
     }

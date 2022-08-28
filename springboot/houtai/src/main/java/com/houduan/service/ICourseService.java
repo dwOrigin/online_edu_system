@@ -33,4 +33,17 @@ public interface ICourseService extends IService<Course> {
 
     List<Course> getbyteacher(Integer teacherid);
 
+    Result sortArticles();
+
+    List<Course> recommendCoursesType(Integer id);
+
+    List<Course> getbyname(String name);
+
+    List<Course> getbyboth(String select, String key);
+
+    Result commentplus(Integer id);
+
+    Result praisedeplus(Integer id);
+
+    Result commentdeplus(Integer id);
 }

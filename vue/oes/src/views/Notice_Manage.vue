@@ -21,6 +21,9 @@
           <el-menu-item index="6" @click="gotoNotice">
             <span slot="title">通知管理</span>
           </el-menu-item>
+           <el-menu-item index="7" @click="gotoHome">
+            <span slot="title">退出</span>
+          </el-menu-item>
         </el-menu>
       </el-aside>
       <el-container>
@@ -111,10 +114,13 @@ export default {
     gotoNotice() {
       this.$router.push('/notice_manage')
     },
+    gotoHome(){
+      this.$router.push('/home')
+    },
     submitForm() {
       if(this.ruleForm.type=="全体用户"){
         this.request
-          .post("http://localhost:8081/msgsystem/sendAllMsg",this.ruleForm.content)
+          .post("/msgsystem/sendAllMsg",this.ruleForm.content)
           .then((res)=>{
             if(res.code=="200"){
               this.$message.success("发送成功");
@@ -126,7 +132,7 @@ export default {
         this.msgsystem.content=this.ruleForm.content;
         this.msgsystem.acceptId=this.ruleForm.type;
         this.request
-          .post("http://localhost:8081/msgsystem/add",this.msgsystem)
+          .post("/msgsystem/add",this.msgsystem)
           .then((res)=>{
             if(res.code=="200"){
               this.$message.success("发送成功");
@@ -144,7 +150,7 @@ export default {
   },
   mounted() {
     this.request
-      .get("http://localhost:8081/user/")
+      .get("/user")
       .then((res) => {
         this.users = res;
       })
