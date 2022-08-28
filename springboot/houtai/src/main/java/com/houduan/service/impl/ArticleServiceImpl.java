@@ -4,11 +4,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.houduan.common.Result;
 import com.houduan.entity.Article;
 import com.houduan.mapper.ArticleMapper;
+import com.houduan.mapper.RecordsMapper;
 import com.houduan.service.IArticleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.houduan.service.IRecordsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -24,8 +27,12 @@ import java.util.*;
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements IArticleService {
 @Autowired
 private ArticleMapper articleMapper;
+
     @Override
     public Result addArticle(Article article) {
+        article.setClickNum(0);
+        article.setPraiseCount(0);
+        article.setCommentNum(0);
         int insert = articleMapper.insert(article);
         if (insert>=1){
             return Result.success();
@@ -36,6 +43,7 @@ private ArticleMapper articleMapper;
 
     @Override
     public Result deleteArticle(Integer integer) {
+
         int i = articleMapper.deleteById(integer);
         if (i>=1){
             return Result.success();
@@ -141,9 +149,19 @@ private ArticleMapper articleMapper;
             sortScore=(int)(initArticles.get(i).getPraiseCount()*0.3+
                     initArticles.get(i).getClickNum()*0.5+
                     initArticles.get(i).getCommentNum()*0.2);
-
             initArticles.get(i).setSort(sortScore);
+        }
+//        将更新后的数据传递到数据库中
+        for (int i=0;i<initArticles.size();i++){
+            articleMapper.updateById(initArticles.get(i));
         }
         return Result.success();
     }
+
+
+
+
+
+
+
 }

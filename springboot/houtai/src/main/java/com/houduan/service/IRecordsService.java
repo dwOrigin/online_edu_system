@@ -65,4 +65,14 @@ Integer orCollectedCourse(Integer userId,Integer articleId);
    Result addRecordArticleComment(Integer userId,Integer articleCommentId);
    Result reduceRecordArticleComment(Integer userId,Integer articleCommentId);
    Integer orLikedArticleComment(Integer userId,Integer articleCommentId);
+/*---------------2022-8-28---------------*/
+//   删除评论时将所有的点赞记录全部除去
+   Result deleteACommentLikes(Integer commentId);
+//删除文章时将所有的点赞记录全部除去
+//删除文章时候将所有的文章评论的点赞全部除去
+   Result deleteAArticleLikes(Integer articleId);
+//删除课程时将所有的点赞记录全部除去
+// 删除课程的时将所有的收藏记录全部除去
+   Result deleteACourseLikesAndCollects(Integer courseId);
+   Result deleteACourseCollects(Integer courseId);
 }

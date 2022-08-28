@@ -3,6 +3,7 @@ package com.houduan.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.houduan.common.Constants;
 import com.houduan.common.Result;
+import com.houduan.service.IRecordsService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -26,7 +27,8 @@ public class CourseController {
 
     @Resource
     private ICourseService courseService;
-
+    @Resource
+    private IRecordsService recordsService;
     @PostMapping("/add")
     public Result addnew(@RequestBody Course course) {
         return courseService.addnew(course);
@@ -39,6 +41,9 @@ public class CourseController {
 //此处在删除的时候返回的变量不要添上路径直接都不要就可以了
     @GetMapping("/delete")
     public Result delete( Integer courseId) {
+//        将course表以外的关联表删除痕迹
+        recordsService.deleteACourseLikesAndCollects(courseId);
+//        删除course表
         if (courseService.removeById(courseId)) {
             return Result.success(Constants.CODE_200, "删除成功");
         } else {
@@ -92,7 +97,7 @@ public class CourseController {
 
     @GetMapping("/sortCourses")
     public Result sortCourses(){
-        return courseService.sortArticles();
+        return courseService.sortCourses();
     }
     @GetMapping("/typeRecommend")
     public List<Course> typeRecommend(Integer courseId){
