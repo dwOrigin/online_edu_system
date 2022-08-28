@@ -4,11 +4,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.houduan.common.Result;
 import com.houduan.entity.Article;
 import com.houduan.mapper.ArticleMapper;
+import com.houduan.mapper.RecordsMapper;
 import com.houduan.service.IArticleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.houduan.service.IRecordsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -24,6 +27,7 @@ import java.util.*;
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements IArticleService {
 @Autowired
 private ArticleMapper articleMapper;
+
     @Override
     public Result addArticle(Article article) {
         article.setClickNum(0);
@@ -39,6 +43,7 @@ private ArticleMapper articleMapper;
 
     @Override
     public Result deleteArticle(Integer integer) {
+
         int i = articleMapper.deleteById(integer);
         if (i>=1){
             return Result.success();

@@ -9,6 +9,7 @@ import com.houduan.entity.Course;
 import com.houduan.mapper.CourseMapper;
 import com.houduan.service.ICourseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.houduan.service.IRecordsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,8 @@ import java.util.*;
 public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> implements ICourseService {
     @Autowired
     private CourseMapper mapper;
-
+    @Resource
+    private IRecordsService recordsService;
     @Override
     public Result addnew(Course course) {
         course.setAddTime(LocalDateTime.now());
@@ -82,7 +84,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     }
 
     @Override
-    public Result sortArticles() {
+    public Result sortCourses() {
         /*
          * 文章的推荐规则是按照得分来进行
          * 按照对应数值划分比例

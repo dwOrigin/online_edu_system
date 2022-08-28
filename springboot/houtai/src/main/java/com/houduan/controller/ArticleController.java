@@ -3,6 +3,7 @@ package com.houduan.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.houduan.common.Result;
 import com.houduan.entity.Course;
+import com.houduan.service.IRecordsService;
 import jdk.nashorn.internal.runtime.ListAdapter;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,8 @@ import com.houduan.entity.Article;
 
 @Resource
 private IArticleService articleService;
+@Resource
+private IRecordsService recordsService;
 //添加文章信息
 @PostMapping
 public Result addArticle(@RequestBody Article article){
@@ -41,8 +44,11 @@ public Result updateArticle(@RequestBody Article article) {
 //删除文章
 @GetMapping("/delete")
 public Result delete(@RequestParam Integer articleId) {
-        return articleService.deleteArticle(articleId);
-        }
+        //       将article表以外的关联表删除痕迹
+        recordsService.deleteAArticleLikes(articleId);
+        Result result = articleService.deleteArticle(articleId);
+        return result;
+}
 
 //按照类型查找
         /*为了区分出按照类别和按照id去查找
