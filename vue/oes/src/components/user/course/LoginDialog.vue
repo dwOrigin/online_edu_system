@@ -331,45 +331,7 @@ export default {
         this.isVisible = false;
         this.sliderVisible = true;
         //  验证表单
-        this.$refs['loginForm'].validate((valid) => {
-          if (valid) {
-            //管理员登录
-            if (this.loginForm.username == "admin" && this.loginForm.password == "admin") {
-              this.$message.success("管理员登录成功");
-              this.$router.push("/member_manage");
-            } else {
-              //用户登录
-              let promise = this.$axios({
-                method: 'get',
-                url: '/user/login',
-                params: {
-                  username: this.loginForm.username,
-                  password: this.loginForm.password,
-                }
-              });
-              promise.then((res) => {
-                let ret = res.data;
-                //用户名和密码正确
-                if (ret.code == "200") {
-                  let user = ret.data;
-                  window.localStorage.setItem('user', JSON.stringify(user));
-                  this.isVisible = false;
-                  this.resetAllStatus();
-                  this.$message.success(ret.message);
-                  this.$bus.$emit('AuthorizationChanged');
-                } else {//用户名或密码错误
-                  // this.antiRobotPassed = false;
-                  // this.sliderValue = 0;
-                  this.$message.error(ret.message);
-                }
-              }).catch((err) => {
-                this.$message.error('网络连接失败');
-              });
-            }
-           }else {
-            return false;
-          }
-        });
+
       } else if (choice === 'register') {
         this.$refs.registerForm.validate((valid) => {
           if (valid) {
