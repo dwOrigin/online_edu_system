@@ -33,6 +33,6 @@ public interface ICourseService extends IService<Course> {
 
     List<Course> getbyteacher(Integer teacherid);
     //    对课程的推荐程度进行一个按比例排序
-    Result sortArticles();
+    Result sortCourses();
     List<Course> recommendCoursesType(Integer id);
 }
