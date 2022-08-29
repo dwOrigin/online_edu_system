@@ -108,6 +108,8 @@ for (int i=0;i<list.size();i++){
         wrapper.eq("id",integer);
         System.out.println(integer);
         Questions questions = questionsMapper.selectOne(wrapper);
+//        将问题的状态设为1，以便前面调用
+        questions.setStatus("1");
         questions.setReplyCount(questions.getReplyCount()+1);
         int i = questionsMapper.updateById(questions);
         if (i>=1){

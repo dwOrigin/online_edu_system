@@ -174,11 +174,11 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         System.out.println(typeList.size());
         int i = 0;
         for (; i < typeList.size(); i++) {
-//            注意此处的queryWrapper的声明位置，
-//            如果声明被放在了122行，就会导致出现
-//            eq的条件越来越多，也就是理论上的.eq().eq().eq()
-//            这种多重的筛选条件，因此就会出现只有第一个类别是可以出现结果
-//            但是后面的都没有办法出现结果的情况！！！
+         /*   注意此处的queryWrapper的声明位置，
+            如果声明被放在了122行，就会导致出现
+            eq的条件越来越多，也就是理论上的.eq().eq().eq()
+            这种多重的筛选条件，因此就会出现只有第一个类别是可以出现结果
+            但是后面的都没有办法出现结果的情况！！！*/
             QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("type",typeList.get(i) );
             List<Course> courses = mapper.selectList(queryWrapper);
