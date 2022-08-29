@@ -173,7 +173,7 @@ export default {
                     id: this.course.courseId
                   }
                 })
-                this.refresh();
+                // this.refresh();
               } else {
                 this.$message.error("取消失败")
               }
@@ -197,7 +197,7 @@ export default {
                     id: this.course.courseId
                   }
                 })
-                this.refresh();
+                // this.refresh();
               } else {
                 this.$message.error("点赞失败")
               }
@@ -208,17 +208,17 @@ export default {
         });
       }
     },
-    refresh(){
-      this.request.get("/course/getById",{
-        params:{
-          id:this.course.courseId
-        }
-      })
-      .then((res)=>{
-        this.course=res;
-      })
-      this.$bus.$emit('courseChanged',this.course);
-    }
+    // refresh(){
+    //   this.request.get("/course/getById",{
+    //     params:{
+    //       id:this.course.courseId
+    //     }
+    //   })
+    //   .then((res)=>{
+    //     this.course=res;
+    //   })
+    //   this.$bus.$emit('courseChanged',this.course);
+    // }
   },
   mounted() {
     this.$bus.$on('courseChanged', (data) => {
