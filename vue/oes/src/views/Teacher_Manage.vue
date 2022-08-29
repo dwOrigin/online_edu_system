@@ -97,9 +97,6 @@
                 <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
                 <el-dialog title="详细信息" :visible.sync="dialogFormVisible" append-to-body>
                   <el-form :model="form">
-                    <el-form-item prop="id" label="教师ID" :label-width="formLabelWidth">
-                      <el-input v-model="form.id" :disabled="true"></el-input>
-                    </el-form-item>
                     <el-form-item prop="name" label="名称" :label-width="formLabelWidth">
                       <el-input v-model="form.name" :disabled="true"></el-input>
                     </el-form-item>
@@ -132,7 +129,7 @@
                     </el-form-item>
                   </el-form>
                   <div slot="footer" class="dialog-footer">
-                    <el-button @click="dialogFormVisible = false">取 消</el-button>
+                    <el-button @click="notChange">取 消</el-button>
                     <el-button type="primary" @click="changeUsermsg(); dialogFormVisible = false;">确 定</el-button>
                   </div>
                 </el-dialog>
@@ -326,7 +323,10 @@ export default {
         }
       );
     },
-
+    notChange(){
+       this.dialogFormVisible = false;
+      this.reload();
+    }
   }
 }
 </script>

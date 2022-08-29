@@ -30,23 +30,6 @@ export default {
             method: 'get',
             params: {courseId: course.courseId}
         });
-        // let promise = new Promise((a)=>{
-        //     a({
-        //         data:{
-        //           courses:[
-        //             {
-        //               id: 9999,
-        //               imgUrl: 'https://10.idqqimg.com/qqcourse_logo_ng/ajNVdqHZLLBJ4V5fI0YdBmgyHpVyILxvWibCt3zJ0HxzI968gMHEW6V748TaRKPaj9BPkEUoHYME/356',
-        //               title: '[量子] 一秒钟一个单词 一小时考过四级! 你值得拥有',
-        //               teacher: 'bilbil大学',
-        //               chapterNum: 16,
-        //               studentNum: 10086,
-        //               likeRate: 100
-        //             }
-        //           ]
-        //         }
-        //     });
-        // });
         promise.then((res)=>{
           console.log(res.data);
           //测试用, 要删
