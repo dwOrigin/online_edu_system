@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.houduan.common.Result;
 import com.houduan.entity.Msgreceive;
 import com.houduan.entity.Msgsystem;
+import com.houduan.entity.User;
 import com.houduan.mapper.MsgreceiveMapper;
+import com.houduan.mapper.UserMapper;
 import com.houduan.service.IMsgreceiveService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Collections;
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -26,6 +31,8 @@ import java.util.List;
 public class MsgreceiveServiceImpl extends ServiceImpl<MsgreceiveMapper, Msgreceive> implements IMsgreceiveService {
 @Autowired
 private MsgreceiveMapper mapper;
+@Resource
+private UserMapper userMapper;
     @Override
     public List<Msgreceive> showMsgReceive(Integer integer) {
         QueryWrapper<Msgreceive> wrapper = new QueryWrapper<>();
@@ -142,6 +149,35 @@ private MsgreceiveMapper mapper;
         msgreceive.setStatus(0);
         baseMapper.insert(msgreceive);
         return Result.success();
+    }
+    @Override
+    public List<User> getConnectUser(Integer userId) {
+        HashSet<Integer> userHashSet = new HashSet<>();
+
+//        作为接收者，返回所有的发送者
+        QueryWrapper<Msgreceive> cusIdWrapper = new QueryWrapper<>();
+        cusIdWrapper.eq("receiving_cusid",userId);
+        List<Msgreceive> cusIdList = mapper.selectList(cusIdWrapper);
+
+        for (int i=0;i<cusIdList.size();i++){
+            userHashSet.add(cusIdList.get(i).getCusId());
+        }
+
+//        作为发送者，返回所有的接收者
+        QueryWrapper<Msgreceive> receiving_cusIdWrapper = new QueryWrapper<>();
+        receiving_cusIdWrapper.eq("cus_id",userId);
+        List<Msgreceive> receiving_list = mapper.selectList(receiving_cusIdWrapper);
+
+        for (int j=0;j<receiving_list.size();j++){
+            userHashSet.add(receiving_list.get(j).getReceivingCusid());
+        }
+
+//      得到数据库中需要的userId
+        List<Integer> list = new ArrayList<>(userHashSet);
+
+        List<User> userList = userMapper.selectBatchIds(list);
+        return userList;
+
     }
 
     @Override

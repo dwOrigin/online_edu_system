@@ -111,5 +111,10 @@ public class MsgreceiveController {
     public List<Msgreceive>getallbyid(@RequestParam Integer id){
         return msgreceiveService.getallbyid(id);
     }
+    @GetMapping("/getConnectUser")
+    public List<User> getConnectUser(Integer userId){
+        List<User> user = msgreceiveService.getConnectUser(userId);
+        return user;
+    }
 }
 

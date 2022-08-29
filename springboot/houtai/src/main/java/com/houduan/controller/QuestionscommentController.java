@@ -44,7 +44,8 @@ public Result addComment(@RequestBody Questionscomment questionscomment) {
 // 删除评论
 @GetMapping("/delete")
 public Result delete(@RequestParam  Integer id) {
-
+//    Result deleteComment = questionscommentService.deleteComment(id);
+    System.out.println(questionscommentService.getById(id).getQuestionId());
         questionscommentService.reduceCommentCount(
                 questionscommentService.getById(id).getQuestionId());
     Result deleteComment = questionscommentService.deleteComment(id);
