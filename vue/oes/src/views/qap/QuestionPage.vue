@@ -50,7 +50,7 @@
               </el-dropdown-menu>
             </el-dropdown>
           </div>
-          <answer v-for="obj in answers" :obj="obj" typeM="Answer"></answer>
+          <answer  v-if="update" v-for="obj in answers" :obj="obj" typeM="Answer"></answer>
         </div>
       </div>
     </div>
@@ -72,7 +72,8 @@ export default {
       answers: [],
       dialogVisible: false,
       answer: '',
-      user:{}
+      user:{},
+      update:true
     };
   },
   methods: {

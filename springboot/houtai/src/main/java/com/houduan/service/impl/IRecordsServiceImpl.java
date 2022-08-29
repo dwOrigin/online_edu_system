@@ -261,8 +261,19 @@ private RecordsMapper recordsMapper;
 
 
     }
-
-
+    /*---------------2022-8-28---------------*/
+    @Override
+    public Result deleteACommentLikes(Integer commentId) {
+        QueryWrapper<Records> wrapper = new QueryWrapper<>();
+        wrapper.eq("xx_id",commentId)
+                .eq("type",2);
+        int i = recordsMapper.delete(wrapper);
+        if (i>=1){
+            return Result.success();
+        }else {
+            return Result.error();
+        }
+    }
 
 
 }

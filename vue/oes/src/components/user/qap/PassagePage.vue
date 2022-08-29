@@ -5,9 +5,9 @@
       <div class="title">{{ passage.title }}</div>
       <div class="time"> {{ passage.createTime }} 修改</div>
       <div class="content">
-        {{ passage.summary }}
+        <!-- {{ passage.summary }} -->
         <!-- 等下想怎么展示md文件 -->
-         <!-- <mavon-editor
+         <mavon-editor
             class="md"
             :value="htmlContent" 
             :subfield="prop.subfield" 
@@ -15,7 +15,7 @@
             :toolbarsFlag="prop.toolbarsFlag"
             :editable="prop.editable"
             :scrollStyle="prop.scrollStyle"
-          /> -->
+          />
       </div>
       <div class="footer">
         <div>
@@ -34,7 +34,7 @@
       <div>
         <div style="margin-top: 10px">
           <answer
-              typeM="PassageComment"
+              typeM="PassageComment" v-if="update"
               v-for="obj in answers" :obj="obj"></answer>
         </div>
       </div>
@@ -74,42 +74,41 @@
 
 <script>
 import Answer from "@/components/user/qap/Answer";
-// import { mavonEditor } from 'mavon-editor'
-// import 'mavon-editor/dist/css/index.css'
+import { mavonEditor } from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
 export default {
   name: "PassagePage",
   components: {
     Answer,
-    // mavonEditor
+    mavonEditor
   },
   data() {
     return {
       // number: 10,
-      passage: {
-        // comments: []
-      },
+      passage: {},
       answers:[],
       likeBtnContent: '点赞',
       CommentDialogVisible: false,
       cc: '',
       isPraise:'',
       htmlContent:'',
+      update:true
       // length: 5,
     };
   },
-  // computed: {
-  // // 解析器配置
-  //   prop () {
-  //     let data = {
-  //       subfield: false,// 单双栏模式
-  //       defaultOpen: 'preview',//edit： 默认展示编辑区域 ， preview： 默认展示预览区域 
-  //       editable: false,    // 是否允许编辑
-  //       toolbarsFlag: false,
-  //       scrollStyle: true
-  //     }
-  //     return data
-  //   }
-  // },
+  computed: {
+  // 解析器配置
+    prop () {
+      let data = {
+        subfield: false,// 单双栏模式
+        defaultOpen: 'preview',//edit： 默认展示编辑区域 ， preview： 默认展示预览区域 
+        editable: false,    // 是否允许编辑
+        toolbarsFlag: false,
+        scrollStyle: true
+      }
+      return data
+    }
+  },
   methods: {
     // getInfo(){
     //    this.htmlContent=data
@@ -141,6 +140,7 @@ export default {
       });
       promise.then((res) => {
         this.passage = res.data;
+        this.htmlContent=res.data.summary;
         let usr = window.localStorage.getItem('user');
       if (usr === null) {
         this.$bus.$emit('OpenLoginDialog');
@@ -254,7 +254,14 @@ export default {
           let ret = res.data;
           if (ret) {
             this.$message.success('评论成功')
-            this.loadPassage();
+            this.refreshComment(this.$route.query.pId);
+            // this.loadPassage();
+             this.update = false
+            // 在组件移除后，重新渲染组件
+            // this.$nextTick可实现在DOM 状态更新后，执行传入的方法。
+            this.$nextTick(() => {
+                this.update = true
+            })
           } else {
             this.$message.error('请勿重复评论');
           }
