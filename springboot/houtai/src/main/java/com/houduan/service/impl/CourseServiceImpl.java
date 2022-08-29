@@ -188,7 +188,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
 //            当某个种类的课程大于5个时，进行如下操作
 //            如果该种类的课程小于5个的时候，就将该种类的课程全部加进去
 //            --------------------------------------------
-            if(courses.size()>5) {
+            if(courses.size()>=5) {
                 for (int j = 0; j < 5; j++) {
                     fullReturnList.add(courses.get(courses.size() - 1 - j));
                 }
