@@ -10,6 +10,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -140,5 +142,21 @@ private MsgreceiveMapper mapper;
         msgreceive.setStatus(0);
         baseMapper.insert(msgreceive);
         return Result.success();
+    }
+
+    @Override
+    public List<Msgreceive> getboth(Integer cusId, Integer userId) {
+        List<Msgreceive>list1=getcus(cusId,userId);
+        List<Msgreceive>list2=getcus(userId,cusId);
+        list1.addAll(list2);
+        Collections.sort(list1);
+        return list1;
+    }
+
+    @Override
+    public List<Msgreceive> getallbyid(Integer id) {
+        QueryWrapper<Msgreceive>queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("receiving_cusid",id);
+        return list(queryWrapper);
     }
 }

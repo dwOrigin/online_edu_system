@@ -53,4 +53,8 @@ Result autoAddMsgReceive(Msgreceive msgreceive);
     List<Msgreceive> getcus(Integer cusId, Integer userId);
 
     Result add(Integer cusId, Integer receiveId, String content);
+
+    List<Msgreceive> getboth(Integer cusId, Integer userId);
+
+    List<Msgreceive> getallbyid(Integer id);
 }

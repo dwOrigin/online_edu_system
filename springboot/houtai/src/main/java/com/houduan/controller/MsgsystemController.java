@@ -74,5 +74,9 @@ public class MsgsystemController {
     public Result havereadall(@RequestParam Integer userId){
         return  msgsystemService.havereadall(userId);
     }
+    @GetMapping("/getallbyid")
+    public List<Msgsystem> getallbyid(@RequestParam Integer id){
+        return msgsystemService.getallbyid(id);
+    }
 }
 

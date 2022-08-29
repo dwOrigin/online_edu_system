@@ -103,5 +103,13 @@ public class MsgreceiveController {
     public Result add(@RequestParam Integer cusId,@RequestParam Integer receiveId,@RequestParam String content){
         return msgreceiveService.add(cusId,receiveId,content);
     }
+    @GetMapping("/getboth")
+    public List<Msgreceive>getboth(@RequestParam Integer cusId,@RequestParam Integer userId){
+        return msgreceiveService.getboth(cusId,userId);
+    }
+    @GetMapping("/getallbyid")
+    public List<Msgreceive>getallbyid(@RequestParam Integer id){
+        return msgreceiveService.getallbyid(id);
+    }
 }
 

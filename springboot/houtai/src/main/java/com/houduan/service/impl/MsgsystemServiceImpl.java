@@ -87,6 +87,13 @@ private UserMapper userMapper;
     }
 
     @Override
+    public List<Msgsystem> getallbyid(Integer id) {
+        QueryWrapper<Msgsystem>queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("accept_id",id);
+        return list(queryWrapper);
+    }
+
+    @Override
     public Result updateMsgSystem(Msgsystem msgsystem){
     int i= msgsystemMapper.updateById(msgsystem);
     if (i>=1){

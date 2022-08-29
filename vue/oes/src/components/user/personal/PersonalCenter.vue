@@ -98,13 +98,13 @@ export default {
         }
       });
       promise1.then((res1) => {
-        console.log(this.msgUnCheckCnt);
-        console.log(res1.data.length);
+        // console.log(this.msgUnCheckCnt);
+        // console.log(res1.data.length);
         this.msgUnCheckCnt =this.msgUnCheckCnt + res1.data.length;
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
-      console.log(this.msgUnCheckCnt);
+      // console.log(this.msgUnCheckCnt);
     }
   },
   mounted() {
