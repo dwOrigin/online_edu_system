@@ -103,5 +103,10 @@ public class MsgreceiveController {
     public Result add(@RequestParam Integer cusId,@RequestParam Integer receiveId,@RequestParam String content){
         return msgreceiveService.add(cusId,receiveId,content);
     }
+    @GetMapping("/getConnectUser")
+    public List<User> getConnectUser(Integer userId){
+        List<User> user = msgreceiveService.getConnectUser(userId);
+        return user;
+    }
 }
 
