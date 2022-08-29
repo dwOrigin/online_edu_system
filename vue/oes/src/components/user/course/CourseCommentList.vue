@@ -238,7 +238,7 @@ export default {
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
-      this.$bus.$emit('courseChanged',this.course);
+      // this.$bus.$emit('courseChanged',this.course);
     }
   },
   mounted() {
