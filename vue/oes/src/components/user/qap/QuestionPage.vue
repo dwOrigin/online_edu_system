@@ -132,12 +132,9 @@ export default {
         });
         promise.then((res) => {
           let ret = res.data;
-          if (ret) {
             this.$message.success('回答成功');
+            this.refreshQuestion(this.$route.query.qId);
             this.refreshComment(this.$route.query.qId);
-          } else {
-            this.$message.error('你已经回答过');
-          }
         }).catch((err) => {
           this.$message.error('你的网络迷路了');
         });
@@ -157,7 +154,13 @@ export default {
     },
     refreshQuestion(qId) {
       // 获取问题详细信息
-      let promise = this.$axios({
+      let promise=this.$axios({
+        url:'http://localhost:8081/questions/plusread',
+        method:'get',
+        params:{id:qId}
+      });
+      promise.then((res)=>{
+        let promise = this.$axios({
         url: 'http://localhost:8081/questions/id',
         method: 'get',
         params: {
@@ -170,6 +173,7 @@ export default {
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
+      })    
     },
     refreshComment(qId) {
       // 获取问题答案

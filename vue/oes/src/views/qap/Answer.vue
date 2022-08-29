@@ -83,15 +83,21 @@ export default {
     },
     deleteComment(dataObj){
       if(this.type==='PassageComment')
-      {this.$axios.get('http://localhost:8081/comment/delete',{
+      {let promise=this.$axios.get('http://localhost:8081/comment/delete',{
         params:{commentId:dataObj.commentId}
+      });
+      promise.then((res)=>{
+        this.reload();
       })
       }else if(this.type==='Answer'){
-         this.$axios.get('http://localhost:8081/questionscomment/delete',{
+         let promise=this.$axios.get('http://localhost:8081/questionscomment/delete',{
         params:{id:dataObj.id}
+    });
+    promise.then((res)=>{
+      this.reload();
     })
       }    
-    this.reload();
+    
     }
   }
 }

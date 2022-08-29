@@ -140,6 +140,7 @@ export default {
       });
       promise.then((res) => {
         this.passage = res.data;
+        console.log(this.passage.createTime);
         this.htmlContent=res.data.summary;
         let usr = window.localStorage.getItem('user');
       if (usr === null) {
@@ -156,7 +157,6 @@ export default {
       });
        promise.then((res) => {
         this.isPraise = res.data;
-        console.log('这是getpraise'+res.data);
         if(this.isPraise=='1'){
           this.likeBtnContent = '已喜欢';
         }
