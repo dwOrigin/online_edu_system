@@ -126,7 +126,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         QueryWrapper<Course> Wrapper = new QueryWrapper<>();
         Wrapper.eq("course_id",id);
         Course courseInit = mapper.selectOne(Wrapper);
-        System.out.println(courseInit);
+//        System.out.println(courseInit);
         QueryWrapper<Course> Wrapper2 = new QueryWrapper<>();
         Wrapper2.eq("type",courseInit.getType());
         List<Course> initList = mapper.selectList(Wrapper2);
@@ -148,18 +148,18 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
                     courses.add(initList.get(t));
                 }*/
                 if (initList.get(integers.get(i))!=courseInit) {
-                    System.out.println(integers.get(i));
+//                    System.out.println(integers.get(i));
                     courses.add(initList.get(integers.get(i)));
                 }else {
                     i--;//防止被播放的视频还被推荐了
                 }
 //                courses.add(initList.get((int)Math.random()*(initList.size()-1)));
             }
-            System.out.println(courses);
+//            System.out.println(courses);
             return courses;
         }
         else {
-            System.out.println(initList);
+//            System.out.println(initList);
             return initList;
         }
     }
@@ -194,7 +194,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
 //            当某个种类的课程大于5个时，进行如下操作
 //            如果该种类的课程小于5个的时候，就将该种类的课程全部加进去
 //            --------------------------------------------
-            if(courses.size()>5) {
+            if(courses.size()>=5) {
                 for (int j = 0; j < 5; j++) {
                     fullReturnList.add(courses.get(courses.size() - 1 - j));
                 }

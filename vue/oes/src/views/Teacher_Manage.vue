@@ -32,9 +32,6 @@
           <el-button type="primary" style="float: right; margin:10px 10px " round @click="addTeacher">添加讲师</el-button>
           <el-dialog title="详细信息" :visible.sync="addNewVisible" append-to-body>
             <el-form :model="newform">
-              <el-form-item prop="id" label="教师ID" :label-width="formLabelWidth">
-                <el-input v-model="newform.id"></el-input>
-              </el-form-item>
               <el-form-item prop="name" label="名称" :label-width="formLabelWidth">
                 <el-input v-model="newform.name"></el-input>
               </el-form-item>
@@ -50,18 +47,27 @@
                 <el-radio v-model="newform.isStar" :label="0">否</el-radio>
               </el-form-item>
               <el-form-item prop="picPath" label="头像" :label-width="formLabelWidth">
-                <el-input v-model="newform.picPath"></el-input>
+                <el-avatar shape="square" :size="60" :src="newform.picPath"></el-avatar>
+                  <el-link @click="changeAvatar" :underline="false" type="primary" style="margin: 0 30px">上传
+                  </el-link>
+                <!-- <el-input v-model="newform.picPath"></el-input> -->
               </el-form-item>
+              <el-dialog :visible.sync="avatar" append-to-body :close-on-click-modal="false" lock-scroll top="25vh" center
+              width="max-content" modal-append-to-body>
+              <el-upload class="avatar-uploader" action="http://localhost:8081/file/upload" :drag="true"
+                :show-file-list="false" :data="{ filetype: 'picture' }" :on-success="handleAvatarSuccess">
+                <img v-if="form.logo" :src="form.logo" class="avatar"  this.avatar=false>
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
+            </el-dialog>
+              
               <el-form-item prop="status" label="状态" :label-width="formLabelWidth">
                 <el-radio v-model="newform.status" :label="1">在线</el-radio>
                 <el-radio v-model="newform.status" :label="0">不在线</el-radio>
               </el-form-item>
-              <el-form-item prop="subjectId" label="分类ID" :label-width="formLabelWidth">
-                <el-input v-model="newform.subjectId"></el-input>
-              </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-              <el-button @click="addNewVisible = false">取 消</el-button>
+              <el-button @click="notAdd();addNewVisible = false">取 消</el-button>
               <el-button type="primary" @click="addTeachermsg(); addNewVisible = false;">确 定</el-button>
             </div>
           </el-dialog>
@@ -73,6 +79,8 @@
             <el-table-column prop="name" label="名称" width="120">
             </el-table-column>
             <el-table-column prop="education" label="所属机构" width="120">
+            </el-table-column>
+            <el-table-column prop="career" label="简介" width="120">
             </el-table-column>
             <el-table-column prop="isStar" label="是否推荐" width="120">
               <template slot-scope="scope">
@@ -88,9 +96,7 @@
                 <span v-else>在线</span>
               </template>
             </el-table-column>
-            <el-table-column prop="createTime" label="创建时间" width="120">
-            </el-table-column>
-            <el-table-column prop="subjectId" label="分类ID" width="120">
+            <el-table-column prop="createTime" label="创建时间" width="150">
             </el-table-column>
             <el-table-column label="操作" width="100">
               <template slot-scope="scope">
@@ -120,12 +126,6 @@
                     </el-form-item>
                     <el-form-item prop="createTime" label="创建时间" :label-width="formLabelWidth">
                       <el-input v-model="form.createTime" :disabled="true"></el-input>
-                    </el-form-item>
-                    <el-form-item prop="subjectId" label="分类ID" :label-width="formLabelWidth">
-                      <el-input v-model="form.subjectId"></el-input>
-                    </el-form-item>
-                    <el-form-item prop="sort" label="排序" :label-width="formLabelWidth">
-                      <el-input v-model="form.sort" :disabled="true"></el-input>
                     </el-form-item>
                   </el-form>
                   <div slot="footer" class="dialog-footer">
@@ -165,6 +165,7 @@ export default {
   },
   data() {
     return {
+      avatar: false,
       tableData: [],
       currentPage: 1,
       pageSize: 5,
@@ -181,19 +182,14 @@ export default {
         picPath: '',
         status: '',
         createTime: '',
-        subjectId: '',
-        sort: ''
       },
       newform: {
-        id: '',
         name: '',
         education: '',
         career: '',
         isStar: '',
         picPath: '',
         status: '',
-        subjectId: '',
-        sort: ''
       },
       formLabelWidth: '120px',
     }
@@ -257,6 +253,13 @@ export default {
       //     return c;
       //   }
     },
+    changeAvatar() {
+      this.avatar = true;
+    },
+    handleAvatarSuccess(res, file) {
+      this.newform.picPath = res;
+     
+    },
     addTeacher() {
       this.addNewVisible = true;
     },
@@ -299,16 +302,25 @@ export default {
         })
       this.reload();
     },
+    notAdd(){
+      this.newform.name= '';
+      this.newform.education= '';
+      this.newform.career= '';
+      this.newform.isStar='';
+      this.newform.picPath= '';
+      this.newform.status= '';
+    },
     addTeachermsg() {
       this.request.post('/teacher/addTeacher', this.newform)
         .then((res) => {
           if (res.code == "200") {
             this.$message.success(res.message);
+            this.reload();
           } else {
             this.$message.error(res.message);
           }
         })
-      this.reload();
+      
     },
     //不用手写时间
     fetchData() {

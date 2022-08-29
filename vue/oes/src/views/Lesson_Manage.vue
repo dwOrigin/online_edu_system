@@ -50,9 +50,7 @@
             </el-table-column>
             <el-table-column prop="pageViewcount" label="浏览量" width="120">
             </el-table-column>
-            <el-table-column prop="type" label="类型" width="100"
-              :filters="[{ text: 'rap', value: 'rap' }, { text: 'dance', value: 'dance' }, { text: 'vocal', value: 'vocal' }]"
-              :filter-method="filterTag" filter-placement="bottom-end">
+            <el-table-column prop="type" label="类型" width="100">
               <template slot-scope="scope">
                 <el-tag close-transition>{{ scope.row.type }}</el-tag>
               </template>

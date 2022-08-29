@@ -41,7 +41,7 @@
             <el-table-column prop="status" label="状态" width="120">
               <template slot-scope="scope">
                 <!-- 取到当前单元格 -->
-                <span v-if="scope.row.isAvailable == 0">未回答</span>
+                <span v-if="scope.row.isAvailable == '0'">未回答</span>
                 <span v-else>已回答</span>
               </template>
             </el-table-column>

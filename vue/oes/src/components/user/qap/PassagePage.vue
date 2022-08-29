@@ -226,15 +226,15 @@ export default {
       this.CommentDialogVisible = true;
     },
     handleClickFooter(btnName) {
-       let usr = window.localStorage.getItem('user');
+      if (btnName === 'cancel') {
+
+      } else if (btnName === 'ask') {
+        let usr = window.localStorage.getItem('user');
       if (usr === null) {
         this.$bus.$emit('OpenLoginDialog');
         return;
       }
        usr = JSON.parse(usr);
-      if (btnName === 'cancel') {
-
-      } else if (btnName === 'ask') {
         if (this.cc.length < 10) {
           this.$message.error('评论不能少于10个字');
           return;
