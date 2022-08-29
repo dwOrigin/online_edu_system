@@ -11,16 +11,13 @@
         <option value="$PROJECT_DIR$/springboot/houtai/pom.xml" />
       </list>
     </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/springboot/houtai/.mvn/wrapper/maven-wrapper.properties" />
+      </set>
+    </option>
   </component>
-<!--<<<<<<< HEAD-->
-<!--<<<<<<< HEAD-->
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="liberica-1.8" project-jdk-type="JavaSDK" />
-<!--=======-->
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
-<!--&gt;>>>>>> 8be11fcc1f16ae678bb4870e4fd504f040676584-->
-<!--=======-->
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
-<!--&gt;>>>>>> 47736c9dda0cc5cdbada7473c0ea3fc0e5f191b4-->
   <component name="SuppressionsComponent">
     <option name="suppComments" value="[]" />
   </component>

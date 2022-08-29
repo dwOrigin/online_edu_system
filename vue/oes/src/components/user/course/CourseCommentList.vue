@@ -12,7 +12,7 @@
       });">
         <el-avatar :size="70" :src="user.picImg">
           <span v-if="user.userId === undefined">未登录</span>
-          <span v-if="user.picImg === '' && user.userId !== undefined">{{ user.name }}</span>
+          <span v-if="(user.picImg == ''||user.picImg==null )&& user.userId !== undefined">{{ user.name }}</span>
         </el-avatar>
       </div>
       <el-input type="textarea" class="comment-input-area" :rows="3" placeholder="请输入一条友善的评论内容" v-model="userComment">

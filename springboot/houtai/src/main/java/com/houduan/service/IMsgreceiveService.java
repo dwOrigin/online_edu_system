@@ -60,4 +60,6 @@ Result autoAddMsgReceive(Msgreceive msgreceive);
     List<Msgreceive> getallbyid(Integer id);
 //   返回所有有关联的对象
     List<User>getConnectUser(Integer userId);
+
+    List<User> talknew(Integer talktoId, Integer userId);
 }

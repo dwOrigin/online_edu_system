@@ -29,11 +29,10 @@ export default {
   data() {
     return {
       num: 1,
-      teacher: '',
+      teacher: {},
       imgStyle: {
         width: '100%',
         height: '120px'
-
       }
     }
   },

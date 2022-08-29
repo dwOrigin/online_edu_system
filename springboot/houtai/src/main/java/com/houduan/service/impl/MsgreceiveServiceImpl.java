@@ -181,6 +181,19 @@ private UserMapper userMapper;
     }
 
     @Override
+    public List<User> talknew(Integer talktoId, Integer userId) {
+        List<User>list=getConnectUser(userId);
+        User user=userMapper.selectById(talktoId);
+        if(list.contains(user)){
+            return list;
+        }else{
+            list.add(user);
+            return list;
+        }
+    }
+
+
+    @Override
     public List<Msgreceive> getboth(Integer cusId, Integer userId) {
         List<Msgreceive>list1=getcus(cusId,userId);
         List<Msgreceive>list2=getcus(userId,cusId);
