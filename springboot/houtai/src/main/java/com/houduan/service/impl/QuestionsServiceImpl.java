@@ -27,6 +27,8 @@ public class QuestionsServiceImpl extends ServiceImpl<QuestionsMapper, Questions
 
     @Override
     public Result addQuestion(Questions questions) {
+//        初始化的时候将对应的状态设置为‘0’，表示没有回答
+        questions.setStatus("0");
         int insert = mapper.insert(questions);
         if (insert>=1){
             return Result.success();

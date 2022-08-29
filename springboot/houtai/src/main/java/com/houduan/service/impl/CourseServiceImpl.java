@@ -126,9 +126,10 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         QueryWrapper<Course> Wrapper = new QueryWrapper<>();
         Wrapper.eq("course_id",id);
         Course courseInit = mapper.selectOne(Wrapper);
-//        System.out.println(courseInit);
+        System.out.println(courseInit);
         QueryWrapper<Course> Wrapper2 = new QueryWrapper<>();
-        Wrapper2.eq("type",courseInit.getType());
+        Wrapper2.eq("type",courseInit.getType())
+                .ne("course_id",courseInit.getCourseId());
         List<Course> initList = mapper.selectList(Wrapper2);
         if (initList.size()>3){
             List<Course> courses = new ArrayList<>();
@@ -147,19 +148,12 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
                 if (initList.get(t)!=courseInit) {
                     courses.add(initList.get(t));
                 }*/
-                if (initList.get(integers.get(i))!=courseInit) {
-//                    System.out.println(integers.get(i));
+                    System.out.println(initList.get(integers.get(i)));
                     courses.add(initList.get(integers.get(i)));
-                }else {
-                    i--;//防止被播放的视频还被推荐了
-                }
-//                courses.add(initList.get((int)Math.random()*(initList.size()-1)));
             }
-//            System.out.println(courses);
             return courses;
         }
         else {
-//            System.out.println(initList);
             return initList;
         }
     }
@@ -180,11 +174,11 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         System.out.println(typeList.size());
         int i = 0;
         for (; i < typeList.size(); i++) {
-//            注意此处的queryWrapper的声明位置，
-//            如果声明被放在了122行，就会导致出现
-//            eq的条件越来越多，也就是理论上的.eq().eq().eq()
-//            这种多重的筛选条件，因此就会出现只有第一个类别是可以出现结果
-//            但是后面的都没有办法出现结果的情况！！！
+         /*   注意此处的queryWrapper的声明位置，
+            如果声明被放在了122行，就会导致出现
+            eq的条件越来越多，也就是理论上的.eq().eq().eq()
+            这种多重的筛选条件，因此就会出现只有第一个类别是可以出现结果
+            但是后面的都没有办法出现结果的情况！！！*/
             QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("type",typeList.get(i) );
             List<Course> courses = mapper.selectList(queryWrapper);
