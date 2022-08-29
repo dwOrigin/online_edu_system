@@ -32,7 +32,8 @@ public class QuestionsController {
         questions.setPraiseCount(0);
         questions.setReplyCount(0);
         questions.setBrowseCount(0);
-        return questionsService.saveOrUpdate(questions);
+        Result result = questionsService.addQuestion(questions);
+        return true;
     }
 
     @GetMapping("/delete")
