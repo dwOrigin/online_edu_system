@@ -128,7 +128,8 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         Course courseInit = mapper.selectOne(Wrapper);
         System.out.println(courseInit);
         QueryWrapper<Course> Wrapper2 = new QueryWrapper<>();
-        Wrapper2.eq("type",courseInit.getType());
+        Wrapper2.eq("type",courseInit.getType())
+                .ne("course_id",courseInit.getCourseId());
         List<Course> initList = mapper.selectList(Wrapper2);
         if (initList.size()>3){
             List<Course> courses = new ArrayList<>();
@@ -147,19 +148,12 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
                 if (initList.get(t)!=courseInit) {
                     courses.add(initList.get(t));
                 }*/
-                if (initList.get(integers.get(i))!=courseInit) {
-                    System.out.println(integers.get(i));
+                    System.out.println(initList.get(integers.get(i)));
                     courses.add(initList.get(integers.get(i)));
-                }else {
-                    i--;//防止被播放的视频还被推荐了
-                }
-//                courses.add(initList.get((int)Math.random()*(initList.size()-1)));
             }
-            System.out.println(courses);
             return courses;
         }
         else {
-            System.out.println(initList);
             return initList;
         }
     }
