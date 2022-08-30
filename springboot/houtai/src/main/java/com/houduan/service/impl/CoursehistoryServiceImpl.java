@@ -124,12 +124,14 @@ public List<String> getbyuseridTime(Integer userid) {
         String remem="";
         Duration duration= Duration.between(List.get(number-i).getTime(),LocalDateTime.now());
         long days = duration.toDays(); //相差的天数
+        long hours = duration.toHours()%24;//相差的小时数
+        long minutes = duration.toMinutes()%60;//相差的分钟数
         if(days>0){
             remem=days+"天前";
-        }else{
-            long hours = duration.toHours()%24;//相差的小时数
-            long minutes = duration.toMinutes()%60;//相差的分钟数
+        }else if(hours>0){
             remem=hours+"小时"+minutes+"分钟前";
+        }else{
+            remem=minutes+"分钟前";
         }
         timeList.add(remem);
     }

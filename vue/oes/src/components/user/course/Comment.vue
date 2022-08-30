@@ -81,6 +81,7 @@ export default {
           name: 'personal',
           query: {
             select: 'message',
+            talk:this.commenter.userId
           }
         });
       }

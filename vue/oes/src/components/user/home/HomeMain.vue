@@ -13,6 +13,7 @@ export default {
     LoginDialog
   },
   mounted() {
+    this.request.get('/course/sortCourses');
   }
 }
 </script>

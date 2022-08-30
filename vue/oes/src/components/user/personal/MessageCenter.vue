@@ -123,8 +123,9 @@ export default {
   mounted() {
     this.user = JSON.parse(window.localStorage.getItem('user'));
     this.getUserMessage();
-    console.log(this.$route.query);
-    // if (this.$route.query != undefined||this.$route.query!=null||this.$route.query!='') {
+    let talkid=this.$route.query.select;
+    console.log(talkid);
+    // if(talkid!=undefined){
     //   this.request.get('/user/findOne', {
     //     params: {
     //       id: parseInt(this.$route.query)
@@ -141,8 +142,8 @@ export default {
     //           this.allfriends = res1;
     //         })
     //     })
-    // } else {
-    this.request.get('/msgreceive/getConnectUser', {
+    // }else{
+      this.request.get('/msgreceive/getConnectUser', {
       params: {
         userId: this.user.userId
       }
@@ -150,6 +151,9 @@ export default {
       .then((res) => {
         this.allfriends = res;
       })
+    // }
+    // if (this.$route.query != undefined||this.$route.query!=null||this.$route.query!='') {
+    // } else {
     // }
     // this.$bus.$on('clearUnCheckedCnt', (id) => {
     //   this.allMessages.forEach((item) => {

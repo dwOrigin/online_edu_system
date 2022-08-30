@@ -33,15 +33,15 @@
         <el-link :underline="false" type="info" @click="exit">退出</el-link>
       </div>
       <div class="course">
-        <el-link :underline="false" @click="$router.push({ name: 'personal', query: { select: 'history' } });">{{ history.name[0] }}&nbsp;&nbsp;{{history.time[0]}}
+        <el-link :underline="false"  @click="$router.push({ name: 'personal', query: { select: 'history' } });">{{ history.name[0] }}&nbsp;&nbsp;{{history.time[0]}}
         </el-link>
       </div>
       <div class="course">
-        <el-link :underline="false" @click="$router.push({ name: 'personal', query: { select: 'history' } });">{{ history.name[1] }}&nbsp;&nbsp;{{history.time[1]}}
+        <el-link :underline="false" v-if="history.length>1" @click="$router.push({ name: 'personal', query: { select: 'history' } });">{{ history.name[1] }}&nbsp;&nbsp;{{history.time[1]}}
         </el-link>
       </div>
       <div class="course">
-        <el-link :underline="false" @click="$router.push({ name: 'personal', query: { select: 'history' } });">{{ history.name[2] }}&nbsp;&nbsp;{{history.time[2]}}
+        <el-link :underline="false" v-if="history.length>2" @click="$router.push({ name: 'personal', query: { select: 'history' } });">{{ history.name[2] }}&nbsp;&nbsp;{{history.time[2]}}
         </el-link>
       </div>
       <div class="divider"></div>
@@ -112,7 +112,7 @@ export default {
             this.starCourseNum = res.length;
           })
           this.request
-          .get('/coursehistory/getbyuserid', {
+          .get('/coursehistory/getByUserId', {
             params: {
               userid: this.user.userId
             }

@@ -80,7 +80,7 @@ export default {
       // });
       promise.then((res) => {
         this.starList = res.data;
-        this.listToDisplay = this.starList;
+        this.listToDisplay = this.starList.reverse();
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });

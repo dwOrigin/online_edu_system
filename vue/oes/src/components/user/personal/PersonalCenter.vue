@@ -2,10 +2,7 @@
   <div class="p-center">
     <div class="inner">
       <div class="nav">
-        <el-menu
-            class="el-menu-vertical-demo"
-            :default-active=this.url
-            router>
+        <el-menu class="el-menu-vertical-demo" :default-active=this.url router>
           <el-menu-item index='/home/personal/pinfo'>
             <i class="el-icon-user"></i>
             <span slot="title">
@@ -25,7 +22,7 @@
             <span slot="title">
               消息
               <el-badge v-show="msgUnCheckCnt > 0" class="mark" :value="msgUnCheckCnt" style="margin-bottom: 10px"
-                        :max="99"/>
+                :max="99" />
             </span>
           </el-menu-item>
           <el-menu-item index='/home/personal/question'>
@@ -60,7 +57,7 @@ export default {
     }
   },
   methods: {
-    pushm(){
+    pushm() {
       this.$bus.$emit('clearUnCheckedCnt', -1);
     },
     exit() {
@@ -69,7 +66,7 @@ export default {
     },
     getMsgUnCheckCnt() {
       //获取用户未读消息数
-      this.msgUnCheckCnt=0;
+      this.msgUnCheckCnt = 0;
       let promise = this.$axios({
         url: '/msgsystem/getbyid',
         method: 'get',
@@ -85,7 +82,7 @@ export default {
       //   });
       // });
       promise.then((res) => {
-        this.msgUnCheckCnt = this.msgUnCheckCnt+res.data.length;
+        this.msgUnCheckCnt = this.msgUnCheckCnt + res.data.length;
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
@@ -100,7 +97,7 @@ export default {
       promise1.then((res1) => {
         // console.log(this.msgUnCheckCnt);
         // console.log(res1.data.length);
-        this.msgUnCheckCnt =this.msgUnCheckCnt + res1.data.length;
+        this.msgUnCheckCnt = this.msgUnCheckCnt + res1.data.length;
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
@@ -110,11 +107,21 @@ export default {
   mounted() {
     let user = window.localStorage.getItem('user');
     this.user = JSON.parse(user);
-    this.$bus.$on('clearUnCheckedCnt', (data)=>{
+    this.$bus.$on('clearUnCheckedCnt', (data) => {
       this.getMsgUnCheckCnt();
     });
     this.getMsgUnCheckCnt();
     let url = this.$route.query.select;
+    let talkid = this.$route.query.talk;
+    if (talkid != undefined) {
+      console.log(talkid);
+      this.$router.push({
+        path: '/home/personal/message',
+        query: {
+          select: talkid
+        }
+      })
+    }else
     if (url !== '' && url !== undefined) {
       this.url = this.url + url;
       this.$router.push(this.url);
