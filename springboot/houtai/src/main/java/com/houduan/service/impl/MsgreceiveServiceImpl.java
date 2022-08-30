@@ -12,6 +12,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Collections;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -176,5 +178,34 @@ private UserMapper userMapper;
         List<User> userList = userMapper.selectBatchIds(list);
         return userList;
 
+    }
+
+    @Override
+    public List<User> talknew(Integer talktoId, Integer userId) {
+        List<User>list=getConnectUser(userId);
+        User user=userMapper.selectById(talktoId);
+        if(list.contains(user)){
+            return list;
+        }else{
+            list.add(user);
+            return list;
+        }
+    }
+
+
+    @Override
+    public List<Msgreceive> getboth(Integer cusId, Integer userId) {
+        List<Msgreceive>list1=getcus(cusId,userId);
+        List<Msgreceive>list2=getcus(userId,cusId);
+        list1.addAll(list2);
+        Collections.sort(list1);
+        return list1;
+    }
+
+    @Override
+    public List<Msgreceive> getallbyid(Integer id) {
+        QueryWrapper<Msgreceive>queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("receiving_cusid",id);
+        return list(queryWrapper);
     }
 }

@@ -5,22 +5,22 @@
         <span style="margin-left: 50px; color: #6A6A6A; font-size: x-small">近期消息</span>
       </div>
       <div class="friends-list">
-        <friend-card typer="system" v-if="SysMessages.length != 0"></friend-card>
-        <friend-card typer="receive" v-for="obj in allMessages" :key="obj.friendId" :obj="obj"></friend-card>
+        <friend-card typer="system"></friend-card>
+        <friend-card typer="receive" v-for="obj in allfriends" :key="obj.userId" :obj="obj"></friend-card>
       </div>
     </div>
     <div class="chat-window">
       <div class="chat-header">
-        <span style="color: #353636; font-size: small;">{{ name }}</span>
+        <span style="color: #353636; font-size: medium;">{{  name  }}</span>
       </div>
       <div class="chat-content">
         <message v-for="obj in curChatObj" :key="obj" :msg="obj" :typer="type"></message>
       </div>
-      <div class="chat-input">
+      <div class="chat-input" v-if="type != 'system'">
         <el-input type="text" placeholder="请输入内容" v-model="text" maxlength="50" @keyup.enter.native="sendMsg"
           show-word-limit>
           <template slot="append">
-            <el-button v-if="type!='system'" @click="sendMsg">发送</el-button>
+            <el-button @click="sendMsg">发送</el-button>
           </template>
         </el-input>
       </div>
@@ -44,16 +44,18 @@ export default {
       SysMessages: [],
       allMessages: [],
       curChatObj: {},
-      name:'系统消息',
+      curoid: {},
+      name: '系统消息',
       user: {},
-      type:'system'
+      type: 'system',
+      allfriends: {},
     };
   },
   methods: {
     getUserMessage() {
       //获取特定用户id的所有通信消息
       let promise = this.$axios({
-        url: '/msgsystem/getbyid',
+        url: '/msgsystem/getallbyid',
         method: 'get',
         params: {
           id: this.user.userId
@@ -66,7 +68,7 @@ export default {
         this.$message.error('你的网络迷路了');
       });
       let promise1 = this.$axios({
-        url: '/msgreceive/getbyid',
+        url: '/msgreceive/getallbyid',
         method: 'get',
         params: {
           id: this.user.userId
@@ -82,13 +84,12 @@ export default {
       if (this.text.length == 0) {
         return;
       }
-      //发送消息到rId的用户
       let promise = this.$axios({
         url: '/msgreceive/add',
         method: 'get',
         params: {
           cusId: this.user.userId,
-          receiveId:this.curChatObj[0].cusId,
+          receiveId: this.curoid,
           content: this.text,
         }
       });
@@ -110,6 +111,7 @@ export default {
       promise.then((res) => {
         if (res.data) {
           this.text = '';
+          this.$bus.$emit('changeChatWindow', this.curoid);
         } else {
           this.$message.error('消息发送失败');
         }
@@ -121,6 +123,38 @@ export default {
   mounted() {
     this.user = JSON.parse(window.localStorage.getItem('user'));
     this.getUserMessage();
+    let talkid=this.$route.query.select;
+    console.log(talkid);
+    // if(talkid!=undefined){
+    //   this.request.get('/user/findOne', {
+    //     params: {
+    //       id: parseInt(this.$route.query)
+    //     }
+    //   })
+    //     .then((res) => {
+    //       this.request.get('/msgreceive/talknew', {
+    //         params: {
+    //           talktoId: res.userId,
+    //           userId: this.user.userId
+    //         }
+    //       })
+    //         .then((res1) => {
+    //           this.allfriends = res1;
+    //         })
+    //     })
+    // }else{
+      this.request.get('/msgreceive/getConnectUser', {
+      params: {
+        userId: this.user.userId
+      }
+    })
+      .then((res) => {
+        this.allfriends = res;
+      })
+    // }
+    // if (this.$route.query != undefined||this.$route.query!=null||this.$route.query!='') {
+    // } else {
+    // }
     // this.$bus.$on('clearUnCheckedCnt', (id) => {
     //   this.allMessages.forEach((item) => {
     //     if (item.friendId === id) {
@@ -131,33 +165,35 @@ export default {
     this.$bus.$on('changeChatWindow', (id) => {
       if (id == -1) {
         this.curChatObj = this.SysMessages;
-        this.name="系统消息"
-        this.type="system"
+        this.name = "系统消息"
+        this.type = "system"
       } else {
-        this.request.get('/msgreceive/getcus',{
-          params:{
-            cusId:id,
-            userId:this.user.userId
+        this.curoid = id;
+        this.request.get('/msgreceive/getboth', {
+          params: {
+            cusId: id,
+            userId: this.user.userId
           }
         })
-        .then((res)=>{
-          this.curChatObj=res;
-          this.type="receive"
-        })
-        this.request.get('/user/findOne',{
-          params:{
-            id:id
+          .then((res) => {
+            this.curChatObj = res;
+            this.type = "receive"
+          })
+        this.request.get('/user/findOne', {
+          params: {
+            id: id
           }
         })
-        .then((res)=>{
-          this.name=res.userName
-        })
+          .then((res) => {
+            this.name = res.userName
+          })
       }
     });
   },
   beforeDestroy() {
     // this.$bus.$off('clearUnCheckedCnt');
     this.$bus.$off('changeChatWindow');
+    this.$bus.$off('talk');
   }
 }
 </script>

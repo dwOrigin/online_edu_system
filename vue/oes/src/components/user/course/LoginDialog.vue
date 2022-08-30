@@ -225,7 +225,6 @@ export default {
         if (valid) {
           //管理员登录
           if (this.loginForm.username == "admin" && this.loginForm.password == "admin") {
-            this.$message.success("管理员登录成功");
             this.$router.push("/member_manage");
           } else {
             //用户登录

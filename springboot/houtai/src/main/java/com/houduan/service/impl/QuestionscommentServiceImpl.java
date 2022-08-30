@@ -110,6 +110,7 @@ for (int i=0;i<list.size();i++){
         Questions questions = questionsMapper.selectOne(wrapper);
 //        将问题的状态设为1，以便前面调用
         questions.setStatus("1");
+        System.out.println("-------调用了--------");
         questions.setReplyCount(questions.getReplyCount()+1);
         int i = questionsMapper.updateById(questions);
         if (i>=1){

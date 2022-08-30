@@ -8,6 +8,7 @@ import com.houduan.service.ICoursefavoriteService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,7 +22,8 @@ import java.util.List;
  */
 @Service
 public class CoursefavoriteServiceImpl extends ServiceImpl<CoursefavoriteMapper, Coursefavorite> implements ICoursefavoriteService {
-
+@Resource
+private CoursefavoriteMapper mapper;
     @Override
     public Result savenew(Coursefavorite coursefavorite) {
         coursefavorite.setAddTime(LocalDateTime.now());
@@ -38,6 +40,20 @@ public class CoursefavoriteServiceImpl extends ServiceImpl<CoursefavoriteMapper,
         if(remove(queryWrapper)){
             return Result.success();
         }else return Result.error();
+
+    }
+
+    @Override
+    public Result deleteFavorite(Integer userId, Integer courseId) {
+        QueryWrapper<Coursefavorite> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_id",userId)
+                .eq("course_id",courseId);
+        int i = mapper.delete(wrapper);
+        if (i>=1){
+            return Result.success();
+        }else {
+            return Result.error();
+        }
 
     }
 

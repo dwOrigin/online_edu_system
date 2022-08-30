@@ -4,6 +4,8 @@ import com.houduan.common.Result;
 import com.houduan.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -24,4 +26,5 @@ public interface IUserService extends IService<User> {
     Result updateUser(User user);
 
     String sendCode(String mobile);
+
 }

@@ -53,6 +53,7 @@ private CourseMapper courseMapper;
         QueryWrapper<Coursehistory>queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("user_id",userid);
         return list(queryWrapper);
+
     }
     @Override
     public List<String> getbyuserid3(Integer userid) {
@@ -78,25 +79,14 @@ private CourseMapper courseMapper;
         }
         }
 //        寻找对应的course内容
-        java.util.List<Course> courseList = courseMapper.selectBatchIds(numberList);
+       List<Course> courseList = courseMapper.selectBatchIds(numberList);
+        System.out.println(courseList);
 //     导出对应的list的名字
         ArrayList<String> stringArrayList = new ArrayList<>();
         for (int i=0;i<courseList.size();i++){
             stringArrayList.add(courseList.get(i).getCourseName());
         }
-        /*List<Coursehistory>listh=list(queryWrapper);
-        List<String>lists=new LinkedList<>();
-        int num=0;
-        for(int i=listh.size()-1;i>0;i--){
-            if(num>=3){
-                break;
-            }
-            QueryWrapper<Course>queryWrapper1=new QueryWrapper<>();
-            queryWrapper1.eq("course_id",listh.get(i).getCourseId());
-            String name=courseService.getOne(queryWrapper1).getCourseName();
-            lists.add(num,name);
-            num++;
-        }*/
+
         System.out.println(stringArrayList);
         return stringArrayList;
     }
@@ -124,12 +114,14 @@ public List<String> getbyuseridTime(Integer userid) {
         String remem="";
         Duration duration= Duration.between(List.get(number-i).getTime(),LocalDateTime.now());
         long days = duration.toDays(); //相差的天数
+        long hours = duration.toHours()%24;//相差的小时数
+        long minutes = duration.toMinutes()%60;//相差的分钟数
         if(days>0){
             remem=days+"天前";
-        }else{
-            long hours = duration.toHours()%24;//相差的小时数
-            long minutes = duration.toMinutes()%60;//相差的分钟数
+        }else if(hours>0){
             remem=hours+"小时"+minutes+"分钟前";
+        }else{
+            remem=minutes+"分钟前";
         }
         timeList.add(remem);
     }
@@ -143,6 +135,16 @@ public List<String> getbyuseridTime(Integer userid) {
         if(remove(queryWrapper)){
             return Result.success(Constants.CODE_200,"删除成功");
         }else return Result.error(Constants.CODE_500,"删除失败");
+    }
+
+    @Override
+    public List<Coursehistory> getByUserId(Integer userId) {
+        QueryWrapper<Coursehistory>queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("user_id",userId);
+        List<Coursehistory> list = mapper.selectList(queryWrapper);
+        HashSet<Coursehistory> temp = new HashSet<>(list);
+        list = new ArrayList<>(temp);
+        return list;
     }
 
 
