@@ -101,7 +101,7 @@
         <el-button plain type="primary" @click="changePwdConfirm">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog :visible.sync="visible.avatar" append-to-body :close-on-click-modal="false" lock-scroll top="25vh" center
+    <el-dialog class="upload" :visible.sync="visible.avatar" append-to-body :close-on-click-modal="false" lock-scroll top="25vh" center
       width="max-content" modal-append-to-body>
       <el-upload class="avatar-uploader" action="http://localhost:8081/file/upload" :drag="true" :show-file-list="false"
         :data="{ filetype: 'picture' }" :on-success="handleAvatarSuccess">

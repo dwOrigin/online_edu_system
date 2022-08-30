@@ -3,7 +3,7 @@
       style="overflow: hidden; margin-bottom: -50px">
     <div class="passage-page">
       <div class="title">{{ passage.title }}</div>
-      <div class="time"> {{ passage.createTime }} 修改</div>
+      <div class="time"> {{ passage.createTime}} </div>
       <div class="content">
         <!-- {{ passage.summary }} -->
         <!-- 等下想怎么展示md文件 -->

@@ -1,21 +1,21 @@
 <template>
   <div class="answer">
     <div style="display: flex; align-items: center">
-      <!-- <el-avatar
-          :src="dataObj.commenterAvatarUrl"
+      <el-avatar
+          :src="user.picImg"
           shape="square">
-        <span v-if="dataObj.commenterAvatarUrl === ''">{{ dataObj.commenterName }}</span>
-      </el-avatar> -->
+        <!-- <span v-if="dataObj.commenterAvatarUrl === ''">{{ dataObj.commenterName }}</span> -->
+      </el-avatar>
       &nbsp;&nbsp;&nbsp;
-      <span style="font-size: x-small; font-weight: bold; color:#4C4444;">{{ user.userName }}</span>
+      <span style="font-size: 15px; font-weight: bold; color:#4C4444;">{{ user.userName }}</span>
     </div>
     <div class="content">
       {{ dataObj.content }}
     </div>
     <div class="footer">
      <!-- <div>发布于 {{ dataObj.addtime }}</div> -->
-        <div v-if="typeM=='PassageComment'">发布于{{ dataObj.addtime.split('T')[0] }}&nbsp;{{ dataObj.addtime.split('T')[1].split(':')[0] }}:{{ dataObj.addtime.split('T')[1].split(':')[1] }}</div>
-      <div v-if="typeM=='Answer'">发布于{{ dataObj.addTime.split('T')[0] }}&nbsp;{{ dataObj.addTime.split('T')[1] }}</div>
+        <div v-if="typeM=='PassageComment'">发布于{{ dataObj.addtime}}</div>
+      <div v-if="typeM=='Answer'">发布于{{ dataObj.addTime}}</div>
       <div>
         <el-button
             @click="accept"
@@ -96,7 +96,6 @@ export default {
         });
          promise.then((res) => {
         this.isPraise = res.data;
-        console.log('这是getpraise'+res.data);
         if(this.isPraise=='1'){
           this.likeC = '已赞同';
         }
@@ -117,7 +116,6 @@ export default {
         });
          promise.then((res) => {
         this.isPraise = res.data;
-        console.log('这是getpraise'+res.data);
         if(this.isPraise=='1'){
           this.likeC = '已赞同';
         }
@@ -276,10 +274,11 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size:12px;
 }
 
 .content {
-  font-size: x-small;
+  font-size: 15px;
   font-weight: lighter;
   margin-top: 20px;
   margin-bottom: 20px;

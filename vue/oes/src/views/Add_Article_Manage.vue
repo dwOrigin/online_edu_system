@@ -25,6 +25,9 @@
       <el-menu-item index="6" @click="gotoNotice">
         <span slot="title">通知管理</span>
       </el-menu-item>
+      <el-menu-item index="7" @click="gotoHome">
+            <span slot="title">退出</span>
+          </el-menu-item>
     </el-menu>
   </el-aside>
   <el-container>
@@ -58,16 +61,17 @@
   </el-form-item>
         </el-row>
   <el-form-item label="文章类型" prop="articleType">
-    <!-- <el-select v-model="form.articleType" placeholder="请选择文章类型">
-      <el-option label="美女" value="shanghai"></el-option>
-      <el-option label="高中生" value="beijing"></el-option>
-    </el-select> -->
+    <el-select v-model="form.articleType" placeholder="请选择文章类型">
+      <el-option label="科技" value="科技"></el-option>
+      <el-option label="文学" value="文学"></el-option>
+      <el-option label="闲聊" value="闲聊"></el-option>
+    </el-select>
   </el-form-item>
     <mavon-editor ref="md" v-model="form.summary" :ishljs="true" @imgAdd="imgAdd"/> 
    <!-- imgAdd监听图片上传 save监听图片保存 value保存整个markdown文件内容 -->
    <el-form-item>  </el-form-item>
   <el-form-item>
-       <el-button type="primary" @click="onSubmit">发布文章</el-button>
+       <el-button type="primary" @click="onSubmit('form')">发布文章</el-button>
     <el-button @click="resetForm('form')">重置</el-button> 
    <!-- 居中不了，去死吧 -->
   </el-form-item>
@@ -117,34 +121,29 @@ export default{
         gotoNotice(){
             this.$router.push('/notice_manage')
         },
+        gotoHome() {
+      this.$router.push('/home')
+    },
          handleOpen(key, keyPath) {
         console.log(key, keyPath);
       },
       handleClose(key, keyPath) {
         console.log(key, keyPath);
       },
-      onSubmit() {
+      onSubmit(formName) {
            this.request.post('http://localhost:8081/article', this.form)
         .then((res) => {
           if (res.code == "200") {
-            this.$message.success(res.message);
+            this.$message.success(res.data);
           } else {
-            this.$message.error(res.message);
-          }
-        });
-        this.reload();
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('发布成功!');
-          } else {
-            console.log('error submit!!');
-            return false;
+            this.$message.error(res.data);
           }
         });
         this.resetForm(formName);
       },
        resetForm(formName) {
         this.$refs[formName].resetFields();
+        this.form.summary='';
       },
       //保存图片到后台
      // 绑定@imgAdd event

@@ -1,6 +1,6 @@
 <template>
   <div @click="clickedM" class="card">
-    <el-link :underline="false" style="font-size: 18px; font-weight: bold">
+    <el-link :underline="false" style="font-size: 26px; font-weight: bold">
       <span v-if="type === 'question'">{{ dataObj.title }}</span>
       <span v-if="type === 'passage'">{{ dataObj.title }}</span>
     </el-link>
