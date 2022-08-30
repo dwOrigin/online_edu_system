@@ -21,6 +21,7 @@
     "vue-meditor": "^2.1.2",
     "vue-puzzle-vcode": "^1.1.9",
     "vue-router": "^3.5.4",
+    "vue-seamless-scroll": "^1.1.23",
     "vue-video-player": "^5.0.2"
   },
   "devDependencies": {
