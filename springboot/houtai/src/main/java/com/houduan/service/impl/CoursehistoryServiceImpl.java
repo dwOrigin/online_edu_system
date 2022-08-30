@@ -138,13 +138,20 @@ public List<String> getbyuseridTime(Integer userid) {
     }
 
     @Override
-    public List<Coursehistory> getByUserId(Integer userId) {
+    public Integer getByUserId(Integer userId) {
         QueryWrapper<Coursehistory>queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("user_id",userId);
         List<Coursehistory> list = mapper.selectList(queryWrapper);
-        HashSet<Coursehistory> temp = new HashSet<>(list);
-        list = new ArrayList<>(temp);
-        return list;
+//        获取不会重复的course的id内容
+        HashSet<Integer> hashSet = new HashSet<>();
+        for (int i=0;i<list.size();i++){
+            hashSet.add(list.get(i).getCourseId());
+        }
+        List<Integer> courseId=new ArrayList<>(hashSet);
+
+        int size = courseId.size();
+        return size;
+
     }
 
 
