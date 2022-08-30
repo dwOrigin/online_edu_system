@@ -19,6 +19,6 @@ public interface ICoursefavoriteService extends IService<Coursefavorite> {
     Result savenew(Coursefavorite coursefavorite);
 
     Result delete(Coursefavorite coursefavorite);
-
+    Result deleteFavorite(Integer userId,Integer courseId);
     List<Coursefavorite> getbyuserid(Integer userid);
 }
