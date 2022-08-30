@@ -38,13 +38,13 @@ public class CoursehistoryController {
     public Result deleteone(@RequestBody Coursehistory coursehistory){
         return coursehistoryService.delete(coursehistory);
     }
-    @GetMapping("/getbyuserid")
+    @GetMapping("/getbyuseridsss")
     public List<Coursehistory> getbyuserid(@RequestParam Integer userid){
         return coursehistoryService.getbyuserid(userid);
     }
 //    修改后的getByUserId
-    @GetMapping("/getByUserId")
-    public List<Coursehistory> getByUserId(@RequestParam Integer userId){
+    @GetMapping("/getNumberByUserId")
+    public Integer getByUserId(@RequestParam Integer userId){
         return coursehistoryService.getByUserId(userId);
     }
 
