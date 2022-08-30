@@ -40,6 +40,9 @@
         <el-link :underline="false" v-if="history.length>1" @click="$router.push({ name: 'personal', query: { select: 'history' } });">{{ history.name[1] }}&nbsp;&nbsp;{{history.time[1]}}
         </el-link>
       </div>
+      <div v-if="history.length<2"></div>
+      <div v-if="history.length<2"></div>
+      <div v-if="history.length<3"></div>
       <div class="course">
         <el-link :underline="false" v-if="history.length>2" @click="$router.push({ name: 'personal', query: { select: 'history' } });">{{ history.name[2] }}&nbsp;&nbsp;{{history.time[2]}}
         </el-link>
@@ -112,9 +115,9 @@ export default {
             this.starCourseNum = res.length;
           })
           this.request
-          .get('/coursehistory/getByUserId', {
+          .get('/coursehistory/getByUserIdno', {
             params: {
-              userid: this.user.userId
+              userId: this.user.userId
             }
           })
           .then((res) => {

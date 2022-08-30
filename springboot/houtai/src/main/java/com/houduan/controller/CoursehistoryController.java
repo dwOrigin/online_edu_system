@@ -43,7 +43,7 @@ public class CoursehistoryController {
         return coursehistoryService.getbyuserid(userid);
     }
 //    修改后的getByUserId
-    @GetMapping("/getByUserId")
+    @GetMapping("/getByUserIdno")
     public List<Coursehistory> getByUserId(@RequestParam Integer userId){
         return coursehistoryService.getByUserId(userId);
     }
