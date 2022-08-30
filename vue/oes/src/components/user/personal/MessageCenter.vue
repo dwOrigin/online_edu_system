@@ -67,18 +67,18 @@ export default {
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
-      let promise1 = this.$axios({
-        url: '/msgreceive/getallbyid',
-        method: 'get',
-        params: {
-          id: this.user.userId
-        }
-      });
-      promise1.then((res1) => {
-        this.allMessages = res1.data;
-      }).catch((err) => {
-        this.$message.error('你的网络迷路了');
-      });
+      // let promise1 = this.$axios({
+      //   url: '/msgreceive/getallbyid',
+      //   method: 'get',
+      //   params: {
+      //     id: this.user.userId
+      //   }
+      // });
+      // promise1.then((res1) => {
+      //   this.allMessages = res1.data;
+      // }).catch((err) => {
+      //   this.$message.error('你的网络迷路了');
+      // });
     },
     sendMsg() {
       if (this.text.length == 0) {
@@ -123,35 +123,38 @@ export default {
   mounted() {
     this.user = JSON.parse(window.localStorage.getItem('user'));
     this.getUserMessage();
-    let talkid=this.$route.query.select;
-    console.log(talkid);
-    // if(talkid!=undefined){
-    //   this.request.get('/user/findOne', {
-    //     params: {
-    //       id: parseInt(this.$route.query)
-    //     }
-    //   })
-    //     .then((res) => {
-    //       this.request.get('/msgreceive/talknew', {
-    //         params: {
-    //           talktoId: res.userId,
-    //           userId: this.user.userId
-    //         }
-    //       })
-    //         .then((res1) => {
-    //           this.allfriends = res1;
-    //         })
-    //     })
-    // }else{
-      this.request.get('/msgreceive/getConnectUser', {
-      params: {
-        userId: this.user.userId
-      }
-    })
-      .then((res) => {
-        this.allfriends = res;
+    let talkid = this.$route.query.select;
+    console.log("===========>" + talkid);
+    if (talkid != undefined) {
+      console.log("----->" + talkid);
+      this.request.get('/user/findOne', {
+        params: {
+          id: talkid
+        }
       })
-    // }
+        .then((res) => {
+          console.log("--------------------------------------------------")
+          this.request.get('/msgreceive/talknew', {
+            params: {
+              talktoId: res.userId,
+              userId: this.user.userId
+            }
+          })
+            .then((res1) => {
+              this.allfriends = res1;
+            })
+        })
+    } else {
+      console.log("---------->>>>")
+      this.request.get('/msgreceive/getConnectUser', {
+        params: {
+          userId: this.user.userId
+        }
+      })
+        .then((res) => {
+          this.allfriends = res;
+        })
+    }
     // if (this.$route.query != undefined||this.$route.query!=null||this.$route.query!='') {
     // } else {
     // }

@@ -116,7 +116,7 @@ public class MsgreceiveController {
         List<User> user = msgreceiveService.getConnectUser(userId);
         return user;
     }
-    @PostMapping("/talknew")
+    @GetMapping("/talknew")
     public List<User>talknew(@RequestParam Integer talktoId,@RequestParam Integer userId){
         return msgreceiveService.talknew(talktoId,userId);
     }

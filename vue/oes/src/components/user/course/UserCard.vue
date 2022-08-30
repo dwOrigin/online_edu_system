@@ -37,14 +37,11 @@
         </el-link>
       </div>
       <div class="course">
-        <el-link :underline="false" v-if="history.length>1" @click="$router.push({ name: 'personal', query: { select: 'history' } });">{{ history.name[1] }}&nbsp;&nbsp;{{history.time[1]}}
+        <el-link :underline="false"  @click="$router.push({ name: 'personal', query: { select: 'history' } });">{{ history.name[1] }}&nbsp;&nbsp;{{history.time[1]}}
         </el-link>
       </div>
-      <div v-if="history.length<2"></div>
-      <div v-if="history.length<2"></div>
-      <div v-if="history.length<3"></div>
       <div class="course">
-        <el-link :underline="false" v-if="history.length>2" @click="$router.push({ name: 'personal', query: { select: 'history' } });">{{ history.name[2] }}&nbsp;&nbsp;{{history.time[2]}}
+        <el-link :underline="false"  @click="$router.push({ name: 'personal', query: { select: 'history' } });">{{ history.name[2] }}&nbsp;&nbsp;{{history.time[2]}}
         </el-link>
       </div>
       <div class="divider"></div>
@@ -115,13 +112,13 @@ export default {
             this.starCourseNum = res.length;
           })
           this.request
-          .get('/coursehistory/getByUserIdno', {
+          .get('/coursehistory/getNumberByUserId', {
             params: {
               userId: this.user.userId
             }
           })
           .then((res) => {
-            this.historyNum = res.length;
+            this.historyNum = res;
           })
           this.request
           .get('/coursehistory/getByUserId',{
@@ -130,7 +127,7 @@ export default {
             }
           })
           .then((res)=>{
-            this.history.name=res;
+            this.history.name=res.reverse();
           })
            this.request
           .get('/coursehistory/getByUserIdT',{
@@ -169,12 +166,12 @@ export default {
 .divider {
   height: 2px;
   width: 100%;
-  margin-top: 30px;
+  margin-top: 40px;
   background-color: teal;
 }
 
 .course {
-  margin-top: 15px;
+  margin-top: 25px;
   font-size: medium;
 }
 

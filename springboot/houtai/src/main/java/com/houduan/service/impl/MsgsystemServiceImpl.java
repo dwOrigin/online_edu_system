@@ -32,6 +32,7 @@ private MsgsystemMapper msgsystemMapper;
 private UserMapper userMapper;
 @Override
     public Result addMsgSystem(Msgsystem msgSystem){
+    msgSystem.setStatus(0);
     int i = msgsystemMapper.insert(msgSystem);
     if (i>=1){
         return Result.success();

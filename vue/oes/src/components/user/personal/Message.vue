@@ -1,7 +1,7 @@
 <template>
   <div class="message">
     <div class="time">
-      {{ message.addTime.split('T')[0] }}&nbsp;{{ message.addTime.split('T')[1].split(':')[0] }}:{{ message.addTime.split('T')[1].split(':')[1] }}
+      {{ message.addTime}}
     </div>
     <div ref="mb">
       <el-avatar v-if="type == 'system'" style="margin: 0 10px 0 20px">

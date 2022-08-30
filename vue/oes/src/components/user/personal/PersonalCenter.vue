@@ -114,21 +114,19 @@ export default {
     let url = this.$route.query.select;
     let talkid = this.$route.query.talk;
     if (talkid != undefined) {
-      console.log(talkid);
       this.$router.push({
         path: '/home/personal/message',
         query: {
           select: talkid
         }
       })
-    }else
-    if (url !== '' && url !== undefined) {
-      this.url = this.url + url;
-      this.$router.push(this.url);
-    } else {
-      this.url = this.url + "pinfo";
-      this.$router.push(this.url);
-    }
+    } else if (url !== '' && url !== undefined) {
+        this.url = this.url + url;
+        this.$router.push(this.url);
+      } else {
+        this.url = this.url + "pinfo";
+        this.$router.push(this.url);
+      }
   },
   beforeDestroy() {
     this.$bus.$off('clearUnCheckedCnt');
