@@ -41,7 +41,7 @@
             <el-table-column prop="status" label="状态" width="120">
               <template slot-scope="scope">
                 <!-- 取到当前单元格 -->
-                <span v-if="scope.row.isAvailable == '0'">未回答</span>
+                <span v-if="scope.row.status == '0'">未回答</span>
                 <span v-else>已回答</span>
               </template>
             </el-table-column>
@@ -49,9 +49,7 @@
             </el-table-column>
             <el-table-column prop="browseCount" label="浏览数量" width="120">
             </el-table-column>
-            <el-table-column prop="type" label="类型" width="100"
-              :filters="[{ text: '美女', value: '美女' }, { text: '高中生', value: '高中生' }, { text: '帅哥', value: '帅哥' }]"
-              :filter-method="filterTag" filter-placement="bottom-end">
+            <el-table-column prop="type" label="类型" width="100">
               <template slot-scope="scope">
                 <el-tag close-transition>{{ scope.row.type }}</el-tag>
               </template>

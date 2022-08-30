@@ -27,7 +27,7 @@
         </a>
         <el-link :underline="false" type="success" class="line-text-ellipsis"
           @click="$router.push({ name: 'personal', query: { select: '' } });"
-          style="font-size: medium; max-width: 100px; min-width: 100px; margin: 0 10px">
+          style="font-size: medium;  min-width: 100px; margin: 0 10px">
           {{ user.userName }}
         </el-link>
         <el-link :underline="false" type="info" @click="exit">退出</el-link>
@@ -214,8 +214,8 @@ export default {
   flex-shrink: 1;
   flex-direction: column;
   align-items: center;
-  width: 80%;
-  height: 80%;
+  width: 90%;
+  height: 90%;
   border-radius: 8px;
 }
 

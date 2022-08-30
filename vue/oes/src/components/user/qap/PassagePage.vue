@@ -7,15 +7,17 @@
       <div class="content">
         <!-- {{ passage.summary }} -->
         <!-- 等下想怎么展示md文件 -->
-         <mavon-editor
-            class="md"
-            :value="htmlContent" 
-            :subfield="prop.subfield" 
-            :defaultOpen="prop.defaultOpen"
-            :toolbarsFlag="prop.toolbarsFlag"
-            :editable="prop.editable"
-            :scrollStyle="prop.scrollStyle"
-          />
+        <mavon-editor
+    class="md"
+    :value="htmlContent"
+    :subfield="false"
+    :defaultOpen="'preview'"
+    :toolbarsFlag="false"
+    :editable="false"
+    :scrollStyle="true"
+    :ishljs="true"
+/>
+
       </div>
       <div class="footer">
         <div>
@@ -95,19 +97,6 @@ export default {
       update:true
       // length: 5,
     };
-  },
-  computed: {
-  // 解析器配置
-    prop () {
-      let data = {
-        subfield: false,// 单双栏模式
-        defaultOpen: 'preview',//edit： 默认展示编辑区域 ， preview： 默认展示预览区域 
-        editable: false,    // 是否允许编辑
-        toolbarsFlag: false,
-        scrollStyle: true
-      }
-      return data
-    }
   },
   methods: {
     // getInfo(){
