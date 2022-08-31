@@ -54,7 +54,7 @@ export default {
      //获取回答者姓名
       if(this.type === 'PassageComment'){
         let promise = this.$axios({
-        url: 'http://localhost:8081/user/findOne',
+        url: '/user/findOne',
         method: 'get',
         params: {
           id:this.dataObj.userId
@@ -68,7 +68,7 @@ export default {
       }else if(this.type==='Answer'){
 
       let promise = this.$axios({
-        url: 'http://localhost:8081/user/findOne',
+        url: '/user/findOne',
         method: 'get',
         params: {
           id:this.dataObj.cusId
@@ -83,11 +83,11 @@ export default {
     },
     deleteComment(dataObj){
       if(this.type==='PassageComment')
-      {this.$axios.get('http://localhost:8081/comment/delete',{
+      {this.$axios.get('/comment/delete',{
         params:{commentId:dataObj.commentId}
       })
       }else if(this.type==='Answer'){
-         this.$axios.get('http://localhost:8081/questionscomment/delete',{
+         this.$axios.get('/questionscomment/delete',{
         params:{id:dataObj.id}
     })
       }    

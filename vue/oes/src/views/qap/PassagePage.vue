@@ -71,7 +71,7 @@ export default {
      refreshComment(qId) {
       // 获取问题答案
       let promise = this.$axios({
-        url: 'http://localhost:8081/comment/showA',
+        url: '/comment/showA',
         method: 'get',
         params: {
           articleId: qId
@@ -87,7 +87,7 @@ export default {
       let id = this.$route.query.pId;
       //获取文章详细信息
       let promise = this.$axios({
-          url: 'http://localhost:8081/article/getbyid',
+          url: '/article/getbyid',
           method: 'get',
           params:{
             id: id

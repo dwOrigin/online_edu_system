@@ -75,7 +75,7 @@ export default {
     refreshQuestion() {
       //获取推荐问题
       let promise = this.$axios({
-          url: 'http://localhost:8081/questions',
+          url: '/questions',
           method: 'get',
       });
       promise.then((res) => {   
@@ -87,7 +87,7 @@ export default {
     refreshPassage() {
       //获取热门文章
       let promise = this.$axios({
-          url: 'http://localhost:8081/article/findAll',
+          url: '/article/findAll',
           method: 'get',
       });
       promise.then((res) => {

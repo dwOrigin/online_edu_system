@@ -116,7 +116,7 @@ export default {
      refreshComment(qId) {
       // 获取问题答案
       let promise = this.$axios({
-        url: 'http://localhost:8081/comment/showA',
+        url: '/comment/showA',
         method: 'get',
         params: {
           articleId: qId
@@ -132,7 +132,7 @@ export default {
       let id = this.$route.query.pId;
       //获取文章详细信息
       let promise = this.$axios({
-          url: 'http://localhost:8081/article/getbyid',
+          url: '/article/getbyid',
           method: 'get',
           params:{
             id: id
@@ -147,7 +147,7 @@ export default {
       } else {
         usr = JSON.parse(usr);
         let promise = this.$axios({
-          url: 'http://localhost:8081/records/orLikedArt',
+          url: '/records/orLikedArt',
           method: 'get',
           params:{
             articleId: id,
@@ -179,7 +179,7 @@ export default {
       }
        usr = JSON.parse(usr);
        let promise = this.$axios({
-          url: 'http://localhost:8081/records/orLikedArt',
+          url: '/records/orLikedArt',
           method: 'get',
           params:{
             articleId: this.passage.articleId,
@@ -191,7 +191,7 @@ export default {
         if (this.isPraise == '2') {
         //点赞文章
         let promise = this.$axios({
-          url: 'http://localhost:8081/records/addRecordArt',
+          url: '/records/addRecordArt',
           method: 'get',
           params: {
             articleId: this.passage.articleId,
@@ -206,7 +206,7 @@ export default {
         });
       } else if (this.isPraise == '1') {
          let promise = this.$axios({
-            url: 'http://localhost:8081/records/reduceRecordArt',
+            url: '/records/reduceRecordArt',
             method: 'get',
             params: {
                   userId: usr.userId,
@@ -242,7 +242,7 @@ export default {
         let user = JSON.parse(window.localStorage.getItem('user'));
         //评论文章
         let promise = this.$axios({
-          url: 'http://localhost:8081/comment/sendArticle',
+          url: '/comment/sendArticle',
           method: 'get',
           params: {
             commentContent: this.cc,

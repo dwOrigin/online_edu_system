@@ -122,7 +122,7 @@ export default {
         let user = JSON.parse(window.localStorage.getItem('user'));
         //回答问题
         let promise = this.$axios({
-          url: 'http://localhost:8081/questionscomment',
+          url: '/questionscomment',
           method: 'post',
           data: {
             content: this.answer,
@@ -158,7 +158,7 @@ export default {
     refreshQuestion(qId) {
       // 获取问题详细信息
       let promise = this.$axios({
-        url: 'http://localhost:8081/questions/id',
+        url: '/questions/id',
         method: 'get',
         params: {
           id: qId
@@ -174,7 +174,7 @@ export default {
     refreshComment(qId) {
       // 获取问题答案
       let promise = this.$axios({
-        url: 'http://localhost:8081/questionscomment/detail',
+        url: '/questionscomment/detail',
         method: 'get',
         params: {
           id: qId
@@ -190,7 +190,7 @@ export default {
       //获取提问者姓名
       // let promise = this.$axios.get('http://localhost:8081/user/findOne');
       let promise = this.$axios({
-        url: 'http://localhost:8081/user/findOne',
+        url: '/user/findOne',
         method: 'get',
         params: {
           id:this.question.cusId

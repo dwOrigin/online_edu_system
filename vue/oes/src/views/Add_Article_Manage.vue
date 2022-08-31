@@ -124,7 +124,7 @@ export default{
         console.log(key, keyPath);
       },
       onSubmit() {
-           this.request.post('http://localhost:8081/article', this.form)
+           this.request.post('/article', this.form)
         .then((res) => {
           if (res.code == "200") {
             this.$message.success(res.message);
@@ -154,7 +154,7 @@ imgAdd(pos, $file) {
   let formData = new FormData();
   formData.append('file', $file);
   this.$axios({
-    url: 'http://localhost:8081/file/upload?filetype=picture',
+    url: '/file/upload?filetype=picture',
     method: 'post',
     params:{file:formData} ,
     headers: {'Content-Type': 'multipart/form-data'},
