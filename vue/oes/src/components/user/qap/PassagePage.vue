@@ -8,15 +8,16 @@
         <!-- {{ passage.summary }} -->
         <!-- 等下想怎么展示md文件 -->
         <mavon-editor
-    class="md"
-    :value="htmlContent"
-    :subfield="false"
-    :defaultOpen="'preview'"
-    :toolbarsFlag="false"
-    :editable="false"
-    :scrollStyle="true"
-    :ishljs="true"
-/>
+            class="md"
+            style="z-index: -999"
+            :value="htmlContent"
+            :subfield="false"
+            :defaultOpen="'preview'"
+            :toolbarsFlag="false"
+            :editable="false"
+            :scrollStyle="true"
+            :ishljs="true"
+        />
       </div>
       <div class="footer">
         <div>
@@ -75,8 +76,9 @@
 
 <script>
 import Answer from "@/components/user/qap/Answer";
-import { mavonEditor } from 'mavon-editor'
+import {mavonEditor} from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
+
 export default {
   name: "PassagePage",
   components: {
@@ -87,13 +89,13 @@ export default {
     return {
       // number: 10,
       passage: {},
-      answers:[],
+      answers: [],
       likeBtnContent: '点赞',
       CommentDialogVisible: false,
       cc: '',
-      isPraise:'',
-      htmlContent:'',
-      update:true
+      isPraise: '',
+      htmlContent: '',
+      update: true
       // length: 5,
     };
   },
@@ -101,10 +103,10 @@ export default {
     // getInfo(){
     //    this.htmlContent=data
     // },
-     refreshComment(qId) {
+    refreshComment(qId) {
       // 获取问题答案
       let promise = this.$axios({
-        url: 'http://localhost:8081/comment/showA',
+        url: '/comment/showA',
         method: 'get',
         params: {
           articleId: qId
@@ -120,41 +122,40 @@ export default {
       let id = this.$route.query.pId;
       //获取文章详细信息
       let promise = this.$axios({
-          url: 'http://localhost:8081/article/getbyid',
-          method: 'get',
-          params:{
-            id: id
-          }
+        url: '/article/getbyid',
+        method: 'get',
+        params: {
+          id: id
+        }
       });
       promise.then((res) => {
         this.passage = res.data;
         console.log(this.passage.createTime);
-        this.htmlContent=res.data.summary;
+        this.htmlContent = res.data.summary;
         let usr = window.localStorage.getItem('user');
-      if (usr === null) {
-        this.$bus.$emit('OpenLoginDialog');
-      } else {
-        usr = JSON.parse(usr);
-        let promise = this.$axios({
-          url: 'http://localhost:8081/records/orLikedArt',
-          method: 'get',
-          params:{
-            articleId: id,
-            userId:usr.userId
-          }
-      });
-       promise.then((res) => {
-        this.isPraise = res.data;
-        if(this.isPraise=='1'){
-          this.likeBtnContent = '已喜欢';
+        if (usr === null) {
+          this.$bus.$emit('OpenLoginDialog');
+        } else {
+          usr = JSON.parse(usr);
+          let promise = this.$axios({
+            url: '/records/orLikedArt',
+            method: 'get',
+            params: {
+              articleId: id,
+              userId: usr.userId
+            }
+          });
+          promise.then((res) => {
+            this.isPraise = res.data;
+            if (this.isPraise == '1') {
+              this.likeBtnContent = '已喜欢';
+            } else if (this.isPraise == '2') {
+              this.likeBtnContent = '喜欢'
+            }
+          }).catch((err) => {
+            this.$message.error('你的网络迷路了');
+          });
         }
-        else if(this.isPraise=='2'){
-          this.likeBtnContent='喜欢'
-        }
-      }).catch((err) => {
-        this.$message.error('你的网络迷路了');
-      });
-      }
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
@@ -165,40 +166,40 @@ export default {
         this.$bus.$emit('OpenLoginDialog');
         return;
       }
-       usr = JSON.parse(usr);
-       let promise = this.$axios({
-          url: 'http://localhost:8081/records/orLikedArt',
-          method: 'get',
-          params:{
-            articleId: this.passage.articleId,
-            userId:usr.userId
-          }
+      usr = JSON.parse(usr);
+      let promise = this.$axios({
+        url: '/records/orLikedArt',
+        method: 'get',
+        params: {
+          articleId: this.passage.articleId,
+          userId: usr.userId
+        }
       });
-       promise.then((res) => {
+      promise.then((res) => {
         this.isPraise = res.data;
         if (this.isPraise == '2') {
-        //点赞文章
-        let promise = this.$axios({
-          url: 'http://localhost:8081/records/addRecordArt',
-          method: 'get',
-          params: {
-            articleId: this.passage.articleId,
-            userId: usr.userId
-          }
-        });
-        promise.then((res) => {
-            this.passage.praiseCount++;
-            this.likeBtnContent = '已喜欢';
-        }).catch((err) => {
-          this.$message.error('你的网络迷路了');
-        });
-      } else if (this.isPraise == '1') {
-         let promise = this.$axios({
-            url: 'http://localhost:8081/records/reduceRecordArt',
+          //点赞文章
+          let promise = this.$axios({
+            url: '/records/addRecordArt',
             method: 'get',
             params: {
-                  userId: usr.userId,
-                  articleId: this.passage.articleId,
+              articleId: this.passage.articleId,
+              userId: usr.userId
+            }
+          });
+          promise.then((res) => {
+            this.passage.praiseCount++;
+            this.likeBtnContent = '已喜欢';
+          }).catch((err) => {
+            this.$message.error('你的网络迷路了');
+          });
+        } else if (this.isPraise == '1') {
+          let promise = this.$axios({
+            url: '/records/reduceRecordArt',
+            method: 'get',
+            params: {
+              userId: usr.userId,
+              articleId: this.passage.articleId,
             }
           });
           promise.then((res) => {
@@ -207,10 +208,10 @@ export default {
           }).catch((err) => {
             this.$message.error('你的网络迷路了');
           });
-          }     
-       });
+        }
+      });
     },
-    handleComment(){
+    handleComment() {
       this.CommentDialogVisible = true;
     },
     handleClickFooter(btnName) {
@@ -218,11 +219,11 @@ export default {
 
       } else if (btnName === 'ask') {
         let usr = window.localStorage.getItem('user');
-      if (usr === null) {
-        this.$bus.$emit('OpenLoginDialog');
-        return;
-      }
-       usr = JSON.parse(usr);
+        if (usr === null) {
+          this.$bus.$emit('OpenLoginDialog');
+          return;
+        }
+        usr = JSON.parse(usr);
         if (this.cc.length < 10) {
           this.$message.error('评论不能少于10个字');
           return;
@@ -230,7 +231,7 @@ export default {
         let user = JSON.parse(window.localStorage.getItem('user'));
         //评论文章
         let promise = this.$axios({
-          url: 'http://localhost:8081/comment/sendArticle',
+          url: '/comment/sendArticle',
           method: 'get',
           params: {
             commentContent: this.cc,
@@ -244,11 +245,11 @@ export default {
             this.$message.success('评论成功')
             this.refreshComment(this.$route.query.pId);
             // this.loadPassage();
-             this.update = false
+            this.update = false
             // 在组件移除后，重新渲染组件
             // this.$nextTick可实现在DOM 状态更新后，执行传入的方法。
             this.$nextTick(() => {
-                this.update = true
+              this.update = true
             })
           } else {
             this.$message.error('请勿重复评论');
