@@ -59,11 +59,11 @@ const router = new VueRouter({
                         }
                     },
                     children:[
-                        {path:'/home/personal/pinfo',component:PInfo,meta: {title: '个人中心', changeTitle: true}},
-                        {path:'/home/personal/history',component:History,meta: {title: '个人中心', changeTitle: true}},
-                        {path:'/home/personal/star',component:Star,meta: {title: '个人中心', changeTitle: true}},
-                        {path:'/home/personal/message',component:MessageCenter,meta: {title: '个人中心', changeTitle: true}},
-                        {path:'/home/personal/question',component:MyQuestion,meta: {title: '个人中心', changeTitle: true}}
+                        {name:'pinfo',path:'/home/personal/pinfo',component:PInfo,meta: {title: '个人中心', changeTitle: true}},
+                        {name:'phistory',path:'/home/personal/history',component:History,meta: {title: '个人中心', changeTitle: true}},
+                        {name:'pstar',path:'/home/personal/star',component:Star,meta: {title: '个人中心', changeTitle: true}},
+                        {name:'pmessage',path:'/home/personal/message',component:MessageCenter,meta: {title: '个人中心', changeTitle: true}},
+                        {name:'pquestion',path:'/home/personal/question',component:MyQuestion,meta: {title: '个人中心', changeTitle: true}}
                     ]
                 },
                 {

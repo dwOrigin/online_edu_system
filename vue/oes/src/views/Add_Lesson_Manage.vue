@@ -21,6 +21,9 @@
           <el-menu-item index="6" @click="gotoNotice">
             <span slot="title">通知管理</span>
           </el-menu-item>
+          <el-menu-item index="7" @click="gotoHome">
+            <span slot="title">退出</span>
+          </el-menu-item>
         </el-menu>
       </el-aside>
       <el-container>
@@ -64,8 +67,22 @@
             </el-row>
             <el-form-item label="类型" prop="type">
               <el-select v-model="form.type" placeholder="请选择文章类型">
-                <el-option label="美女" value="shanghai"></el-option>
-                <el-option label="高中生" value="beijing"></el-option>
+                <el-option label="计算机基础与应用" value="计算机基础与应用"></el-option>
+                <el-option label="计算机语言基础" value="计算机语言基础"></el-option>
+                <el-option label="大数据与人工智能" value="大数据与人工智能"></el-option>
+                <el-option label="硬件系统与原理" value="硬件系统与原理"></el-option>
+                <el-option label="软件工程" value="网络技术"></el-option>
+                <el-option label="前端开发" value="后端开发"></el-option>
+                <el-option label="四六级" value="四六级"></el-option>
+                <el-option label="考研" value="考研"></el-option>
+                <el-option label="专升本" value="考编"></el-option>
+                <el-option label="经济管理" value="经济管理"></el-option>
+                <el-option label="文史哲法" value="文史哲法"></el-option>
+                <el-option label="医学与保健" value="医学与保健"></el-option>
+                <el-option label="教育教学" value="教育教学"></el-option>
+                <el-option label="音乐与艺术" value="音乐与艺术"></el-option>
+                <el-option label="有声课堂" value="有声课堂"></el-option>
+                <el-option label="世界文化" value="世界文化"></el-option>
               </el-select>
             </el-form-item>
             <el-row>
@@ -181,6 +198,9 @@ export default {
     },
     gotoNotice() {
       this.$router.push('/notice_manage')
+    },
+    gotoHome() {
+      this.$router.push('/home')
     },
     onSubmit() {
       this.request.post("/course/add", this.form)

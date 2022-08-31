@@ -27,21 +27,21 @@
         </a>
         <el-link :underline="false" type="success" class="line-text-ellipsis"
           @click="$router.push({ name: 'personal', query: { select: '' } });"
-          style="font-size: medium; max-width: 100px; min-width: 100px; margin: 0 10px">
+          style="font-size: medium;  min-width: 100px; margin: 0 10px">
           {{ user.userName }}
         </el-link>
         <el-link :underline="false" type="info" @click="exit">退出</el-link>
       </div>
       <div class="course">
-        <el-link :underline="false" @click="$router.push({ name: 'personal', query: { select: 'history' } });">{{ history.name[0] }}&nbsp;&nbsp;{{history.time[0]}}
+        <el-link :underline="false"  @click="$router.push({ name: 'personal', query: { select: 'history' } });">{{ history.name[0] }}&nbsp;&nbsp;{{history.time[0]}}
         </el-link>
       </div>
       <div class="course">
-        <el-link :underline="false" @click="$router.push({ name: 'personal', query: { select: 'history' } });">{{ history.name[1] }}&nbsp;&nbsp;{{history.time[1]}}
+        <el-link :underline="false"  @click="$router.push({ name: 'personal', query: { select: 'history' } });">{{ history.name[1] }}&nbsp;&nbsp;{{history.time[1]}}
         </el-link>
       </div>
       <div class="course">
-        <el-link :underline="false" @click="$router.push({ name: 'personal', query: { select: 'history' } });">{{ history.name[2] }}&nbsp;&nbsp;{{history.time[2]}}
+        <el-link :underline="false"  @click="$router.push({ name: 'personal', query: { select: 'history' } });">{{ history.name[2] }}&nbsp;&nbsp;{{history.time[2]}}
         </el-link>
       </div>
       <div class="divider"></div>
@@ -112,13 +112,13 @@ export default {
             this.starCourseNum = res.length;
           })
           this.request
-          .get('/coursehistory/getbyuserid', {
+          .get('/coursehistory/getNumberByUserId', {
             params: {
-              userid: this.user.userId
+              userId: this.user.userId
             }
           })
           .then((res) => {
-            this.historyNum = res.length;
+            this.historyNum = res;
           })
           this.request
           .get('/coursehistory/getByUserId',{
@@ -127,7 +127,7 @@ export default {
             }
           })
           .then((res)=>{
-            this.history.name=res;
+            this.history.name=res.reverse();
           })
            this.request
           .get('/coursehistory/getByUserIdT',{
@@ -166,12 +166,12 @@ export default {
 .divider {
   height: 2px;
   width: 100%;
-  margin-top: 30px;
+  margin-top: 40px;
   background-color: teal;
 }
 
 .course {
-  margin-top: 15px;
+  margin-top: 25px;
   font-size: medium;
 }
 
@@ -214,8 +214,8 @@ export default {
   flex-shrink: 1;
   flex-direction: column;
   align-items: center;
-  width: 80%;
-  height: 80%;
+  width: 90%;
+  height: 90%;
   border-radius: 8px;
 }
 

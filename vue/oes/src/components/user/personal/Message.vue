@@ -1,7 +1,7 @@
 <template>
   <div class="message">
     <div class="time">
-      {{ message.addTime }}
+      {{ message.addTime}}
     </div>
     <div ref="mb">
       <el-avatar v-if="type == 'system'" style="margin: 0 10px 0 20px">
@@ -48,7 +48,7 @@ export default {
       this.$refs.mc.className = 'message-content';
       this.$refs.mb.className = 'message-box-left';
     } else {
-      if (this.user.id === this.msg.cusId) {
+      if (this.user.userId === this.msg.cusId) {
         this.$refs.mc.className = 'message-content-self';
         this.$refs.mb.className = 'message-box-right';
       } else {

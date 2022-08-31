@@ -47,6 +47,10 @@
                 placeholder="请输入用户名">
               </el-input>
             </el-form-item>
+            <el-form-item prop="sex">
+              <el-radio v-model="registerForm.sex" label="1">男</el-radio>
+              <el-radio v-model="registerForm.sex" label="2">女</el-radio>
+            </el-form-item>
             <el-form-item prop="password">
               <el-input class="inputBox" show-password prefix-icon="el-icon-lock" v-model="registerForm.password"
                 placeholder="请输入密码">
@@ -184,7 +188,8 @@ export default {
         passwordR: '',
         phone: '',
         code: '',
-        codeReceived: ''
+        codeReceived: '',
+        sex:''
       },
       user: {
         userName: '',
@@ -220,7 +225,6 @@ export default {
         if (valid) {
           //管理员登录
           if (this.loginForm.username == "admin" && this.loginForm.password == "admin") {
-            this.$message.success("管理员登录成功");
             this.$router.push("/member_manage");
           } else {
             //用户登录
@@ -339,6 +343,7 @@ export default {
             this.user.userName=this.registerForm.username;
             this.user.password=this.registerForm.password;
             this.user.mobile=this.registerForm.phone;
+            this.user.sex=this.registerForm.sex;
             let promise = this.$axios({
               url: '/user/register',
               method: 'post',
@@ -349,7 +354,7 @@ export default {
                 this.$message.success('注册成功');
                 this.resetAllStatus();
               } else {
-                this.$message.error(res.data.info);
+                this.$message.error(res.data);
               }
             }).catch((err) => {
               this.$message.error('你的网络迷路了');

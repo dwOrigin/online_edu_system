@@ -7,15 +7,16 @@
       <div class="content">
         <!-- {{ passage.summary }} -->
         <!-- 等下想怎么展示md文件 -->
-         <mavon-editor
-            class="md"
-            :value="htmlContent" 
-            :subfield="prop.subfield" 
-            :defaultOpen="prop.defaultOpen"
-            :toolbarsFlag="prop.toolbarsFlag"
-            :editable="prop.editable"
-            :scrollStyle="prop.scrollStyle"
-          />
+        <mavon-editor
+    class="md"
+    :value="htmlContent"
+    :subfield="false"
+    :defaultOpen="'preview'"
+    :toolbarsFlag="false"
+    :editable="false"
+    :scrollStyle="true"
+    :ishljs="true"
+/>
       </div>
       <div class="footer">
         <div>
@@ -96,19 +97,6 @@ export default {
       // length: 5,
     };
   },
-  computed: {
-  // 解析器配置
-    prop () {
-      let data = {
-        subfield: false,// 单双栏模式
-        defaultOpen: 'preview',//edit： 默认展示编辑区域 ， preview： 默认展示预览区域 
-        editable: false,    // 是否允许编辑
-        toolbarsFlag: false,
-        scrollStyle: true
-      }
-      return data
-    }
-  },
   methods: {
     // getInfo(){
     //    this.htmlContent=data
@@ -140,6 +128,7 @@ export default {
       });
       promise.then((res) => {
         this.passage = res.data;
+        console.log(this.passage.createTime);
         this.htmlContent=res.data.summary;
         let usr = window.localStorage.getItem('user');
       if (usr === null) {
@@ -156,7 +145,6 @@ export default {
       });
        promise.then((res) => {
         this.isPraise = res.data;
-        console.log('这是getpraise'+res.data);
         if(this.isPraise=='1'){
           this.likeBtnContent = '已喜欢';
         }
@@ -226,15 +214,15 @@ export default {
       this.CommentDialogVisible = true;
     },
     handleClickFooter(btnName) {
-       let usr = window.localStorage.getItem('user');
+      if (btnName === 'cancel') {
+
+      } else if (btnName === 'ask') {
+        let usr = window.localStorage.getItem('user');
       if (usr === null) {
         this.$bus.$emit('OpenLoginDialog');
         return;
       }
        usr = JSON.parse(usr);
-      if (btnName === 'cancel') {
-
-      } else if (btnName === 'ask') {
         if (this.cc.length < 10) {
           this.$message.error('评论不能少于10个字');
           return;

@@ -38,7 +38,7 @@ public class CoursehistoryController {
     public Result deleteone(@RequestBody Coursehistory coursehistory){
         return coursehistoryService.delete(coursehistory);
     }
-    @GetMapping("/getbyuseridsss")
+    @GetMapping("/getbyuserid")
     public List<Coursehistory> getbyuserid(@RequestParam Integer userid){
         return coursehistoryService.getbyuserid(userid);
     }

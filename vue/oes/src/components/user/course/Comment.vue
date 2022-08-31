@@ -1,29 +1,23 @@
 <template>
   <div class="comment">
     <div class="comment-header">
-      <div class="comment-avatar">
-        <el-avatar
-            :size="40"
-            :src="commenter.picImg">
-          <span v-if="commenter.picImg == ''">{{ commenter.userName }}</span>
+      <div class="comment-avatar" @click="talkto">
+        <el-avatar :size="40" :src="commenter.picImg">
+          <span v-if="commenter.picImg == '' || commenter.picImg == null">{{  commenter.userName  }}</span>
         </el-avatar>
       </div>
       <div class="comment-info">
-        <div style="font-size: 16px;">{{ commenter.userName }}</div>
+        <div style="font-size: 16px;">{{  commenter.userName  }}</div>
         <div class="time-and-score">
-          <div style="margin-right: 10px">{{ comment.addtime.split('T')[0] }}&nbsp;{{ comment.addtime.split('T')[1].split(':')[0] }}:{{ comment.addtime.split('T')[1].split(':')[1] }}</div>
-          <el-rate
-              v-model="comment.praiseCount"
-              disabled
-              text-color="#ff9900"
-              score-template="{value}">
+          <div style="margin-right: 10px"> {{comment.addtime}}</div>
+          <el-rate v-model="comment.praiseCount" disabled text-color="#ff9900" score-template="{value}">
           </el-rate>
         </div>
       </div>
     </div>
     <div class="comment-content">
       <p style="width: 100%">
-        {{ comment.content }}
+        {{  comment.content  }}
       </p>
     </div>
   </div>
@@ -36,7 +30,8 @@ export default {
   data() {
     return {
       commenter: {},
-      myComment : this.comment,
+      myComment: this.comment,
+      user:{}
     }
   },
   props: {
@@ -72,10 +67,23 @@ export default {
       //   });
       // });
       promise.then((res) => {
-          this.commenter = res.data;
+        this.commenter = res.data;
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
+    },
+    talkto() {
+      let user = window.localStorage.getItem('user');
+      this.user=JSON.parse(user);
+      if (this.commenter.userId != this.user.userId) {
+        this.$router.push({
+          name: 'personal',
+          query: {
+            select: 'message',
+            talk:this.commenter.userId
+          }
+        });
+      }
     }
   }
 }

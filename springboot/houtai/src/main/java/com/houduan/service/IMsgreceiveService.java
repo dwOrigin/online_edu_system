@@ -54,6 +54,12 @@ Result autoAddMsgReceive(Msgreceive msgreceive);
     List<Msgreceive> getcus(Integer cusId, Integer userId);
 
     Result add(Integer cusId, Integer receiveId, String content);
+
+    List<Msgreceive> getboth(Integer cusId, Integer userId);
+
+    List<Msgreceive> getallbyid(Integer id);
 //   返回所有有关联的对象
     List<User>getConnectUser(Integer userId);
+
+    List<User> talknew(Integer talktoId, Integer userId);
 }

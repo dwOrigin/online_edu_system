@@ -42,5 +42,7 @@ export default {
 </script>
 
 <style>
-
+/* body{
+  font-family: Helvetica, Tahoma, Arial, STXihei, “华文细黑”, “Microsoft YaHei”, “微软雅黑”, sans-serif;
+} */
 </style>

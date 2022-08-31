@@ -1,13 +1,13 @@
 <template>
   <div class="answer">
     <div style="display: flex; align-items: center">
-      <!-- <el-avatar
-          :src="dataObj.commenterAvatarUrl"
+      <el-avatar
+          :src="user.picImg"
           shape="square">
-        <span v-if="dataObj.commenterAvatarUrl === ''">{{ dataObj.commenterName }}</span>
-      </el-avatar> -->
+        <!-- <span v-if="dataObj.commenterAvatarUrl === ''">{{ dataObj.commenterName }}</span> -->
+      </el-avatar>
       &nbsp;&nbsp;&nbsp;
-      <span style="font-size: x-small; font-weight: bold; color:#4C4444;">{{ user.userName }}</span>
+      <span style="font-size: 15px; font-weight: bold; color:#4C4444;">{{ user.userName }}</span>
       &nbsp;&nbsp;&nbsp;  
     <div style=" display: inline-block;text-align:right; ">
      <i class="el-icon-delete" @click="deleteComment(dataObj)"></i>
@@ -18,8 +18,8 @@
     </div>
     <div class="footer">
       <!-- <div>发布于 {{ dataObj.addTime }}</div> -->
-         <div v-if="typeM=='PassageComment'">发布于{{ dataObj.addtime.split('T')[0] }}&nbsp;{{ dataObj.addtime.split('T')[1].split(':')[0] }}:{{ dataObj.addtime.split('T')[1].split(':')[1] }}</div>
-      <div v-if="typeM=='Answer'">发布于{{ dataObj.addTime.split('T')[0] }}&nbsp;{{ dataObj.addTime.split('T')[1] }}</div>
+         <div v-if="typeM=='PassageComment'">发布于{{ dataObj.addtime}}</div>
+      <div v-if="typeM=='Answer'">发布于{{ dataObj.addTime}}</div>
       <div>
         <el-button
             type="primary" size="small" :plain="true">赞同({{ dataObj.praiseCount }})
@@ -54,7 +54,7 @@ export default {
      //获取回答者姓名
       if(this.type === 'PassageComment'){
         let promise = this.$axios({
-        url: '/user/findOne',
+        url: 'http://localhost:8081/user/findOne',
         method: 'get',
         params: {
           id:this.dataObj.userId
@@ -68,7 +68,7 @@ export default {
       }else if(this.type==='Answer'){
 
       let promise = this.$axios({
-        url: '/user/findOne',
+        url: 'http://localhost:8081/user/findOne',
         method: 'get',
         params: {
           id:this.dataObj.cusId
@@ -83,15 +83,21 @@ export default {
     },
     deleteComment(dataObj){
       if(this.type==='PassageComment')
-      {this.$axios.get('/comment/delete',{
+      {let promise=this.$axios.get('http://localhost:8081/comment/delete',{
         params:{commentId:dataObj.commentId}
+      });
+      promise.then((res)=>{
+        this.reload();
       })
       }else if(this.type==='Answer'){
-         this.$axios.get('/questionscomment/delete',{
+         let promise=this.$axios.get('http://localhost:8081/questionscomment/delete',{
         params:{id:dataObj.id}
+    });
+    promise.then((res)=>{
+      this.reload();
     })
       }    
-    this.reload();
+    
     }
   }
 }
@@ -103,9 +109,10 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size:12px;
 }
 .content{
-  font-size: x-small;
+  font-size: 15px;
   font-weight: lighter;
   margin-top: 20px;
   margin-bottom: 20px;

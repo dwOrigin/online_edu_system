@@ -31,9 +31,8 @@ export default {
   },
   data() {
     return {
-      message: this.obj,
       type: this.typer,
-      friend: {},
+      friend: this.obj,
       unCheckedCnt: 0,
       user: {}
     };
@@ -103,14 +102,6 @@ export default {
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
-      this.request.get('/user/findOne', {
-        params: {
-          id: this.message.cusId
-        }
-      })
-        .then((res) => {
-          this.friend = res;
-        })
     } else {
       this.request.get('/msgsystem/getbyid', {
         params: {
