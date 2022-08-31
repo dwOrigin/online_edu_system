@@ -45,10 +45,16 @@ public Result addComment(@RequestBody Questionscomment questionscomment) {
 @GetMapping("/delete")
 public Result delete(@RequestParam  Integer id) {
 //    Result deleteComment = questionscommentService.deleteComment(id);
-    System.out.println(questionscommentService.getById(id).getQuestionId());
+    /**
+    * 存在逻辑错误，都被删了的话，那么它下面是一定会报错的
+    * 因此需要将该部分的questionId记录下来，然后再去使用
+    * */
+    System.out.println(questionscommentService.getById(id));
+    int questionId=questionscommentService.getById(id).getQuestionId();
         questionscommentService.reduceCommentCount(
-                questionscommentService.getById(id).getQuestionId());
+                questionId);
     Result deleteComment = questionscommentService.deleteComment(id);
+    questionscommentService.orHaveComment(questionId);
         return deleteComment;
 }
 
