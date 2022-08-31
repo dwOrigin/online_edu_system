@@ -25,7 +25,7 @@
             <el-input v-model="form.time"></el-input>
           </el-form-item>
           <el-form-item label="上传视频">
-            <el-upload class="avatar-uploader" action="http://localhost:8081/file/upload" :data="{ filetype: 'video' }"
+            <el-upload class="avatar-uploader" action="http://120.46.178.233:8081/file/upload" :data="{ filetype: 'video' }"
               :show-file-list="false" :on-success="handlevideoSuccess" :on-progress="uploadVideoProcess">
               <video width="100%" v-if="form.videoLink" controls="controls" :key="menuKey">
                 <source :src="form.videoLink" type="video/mp4" />

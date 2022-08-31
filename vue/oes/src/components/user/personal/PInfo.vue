@@ -103,7 +103,9 @@
     </el-dialog>
     <el-dialog class="upload" :visible.sync="visible.avatar" append-to-body :close-on-click-modal="false" lock-scroll top="25vh" center
       width="max-content" modal-append-to-body>
-      <el-upload class="avatar-uploader" action="http://localhost:8081/file/upload" :drag="true" :show-file-list="false"
+<!--      将此处修改应该就没问题了-->
+<!--      <el-upload class="avatar-uploader" action="http://localhost:8081/file/upload" :drag="true" :show-file-list="false"-->
+      <el-upload class="avatar-uploader" action="http://120.46.178.233:8081/file/upload" :drag="true" :show-file-list="false"
         :data="{ filetype: 'picture' }" :on-success="handleAvatarSuccess">
         <img v-if="imageUrl" :src="imageUrl" class="avatar">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
