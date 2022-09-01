@@ -4,7 +4,7 @@
 ### 相关名词：
 springboot+vue+mybatisPlus+elementUI
 ---
-### 相关软件：
+### 相关软件及工具：
 
 1. IntelliJ IDEA2022.1（后端编程）
 2. WebStorm2022.2（前端编程）
