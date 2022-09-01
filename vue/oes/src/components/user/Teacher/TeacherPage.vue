@@ -19,10 +19,13 @@
     </div>
     <div class="body">
       <div style="margin: 50px; font-size: large; color: teal; font-style: oblique">Ta的课程</div>
-      <div class="result-table">
+      <div class="result-table" v-show="teacher.courses.length>0">
         <course-card v-for="c in
         teacher.courses.slice((curPage-1)*pageSize, curPage*pageSize)" :course="c">
         </course-card>
+      </div>
+      <div v-show="teacher.courses.length===0">
+        <el-empty description="该讲师没有任何课程"></el-empty>
       </div>
     </div>
     <div class="footer">

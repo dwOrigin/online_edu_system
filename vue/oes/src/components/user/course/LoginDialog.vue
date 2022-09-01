@@ -10,11 +10,16 @@
           </span>
           <el-form ref="loginForm" status-icon :rules="RulesL" class="form" :model="loginForm">
             <el-form-item prop="username">
-              <el-input class="inputBox" prefix-icon="el-icon-user" v-model="loginForm.username" placeholder="用户名">
+              <el-input class="inputBox"
+                        @keydown.enter.native="$refs.pwdInput.focus()"
+                        prefix-icon="el-icon-user" v-model="loginForm.username" placeholder="用户名">
               </el-input>
             </el-form-item>
             <el-form-item prop="password">
-              <el-input class="inputBox" show-password prefix-icon="el-icon-lock" v-model="loginForm.password"
+              <el-input class="inputBox"
+                        ref="pwdInput"
+                        @keydown.enter.native="handleFooterClick('login')"
+                        show-password prefix-icon="el-icon-lock" v-model="loginForm.password"
                 placeholder="密码">
               </el-input>
             </el-form-item>
@@ -306,10 +311,11 @@ export default {
     //重置登录窗口所有状态
     resetAllStatus() {
       setTimeout(() => {
-        this.sliderValue = 0;
+        // this.sliderValue = 0;
         // this.antiRobotPassed = false;
         this.$refs.loginForm.resetFields();
         this.active = "logIn";
+        this.lockLogin = false;
         this.codeIsRight = false;
         this.$refs.registerForm.resetFields();
       }, 50);

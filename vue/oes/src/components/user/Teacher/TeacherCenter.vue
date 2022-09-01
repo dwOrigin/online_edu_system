@@ -14,12 +14,17 @@
         </div>
       </div>
     </div>
-    <div class="search-result">
+    <div class="search-result" v-show="teachers.length>0">
       <teacher-card v-if="update" :teacher="t" v-for="t in
       teachers.slice((this.curPage - 1) * this.pageSize, this.curPage * this.pageSize)"></teacher-card>
     </div>
+    <el-empty
+        v-show="teachers.length===0"
+        description="没有找到相关的讲师信息"></el-empty>
     <div class="page">
-      <el-pagination background :page-size="pageSize" :current-page.sync="curPage" hide-on-single-page
+      <el-pagination
+          background
+          :page-size="pageSize" :current-page.sync="curPage" hide-on-single-page
         @current-change="handleCurrentChange" 
         layout="prev, pager, next" :total="teachers.length">
       </el-pagination>
