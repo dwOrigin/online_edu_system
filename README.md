@@ -1,6 +1,6 @@
 # online_edu_system
 ## 2022暑期学校javaweb实训项目
-
+本项目是由疯狂星期四小组（5人）负责开发的一个在线教育系统项目
 ### 相关名词：
 springboot+vue+mybatisPlus+elementUI
 ---
