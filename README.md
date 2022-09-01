@@ -51,7 +51,10 @@ url:'http://loaclhost:8081/questions';
 改为
 url:'/questions';
 ```
+>在此处有一个技巧，使用对应根目录下：右键，然后“在文件中替换”
+输入对应的文件内容，将修改的内容输入替换并使用即可
 
+![查找和替换](picturesOfReadme/img.png)
 #### 1.2后端配置
 
 1. 在properties中添加
