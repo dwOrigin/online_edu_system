@@ -21,9 +21,9 @@
           <el-form-item label="标题" prop="title">
             <el-input v-model="form.name"></el-input>
           </el-form-item>
-          <el-form-item label="时长" prop="title">
-            <el-input v-model="form.time"></el-input>
-          </el-form-item>
+<!--          <el-form-item label="时长" prop="title">-->
+<!--            <el-input v-model="form.time"></el-input>-->
+<!--          </el-form-item>-->
           <el-form-item label="上传视频">
             <el-upload class="avatar-uploader" action="http://120.46.178.233:8081/file/upload" :data="{ filetype: 'video' }"
               :show-file-list="false" :on-success="handlevideoSuccess" :on-progress="uploadVideoProcess">

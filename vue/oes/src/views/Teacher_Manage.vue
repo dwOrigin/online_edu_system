@@ -54,13 +54,13 @@
               </el-form-item>
               <el-dialog :visible.sync="avatar" append-to-body :close-on-click-modal="false" lock-scroll top="25vh" center
               width="max-content" modal-append-to-body>
-              <el-upload class="avatar-uploader" action="http://localhost:8081/file/upload" :drag="true"
+              <el-upload class="avatar-uploader" action="http://120.46.178.233:8081/file/upload" :drag="true"
                 :show-file-list="false" :data="{ filetype: 'picture' }" :on-success="handleAvatarSuccess">
                 <img v-if="form.logo" :src="form.logo" class="avatar"  this.avatar=false>
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </el-dialog>
-              
+
               <el-form-item prop="status" label="状态" :label-width="formLabelWidth">
                 <el-radio v-model="newform.status" :label="1">在线</el-radio>
                 <el-radio v-model="newform.status" :label="0">不在线</el-radio>
@@ -118,8 +118,19 @@
                       <el-radio v-model="form.isStar" :label="0">否</el-radio>
                     </el-form-item>
                     <el-form-item prop="picPath" label="头像" :label-width="formLabelWidth">
-                      <el-input v-model="form.picPath"></el-input>
+                      <el-avatar shape="square" :size="60" :src="form.picPath"></el-avatar>
+                      <el-link @click="changeAvatar2" :underline="false" type="primary" style="margin: 0 30px">上传
+                      </el-link>
+                      <!-- <el-input v-model="newform.picPath"></el-input> -->
                     </el-form-item>
+                    <el-dialog :visible.sync="avatar2" append-to-body :close-on-click-modal="false" lock-scroll top="25vh" center
+                               width="max-content" modal-append-to-body>
+                      <el-upload class="avatar-uploader" action="http://120.46.178.233:8081/file/upload" :drag="true"
+                                 :show-file-list="false" :data="{ filetype: 'picture' }" :on-success="handleAvatarSuccess2">
+                        <img v-if="form.picPath" :src="form.picPath" class="avatar"  this.avatar2=false>
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                      </el-upload>
+                    </el-dialog>
                     <el-form-item prop="status" label="状态" :label-width="formLabelWidth">
                       <el-radio v-model="form.status" :label="1">在线</el-radio>
                       <el-radio v-model="form.status" :label="0">不在线</el-radio>
@@ -166,6 +177,7 @@ export default {
   data() {
     return {
       avatar: false,
+      avatar2:false,
       tableData: [],
       currentPage: 1,
       pageSize: 5,
@@ -258,7 +270,14 @@ export default {
     },
     handleAvatarSuccess(res, file) {
       this.newform.picPath = res;
-     
+
+    },
+    changeAvatar2() {
+      this.avatar2 = true;
+    },
+    handleAvatarSuccess2(res, file) {
+      this.form.picPath = res;
+
     },
     addTeacher() {
       this.addNewVisible = true;
@@ -320,7 +339,7 @@ export default {
             this.$message.error(res.message);
           }
         })
-      
+
     },
     //不用手写时间
     fetchData() {
