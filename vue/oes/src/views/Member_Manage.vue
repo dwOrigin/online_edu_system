@@ -36,15 +36,15 @@
           <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"  style="width: 100%">
             <el-table-column fixed prop="userId" label="用户ID" width="120">
             </el-table-column>
-            <el-table-column prop="userName" label="账号" width="120">
+            <el-table-column prop="userName" label="账号" width="150">
             </el-table-column>
             <el-table-column prop="showName" label="显示名称" width="120">
             </el-table-column>
-            <el-table-column prop="mobile" label="手机" width="120">
+            <el-table-column prop="mobile" label="手机" width="200">
             </el-table-column>
-            <el-table-column prop="email" label="邮箱" width="150">
+            <el-table-column prop="email" label="邮箱" width="250">
             </el-table-column>
-            <el-table-column prop="lastSystemTime" label="上次登录时间" width="150">
+            <el-table-column prop="lastSystemTime" label="上次登录时间" width="200">
             </el-table-column>
             <el-table-column prop="isAvailable" label="是否可用" width="80">
               <template slot-scope="scope">
@@ -53,7 +53,7 @@
                 <span v-else>是</span>
               </template>
             </el-table-column>
-            <el-table-column label="操作" width="100">
+            <el-table-column label="操作" width="120">
               <template slot-scope="scope">
                 <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
                 <el-dialog title="详细信息" :visible.sync="dialogFormVisible" append-to-body>
@@ -210,7 +210,6 @@ export default {
       //   this.templateList = extendCopy(row);
       //   // 对象进行深拷贝，否则“编辑”框内修改内容(e)会影响到页面
       //   console.log(this.templateList);
-
       //   function extendCopy(p) {
       //     var c = {};
       //     for (var i in p) {
