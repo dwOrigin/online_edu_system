@@ -23,7 +23,7 @@ springboot+vue+mybatisPlus+elementUI
 15. Safari（前端测试）
 16. Chrome（前端测试）
 ---
-本地项目运行在main分支；部署的版本位于deployment分支，
-部署的分支与本地的分支配置不同，需区别使用
+本地项目运行在main分支；部署的版本位于deployment分支。
+部署的分支与本地的分支配置不同，需区别使用！！！
 ---
-# 项目完结了！！！
+# 2022/9/1项目完结了！！！
