@@ -32,15 +32,24 @@ private IArticleService articleService;
 @Resource
 private IRecordsService recordsService;
 //添加文章信息
+/*@PostMapping
+public Result addArticle(@RequestBody Article article){
+        return articleService.addArticle(article);
+}*/
 @PostMapping
 public Result addArticle(@RequestBody Article article){
         return articleService.addArticle(article);
 }
+
 //修改文章信息
-@PostMapping("/update")
+/*@PostMapping("/update")
 public Result updateArticle(@RequestBody Article article) {
         return articleService.updateArticle(article);
-        }
+        }*/
+@PostMapping("/update")
+public Result updateArticle(@RequestParam Integer articleId,@RequestParam String content) {
+        return articleService.updateArticles(articleId, content);
+}
 //删除文章
 @GetMapping("/delete")
 public Result delete(@RequestParam Integer articleId) {

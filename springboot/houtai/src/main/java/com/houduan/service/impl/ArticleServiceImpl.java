@@ -64,6 +64,21 @@ private ArticleMapper articleMapper;
     }
 
     @Override
+    public Result updateArticles(Integer articleId, String content) {
+       /* QueryWrapper<Article> wrapper = new QueryWrapper<>();
+        wrapper.eq("article_id",articleId);*/
+        Article article = articleMapper.selectById(articleId);
+        article.setSummary(content);
+        int i = articleMapper.updateById(article);
+        if (i>=1){
+            return Result.success();
+        }else {
+            return Result.error();
+        }
+
+    }
+
+    @Override
     public Article findArticleByID(Integer articleId) {
         return articleMapper.selectById(articleId);
     }

@@ -21,6 +21,7 @@ public interface IArticleService extends IService<Article> {
     Result deleteArticle(Integer integer);
 //    修改文章信息
     Result updateArticle(Article article);
+    Result updateArticles(Integer articleId, String content);
 //    查询文章的信息，用于文章的初始化部分
     Article findArticleByID(Integer articleId);
     List<Article>searchByType(String type);
