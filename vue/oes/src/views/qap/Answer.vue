@@ -8,17 +8,17 @@
       </el-avatar>
       &nbsp;&nbsp;&nbsp;
       <span style="font-size: 15px; font-weight: bold; color:#4C4444;">{{ user.userName }}</span>
-      &nbsp;&nbsp;&nbsp;  
-    <div style=" display: inline-block;text-align:right; ">
-     <i class="el-icon-delete" @click="deleteComment(dataObj)"></i>
-    </div>
+      &nbsp;&nbsp;&nbsp;
+      <div style=" display: inline-block;text-align:right; ">
+        <i class="el-icon-delete" @click="deleteComment(dataObj)"></i>
+      </div>
     </div>
     <div class="content">
       {{ dataObj.content }}
     </div>
     <div class="footer">
       <!-- <div>发布于 {{ dataObj.addTime }}</div> -->
-         <div v-if="typeM=='PassageComment'">发布于{{ dataObj.addtime}}</div>
+      <div v-if="typeM=='PassageComment'">发布于{{ dataObj.addtime}}</div>
       <div v-if="typeM=='Answer'">发布于{{ dataObj.addTime}}</div>
       <div>
         <el-button
@@ -50,35 +50,35 @@ export default {
     this.getUserName()
   },
   methods:{
-   getUserName(){
-     //获取回答者姓名
+    getUserName(){
+      //获取回答者姓名
       if(this.type === 'PassageComment'){
         let promise = this.$axios({
-        url: '/user/findOne',
-        method: 'get',
-        params: {
-          id:this.dataObj.userId
-        }
-      });
-       promise.then((res) => {
-        this.user = res.data;
-      }).catch((err) => {
-        this.$message.error('你的网络迷路了');
-      });
+          url: '/user/findOne',
+          method: 'get',
+          params: {
+            id:this.dataObj.userId
+          }
+        });
+        promise.then((res) => {
+          this.user = res.data;
+        }).catch((err) => {
+          this.$message.error('你的网络迷路了');
+        });
       }else if(this.type==='Answer'){
 
-      let promise = this.$axios({
-        url: '/user/findOne',
-        method: 'get',
-        params: {
-          id:this.dataObj.cusId
-        }
-      });
-       promise.then((res) => {
-        this.user = res.data;
-      }).catch((err) => {
-        this.$message.error('你的网络迷路了');
-      });
+        let promise = this.$axios({
+          url: '/user/findOne',
+          method: 'get',
+          params: {
+            id:this.dataObj.cusId
+          }
+        });
+        promise.then((res) => {
+          this.user = res.data;
+        }).catch((err) => {
+          this.$message.error('你的网络迷路了');
+        });
       }
     },
     deleteComment(dataObj){
@@ -86,18 +86,18 @@ export default {
       {let promise=this.$axios.get('/comment/delete',{
         params:{commentId:dataObj.commentId}
       });
-      promise.then((res)=>{
-        this.reload();
-      })
+        promise.then((res)=>{
+          this.reload();
+        })
       }else if(this.type==='Answer'){
-         let promise=this.$axios.get('/questionscomment/delete',{
-        params:{id:dataObj.id}
-    });
-    promise.then((res)=>{
-      this.reload();
-    })
-      }    
-    
+        let promise=this.$axios.get('/questionscomment/delete',{
+          params:{id:dataObj.id}
+        });
+        promise.then((res)=>{
+          this.reload();
+        })
+      }
+
     }
   }
 }

@@ -7,15 +7,16 @@
       <div class="content">
         <!-- {{ passage.summary }} -->
         <!-- 等下想怎么展示md文件 -->
-         <mavon-editor
+        <!-- 要双向绑定 -->
+        <mavon-editor
             class="md"
             v-model="htmlContent"
-            :subfield="prop.subfield" 
+            :subfield="prop.subfield"
             :defaultOpen="prop.defaultOpen"
             :toolbarsFlag="prop.toolbarsFlag"
             :editable="prop.editable"
             :scrollStyle="prop.scrollStyle"
-          />
+        />
       </div>
       <div class="footer">
         <div  style="float:left">
@@ -26,7 +27,6 @@
         <div style="float:right">
           <el-button  type="primary" round @click="updateArticle">确认修改</el-button>
         </div>
-      </div>
       </div>
       <div>
         <div style="margin-top: 10px">
@@ -58,7 +58,7 @@ export default {
     };
   },
   computed: {
-  // 解析器配置
+    // 解析器配置
     prop () {
       let data = {
         subfield: false,// 单双栏模式
@@ -73,7 +73,7 @@ export default {
   methods: {
     updateArticle(){
       console.log(this.htmlContent);
-      this.$axios({
+      let promise=this.$axios({
         url: '/article/update',
         method: 'post',
         params: {
@@ -81,8 +81,13 @@ export default {
           content:this.htmlContent
         }
       });
+      promise.then((res) => {
+        this.$message.success('修改成功');
+      }).catch((err) => {
+        this.$message.error('你的网络迷路了');
+      });
     },
-     refreshComment(qId) {
+    refreshComment(qId) {
       // 获取问题答案
       let promise = this.$axios({
         url: '/comment/showA',
@@ -101,11 +106,11 @@ export default {
       let id = this.$route.query.pId;
       //获取文章详细信息
       let promise = this.$axios({
-          url: '/article/getbyid',
-          method: 'get',
-          params:{
-            id: id
-          }
+        url: '/article/getbyid',
+        method: 'get',
+        params:{
+          id: id
+        }
       });
       promise.then((res) => {
         this.passage = res.data;

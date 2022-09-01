@@ -37,20 +37,20 @@
             </el-table-column>
             <el-table-column prop="teacherId" label="老师ID" width="120">
             </el-table-column>
-            <el-table-column prop="courseName" label="课程名称" width="120">
+            <el-table-column prop="courseName" label="课程名称" width="200">
             </el-table-column>
-            <el-table-column prop="isAvailable" label="是否可用" width="120">
+            <el-table-column prop="isAvailable" label="是否可用" width="150">
               <template slot-scope="scope">
                 <!-- 取到当前单元格 -->
                 <span v-if="scope.row.isAvailable == 0">否</span>
                 <span v-else>是</span>
               </template>
             </el-table-column>
-            <el-table-column prop="timeLong" label="课程时间长度" width="120  ">
+            <el-table-column prop="addTime" label="添加时间" width="250">
             </el-table-column>
             <el-table-column prop="pageViewcount" label="浏览量" width="120">
             </el-table-column>
-            <el-table-column prop="type" label="类型" width="100">
+            <el-table-column prop="type" label="类型" width="200">
               <template slot-scope="scope">
                 <el-tag close-transition>{{ scope.row.type }}</el-tag>
               </template>
@@ -92,9 +92,9 @@ export default {
   data() {
     return {
       currentPage: 1,
-      pageSize: 5,
+      pageSize: 7,
       totalCount: 1,
-      pageSizes: [5, 10],
+      pageSizes: [5,7, 10],
       tableData: [
       ]
     }

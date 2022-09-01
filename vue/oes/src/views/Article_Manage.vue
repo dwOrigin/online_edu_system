@@ -48,17 +48,17 @@
     <el-table-column
       prop="title"
       label="标题"
-      width="160">
+      width="300">
     </el-table-column>
     <el-table-column
       prop="keyWord"
       label="关键词"
-      width="120  ">
+      width="150  ">
     </el-table-column>
     <el-table-column
       prop="createTime"
       label="创建时间"
-      width="120">
+      width="250">
     </el-table-column>
     <el-table-column
       prop="clickNum"
@@ -73,7 +73,7 @@
      <el-table-column
       prop="articleType"
       label="文章类型"
-      width="100">
+      width="120">
       <!-- :filters="[{ text: '美女', value: '美女' }, { text: '高中生', value: '高中生' },{text:'帅哥',value:'帅哥'}]"
       :filter-method="filterTag"
       filter-placement="bottom-end"> -->
@@ -119,9 +119,9 @@ export default{
   data() {
       return {
          currentPage: 1,
-      pageSize: 5,
+      pageSize: 7,
       totalCount:1,
-      pageSizes:[5,10],
+      pageSizes:[5,7,10],
         tableData: []
       }
   },

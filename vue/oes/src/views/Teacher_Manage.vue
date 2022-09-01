@@ -76,11 +76,11 @@
           <el-table :data="tableData.slice((currentPage - 1) * pageSize, currentPage * pageSize)" style="width: 100%">
             <el-table-column fixed prop="id" label="教师ID" width="120">
             </el-table-column>
-            <el-table-column prop="name" label="名称" width="120">
+            <el-table-column prop="name" label="名称" width="150">
             </el-table-column>
-            <el-table-column prop="education" label="所属机构" width="120">
+            <el-table-column prop="education" label="所属机构" width="170">
             </el-table-column>
-            <el-table-column prop="career" label="简介" width="120">
+            <el-table-column prop="career" label="简介" width="250">
             </el-table-column>
             <el-table-column prop="isStar" label="是否推荐" width="120">
               <template slot-scope="scope">
@@ -89,14 +89,14 @@
                 <span v-else>是</span>
               </template>
             </el-table-column>
-            <el-table-column prop="status" label="状态" width="120">
+            <el-table-column prop="status" label="状态" width="150">
               <template slot-scope="scope">
                 <!-- 取到当前单元格 -->
                 <span v-if="scope.row.isAvailable == 0">不在线</span>
                 <span v-else>在线</span>
               </template>
             </el-table-column>
-            <el-table-column prop="createTime" label="创建时间" width="150">
+            <el-table-column prop="createTime" label="创建时间" width="250">
             </el-table-column>
             <el-table-column label="操作" width="100">
               <template slot-scope="scope">
@@ -180,9 +180,9 @@ export default {
       avatar2:false,
       tableData: [],
       currentPage: 1,
-      pageSize: 5,
+      pageSize: 7,
       totalCount: 1,
-      pageSizes: [5, 10],
+      pageSizes: [5, 7,10],
       dialogFormVisible: false,
       addNewVisible: false,
       form: {

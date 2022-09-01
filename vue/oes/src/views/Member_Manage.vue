@@ -38,7 +38,7 @@
             </el-table-column>
             <el-table-column prop="userName" label="账号" width="150">
             </el-table-column>
-            <el-table-column prop="showName" label="显示名称" width="120">
+            <el-table-column prop="showName" label="显示名称" width="150">
             </el-table-column>
             <el-table-column prop="mobile" label="手机" width="200">
             </el-table-column>
@@ -46,7 +46,7 @@
             </el-table-column>
             <el-table-column prop="lastSystemTime" label="上次登录时间" width="200">
             </el-table-column>
-            <el-table-column prop="isAvailable" label="是否可用" width="80">
+            <el-table-column prop="isAvailable" label="是否可用" width="120">
               <template slot-scope="scope">
                 <!-- 取到当前单元格 -->
                 <span v-if="scope.row.isAvailable == 0">否</span>
@@ -140,9 +140,9 @@ export default {
   data() {
     return {
       currentPage: 1,
-      pageSize: 5,
+      pageSize: 7,
       totalCount:1,
-      pageSizes:[5,10],
+      pageSizes:[5,7,10],
       tableData: [],
       dialogFormVisible: false,
       form: {

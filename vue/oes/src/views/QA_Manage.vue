@@ -36,20 +36,22 @@
             </el-table-column>
             <el-table-column prop="cusId" label="提问者ID" width="120">
             </el-table-column>
-            <el-table-column prop="title" label="标题" width="120">
+            <el-table-column prop="title" label="标题" width="280">
             </el-table-column>
-            <el-table-column prop="status" label="状态" width="120">
+            <el-table-column prop="status" label="状态" width="150">
               <template slot-scope="scope">
                 <!-- 取到当前单元格 -->
                 <span v-if="scope.row.status == '0'">未回答</span>
                 <span v-else>已回答</span>
               </template>
             </el-table-column>
-            <el-table-column prop="replyCount" label="回复数量" width="120  ">
+            <el-table-column prop="replyCount" label="回复数量" width="120">
             </el-table-column>
             <el-table-column prop="browseCount" label="浏览数量" width="120">
             </el-table-column>
-            <el-table-column prop="type" label="类型" width="100">
+            <el-table-column prop="praiseCount" label="回复数量" width="120">
+            </el-table-column>
+            <el-table-column prop="type" label="类型" width="120">
               <template slot-scope="scope">
                 <el-tag close-transition>{{ scope.row.type }}</el-tag>
               </template>
@@ -93,9 +95,9 @@ export default {
   data() {
     return {
       currentPage: 1,
-      pageSize: 5,
+      pageSize: 7,
       totalCount: 1,
-      pageSizes: [5, 10],
+      pageSizes: [5,7, 10],
       tableData: [
       ]
     }
