@@ -96,7 +96,7 @@
             </el-row>
             <el-dialog :visible.sync="avatar" append-to-body :close-on-click-modal="false" lock-scroll top="25vh" center
               width="max-content" modal-append-to-body>
-              <el-upload class="avatar-uploader" action="http://localhost:8081/file/upload" :drag="true"
+              <el-upload class="avatar-uploader" action="/file/upload" :drag="true"
                 :show-file-list="false" :data="{ filetype: 'picture' }" :on-success="handleAvatarSuccess">
                 <img v-if="form.logo" :src="form.logo" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -119,7 +119,7 @@
             </el-row>
             <el-form-item label="上传视频">
               <div class="img__con">
-                <el-upload class="avatar-uploader" action="http://localhost:8081/file/upload"
+                <el-upload class="avatar-uploader" action="/file/upload"
                   :data="{ filetype: 'video' }" :show-file-list="false" :on-success="handlevideoSuccess"
                   :on-progress="uploadVideoProcess">
                   <video width="100%" v-if="video.videoLink" controls="controls" :key="menuKey">

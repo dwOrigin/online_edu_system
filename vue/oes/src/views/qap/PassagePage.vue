@@ -9,7 +9,7 @@
         <!-- 等下想怎么展示md文件 -->
          <mavon-editor
             class="md"
-            :value="htmlContent" 
+            v-model="htmlContent"
             :subfield="prop.subfield" 
             :defaultOpen="prop.defaultOpen"
             :toolbarsFlag="prop.toolbarsFlag"
@@ -18,12 +18,15 @@
           />
       </div>
       <div class="footer">
-        <div>
+        <div  style="float:left">
           <el-button
-              @click="handleClick()"
               type="primary" plain>喜欢({{ passage.praiseCount }})
           </el-button>
-        </div>     
+        </div>
+        <div style="float:right">
+          <el-button  type="primary" round @click="updateArticle">确认修改</el-button>
+        </div>
+      </div>
       </div>
       <div>
         <div style="margin-top: 10px">
@@ -59,15 +62,26 @@ export default {
     prop () {
       let data = {
         subfield: false,// 单双栏模式
-        defaultOpen: 'preview',//edit： 默认展示编辑区域 ， preview： 默认展示预览区域 
-        editable: false,    // 是否允许编辑
-        toolbarsFlag: false,
+        defaultOpen: 'edit',//edit： 默认展示编辑区域 ， preview： 默认展示预览区域
+        editable: true,    // 是否允许编辑
+        toolbarsFlag: true,
         scrollStyle: true
       }
       return data
     }
   },
   methods: {
+    updateArticle(){
+      console.log(this.htmlContent);
+      this.$axios({
+        url: '/article/update',
+        method: 'post',
+        params: {
+          articleId: this.$route.query.pId,
+          content:this.htmlContent
+        }
+      });
+    },
      refreshComment(qId) {
       // 获取问题答案
       let promise = this.$axios({
