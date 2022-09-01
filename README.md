@@ -1,6 +1,6 @@
 # online_edu_system
 ## 2022暑期学校javaweb实训项目
-本项目是由疯狂星期四小组（5人）负责开发的一个在线教育系统项目
+本项目是由疯狂星期四小组（5人）负责开发的一个在线教育系统
 ### 相关名词：
 springboot+vue+mybatisPlus+elementUI
 ---
@@ -26,4 +26,4 @@ springboot+vue+mybatisPlus+elementUI
 本地项目运行在main分支；部署的版本位于deployment分支。
 部署的分支与本地的分支配置不同，需区别使用！！！
 ---
-# 2022/9/1项目完结了！！！
+# 2022/9/1项目顺利完结了！！！
