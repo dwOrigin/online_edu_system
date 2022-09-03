@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -30,7 +31,7 @@ public class Msgsystem implements Serializable {
 
       @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date addTime;
 

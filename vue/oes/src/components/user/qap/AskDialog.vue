@@ -89,7 +89,8 @@ export default {
         .then((res)=>{
           if(res){
             this.$message.success("提问成功");
-            this.$bus.$emit('refreshQAOMain');
+            this.$parent.refreshQuestion();
+            // this.$bus.$emit('refreshQuestion');
           }else{
             this.$message.error("提问失败");
           }

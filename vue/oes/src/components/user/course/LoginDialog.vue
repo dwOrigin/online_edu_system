@@ -10,11 +10,16 @@
           </span>
           <el-form ref="loginForm" status-icon :rules="RulesL" class="form" :model="loginForm">
             <el-form-item prop="username">
-              <el-input class="inputBox" prefix-icon="el-icon-user" v-model="loginForm.username" placeholder="用户名">
+              <el-input class="inputBox"
+                        @keydown.enter.native="$refs.pwdInput.focus()"
+                        prefix-icon="el-icon-user" v-model="loginForm.username" placeholder="用户名">
               </el-input>
             </el-form-item>
             <el-form-item prop="password">
-              <el-input class="inputBox" show-password prefix-icon="el-icon-lock" v-model="loginForm.password"
+              <el-input class="inputBox"
+                        ref="pwdInput"
+                        @keydown.enter.native="handleFooterClick('login')"
+                        show-password prefix-icon="el-icon-lock" v-model="loginForm.password"
                 placeholder="密码">
               </el-input>
             </el-form-item>
@@ -46,6 +51,10 @@
               <el-input class="inputBox" prefix-icon="el-icon-user" v-model="registerForm.username"
                 placeholder="请输入用户名">
               </el-input>
+            </el-form-item>
+            <el-form-item prop="sex">
+              <el-radio v-model="registerForm.sex" label="1">男</el-radio>
+              <el-radio v-model="registerForm.sex" label="2">女</el-radio>
             </el-form-item>
             <el-form-item prop="password">
               <el-input class="inputBox" show-password prefix-icon="el-icon-lock" v-model="registerForm.password"
@@ -184,7 +193,8 @@ export default {
         passwordR: '',
         phone: '',
         code: '',
-        codeReceived: ''
+        codeReceived: '',
+        sex:''
       },
       user: {
         userName: '',
@@ -220,7 +230,6 @@ export default {
         if (valid) {
           //管理员登录
           if (this.loginForm.username == "admin" && this.loginForm.password == "admin") {
-            this.$message.success("管理员登录成功");
             this.$router.push("/member_manage");
           } else {
             //用户登录
@@ -302,10 +311,11 @@ export default {
     //重置登录窗口所有状态
     resetAllStatus() {
       setTimeout(() => {
-        this.sliderValue = 0;
+        // this.sliderValue = 0;
         // this.antiRobotPassed = false;
         this.$refs.loginForm.resetFields();
         this.active = "logIn";
+        this.lockLogin = false;
         this.codeIsRight = false;
         this.$refs.registerForm.resetFields();
       }, 50);
@@ -339,6 +349,7 @@ export default {
             this.user.userName=this.registerForm.username;
             this.user.password=this.registerForm.password;
             this.user.mobile=this.registerForm.phone;
+            this.user.sex=this.registerForm.sex;
             let promise = this.$axios({
               url: '/user/register',
               method: 'post',
@@ -349,7 +360,7 @@ export default {
                 this.$message.success('注册成功');
                 this.resetAllStatus();
               } else {
-                this.$message.error(res.data.info);
+                this.$message.error(res.data);
               }
             }).catch((err) => {
               this.$message.error('你的网络迷路了');

@@ -4,14 +4,13 @@
       <div class="header">
         <div class="title">{{question.title}}</div>
         <div class="author">
-          <!-- <el-avatar shape="square"
-                     style="margin: 0 10px"
-                     :size="30" :src="question.askerAvatar">
-            <span v-if="question.askerAvatar === ''">
+          <el-avatar shape="square"
+                      :src="user.picImg">
+            <!-- <span v-if="question.askerAvatar === ''">
               {{question.askerName}}
-            </span>
-          </el-avatar> -->
-          {{user.userName}}&nbsp;&nbsp;
+            </span> -->
+          </el-avatar>
+          &nbsp;&nbsp;&nbsp;{{user.userName}}&nbsp;&nbsp;
         </div>
         <div class="content">
           {{question.content}}
@@ -22,7 +21,7 @@
               size="medium" type="primary" :plain="true" style="width: 100px">
             写回答
           </el-button>
-          <div style="color: #8590A6; font-size: x-small">
+          <div style="color: #8590A6; font-size: 12px">
           <span>
             <i class="el-icon-s-data"></i>
             被浏览 {{question.browseCount}}
@@ -40,9 +39,9 @@
     </div>
     <div class="answer-list">
       <div class="answers">
-        <div style="width: 95%; margin: 0 auto">
+        <div style="width: 98%; margin: 0 auto">
           <div class="space-between">
-            <div style="color: #121212; font-size: small; font-weight: bold">{{question.replyCount}} 个回答</div>
+            <div style="color: #121212; font-size: 12px; font-weight: bold">{{question.replyCount}} 个回答</div>
             <el-dropdown>
               <div class="sort">
                 默认排序
@@ -122,7 +121,7 @@ export default {
         let user = JSON.parse(window.localStorage.getItem('user'));
         //回答问题
         let promise = this.$axios({
-          url: 'http://localhost:8081/questionscomment',
+          url: '/questionscomment',
           method: 'post',
           data: {
             content: this.answer,
@@ -132,12 +131,9 @@ export default {
         });
         promise.then((res) => {
           let ret = res.data;
-          if (ret) {
             this.$message.success('回答成功');
+            this.refreshQuestion(this.$route.query.qId);
             this.refreshComment(this.$route.query.qId);
-          } else {
-            this.$message.error('你已经回答过');
-          }
         }).catch((err) => {
           this.$message.error('你的网络迷路了');
         });
@@ -157,8 +153,14 @@ export default {
     },
     refreshQuestion(qId) {
       // 获取问题详细信息
-      let promise = this.$axios({
-        url: 'http://localhost:8081/questions/id',
+      let promise=this.$axios({
+        url:'/questions/plusread',
+        method:'get',
+        params:{id:qId}
+      });
+      promise.then((res)=>{
+        let promise = this.$axios({
+        url: '/questions/id',
         method: 'get',
         params: {
           id: qId
@@ -170,11 +172,12 @@ export default {
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
+      })    
     },
     refreshComment(qId) {
       // 获取问题答案
       let promise = this.$axios({
-        url: 'http://localhost:8081/questionscomment/detail',
+        url: '/questionscomment/detail',
         method: 'get',
         params: {
           id: qId
@@ -190,7 +193,7 @@ export default {
       //获取提问者姓名
       // let promise = this.$axios.get('http://localhost:8081/user/findOne');
       let promise = this.$axios({
-        url: 'http://localhost:8081/user/findOne',
+        url: '/user/findOne',
         method: 'get',
         params: {
           id:this.question.cusId
@@ -245,12 +248,14 @@ export default {
 }
 
 .author {
-  font-size: x-small;
+  font-size: 15px;
   display: flex;
   align-items: center;
   margin: 10px auto 5px 0;
   /*background-color: #F6F6F6;*/
   padding: 10px 0;
+  color:#4C4444;
+  font-weight: bold;
   /*border-radius: 5px;*/
   /*border: 1px solid #EBEBEB;*/
 }
@@ -271,7 +276,7 @@ export default {
 }
 
 .content {
-  font-size: x-small;
+  font-size: 15px;
   line-height: 22px;
   width: 800px;
 }
@@ -281,7 +286,7 @@ export default {
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2;
-  font-size: 23px;
+  font-size: 26px;
   font-weight: bold;
 }
 

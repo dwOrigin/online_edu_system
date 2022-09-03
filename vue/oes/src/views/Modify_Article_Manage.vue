@@ -1,5 +1,5 @@
 <template>
-<div id="main">
+<div id="main" class="fragment-container">
     <div class="btn">
       <el-button type="primary" round @click="returnAritcle">返回</el-button>
     </div>   
@@ -30,5 +30,11 @@ export default {
 .btn{
     margin-top: 20px;
     margin-left: 50px;
+}
+.fragment-container{
+  height: 100vh;
+  overflow-y: scroll;
+  max-width: 100vw;
+  margin: 0 auto;
 }
 </style>

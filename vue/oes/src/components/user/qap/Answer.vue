@@ -1,19 +1,21 @@
 <template>
   <div class="answer">
     <div style="display: flex; align-items: center">
-      <!-- <el-avatar
-          :src="dataObj.commenterAvatarUrl"
+      <el-avatar
+          :src="user.picImg"
           shape="square">
-        <span v-if="dataObj.commenterAvatarUrl === ''">{{ dataObj.commenterName }}</span>
-      </el-avatar> -->
+        <!-- <span v-if="dataObj.commenterAvatarUrl === ''">{{ dataObj.commenterName }}</span> -->
+      </el-avatar>
       &nbsp;&nbsp;&nbsp;
-      <span style="font-size: x-small; font-weight: bold; color:#4C4444;">{{ user.userName }}</span>
+      <span style="font-size: 15px; font-weight: bold; color:#4C4444;">{{ user.userName }}</span>
     </div>
     <div class="content">
       {{ dataObj.content }}
     </div>
     <div class="footer">
-      <div>发布于 {{ dataObj.addtime.split('T')[0] }}&nbsp;{{ dataObj.addtime.split('T')[1].split(':')[0] }}:{{ dataObj.addtime.split('T')[1].split(':')[1] }}</div>
+     <!-- <div>发布于 {{ dataObj.addtime }}</div> -->
+        <div v-if="typeM=='PassageComment'">发布于{{ dataObj.addtime}}</div>
+      <div v-if="typeM=='Answer'">发布于{{ dataObj.addTime}}</div>
       <div>
         <el-button
             @click="accept"
@@ -21,7 +23,6 @@
         </el-button>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -51,7 +52,7 @@ export default {
       //获取回答者姓名
       if(this.type === 'PassageComment'){
         let promise = this.$axios({
-        url: 'http://localhost:8081/user/findOne',
+        url: '/user/findOne',
         method: 'get',
         params: {
           id:this.dataObj.userId
@@ -65,7 +66,7 @@ export default {
       }else if(this.type=='Answer'){
 
       let promise = this.$axios({
-        url: 'http://localhost:8081/user/findOne',
+        url: '/user/findOne',
         method: 'get',
         params: {
           id:this.dataObj.cusId
@@ -86,7 +87,7 @@ export default {
         usr = JSON.parse(usr);
         if (this.type === 'PassageComment'){
           let promise=this.$axios({
-          url:'http://localhost:8081/records/orLikedArticleCom',
+          url:'/records/orLikedArticleCom',
           method:'get',
           params:{
             userId:usr.userId,
@@ -95,7 +96,6 @@ export default {
         });
          promise.then((res) => {
         this.isPraise = res.data;
-        console.log('这是getpraise'+res.data);
         if(this.isPraise=='1'){
           this.likeC = '已赞同';
         }
@@ -107,7 +107,7 @@ export default {
       });
         }else if(this.type=='Answer'){
            let promise=this.$axios({
-          url:'http://localhost:8081/records/orLikedCom',
+          url:'/records/orLikedCom',
           method:'get',
           params:{
             userId:usr.userId,
@@ -116,7 +116,6 @@ export default {
         });
          promise.then((res) => {
         this.isPraise = res.data;
-        console.log('这是getpraise'+res.data);
         if(this.isPraise=='1'){
           this.likeC = '已赞同';
         }
@@ -138,7 +137,7 @@ export default {
         if (this.type === 'PassageComment') {
         //   修改文章评论的点赞状态
         let promise=this.$axios({
-          url:'http://localhost:8081/records/orLikedArticleCom',
+          url:'/records/orLikedArticleCom',
           method:'get',
           params:{
             userId:usr.userId,
@@ -149,14 +148,14 @@ export default {
         this.isPraise = res.data;
           if(this.isPraise=='2'){
             this.$axios({
-            url: 'http://localhost:8081/comment/praise',
+            url: '/comment/praise',
             method: 'get',
             params: {
                   id: this.dataObj.commentId,
             }
           });
             let promise = this.$axios({
-            url: 'http://localhost:8081/records/addRecordArticleComment',
+            url: '/records/addRecordArticleComment',
             method: 'get',
             params: {
                   userId: usr.userId,
@@ -172,14 +171,14 @@ export default {
           });
           }else if(this.isPraise=='1'){
             this.$axios({
-            url: 'http://localhost:8081/comment/cancelPrise',
+            url: '/comment/cancelPrise',
             method: 'get',
             params: {
                   commentId: this.dataObj.commentId,
             }
           });
              let promise = this.$axios({
-            url: 'http://localhost:8081/records/reduceRecordArticleComment',
+            url: '/records/reduceRecordArticleComment',
             method: 'get',
             params: {
                   userId: usr.userId,
@@ -200,7 +199,7 @@ export default {
         } else if (this.type === 'Answer') {
           //修改回答的赞同状态
           let promise=this.$axios({
-          url:'http://localhost:8081/records/orLikedCom',
+          url:'/records/orLikedCom',
           method:'get',
           params:{
             userId:usr.userId,
@@ -212,14 +211,14 @@ export default {
           console.log('这是点赞里的'+this.isPraise);
           if(this.isPraise=='2'){
             this.$axios({
-            url: 'http://localhost:8081/questionscomment/addPraise',
+            url: '/questionscomment/addPraise',
             method: 'get',
             params: {
                   id: this.dataObj.id,
             }
           });
             let promise = this.$axios({
-            url: 'http://localhost:8081/records/addRecordCom',
+            url: '/records/addRecordCom',
             method: 'get',
             params: {
                   userId: usr.userId,
@@ -236,14 +235,14 @@ export default {
           });
           }else if(this.isPraise=='1'){
             this.$axios({
-            url: 'http://localhost:8081/questionscomment/reducePraise',
+            url: '/questionscomment/reducePraise',
             method: 'get',
             params: {
                   id: this.dataObj.id,
             }
           });
              let promise = this.$axios({
-            url: 'http://localhost:8081/records/reduceRecordCom',
+            url: '/records/reduceRecordCom',
             method: 'get',
             params: {
                   userId: usr.userId,
@@ -275,10 +274,11 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size:12px;
 }
 
 .content {
-  font-size: x-small;
+  font-size: 15px;
   font-weight: lighter;
   margin-top: 20px;
   margin-bottom: 20px;

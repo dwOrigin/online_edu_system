@@ -6,17 +6,17 @@
       <span style="max-height: 40px;
           overflow: hidden;
           font-size: x-small;">
-        {{ course.courseName }}
+        {{  course.courseName  }}
       </span>
       <div style="font-size: xx-small; color: #999999">
-        共{{ num }}节 | {{ teacher.name }}
+        共{{  num  }}节 | {{  teacher.name  }}
       </div>
       <div style="font-size: xx-small; color: #999999" class="footer">
         <div>
-          <span style="color: teal">{{ course.pageViewcount }}</span>人浏览
+          <span style="color: teal">{{  course.pageViewcount  }}</span>人浏览
         </div>
         <div>
-          <span style="color: teal">{{ course.praiseCount }}</span>人点赞
+          <span style="color: teal">{{  course.praiseCount  }}</span>人点赞
         </div>
       </div>
     </div>
@@ -29,12 +29,12 @@ export default {
   data() {
     return {
       num: 1,
-      teacher: '',
+      teacher: {},
       imgStyle: {
         width: '100%',
         height: '120px'
-
-      }
+      },
+      user: {}
     }
   },
   props: {//对接收到的参数进行限制
@@ -60,12 +60,17 @@ export default {
   },
   methods: {
     pushcourse() {
-      this.request.get('/course/pageviewplus',{
-        params:{
-          id:this.course.courseId
+      this.request.get('/course/pageviewplus', {
+        params: {
+          id: this.course.courseId
         }
       })
-      this.$bus.$emit('courseChanged',this.course)
+      this.user = JSON.parse(window.localStorage.getItem('user'));
+      this.request.post('/coursehistory', {
+        courseId: this.course.courseId,
+        userId: this.user.userId
+      })
+      this.$bus.$emit('courseChanged', this.course);
       this.$router.push({
         name: 'course',
         params: {

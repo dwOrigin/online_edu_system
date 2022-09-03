@@ -32,6 +32,7 @@ private MsgsystemMapper msgsystemMapper;
 private UserMapper userMapper;
 @Override
     public Result addMsgSystem(Msgsystem msgSystem){
+    msgSystem.setStatus(0);
     int i = msgsystemMapper.insert(msgSystem);
     if (i>=1){
         return Result.success();
@@ -84,6 +85,13 @@ private UserMapper userMapper;
             baseMapper.updateById(list.get(i));
         }
         return Result.success();
+    }
+
+    @Override
+    public List<Msgsystem> getallbyid(Integer id) {
+        QueryWrapper<Msgsystem>queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("accept_id",id);
+        return list(queryWrapper);
     }
 
     @Override

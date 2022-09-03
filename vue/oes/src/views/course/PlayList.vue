@@ -174,7 +174,6 @@ export default {
     //   return Promise.all(uploadList)
     // },
     deleteOld() {
-      console.log(this.chapters[this.curChapter - 1].videoId);
       let promise = this.$axios({
         url: '/coursevideo/deleteCourseVideo',
         method: 'get',
@@ -185,6 +184,11 @@ export default {
       promise.then((res) => {
         if (res.data) {
           this.$message.success("删除成功");
+          this.request.get('/file/removeFile',{
+            params:{
+              url:this.chapters[this.curChapter - 1].videoLink
+            }
+          })
           this.$bus.$emit('courseChanged1', this.course);
 
         } else {

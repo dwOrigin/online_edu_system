@@ -1,6 +1,8 @@
 package com.houduan.controller;
 
 import com.houduan.common.Result;
+import com.houduan.entity.Coursefavorite;
+import com.houduan.service.ICoursefavoriteService;
 import com.houduan.service.IRecordsService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 
 /**
  * @author dw
@@ -19,6 +22,8 @@ public class RecordsController {
 
     @Resource
     private IRecordsService service;
+    @Resource
+    private ICoursefavoriteService coursefavoriteService;
     @GetMapping("/orLikedArt")
     public Integer orLikedArticle(@RequestParam Integer userId,@RequestParam Integer articleId ){
     Integer integer = service.orLikedArticle(userId, articleId);
@@ -72,11 +77,21 @@ public class RecordsController {
 
     @GetMapping("/addRecordCourseCollect")
     public Result addRecordCourseCollect(@RequestParam Integer userId,@RequestParam Integer courseCollectId){
+/*----------------------做一下课程收藏的记录----------------------*/
+        Coursefavorite coursefavorite = new Coursefavorite();
+        coursefavorite.setCourseId(courseCollectId);
+        coursefavorite.setUserId(userId);
+        coursefavorite.setAddTime(LocalDateTime.now());
+        coursefavoriteService.savenew(coursefavorite);
+/*------------------------------------------------------------*/
+
         Result result = service.addRecordCourseCollect(userId, courseCollectId);
         return result;
     }
     @GetMapping("/reduceRecordCourseCollect")
     public Result reduceRecordCourseCollect(@RequestParam Integer userId,@RequestParam Integer courseCollectId){
+    /*----------做一下课程收藏的记录----------*/
+        coursefavoriteService.deleteFavorite(userId, courseCollectId);
         Result result = service.reduceRecordCourseCollect(userId, courseCollectId);
         return result;
     }
@@ -108,19 +123,13 @@ public class RecordsController {
         Integer integer = service.orLikedArticleComment(userId, articleCommentId);
         return integer;
     }
-
-
-
-
-
+    /*---------------2022-8-28---------------*/
+    @GetMapping("/deleteACommentLikes")
+        public Result deleteACommentLikes(Integer commentId){
+            Result result = service.deleteACommentLikes(commentId);
+            return result;
+        }
 
 
 
 }
-
-
-
-
-
-
-

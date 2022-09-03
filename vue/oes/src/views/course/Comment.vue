@@ -13,9 +13,7 @@
           <!-- 需要参数，但现在没有，以后会有的 -->
         </div>
         <div class="time-and-score">
-          <div style="margin-right: 10px">{{ comment.addtime.split('T')[0] }}&nbsp;{{
-              comment.addtime.split('T')[1].split(':')[0]
-          }}:{{ comment.addtime.split('T')[1].split(':')[1] }}</div>
+          <div style="margin-right: 10px"> {{comment.addtime}} </div>
           <el-rate v-model="comment.praiseCount" disabled text-color="#ff9900" score-template="{value}">
           </el-rate>
         </div>

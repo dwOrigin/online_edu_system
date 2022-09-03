@@ -5,7 +5,7 @@
         {{ question.title }}
       </el-link>
       <div class="time-reply" style="font-size: small; color: #999999">
-        <div>{{ question.addTime.split('T')[0] }}&nbsp;&nbsp;{{question.addTime.split('T')[1].split(':')[0]}}:{{question.addTime.split('T')[1].split(':')[1]}}&nbsp;&nbsp;提出</div>
+        <div>{{ question.addTime}}&nbsp;&nbsp;提出</div>
         <div>共{{ question.replyCount }}条回复</div>
       </div>
     </div>

@@ -42,6 +42,12 @@ public class CoursehistoryController {
     public List<Coursehistory> getbyuserid(@RequestParam Integer userid){
         return coursehistoryService.getbyuserid(userid);
     }
+//    修改后的getByUserId
+    @GetMapping("/getNumberByUserId")
+    public Integer getByUserId(@RequestParam Integer userId){
+        return coursehistoryService.getByUserId(userId);
+    }
+
     @GetMapping("/deletebyuserid")
     public Result deletebyuserid(@RequestParam Integer userid){
         return coursehistoryService.deletebyuserid(userid);

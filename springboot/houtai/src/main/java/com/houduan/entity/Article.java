@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -45,7 +46,9 @@ public class Article implements Serializable,Comparable<Article> {
 
     private String author;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     @TableField(fill = FieldFill.INSERT)
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;
 
     private String articleType;

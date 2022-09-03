@@ -50,14 +50,12 @@
             </el-table-column>
             <el-table-column prop="pageViewcount" label="浏览量" width="120">
             </el-table-column>
-            <el-table-column prop="type" label="类型" width="100"
-              :filters="[{ text: 'rap', value: 'rap' }, { text: 'dance', value: 'dance' }, { text: 'vocal', value: 'vocal' }]"
-              :filter-method="filterTag" filter-placement="bottom-end">
+            <el-table-column prop="type" label="类型" width="100">
               <template slot-scope="scope">
                 <el-tag close-transition>{{ scope.row.type }}</el-tag>
               </template>
             </el-table-column>
-            <el-table-column label="操作" width="100">
+            <el-table-column  label="操作" width="100">
               <template slot-scope="scope">
                 <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
                 <el-button @click="deleteMember(scope.row)" type="text" size="small">删除</el-button>

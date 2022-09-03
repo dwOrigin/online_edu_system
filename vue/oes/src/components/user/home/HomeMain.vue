@@ -13,6 +13,7 @@ export default {
     LoginDialog
   },
   mounted() {
+    this.request.get('/course/sortCourses');
   }
 }
 </script>
@@ -20,5 +21,6 @@ export default {
 <style scoped>
 #main{
   width: 100%;
+  min-height: 100%;
 }
 </style>

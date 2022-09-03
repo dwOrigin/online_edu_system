@@ -4,8 +4,11 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
  */
 @Getter
 @Setter
+@Data
 @ApiModel(value = "Coursehistory对象", description = "")
 public class Coursehistory implements Serializable,Comparable<Coursehistory> {
 
@@ -31,7 +35,7 @@ public class Coursehistory implements Serializable,Comparable<Coursehistory> {
     private Integer courseId;
 
     private Integer userId;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private LocalDateTime time;
 
 //用来根据某个属性值去做对比的
