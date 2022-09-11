@@ -10,11 +10,16 @@
           </span>
           <el-form ref="loginForm" status-icon :rules="RulesL" class="form" :model="loginForm">
             <el-form-item prop="username">
-              <el-input class="inputBox" prefix-icon="el-icon-user" v-model="loginForm.username" placeholder="用户名">
+              <el-input class="inputBox"
+                        @keydown.enter.native="$refs.pwdInput.focus()"
+                        prefix-icon="el-icon-user" v-model="loginForm.username" placeholder="用户名">
               </el-input>
             </el-form-item>
             <el-form-item prop="password">
-              <el-input class="inputBox" show-password prefix-icon="el-icon-lock" v-model="loginForm.password"
+              <el-input class="inputBox"
+                        ref="pwdInput"
+                        @keydown.enter.native="handleFooterClick('login')"
+                        show-password prefix-icon="el-icon-lock" v-model="loginForm.password"
                 placeholder="密码">
               </el-input>
             </el-form-item>
@@ -25,7 +30,9 @@
 <!--            </div>-->
           </el-form>
           <div style="display: flex; justify-content: center; margin-top: 20px">
-            <el-button type="primary" @click="handleFooterClick('login')" plain size="medium" class="footer-btn" round>
+            <el-button type="primary"
+                       :disabled="lockLogin"
+                       @click="handleFooterClick('login')" plain size="medium" class="footer-btn" round>
               <span class="btn-content">登&nbsp;&nbsp;录</span>
             </el-button>
             <el-button round size="medium" class="footer-btn" @click="handleFooterClick('cancel')">
@@ -44,6 +51,10 @@
               <el-input class="inputBox" prefix-icon="el-icon-user" v-model="registerForm.username"
                 placeholder="请输入用户名">
               </el-input>
+            </el-form-item>
+            <el-form-item prop="sex">
+              <el-radio v-model="registerForm.sex" label="1">男</el-radio>
+              <el-radio v-model="registerForm.sex" label="2">女</el-radio>
             </el-form-item>
             <el-form-item prop="password">
               <el-input class="inputBox" show-password prefix-icon="el-icon-lock" v-model="registerForm.password"
@@ -86,14 +97,24 @@
         </el-tab-pane>
 
       </el-tabs>
+
     </span>
+    <Vcode :show="sliderVisible"
+           :puzzleScale="0.7"
+           :canvasWidth="280"
+           :canvasHeight="150"
+           :sliderSize="30"
+           @success="sliderSuccess"/>
   </el-dialog>
 </template>
 
 <script>
-import CourseSearchResultVue from './CourseSearchResult.vue';
+import Vcode from "vue-puzzle-vcode";
 export default {
   name: "LoginDialog",
+  components:{
+    Vcode
+  },
   data() {
     let UNRuleL = (rule, value, callback) => {
       if (value == null || value.length === 0) {
@@ -148,6 +169,11 @@ export default {
       }
     };
     return {
+      //登录按钮是否锁定
+      lockLogin: false,
+      //滑动验证是否可见
+      sliderVisible: false,
+
       isVisible: false,
       //窗口处在登录还是注册
       active: 'logIn',
@@ -167,7 +193,8 @@ export default {
         passwordR: '',
         phone: '',
         code: '',
-        codeReceived: ''
+        codeReceived: '',
+        sex:''
       },
       user: {
         userName: '',
@@ -193,6 +220,53 @@ export default {
     }
   },
   methods: {
+    //滑动验证成功
+    sliderSuccess(){
+      //  验证表单
+      this.isVisible = true;
+      this.sliderVisible = false;
+      this.lockLogin = true;
+      this.$refs['loginForm'].validate((valid) => {
+        if (valid) {
+          //管理员登录
+          if (this.loginForm.username == "admin" && this.loginForm.password == "admin") {
+            this.$router.push("/member_manage");
+          } else {
+            //用户登录
+            let promise = this.$axios({
+              method: 'get',
+              url: '/user/login',
+              params: {
+                username: this.loginForm.username,
+                password: this.loginForm.password,
+              }
+            });
+            promise.then((res) => {
+              let ret = res.data;
+              //用户名和密码正确
+              if (ret.code == "200") {
+                let user = ret.data;
+                window.localStorage.setItem('user', JSON.stringify(user));
+                this.isVisible = false;
+                this.resetAllStatus();
+                this.$message.success(ret.message);
+                this.$bus.$emit('AuthorizationChanged');
+              } else {//用户名或密码错误
+                // this.antiRobotPassed = false;
+                // this.sliderValue = 0;
+                this.$message.error(ret.message);
+                this.lockLogin = false;
+              }
+            }).catch((err) => {
+              this.$message.error('网络连接失败');
+              this.lockLogin = false;
+            });
+          }
+        }else {
+          return false;
+        }
+      });
+    },
     //点击发送验证码时调用
     sendCode() {
       let phone = this.registerForm.phone;
@@ -237,10 +311,11 @@ export default {
     //重置登录窗口所有状态
     resetAllStatus() {
       setTimeout(() => {
-        this.sliderValue = 0;
+        // this.sliderValue = 0;
         // this.antiRobotPassed = false;
         this.$refs.loginForm.resetFields();
         this.active = "logIn";
+        this.lockLogin = false;
         this.codeIsRight = false;
         this.$refs.registerForm.resetFields();
       }, 50);
@@ -262,46 +337,11 @@ export default {
         this.isVisible = false;
         this.resetAllStatus();
       } else if (choice === 'login') {
+        //拼图验证
+        this.isVisible = false;
+        this.sliderVisible = true;
         //  验证表单
-        this.$refs['loginForm'].validate((valid) => {
-          if (valid) {
-            //管理员登录
-            if (this.loginForm.username == "admin" && this.loginForm.password == "admin") {
-              this.$message.success("管理员登录成功");
-              this.$router.push("/member_manage");
-            } else {
-              //用户登录
-              let promise = this.$axios({
-                method: 'get',
-                url: '/user/login',
-                params: {
-                  username: this.loginForm.username,
-                  password: this.loginForm.password,
-                }
-              });
-              promise.then((res) => {
-                let ret = res.data;
-                //用户名和密码正确
-                if (ret.code == "200") {
-                  let user = ret.data;
-                  window.localStorage.setItem('user', JSON.stringify(user));
-                  this.isVisible = false;
-                  this.resetAllStatus();
-                  this.$message.success(ret.message);
-                  this.$bus.$emit('AuthorizationChanged');
-                } else {//用户名或密码错误
-                  // this.antiRobotPassed = false;
-                  // this.sliderValue = 0;
-                  this.$message.error(ret.message);
-                }
-              }).catch((err) => {
-                this.$message.error('网络连接失败');
-              });
-            }
-           }else {
-            return false;
-          }
-        });
+
       } else if (choice === 'register') {
         this.$refs.registerForm.validate((valid) => {
           if (valid) {
@@ -309,6 +349,7 @@ export default {
             this.user.userName=this.registerForm.username;
             this.user.password=this.registerForm.password;
             this.user.mobile=this.registerForm.phone;
+            this.user.sex=this.registerForm.sex;
             let promise = this.$axios({
               url: '/user/register',
               method: 'post',
@@ -319,7 +360,7 @@ export default {
                 this.$message.success('注册成功');
                 this.resetAllStatus();
               } else {
-                this.$message.error(res.data.info);
+                this.$message.error(res.data);
               }
             }).catch((err) => {
               this.$message.error('你的网络迷路了');

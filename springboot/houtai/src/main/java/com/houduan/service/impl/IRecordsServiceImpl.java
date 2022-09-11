@@ -3,13 +3,17 @@ package com.houduan.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.houduan.common.Result;
+import com.houduan.entity.Comment;
+import com.houduan.entity.Questionscomment;
 import com.houduan.entity.Records;
+import com.houduan.mapper.CommentMapper;
 import com.houduan.mapper.RecordsMapper;
 import com.houduan.service.IRecordsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author dw
@@ -19,7 +23,8 @@ import javax.annotation.Resource;
 public class IRecordsServiceImpl extends ServiceImpl<RecordsMapper, Records> implements IRecordsService {
 @Resource
 private RecordsMapper recordsMapper;
-
+@Resource
+private CommentMapper commentMapper;
 
 
     @Override
@@ -258,11 +263,101 @@ private RecordsMapper recordsMapper;
         }else {
             return 2;
         }
+    }
+    /*---------------2022-8-28---------------*/
+    @Override
+    public Result deleteACommentLikes(Integer commentId) {
+        QueryWrapper<Records> wrapper = new QueryWrapper<>();
+        wrapper.eq("xx_id",commentId)
+                .eq("type",2);//是评论的点赞
+        int i = recordsMapper.delete(wrapper);
+        if (i>=1){
+            return Result.success();
+        }else {
+            return Result.error();
+        }
+    }
 
+    @Override
+    public Result deleteAArticleLikes(Integer articleId) {
+        /*
+        * 先去找到该文章所有的评论comment
+        * 再去找评论的点赞records
+        * 再删除每个评论的点赞records
+        * 再删除评论comment
+        * 删除文章的点赞
+        * 再删除文章article
+        *
+        * */
+//        找出文章的评论
+        QueryWrapper<Comment> getCommentWrapper = new QueryWrapper<>();
+        getCommentWrapper.eq("type",2)//2是文章评论
+                .eq("total_id",articleId);
+        List<Comment> commentList = commentMapper.selectList(getCommentWrapper);
+//        获取评论的commentId,然后去删除它
+        for (int j=0;j<commentList.size();j++){
+            this.deleteACommentLikes(commentList.get(j).getCommentId());
+        }
+//        删除评论
+        commentMapper.delete(getCommentWrapper);
+//        删除文章的点赞
+        QueryWrapper<Records> deleteLikeWrapper = new QueryWrapper<>();
+        deleteLikeWrapper.eq("xx_id",articleId)
+                .eq("type",1);
+        int i = recordsMapper.delete(deleteLikeWrapper);
+        if (i>=1){
+            return Result.success();
+        }else {
+            return Result.error();
+        }
 
     }
 
+    @Override
+    public Result deleteACourseLikesAndCollects(Integer courseId) {
+        /*
+         * 先去找到该课程所有的评论comment
+         * 再去找评论的点赞records
+         * 再删除每个评论的点赞records
+         * 再删除评论comment
+         * 删除课程的点赞
+         * 再删除课程的收藏
+         * */
+//        找到课程的所有评论
+        QueryWrapper<Comment> getCommentWrapper = new QueryWrapper<>();
+        getCommentWrapper.eq("type",1)//1是课程视频评论
+                .eq("total_id",courseId);
+        List<Comment> commentList = commentMapper.selectList(getCommentWrapper);
+//        获取评论的commentId,然后去删除它
+        for (int j=0;j<commentList.size();j++){
+            this.deleteACommentLikes(commentList.get(j).getCommentId());
+        }
+//        删除评论
+        commentMapper.delete(getCommentWrapper);
+//        删除课程的点赞
+        QueryWrapper<Records> deleteLikeWrapper = new QueryWrapper<>();
+        deleteLikeWrapper.eq("xx_id",courseId)
+                .eq("type",3)//3代表课程
+                .eq("collect_or_like",1);//1 代表点赞
+       recordsMapper.delete(deleteLikeWrapper);
+//       删除课程的收藏
+        Result result = this.deleteACourseCollects(courseId);
+        return result;
+    }
+    @Override
+    public Result deleteACourseCollects(Integer courseId) {
+        QueryWrapper<Records> wrapper = new QueryWrapper<>();
+        wrapper.eq("xx_id",courseId)
+                .eq("type",3)//3是课程
+                .eq("collect_or_like",2);//2是收藏
+        int i = recordsMapper.delete(wrapper);
+        if (i>=1){
+            return Result.success();
+        }else {
+            return Result.error();
+        }
 
+    }
 
 
 }

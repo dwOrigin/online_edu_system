@@ -66,10 +66,10 @@ export default {
       autoPlayNext: true,
       curChapter: 1,//当前在播放的集数
       course: {},
-      videoInfo: {
-        allVideo: [],
-        deleteVideo: []
-      },
+      // videoInfo: {
+      //   allVideo: [],
+      //   deleteVideo: []
+      // },
       form: {
         name: '',
         videoLink: '',
@@ -93,6 +93,9 @@ export default {
       promise.then((res) => {
         if (res.data.code == "200") {
           this.$message.success("增加成功");
+          this.form.name='';
+          this.form.videoLink='';
+          this.form.time='';
           this.$bus.$emit('courseChanged1', this.course);
         } else {
           this.$message.error("增加失败");
@@ -175,12 +178,17 @@ export default {
         url: '/coursevideo/deleteCourseVideo',
         method: 'get',
         params: {
-          id: this.chapters[this.curChapter - 1].videoId
+          courseVideoId: this.chapters[this.curChapter - 1].videoId
         }
       });
       promise.then((res) => {
         if (res.data) {
           this.$message.success("删除成功");
+          this.request.get('/file/removeFile',{
+            params:{
+              url:this.chapters[this.curChapter - 1].videoLink
+            }
+          })
           this.$bus.$emit('courseChanged1', this.course);
 
         } else {

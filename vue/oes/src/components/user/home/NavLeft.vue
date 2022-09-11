@@ -60,11 +60,13 @@ export default {
       tagList: {
         it: [
           {title: '大数据与人工智能'},
-          {title: '计算机基础与应用'},
-          {title: '软件工程'},
           {title: '计算机语言基础'},
+          {title: '软件工程'},
+          {title: '前端开发'},
+          {title: '计算机基础与应用'},
           {title: '硬件系统与原理'},
           {title: '网络技术'},
+          {title: '后端开发'},
         ],
         exam: [
           {title: '四六级'},
@@ -128,7 +130,7 @@ export default {
 }
 
 .item {
-  width: 80px;
+  width: auto;
   margin: 5px 5px;
 }
 

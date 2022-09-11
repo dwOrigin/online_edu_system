@@ -43,4 +43,8 @@ public interface IMsgsystemService extends IService<Msgsystem> {
     List<Msgsystem> getbyid(Integer id);
 
      Result haveread(Integer id);
+
+    Result havereadall(Integer userId);
+
+    List<Msgsystem> getallbyid(Integer id);
 }

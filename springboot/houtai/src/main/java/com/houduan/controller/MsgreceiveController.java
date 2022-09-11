@@ -91,5 +91,34 @@ public class MsgreceiveController {
     public Result haveread(@RequestParam Integer id){
         return msgreceiveService.haveread(id);
     }
+    @GetMapping("/readone")
+    public Result readone(@RequestParam Integer cusId,@RequestParam Integer userId){
+        return msgreceiveService.readone(cusId,userId);
+    }
+    @GetMapping("/getcus")
+    public List<Msgreceive> getcus(@RequestParam Integer cusId,@RequestParam Integer userId){
+        return msgreceiveService.getcus(cusId,userId);
+    }
+    @GetMapping("/add")
+    public Result add(@RequestParam Integer cusId,@RequestParam Integer receiveId,@RequestParam String content){
+        return msgreceiveService.add(cusId,receiveId,content);
+    }
+    @GetMapping("/getboth")
+    public List<Msgreceive>getboth(@RequestParam Integer cusId,@RequestParam Integer userId){
+        return msgreceiveService.getboth(cusId,userId);
+    }
+    @GetMapping("/getallbyid")
+    public List<Msgreceive>getallbyid(@RequestParam Integer id){
+        return msgreceiveService.getallbyid(id);
+    }
+    @GetMapping("/getConnectUser")
+    public List<User> getConnectUser(Integer userId){
+        List<User> user = msgreceiveService.getConnectUser(userId);
+        return user;
+    }
+    @GetMapping("/talknew")
+    public List<User>talknew(@RequestParam Integer talktoId,@RequestParam Integer userId){
+        return msgreceiveService.talknew(talktoId,userId);
+    }
 }
 

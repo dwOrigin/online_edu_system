@@ -68,6 +68,7 @@ public class CoursevideoController {
 
 @GetMapping("/deleteCourseVideo")
     public Result deleteCourseVideo(Integer courseVideoId){
+        System.out.println(courseVideoId);
     Result result = coursevideoService.deleteCourseVideo(courseVideoId);
     return result;
 }

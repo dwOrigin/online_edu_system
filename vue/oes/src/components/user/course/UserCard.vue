@@ -2,19 +2,19 @@
   <div class="main">
     <!--    根据用户是否登录切换展示内容-->
     <div v-if="user == null" class="default">
-      <div class="default-item" style='font-weight: lighter; font-size: small; margin: 10px 0'>
+      <div class="default-item" style='font-weight: lighter; font-size: small; margin-top: 20px'>
         跟进你的学习进度
       </div>
       <div class="default-item">
         <i class="el-icon-s-custom myIcon"></i>
       </div>
-      <div class="default-item">
-        <el-button type="primary" @click="handleClickLogIn" round style="width: 150px">登录
+      <div class="default-item" style="margin-bottom: 30px">
+        <el-button type="primary" @click="handleClickLogIn" round style="width: 150px">登录 / 注册
         </el-button>
       </div>
     </div>
     <div v-if="user != null" class="default">
-      <div class="login-item">
+      <div class="login-item" style="margin-top: 20px">
         <a href="#" @click="$router.push({
           name: 'personal',
           query: {
@@ -27,32 +27,44 @@
         </a>
         <el-link :underline="false" type="success" class="line-text-ellipsis"
           @click="$router.push({ name: 'personal', query: { select: '' } });"
-          style="font-size: medium; max-width: 100px; min-width: 100px; margin: 0 10px">
+          style="font-size: medium;  min-width: 100px; margin: 0 10px">
           {{ user.userName }}
         </el-link>
         <el-link :underline="false" type="info" @click="exit">退出</el-link>
       </div>
-      <div class="course">
-        <el-link :underline="false" @click="$router.push({ name: 'personal', query: { select: 'history' } });">{{ history.name[0] }}&nbsp;&nbsp;{{history.time[0]}}
-        </el-link>
+      <div style="align-self: flex-start" v-show="history.name.length > 0">
+        <div class="course">
+          <el-link :underline="false" @click="$router.push({ name: 'personal', query: { select: 'history' } });">
+            {{ history.name[0] }}&nbsp;&nbsp;{{ history.time[0] }}
+          </el-link>
+        </div>
+        <div class="course">
+          <el-link :underline="false" @click="$router.push({ name: 'personal', query: { select: 'history' } });">
+            {{ history.name[1] }}&nbsp;&nbsp;{{ history.time[1] }}
+          </el-link>
+        </div>
+        <div class="course">
+          <el-link :underline="false" @click="$router.push({ name: 'personal', query: { select: 'history' } });">
+            {{ history.name[2] }}&nbsp;&nbsp;{{ history.time[2] }}
+          </el-link>
+        </div>
       </div>
-      <div class="course">
-        <el-link :underline="false" @click="$router.push({ name: 'personal', query: { select: 'history' } });">{{ history.name[1] }}&nbsp;&nbsp;{{history.time[1]}}
-        </el-link>
-      </div>
-      <div class="course">
-        <el-link :underline="false" @click="$router.push({ name: 'personal', query: { select: 'history' } });">{{ history.name[2] }}&nbsp;&nbsp;{{history.time[2]}}
-        </el-link>
+      <div style="align-self: center; min-height: 120px" v-show="history.name.length === 0">
+        <el-empty
+            style="height: 100px"
+            :image-size="40"
+            description="无历史观看记录">
+        </el-empty>
       </div>
       <div class="divider"></div>
-      <div class="login-card-footer" style="width: 100%">
-        <div style="margin: 0 10px">
+      <div class="login-card-footer" style="width: 100%; margin-bottom: 10px">
+        <div>
           <el-link :underline="false" @click="$router.push({ name: 'personal', query: { select: 'history' } });"
-            style="font-size: medium">{{ historyNum }}门课程</el-link>
+            style="font-size: medium; margin-left: 10px">{{ historyNum }}门课程</el-link>
         </div>
-        <div style="margin: 0 10px">
+        <div>
           <el-link :underline="false" @click="$router.push({ name: 'personal', query: { select: 'star' } });"
-            style="font-size: medium">{{ starCourseNum }}门收藏</el-link>
+            style="font-size: medium; margin-right: 10px">{{ starCourseNum }}门收藏</el-link>
         </div>
       </div>
     </div>
@@ -75,8 +87,8 @@ export default {
       historyNum: 0,
       starCourseNum: 0,
       history:{
-        name:'',
-        time:''
+        name:[""],
+        time:[""]
       }
     }
   },
@@ -112,13 +124,13 @@ export default {
             this.starCourseNum = res.length;
           })
           this.request
-          .get('/coursehistory/getbyuserid', {
+          .get('/coursehistory/getNumberByUserId', {
             params: {
-              userid: this.user.userId
+              userId: this.user.userId
             }
           })
           .then((res) => {
-            this.historyNum = res.length;
+            this.historyNum = res;
           })
           this.request
           .get('/coursehistory/getByUserId',{
@@ -127,7 +139,7 @@ export default {
             }
           })
           .then((res)=>{
-            this.history.name=res;
+            this.history.name=res.reverse();
           })
            this.request
           .get('/coursehistory/getByUserIdT',{
@@ -164,15 +176,15 @@ export default {
 }
 
 .divider {
-  height: 2px;
+  height: 1px;
   width: 100%;
   margin-top: 30px;
   background-color: teal;
 }
 
 .course {
-  margin-top: 15px;
-  font-size: medium;
+  margin: 10px 0 0 30px;
+  align-self: flex-start;
 }
 
 .line-text-ellipsis {
@@ -193,7 +205,7 @@ export default {
 .login-item {
   display: flex;
   justify-content: flex-start;
-  margin: 5px 0;
+  margin: 0;
 }
 
 .myIcon {
@@ -213,9 +225,10 @@ export default {
   display: flex;
   flex-shrink: 1;
   flex-direction: column;
+  justify-content: space-between;
   align-items: center;
   width: 80%;
-  height: 80%;
+  height: 90%;
   border-radius: 8px;
 }
 

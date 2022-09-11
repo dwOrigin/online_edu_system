@@ -58,7 +58,7 @@ export default {
       course: {},
       activeName: 'comment',
       user: {},
-      liked:false,
+      liked: false,
     };
   },
   computed: {
@@ -164,11 +164,17 @@ export default {
                 courseLikeId: this.course.courseId,
               }
             });
-            promise1.then((res)=>{
-              if(res.data.code=="200"){
+            promise1.then((res) => {
+              if (res.data.code == "200") {
                 this.liked = false;
                 this.$message.info("取消点赞");
-              }else{
+                this.request.get('/course/praisedeplus', {
+                  params: {
+                    id: this.course.courseId
+                  }
+                })
+                // this.refresh();
+              } else {
                 this.$message.error("取消失败")
               }
             })
@@ -182,11 +188,17 @@ export default {
                 courseLikeId: this.course.courseId,
               }
             });
-            promise1.then((res)=>{
-              if(res.data.code=="200"){
+            promise1.then((res) => {
+              if (res.data.code == "200") {
                 this.liked = true;
                 this.$message.success("点赞成功");
-              }else{
+                this.request.get('/course/praiseplus', {
+                  params: {
+                    id: this.course.courseId
+                  }
+                })
+                // this.refresh();
+              } else {
                 this.$message.error("点赞失败")
               }
             })
@@ -195,7 +207,18 @@ export default {
           this.$message.error('你的网络迷路了');
         });
       }
-    }
+    },
+    // refresh(){
+    //   this.request.get("/course/getById",{
+    //     params:{
+    //       id:this.course.courseId
+    //     }
+    //   })
+    //   .then((res)=>{
+    //     this.course=res;
+    //   })
+    //   this.$bus.$emit('courseChanged',this.course);
+    // }
   },
   mounted() {
     this.$bus.$on('courseChanged', (data) => {
@@ -219,6 +242,21 @@ export default {
       }).catch((err) => {
         this.$message.error('你的网络迷路了');
       });
+      let promise1 = this.$axios({
+        url: '/records/orLikedCourse',
+        method: 'get',
+        params: {
+          userId: this.user.userId,
+          courseId: this.course.courseId,
+        }
+      });
+      promise1.then((res) => {
+        if (res.data == 1) {
+          this.liked = true;
+        } else {
+          this.liked = false;
+        }
+      })
     });
   },
   beforeDestroy() {

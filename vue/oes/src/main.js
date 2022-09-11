@@ -5,7 +5,7 @@ import request from "@/utils/request"
 
 //axios导入
 import axios from "axios";
-axios.defaults.baseURL = 'http://localhost:8081';//服务器地址
+axios.defaults.baseURL = 'http://120.46.178.233:8081';//服务器地址
 Vue.prototype.$axios = axios;
 
 //vue-router导入
@@ -30,8 +30,7 @@ require('vue-video-player/node_modules/video.js/dist/video-js.css')
 require('vue-video-player/src/custom-theme.css')
 Vue.use(VideoPlayer)
 
-//组件强制刷新
-// Vue.forceUpdata()
+
 
 //关闭生产提示
 Vue.config.productionTip = false

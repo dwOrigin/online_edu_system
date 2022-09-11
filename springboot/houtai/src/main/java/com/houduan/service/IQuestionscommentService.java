@@ -38,5 +38,8 @@ public interface IQuestionscommentService extends IService<Questionscomment> {
     Result addCommentCount(Integer integer);
 //    减少评论数
     Result reduceCommentCount(Integer integer);
+//    判断改该评论是否还有回答，如果是没有人去回答的话
+//    就将状态设置为0
+    Result orHaveComment(Integer questionId);
 
 }

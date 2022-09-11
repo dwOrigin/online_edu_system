@@ -9,6 +9,7 @@ import com.houduan.entity.Course;
 import com.houduan.mapper.CourseMapper;
 import com.houduan.service.ICourseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.houduan.service.IRecordsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,8 @@ import java.util.*;
 public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> implements ICourseService {
     @Autowired
     private CourseMapper mapper;
-
+    @Resource
+    private IRecordsService recordsService;
     @Override
     public Result addnew(Course course) {
         course.setAddTime(LocalDateTime.now());
@@ -42,7 +44,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     @Override
     public List<Course> findType(String type) {
         QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("type", type);
+        queryWrapper.like("type", type);
         return list(queryWrapper);
     }
 
@@ -63,6 +65,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         queryWrapper.eq("course_id", id);
         Course course = getOne(queryWrapper);
         course.setPageViewcount(course.getPageViewcount() + 1);
+        mapper.updateById(course);
         return Result.success();
     }
 
@@ -71,7 +74,8 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("course_id", id);
         Course course = getOne(queryWrapper);
-        course.setPraiseCount(course.getPraiseCount());
+        course.setPraiseCount(course.getPraiseCount()+1);
+        mapper.updateById(course);
         return Result.success();
     }
     @Override
@@ -82,7 +86,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     }
 
     @Override
-    public Result sortArticles() {
+    public Result sortCourses() {
         /*
          * 文章的推荐规则是按照得分来进行
          * 按照对应数值划分比例
@@ -124,7 +128,8 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         Course courseInit = mapper.selectOne(Wrapper);
         System.out.println(courseInit);
         QueryWrapper<Course> Wrapper2 = new QueryWrapper<>();
-        Wrapper2.eq("type",courseInit.getType());
+        Wrapper2.eq("type",courseInit.getType())
+                .ne("course_id",courseInit.getCourseId());
         List<Course> initList = mapper.selectList(Wrapper2);
         if (initList.size()>3){
             List<Course> courses = new ArrayList<>();
@@ -143,65 +148,65 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
                 if (initList.get(t)!=courseInit) {
                     courses.add(initList.get(t));
                 }*/
-                if (initList.get(integers.get(i))!=courseInit) {
-                    System.out.println(integers.get(i));
+                    System.out.println(initList.get(integers.get(i)));
                     courses.add(initList.get(integers.get(i)));
-                }else {
-                    i--;//防止被播放的视频还被推荐了
-                }
-//                courses.add(initList.get((int)Math.random()*(initList.size()-1)));
             }
-            System.out.println(courses);
             return courses;
         }
         else {
-            System.out.println(initList);
             return initList;
         }
     }
 
     @Override
     public List<Course> recommendCourses() {
-        List<Course> fullReturnList = new ArrayList<Course>();
+//        List<Course> fullReturnList = new ArrayList<Course>();
         List<Course> returnList = new ArrayList<Course>();
-
         List<Course> initCourse = mapper.selectList(null);
         Set<String> getTypeName = new HashSet<String>();
-//        种类是固定的几个内容，然后先就随便设置一下吧
+        /*种类可以根据数据库里面的内容进行对应的修改，
+        *不需要受到对应的数据种类的限制约束
+        * */
         for (int i = 0; i < initCourse.size(); i++) {
             getTypeName.add(initCourse.get(i).getType());
         }
         List<String> typeList = new ArrayList(getTypeName);
-
-        System.out.println(typeList.size());
         int i = 0;
         for (; i < typeList.size(); i++) {
-//            注意此处的queryWrapper的声明位置，
-//            如果声明被放在了122行，就会导致出现
-//            eq的条件越来越多，也就是理论上的.eq().eq().eq()
-//            这种多重的筛选条件，因此就会出现只有第一个类别是可以出现结果
-//            但是后面的都没有办法出现结果的情况！！！
+         /*   注意此处的queryWrapper的声明位置，
+            如果声明被放在了122行，就会导致出现
+            eq的条件越来越多，也就是理论上的.eq().eq().eq()
+            这种多重的筛选条件，因此就会出现只有第一个类别是可以出现结果
+            但是后面的都没有办法出现结果的情况！！！*/
             QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("type",typeList.get(i) );
-            List<Course> courses = mapper.selectList(queryWrapper);
-            System.out.println("运行第"+i+"次");
-            System.out.println(courses);
+            List<Course> courses =mapper.selectList(queryWrapper);
+            /*System.out.println("运行第"+i+"次");
+            System.out.println(courses);*/
             Collections.sort(courses);
-//            当某个种类的课程大于5个时，进行如下操作
+
+//            当某个种类的课程大于等于5个时，进行如下操作
 //            如果该种类的课程小于5个的时候，就将该种类的课程全部加进去
 //            --------------------------------------------
-            if(courses.size()>5) {
+            if(courses.size()>=5) {
+                /**从原本的163行改为到该行，
+                *在每一种新的课程的加入中，都应该重新
+                * 生成出要返回的fullreturnlist函数，
+                * 否则的话就会导致反复添加对应的课程元素，
+                 * 最终导致所有的课程都被添加，
+                 * 出现重复的课程被推荐的情况
+                */
+                List<Course> fullReturnList = new ArrayList<Course>();
                 for (int j = 0; j < 5; j++) {
                     fullReturnList.add(courses.get(courses.size() - 1 - j));
                 }
-//              使用这种方式是因为
-//              在使用date()传值的时候会出现由于时间过短，出现了类似于伪随机的情况
+              /*使用这种方式是因为在使用date()传值的时候会出现由于时间过短，出现了类似于伪随机的情况*/
                 int MAXNUM=fullReturnList.size();//其实就是五
                 List<Integer> integers = new ArrayList<>();//创建个集合用来存储
-                for(int j=0;j<MAXNUM;j++)
+                for(int j=0;j<MAXNUM;j++) {
                     integers.add(j);
+                }
                 Collections.shuffle(integers);
-
                 for (int t = 0; t < 2; t++) {
                     int number = integers.get(t);
                     returnList.add(fullReturnList.get( number));
@@ -210,12 +215,9 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
                 for (int j=0;j<courses.size();j++)
                 returnList.add(courses.get(j));
             }
-//            --------------------------------------------
         }
         return returnList;
-
     }
-
     @Override
     public Result addViewPoint(Integer id) {
         Course course = mapper.selectById(id);
@@ -255,6 +257,27 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         queryWrapper.eq("course_id", id);
         Course course = getOne(queryWrapper);
         course.setCommentNum(course.getCommentNum()+1);
+        mapper.updateById(course);
+        return Result.success();
+    }
+
+    @Override
+    public Result praisedeplus(Integer id) {
+        QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("course_id", id);
+        Course course = getOne(queryWrapper);
+        course.setPraiseCount(course.getPraiseCount()-1);
+        mapper.updateById(course);
+        return Result.success();
+    }
+
+    @Override
+    public Result commentdeplus(Integer id) {
+        QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("course_id", id);
+        Course course = getOne(queryWrapper);
+        course.setCommentNum(course.getCommentNum()-1);
+        mapper.updateById(course);
         return Result.success();
     }
 

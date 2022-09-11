@@ -25,6 +25,9 @@
       <el-menu-item index="6" @click="gotoNotice">
         <span slot="title">通知管理</span>
       </el-menu-item>
+      <el-menu-item index="7" @click="gotoHome">
+            <span slot="title">退出</span>
+          </el-menu-item>
     </el-menu>
   </el-aside>
   <el-container>
@@ -32,23 +35,13 @@
       <span>管理员</span>
     </el-header>
     <el-main>
-        <el-form ref="form" :model="form" label-width="80px">
+        <el-form ref="form" :model="form" label-width="80px" enctype="multipart/form-data">
         <el-row>
-            <el-col :span="10">
-                 <el-form-item label="文章ID" prop="articleId">
-    <el-input v-model="form.articleId"></el-input>
-  </el-form-item>
-            </el-col>
             <el-col :span="10">
                <el-form-item label="文章标题" prop="title">
      <el-input v-model="form.title"></el-input>
   </el-form-item>
             </el-col>
-        </el-row>
-        <el-row>
-         <el-form-item label="文章概要" prop="summary">
-    <el-input type="textarea" v-model="form.summary"></el-input>
-  </el-form-item>
         </el-row>
         <el-row>
             <el-col :span="10">
@@ -69,15 +62,16 @@
         </el-row>
   <el-form-item label="文章类型" prop="articleType">
     <el-select v-model="form.articleType" placeholder="请选择文章类型">
-      <el-option label="美女" value="shanghai"></el-option>
-      <el-option label="高中生" value="beijing"></el-option>
+      <el-option label="科技" value="科技"></el-option>
+      <el-option label="文学" value="文学"></el-option>
+      <el-option label="闲聊" value="闲聊"></el-option>
     </el-select>
   </el-form-item>
-   <mavon-editor v-model="value" :ishljs = "true" ref=md @save="save" @imgAdd="imgAdd" />   
+    <mavon-editor ref="md" v-model="form.summary" :ishljs="true" @imgAdd="imgAdd"/> 
    <!-- imgAdd监听图片上传 save监听图片保存 value保存整个markdown文件内容 -->
    <el-form-item>  </el-form-item>
   <el-form-item>
-       <el-button type="primary" @click="onSubmit(formName)">发布文章</el-button>
+       <el-button type="primary" @click="onSubmit('form')">发布文章</el-button>
     <el-button @click="resetForm('form')">重置</el-button> 
    <!-- 居中不了，去死吧 -->
   </el-form-item>
@@ -105,7 +99,6 @@ export default{
           author:'',
           articleType:'',
         },
-        value:''
       };
       
   },
@@ -128,105 +121,50 @@ export default{
         gotoNotice(){
             this.$router.push('/notice_manage')
         },
+        gotoHome() {
+      this.$router.push('/home')
+    },
          handleOpen(key, keyPath) {
         console.log(key, keyPath);
       },
       handleClose(key, keyPath) {
         console.log(key, keyPath);
       },
-         onSubmit(formName) {
-           this.request.post('/article', this.form)
+      onSubmit(formName) {
+           this.request.post('http://localhost:8081/article', this.form)
         .then((res) => {
           if (res.code == "200") {
-            this.$message.success(res.message);
+            this.$message.success(res.data);
           } else {
-            this.$message.error(res.message);
+            this.$message.error(res.data);
           }
         });
-        this.reload();
-
-        // this.$refs[formName].validate((valid) => {
-        //   if (valid) {
-        //     alert('发布成功!');
-        //   } else {
-        //     console.log('error submit!!');
-        //     return false;
-        //   }
-        // });
         this.resetForm(formName);
       },
        resetForm(formName) {
         this.$refs[formName].resetFields();
+        this.form.summary='';
       },
-      //传递md文件到后台
-      save(){ 
-         //传递name(文件名),typeId(文件所属类别),value(md文件内容）
-         var result=postMd(this.value);
-         console.log(result);
-         this.dialogFormVisible=false
-         
-      },
-
       //保存图片到后台
-      imgAdd(pos, $file){
-        var _this = this;
-        // 第一步.将图片上传到服务器.
-        var formdata = new FormData();
-        formdata.append('image', $file);
-        uploadFile(formdata).then(resp=> {
-         var url = resp.data; //取出上传成功后的url
-          if (resp.status == 200) {
-          //  将后端返回的url放在md中图片的指定位置
-          console.log(url)
-           _this.$refs.md.$img2Url(pos, url)
-          } else {
-            _this.$message({type: resp.status, message: resp.statusText});
-          }
-        });
-      },
+     // 绑定@imgAdd event
+imgAdd(pos, $file) {
+  let $vm = this.$refs.md
+  // 第一步.将图片上传到服务器.
+  let formData = new FormData();
+  formData.append('file', $file);
+  this.$axios({
+    url: 'http://localhost:8081/file/upload?filetype=picture',
+    method: 'post',
+    params:{file:formData} ,
+    headers: {'Content-Type': 'multipart/form-data'},
+  }).then((res) => {
+    // 第二步.将返回的url替换到文本原位置![...](./0) -> ![...](url)
+    $vm.$img2Url(pos, res.data);
+  })
+},
      }
     
 }
-//上传md文件
-export function postMd(content){
-  this.$axios.get('/file/upload',{
-    params:{
-       file:content,
-       filetype:markdown,
-    }
-  })
-   .then(function (response) {
-                        console.log(response);
-                     })
-                     .catch(function (error) {
-                        console.log(error);
-                     });
-  ;
-  //  return  this.$axios.post('http://localhost:8081/article', {
-  //                       name: name,
-  //                       typeId: typeId,
-  //                       content: content
-  //                    })
-  //                    .then(function (response) {
-  //                       console.log(response);
-  //                    })
-  //                    .catch(function (error) {
-  //                       console.log(error);
-  //                    });
-}
-
-//上传图片
-export const uploadFile = (params) => {
-   return this.$axios({
-     method: 'get',
-     url: '/file/upload',
-     data: {
-      file:params,filetype:picture},
-     headers: {
-       'Content-Type': 'multipart/form-data'
-     }
-   });
- }
 </script>
 
 <style>

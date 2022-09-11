@@ -8,10 +8,12 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * <p>
@@ -24,7 +26,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @ApiModel(value = "Msgreceive对象", description = "")
-public class Msgreceive implements Serializable {
+public class Msgreceive implements Serializable,Comparable<Msgreceive> {
 
     private static final long serialVersionUID = 1L;
 
@@ -34,6 +36,7 @@ public class Msgreceive implements Serializable {
 
     @ApiModelProperty("添加时间")
     @TableField(fill = FieldFill.INSERT)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date addTime;
 
     @ApiModelProperty("发送人")
@@ -56,4 +59,8 @@ public class Msgreceive implements Serializable {
     private Integer receivingCusid;
 
 
+    @Override
+    public int compareTo(@NotNull Msgreceive msgreceive) {
+        return this.addTime.compareTo(msgreceive.getAddTime());
+    }
 }

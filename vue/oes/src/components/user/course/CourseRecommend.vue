@@ -24,7 +24,7 @@
         <div style="flex-grow: 1">热门课程推荐</div>
         <el-link :underline="false"
                  @click="refreshCourse"
-                 type="primary">换一批<i class="el-icon-refresh"></i></el-link>
+                 type="primary">换一批<i class="el-icon-refresh" @click="refreshCourse"></i></el-link>
       </el-row>
       <el-row class="divider"></el-row>
       <el-row class="myHot">

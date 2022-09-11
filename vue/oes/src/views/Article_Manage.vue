@@ -51,11 +51,6 @@
       width="160">
     </el-table-column>
     <el-table-column
-      prop="summary"
-      label="文章概要"
-      width="120">
-    </el-table-column>
-    <el-table-column
       prop="keyWord"
       label="关键词"
       width="120  ">
@@ -71,19 +66,23 @@
       width="120">
     </el-table-column>
      <el-table-column
+      prop="praiseCount"
+      label="点赞数"
+      width="120">
+    </el-table-column>
+     <el-table-column
       prop="articleType"
       label="文章类型"
-      width="100"
-      :filters="[{ text: '美女', value: '美女' }, { text: '高中生', value: '高中生' },{text:'帅哥',value:'帅哥'}]"
+      width="100">
+      <!-- :filters="[{ text: '美女', value: '美女' }, { text: '高中生', value: '高中生' },{text:'帅哥',value:'帅哥'}]"
       :filter-method="filterTag"
-      filter-placement="bottom-end">
+      filter-placement="bottom-end"> -->
       <template slot-scope="scope">
         <el-tag
           close-transition>{{scope.row.articleType}}</el-tag>
       </template>
     </el-table-column>
     <el-table-column
-      fixed="right"
       label="操作"
       width="100">
       <template slot-scope="scope">
@@ -123,8 +122,7 @@ export default{
       pageSize: 5,
       totalCount:1,
       pageSizes:[5,10],
-        tableData: [
-        ]
+        tableData: []
       }
   },
      methods:{
@@ -166,7 +164,10 @@ export default{
       },
        handleClick(row) {
         console.log(row);
-        this.$router.push('modify_article_manage')
+        this.$router.push({
+          name:'modify_article_manage',
+          query:{ pId: row.articleId }
+        })
       },
       formatter(row, column) {
         return
@@ -205,20 +206,7 @@ export default{
             message: '已取消删除'
           });
         });
-        //会出现些许问题
-        /*this.$axios.get('http://localhost:8081/article/delete',{
-        params: {
-        articleId: row.articleId
-      }
-        }
-       )
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-      this.reload();*/
+      // this.reload();
       },
       addArticle(){
         this.$router.push('/add_article_manage')

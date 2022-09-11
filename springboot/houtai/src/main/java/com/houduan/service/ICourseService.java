@@ -32,9 +32,8 @@ public interface ICourseService extends IService<Course> {
     Result addViewPoint(Integer id);
 
     List<Course> getbyteacher(Integer teacherid);
-
-    Result sortArticles();
-
+    //    对课程的推荐程度进行一个按比例排序
+    Result sortCourses();
     List<Course> recommendCoursesType(Integer id);
 
     List<Course> getbyname(String name);
@@ -42,4 +41,8 @@ public interface ICourseService extends IService<Course> {
     List<Course> getbyboth(String select, String key);
 
     Result commentplus(Integer id);
+
+    Result praisedeplus(Integer id);
+
+    Result commentdeplus(Integer id);
 }

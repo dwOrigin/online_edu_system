@@ -4,6 +4,7 @@ import com.houduan.common.Result;
 import com.houduan.entity.Msgreceive;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.houduan.entity.Msgsystem;
+import com.houduan.entity.User;
 import com.houduan.service.impl.MsgreceiveServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -47,4 +48,18 @@ Result autoAddMsgReceive(Msgreceive msgreceive);
     List<Msgreceive> getbyid(Integer id);
 
     Result haveread(Integer id);
+
+    Result readone(Integer cusId, Integer userId);
+
+    List<Msgreceive> getcus(Integer cusId, Integer userId);
+
+    Result add(Integer cusId, Integer receiveId, String content);
+
+    List<Msgreceive> getboth(Integer cusId, Integer userId);
+
+    List<Msgreceive> getallbyid(Integer id);
+//   返回所有有关联的对象
+    List<User>getConnectUser(Integer userId);
+
+    List<User> talknew(Integer talktoId, Integer userId);
 }

@@ -69,6 +69,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 //        设置文章评论的一些基本属性值
         QueryWrapper<Comment>queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("user_id",userId);
+        queryWrapper.eq("total_id",courseId);
+        queryWrapper.eq("type",2);
         if(getOne(queryWrapper)!=null){
             return Result.error(Constants.CODE_500,"请勿重复评论");
         }

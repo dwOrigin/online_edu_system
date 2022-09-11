@@ -108,6 +108,9 @@ for (int i=0;i<list.size();i++){
         wrapper.eq("id",integer);
         System.out.println(integer);
         Questions questions = questionsMapper.selectOne(wrapper);
+//        将问题的状态设为1，以便前面调用
+        questions.setStatus("1");
+        System.out.println("-------调用了--------");
         questions.setReplyCount(questions.getReplyCount()+1);
         int i = questionsMapper.updateById(questions);
         if (i>=1){
@@ -123,10 +126,34 @@ for (int i=0;i<list.size();i++){
         Questions questions = questionsMapper.selectById(integer);
         questions.setReplyCount(questions.getReplyCount()-1);
         int i = questionsMapper.updateById(questions);
+        /**
+         *先把对应的数值赋值结束后，
+         * 然后再去判断出当前的状态
+         * 只有在delete的时候才会出现状态可能为0的情况*/
+//        this.orHaveComment(integer);
         if (i>=1){
             return Result.success();
         }else {
             return Result.error();
+        }
+    }
+
+    @Override
+    public Result orHaveComment(Integer questionId) {
+        Questions questions = questionsMapper.selectById(questionId);
+        QueryWrapper<Questionscomment> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("question_id",questionId);
+        List<Questionscomment> questionscommentList = mapper.selectList(queryWrapper);
+        if(questionscommentList.size()==0){
+            questions.setStatus("0");
+            int i = questionsMapper.updateById(questions);
+            if (i>=1){
+                return Result.success();
+            }else {
+                return Result.error();
+            }
+        }else {
+            return Result.success();
         }
     }
 
