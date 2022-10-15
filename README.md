@@ -91,7 +91,7 @@ npm run build
 
 2. 生成对应的dist文件夹
 
-![image-20220831191112979](picturesOfReadme\image-20220831191112979.png)
+![生成dist文件夹](picturesOfReadme\image-20220831191112979.png)
 
 #### 2.2后端打包
 
@@ -105,7 +105,7 @@ npm run build
 
    完成打包，得到target目录下的houtai-0.0.1.jar文件
 
-![image-20220831192157067](picturesOfReadme\image-20220831192157067.png)
+![运行jaj文件](picturesOfReadme\image-20220831192157067.png)
 ### 3.部署
 
 1. 通过Xshell和Xftp工具连接到对应的服务器，然后将houtai-0.0.1-SNAPSHOT.jar文件放到对应的目录下
