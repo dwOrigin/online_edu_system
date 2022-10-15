@@ -91,11 +91,11 @@ npm run build
 
 2. 生成对应的dist文件夹
 
-![image-20220831191112979](picturesOfReadme\image-20220831191112979.png)
+![dist文件夹](picturesOfReadme\imageSeNine.png)
 
 #### 2.2后端打包
 
-1. 将生成的前端生成的dist目录中的内容，放置到对应的后端resources目录下的static目录下![image-20220831192820682](picturesOfReadme\image-20220831192820682.png)
+1. 将生成的前端生成的dist目录中的内容，放置到对应的后端resources目录下的static目录下![static目录](picturesOfReadme\imageNiTwo.png)
 
 2. 使用Intellij IDEA的maven打包功能依次执行
 
@@ -105,7 +105,7 @@ npm run build
 
    完成打包，得到target目录下的houtai-0.0.1.jar文件
 
-![image-20220831192157067](picturesOfReadme\image-20220831192157067.png)
+![得到jar文件](picturesOfReadme\SiSeven.png)
 ### 3.部署
 
 1. 通过Xshell和Xftp工具连接到对应的服务器，然后将houtai-0.0.1-SNAPSHOT.jar文件放到对应的目录下
